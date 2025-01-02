@@ -6,3 +6,5 @@ export type AiRequestBody = {
 export type AiResponse = {
     content: string
 }
+
+export type ClientType = "Basic" | "Azure"
