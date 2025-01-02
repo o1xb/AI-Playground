@@ -11,7 +11,8 @@ function getModel(clientType: ClientType = "Basic"): ChatOpenAI {
                 model: "gpt-4o",
                 deploymentName: process.env.DEPLOYMENT_NAME,
                 azureOpenAIEndpoint: process.env.AZURE_OPENAI_ENDPOINT,
-                openAIApiVersion: process.env.OPENAI_API_VERSION
+                openAIApiVersion: process.env.OPENAI_API_VERSION,
+                temperature: 0.7
             });
         case "Basic":
             return new ChatOpenAI({
