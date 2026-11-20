@@ -51,3 +51,15 @@ Still open:
   observed example: review.
 - Ivanti rule r00043 (`PCS\d`, case-insensitive) matches random IDs; flagged as a dispute, not yet tightened.
 - Fortinet FortiAnalyzer lines go to FortiGate via the broad `devname=` rule.
+
+## Parsing + OCSF (held-out half of Elastic test lines, 14 packages, 1294 lines)
+
+Scored by `bench/score_ocsf.py`: for each held-out line, our parser + OCSF mapping vs the fields
+Elastic's own pipeline extracted (ECS), matched to the corresponding OCSF attributes.
+
+| Stage | Parse | Mapped to OCSF | OCSF schema-valid | Field recall | Field precision |
+|---|---|---|---|---|---|
+| Hand-written quick parsers + mappings (baseline) | 26% | 9% | 30% | 64% (of 9%) | 95% |
+| Agent parsers (66) | 93.1% | - | - | - | - |
+| + agent fallback parsers (81) | 95.7% | - | - | - | - |
+| + agent OCSF mappings, round 1 (55 mappings) | 95.7% | 82.6% | 99.3% | 73.4% | 86.9% |
