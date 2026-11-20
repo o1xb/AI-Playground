@@ -114,7 +114,7 @@ def metrics(spec, messages, max_examples=3):
     t0 = time.time()
     ok, fails, cov, keys, dates, date_ok = 0, [], [], set(), 0, 0
     types = {f: [0, 0, []] for f in (spec.get("field_types") or {})}
-    has_date = any("date" in s for s in spec["steps"])
+    date_fields = [s["date"]["field"] for s in spec["steps"] if "date" in s]
     for m in messages:
         o = output_of(spec, m)
         bad = FAILURE_TAGS & set(o["tags"])
@@ -125,9 +125,11 @@ def metrics(spec, messages, max_examples=3):
         cov.append(coverage(m, o["vendor"]))
         fl = flatten(o["vendor"])
         keys.update(fl)
-        if has_date:
-            dates += 1
-            date_ok += "@timestamp" in o and "_dateparsefailure" not in o["tags"]
+        if date_fields:
+            ev_full = run_parser(spec, m)
+            if any(get(ev_full, f) not in (None, "") for f in date_fields):   # only lines that carry a date field
+                dates += 1
+                date_ok += "@timestamp" in o and "_dateparsefailure" not in o["tags"]
         for f, typ in (spec.get("field_types") or {}).items():
             key = f[len("vendor."):] if f.startswith("vendor.") else f
             v = fl.get(key)

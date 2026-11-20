@@ -24,9 +24,9 @@ class CodeTools:
             self.sandbox = Sandbox(self.workspace, backend=sandbox_backend,
                                    hide=list(hide) + [os.path.expanduser("~"), "/tmp", "/var/tmp", "/root", "/home"])
             lib = os.path.join(self.workspace, "lib", "loggrouper")
-            if not os.path.isdir(lib):
-                shutil.copytree(os.path.dirname(os.path.abspath(__file__)), lib,
-                                ignore=shutil.ignore_patterns("__pycache__"))
+            shutil.rmtree(lib, ignore_errors=True)       # always the current library (no stale semantics)
+            shutil.copytree(os.path.dirname(os.path.abspath(__file__)), lib,
+                            ignore=shutil.ignore_patterns("__pycache__"))
 
     def run_python(self, code: str, timeout: int = 60) -> str:
         """Run a Python 3 script in the sandboxed analysis workspace (cwd; see README.txt). No network; only

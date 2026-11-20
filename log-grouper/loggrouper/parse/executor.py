@@ -353,8 +353,11 @@ def parse_date(value, formats, timezone="UTC", now=None):
             guess = year is None
             t = _dt.datetime(year or now.year, month, int(g.get("d") or 1), int(g.get("H") or 0), int(g.get("M") or 0),
                              int(g.get("S") or 0), int(frac[:6].ljust(6, "0")), tzinfo=tz)
-            if guess and t.astimezone(_dt.timezone.utc) > now + _dt.timedelta(days=30):
-                t = t.replace(year=t.year - 1)     # syslog dates without a year: last year if in the future
+            if guess:                          # Logstash's year guess for year-less dates: only the New Year boundary
+                if now.month == 1 and month == 12:
+                    t = t.replace(year=t.year - 1)
+                elif now.month == 12 and month == 1:
+                    t = t.replace(year=t.year + 1)
             return t.astimezone(_dt.timezone.utc).isoformat(timespec="milliseconds").replace("+00:00", "Z")
         except (ValueError, OverflowError, OSError):
             continue

@@ -95,9 +95,9 @@ class LearnerTools:
         with open(os.path.join(ws, "stream_sample.txt"), "w") as f:
             f.writelines(l.replace("\n", "\\n") + "\n" for l in sample)
         lib = os.path.join(ws, "lib", "loggrouper")
-        if not os.path.isdir(lib):
-            shutil.copytree(os.path.dirname(os.path.abspath(__file__)), lib,
-                            ignore=shutil.ignore_patterns("__pycache__"))
+        shutil.rmtree(lib, ignore_errors=True)
+        shutil.copytree(os.path.dirname(os.path.abspath(__file__)), lib,
+                        ignore=shutil.ignore_patterns("__pycache__"))
         with open(os.path.join(ws, "README.txt"), "w") as f:
             f.write(WORKSPACE_README)
 
