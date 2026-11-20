@@ -82,3 +82,24 @@ the prompt (one answer = one call). State: `bench/rag_partial/state_bge_small.js
 Read: about 2.3x cheaper with similar precision and validity, but it maps far fewer fields (recall).
 Next: a coverage pass (show the fields left unmapped with their retrieved candidates, ask for additions)
 and EmbeddingGemma 2 for retrieval, then re-measure.
+
+## OCSF mapping without retrieval (20 busiest formats, 13 vendors, 1,074 held-out lines)
+
+LLM played by sub-agents allowed to answer only from the prompt (one answer = one call). States in
+`bench/llm_mapper_runs/`. Same parsers for all; scored by `bench/score_subset.py`.
+
+| Method | Calls/format | Prompt tokens/format | Valid | Precision | Recall | ts~ |
+|---|---|---|---|---|---|---|
+| Mapping agent (tools) | ~10–15 turns | ~21k | 99.7% | 89.0% | 73.6% | 0.87 |
+| **M1 full schema, cached system prompt** | **1.25** | **~2.3k + 63k cached** | 99.5% | 89.6% | **73.9%** | 0.92 |
+| M2 class call + class slice | 2.35 | ~14k | 99.3% | 89.7% | 63.3% | 0.92 |
+| M3 = M2 + coverage call | 3.25 | ~15k | 99.4% | 90.2% | 66.6% | 0.92 |
+| RAG one-shot (bge-small; 47 formats, earlier run) | 2.26 | ~9k | 98.7% | 85.4% | 42.3% | — |
+
+Single format (SonicWall sonicos_kv, 121 held-out lines): mapping agent 89.2/81.5, M1 89.2/81.5 (1 call,
+~2.3k tokens + cached schema), Bash+Python agent with the schema as files 89.2/81.1 (10 tool calls, ~91k
+tokens, ~2 min; maps more fields than the benchmark measures).
+
+Conclusion: M1 (whole compact schema as a cached system prompt, one call + validator repairs) matches the
+tool-using agent at ~1/4 of its cost and ~1/10 of its calls. Choosing the class first (M2/M3) loses recall
+on mixed formats. Retrieval (RAG) was the weakest. Keep a tool-using agent only as the fallback.
