@@ -1,5 +1,5 @@
 {
- "version": 1,
+ "version": 4,
  "parsers": [
   {
    "label": "cisco_asa",
@@ -131,7 +131,7 @@
     "vendor.local_port": "integer",
     "vendor.remote_port": "integer"
    },
-   "order": 1000,
+   "order": 10,
    "id": "p00001",
    "golden": [
     {
@@ -344,7 +344,7 @@
     "vendor.tty_session": "integer",
     "vendor.call_id": "integer"
    },
-   "order": 1000,
+   "order": 10,
    "id": "p00002",
    "golden": [
     {
@@ -482,7 +482,7 @@
     "vendor.tty_session": "integer",
     "vendor.call_id": "integer"
    },
-   "order": 1010,
+   "order": 20,
    "id": "p00003",
    "golden": [
     {
@@ -608,7 +608,7 @@
     "vendor.tty_session": "integer",
     "vendor.call_id": "integer"
    },
-   "order": 1010,
+   "order": 30,
    "id": "p00004",
    "golden": [
     {
@@ -779,7 +779,7 @@
     "vendor.dport": "port",
     "vendor.mac": "mac"
    },
-   "order": 1000,
+   "order": 10,
    "id": "p00005",
    "golden": [
     {
@@ -954,7 +954,7 @@
     "vendor.translated_dst_ip": "ip",
     "vendor.translated_port": "port"
    },
-   "order": 1000,
+   "order": 20,
    "id": "p00006",
    "golden": [
     {
@@ -1049,7 +1049,7 @@
     "vendor.dst_port": "port",
     "vendor.mac": "mac"
    },
-   "order": 1000,
+   "order": 30,
    "id": "p00007",
    "golden": [
     {
@@ -1161,7 +1161,7 @@
     "vendor.priority": "integer",
     "vendor.timestamp": "float"
    },
-   "order": 1000,
+   "order": 40,
    "id": "p00008",
    "golden": [
     {
@@ -1296,34 +1296,9 @@
     "vendor.dst_port": "port",
     "vendor.mac": "mac"
    },
-   "order": 1000,
+   "order": 50,
    "id": "p00009",
    "golden": [
-    {
-     "message": "<134>1 1637691198.348361125 MX84 security_event ids_alerted signature=1:29708:4 priority=1 timestamp=1637691198.330873 dhost=D0:AB:D5:7B:43:73 direction=ingress protocol=tcp/ip src=67.43.156.12:80 dst=10.0.3.162:56391 decision=allowed message: BROWSER-IE Microsoft Internet Explorer CSS uninitialized object access attempt detected",
-     "output": {
-      "vendor": {
-       "signature": "1:29708:4",
-       "priority": "1",
-       "timestamp": "1637691198.330873",
-       "dhost": "D0:AB:D5:7B:43:73",
-       "direction": "ingress",
-       "protocol": "tcp/ip",
-       "decision": "allowed",
-       "src_ip": "67.43.156.12",
-       "src_port": "80",
-       "dst_ip": "10.0.3.162",
-       "dst_port": "56391",
-       "syslog_pri": 134,
-       "epoch_time": "1637691198.348361125",
-       "device_name": "MX84",
-       "category": "security_event",
-       "event_type": "ids_alerted"
-      },
-      "tags": [],
-      "@timestamp": "2021-11-23T18:13:18.348Z"
-     }
-    },
     {
      "message": "<134>1 1637691298.984398273 MX84 security_event security_filtering_file_scanned url=http://www.eicar.org/download/eicar.com.txt src=192.168.128.2:53150 dst=67.43.156.15:80 mac=98:5A:EB:E1:81:2F name='EICAR:EICAR_Test_file_not_a_virus-tpd' sha256=275a021bbfb6489e54d471899f7db9d1663fc695ec2fe2a2c4538aabf651fd0f disposition=malicious action=block",
      "output": {
@@ -1434,7 +1409,7 @@
     "vendor.vlan_id": "integer",
     "vendor.vap": "integer"
    },
-   "order": 1000,
+   "order": 60,
    "id": "p00010",
    "golden": [
     {
@@ -1617,7 +1592,7 @@
     "vendor.dhcp_server_mac": "mac",
     "vendor.aid": "integer"
    },
-   "order": 1000,
+   "order": 70,
    "id": "p00011",
    "golden": [
     {
@@ -1786,7 +1761,7 @@
     "vendor.vlan": "integer",
     "vendor.vpn_connection_id": "integer"
    },
-   "order": 1000,
+   "order": 80,
    "id": "p00012",
    "golden": [
     {
@@ -1811,17 +1786,17 @@
      }
     },
     {
-     "message": "<134>1 1639132851.416656563 TCP9001 events type=anyconnect_vpn_session_manager msg= 'Sess-ID[396] Peer IP=2.2.2.2 User[user.name2]: Deleted TLS tunnel[396.17] from DB. Reason: DPD kill '",
+     "message": "<134>1 1694519007.104885873 TCP9001 events Auth failure resets to success",
      "output": {
       "vendor": {
        "syslog_pri": 134,
-       "epoch_time": "1639132851.416656563",
+       "epoch_time": "1694519007.104885873",
        "device_name": "TCP9001",
        "category": "events",
-       "event_message": "type=anyconnect_vpn_session_manager msg= 'Sess-ID[396] Peer IP=2.2.2.2 User[user.name2]: Deleted TLS tunnel[396.17] from DB. Reason: DPD kill '"
+       "event_message": "Auth failure resets to success"
       },
       "tags": [],
-      "@timestamp": "2021-12-10T10:40:51.416Z"
+      "@timestamp": "2023-09-12T11:43:27.104Z"
      }
     },
     {
@@ -2014,7 +1989,7 @@
     "vendor.syslog_timestamp": "timestamp",
     "vendor.timestamp_parsed": "timestamp"
    },
-   "order": 1000,
+   "order": 10,
    "id": "p00013",
    "golden": [
     {
@@ -2416,7 +2391,7 @@
     "vendor.elapsed_time": "integer"
    },
    "id": "p00014",
-   "order": 1000,
+   "order": 10,
    "golden": [
     {
      "message": "1,2021/10/26 15:24:03,,TRAFFIC,start,2561,2021/10/26 15:24:03,81.2.69.145,81.2.69.193,192.168.10.111,81.2.69.193,LAn-TO-WAn,,,dns,vsys1,LAN,WAN,ethernet1/2,ethernet1/1,LFPpan,2021/10/26 15:24:03,15907,1,52245,53,37697,53,0x400000,udp,allow,89,89,0,1,2021/10/26 15:24:01,0,any,,7022390495259151814,0x0,United States,United States,,1,0,n/a,0,0,0,0,,PA-VM,from-policy,\" \", , , , , , , , , , , , , , , , , , , ,,,,2021-10-26T15:24:03.324-07:00",
@@ -2911,93 +2886,9 @@
     "vendor.packets_received": "integer",
     "vendor.elapsed_time": "integer"
    },
-   "order": 1000,
+   "order": 20,
    "id": "p00015",
    "golden": [
-    {
-     "message": "1,2021/10/26 15:24:03,,TRAFFIC,start,2561,2021/10/26 15:24:03,81.2.69.145,81.2.69.193,192.168.10.111,81.2.69.193,LAn-TO-WAn,,,dns,vsys1,LAN,WAN,ethernet1/2,ethernet1/1,LFPpan,2021/10/26 15:24:03,15907,1,52245,53,37697,53,0x400000,udp,allow,89,89,0,1,2021/10/26 15:24:01,0,any,,7022390495259151814,0x0,United States,United States,,1,0,n/a,0,0,0,0,,PA-VM,from-policy,\" \", , , , , , , , , , , , , , , , , , , ,,,,2021-10-26T15:24:03.324-07:00",
-     "output": {
-      "vendor": {
-       "receive_time": "2021-10-26T15:24:03.000Z",
-       "serial_number": null,
-       "type": "TRAFFIC",
-       "subtype": "start",
-       "config_version": "2561",
-       "time_generated": "2021-10-26T15:24:03.000Z",
-       "src_ip": "81.2.69.145",
-       "dst_ip": "81.2.69.193",
-       "nat_src_ip": "192.168.10.111",
-       "nat_dst_ip": "81.2.69.193",
-       "rule": "LAn-TO-WAn",
-       "src_user": null,
-       "dst_user": null,
-       "app": "dns",
-       "vsys": "vsys1",
-       "src_zone": "LAN",
-       "dst_zone": "WAN",
-       "inbound_interface": "ethernet1/2",
-       "outbound_interface": "ethernet1/1",
-       "log_action": "LFPpan",
-       "time_logged": "2021/10/26 15:24:03",
-       "session_id": "15907",
-       "repeat_count": "1",
-       "src_port": "52245",
-       "dst_port": "53",
-       "nat_src_port": "37697",
-       "nat_dst_port": "53",
-       "flags": "0x400000",
-       "protocol": "udp",
-       "action": "allow",
-       "bytes": "89",
-       "bytes_sent": "89",
-       "bytes_received": "0",
-       "packets": "1",
-       "start_time": "2021/10/26 15:24:01",
-       "elapsed_time": "0",
-       "category": "any",
-       "sequence_number": "7022390495259151814",
-       "action_flags": "0x0",
-       "src_location": "United States",
-       "dst_location": "United States",
-       "packets_sent": "1",
-       "packets_received": "0",
-       "session_end_reason": "n/a",
-       "dg_hier_level_1": "0",
-       "dg_hier_level_2": "0",
-       "dg_hier_level_3": "0",
-       "dg_hier_level_4": "0",
-       "vsys_name": null,
-       "device_name": "PA-VM",
-       "action_source": "from-policy",
-       "src_vm_uuid": " ",
-       "dst_vm_uuid": " ",
-       "tunnel_id": " ",
-       "monitor_tag": " ",
-       "parent_session_id": " ",
-       "parent_start_time": " ",
-       "tunnel_type": " ",
-       "sctp_assoc_id": " ",
-       "sctp_chunks": " ",
-       "sctp_chunks_sent": " ",
-       "sctp_chunks_received": " ",
-       "rule_uuid": " ",
-       "http2_connection": " ",
-       "link_change_count": " ",
-       "policy_id": " ",
-       "link_switches": " ",
-       "sdwan_cluster": " ",
-       "sdwan_device_type": " ",
-       "sdwan_cluster_type": " ",
-       "sdwan_site": " ",
-       "dynamic_user_group": null,
-       "xff_ip": null,
-       "src_device_category": null,
-       "src_device_profile": "2021-10-26T15:24:03.324-07:00"
-      },
-      "tags": [],
-      "@timestamp": "2021-10-26T15:24:03.000Z"
-     }
-    },
     {
      "message": "Nov 30 16:09:50 PA-220 1,2018/11/30 16:09:50,012801096514,TRAFFIC,end,2049,2018/11/30 16:09:50,192.168.15.224,175.16.199.1,192.168.1.63,175.16.199.1,new_outbound_from_trust,,,ssl,vsys1,trust,untrust,ethernet1/2,ethernet1/1,send_to_mac,2018/11/30 16:09:50,24369,1,52510,443,10098,443,0x40001a,tcp,allow,10511,2691,7820,22,2018/11/30 16:09:21,11,web-advertisements,0,32091199,0x0,192.168.0.0-192.168.255.255,United States,0,12,10,tcp-rst-from-client,0,0,0,0,,PA-220,from-policy,,,0,,0,,N/A,0,0,0,0",
      "output": {
@@ -3497,7 +3388,7 @@
     "vendor.repeat_count": "integer",
     "vendor.sequence_number": "integer"
    },
-   "order": 1000,
+   "order": 30,
    "id": "p00016",
    "golden": [
     {
@@ -4095,7 +3986,7 @@
     "vendor.syslog_pri": "integer",
     "vendor.sequence_number": "integer"
    },
-   "order": 1000,
+   "order": 40,
    "id": "p00017",
    "golden": [
     {
@@ -4237,7 +4128,7 @@
     "vendor.host": "ip",
     "vendor.sequence_number": "integer"
    },
-   "order": 1000,
+   "order": 50,
    "id": "p00018",
    "golden": [
     {
@@ -4392,34 +4283,9 @@
     "vendor.host": "ip",
     "vendor.sequence_number": "integer"
    },
-   "order": 1000,
+   "order": 60,
    "id": "p00019",
    "golden": [
-    {
-     "message": "Mar 25 23:58:57 1,2013/03/25 23:58:57,1606001116,CONFIG,0,0,2012/02/25 00:51:50,192.168.0.2,,set,admin,Web,Succeeded, config shared local-user-database user  badguy,0,0x0",
-     "output": {
-      "vendor": {
-       "syslog_timestamp": "Mar 25 23:58:57",
-       "receive_time": "2013-03-25T23:58:57.000Z",
-       "serial_number": "1606001116",
-       "type": "CONFIG",
-       "subtype": "0",
-       "config_version": "0",
-       "time_generated": "2012-02-25T00:51:50.000Z",
-       "host": "192.168.0.2",
-       "vsys": null,
-       "command": "set",
-       "admin": "admin",
-       "client": "Web",
-       "result": "Succeeded",
-       "configuration_path": " config shared local-user-database user  badguy",
-       "before_change_detail": "0",
-       "after_change_detail": "0x0"
-      },
-      "tags": [],
-      "@timestamp": "2012-02-25T00:51:50.000Z"
-     }
-    },
     {
      "message": "1,2023/10/04 08:27:38,007058000248010,CONFIG,0,2816,2023/10/04 08:27:38,81.2.69.193,,override,admin,Web,Failed, deviceconfig system device-telemetry,,,7286123782408765440,0x0,0,0,0,0,,PA-VM,0,",
      "output": {
@@ -4592,7 +4458,7 @@
     "vendor.timeout_threshold": "integer",
     "vendor.sequence_number": "integer"
    },
-   "order": 1000,
+   "order": 70,
    "id": "p00020",
    "golden": [
     {
@@ -4819,7 +4685,7 @@
     "vendor.login_duration": "integer",
     "vendor.sequence_number": "integer"
    },
-   "order": 1000,
+   "order": 80,
    "id": "p00021",
    "golden": [
     {
@@ -5056,7 +4922,7 @@
     "vendor.sequence_number": "integer",
     "vendor.packets": "integer"
    },
-   "order": 1000,
+   "order": 90,
    "id": "p00022",
    "golden": [
     {
@@ -5339,7 +5205,7 @@
     "vendor.repeat_count": "integer",
     "vendor.sequence_number": "integer"
    },
-   "order": 1000,
+   "order": 100,
    "id": "p00023",
    "golden": [
     {
@@ -5650,7 +5516,7 @@
     "vendor.bytes": "integer",
     "vendor.packets": "integer"
    },
-   "order": 1000,
+   "order": 110,
    "id": "p00024",
    "golden": [
     {
@@ -5882,7 +5748,7 @@
     "vendor.product": "string",
     "vendor.loguid": "string"
    },
-   "order": 1000,
+   "order": 10,
    "id": "p00025",
    "golden": [
     {
@@ -6178,7 +6044,7 @@
     "vendor.syslog_host": "hostname",
     "vendor.NAT_rulenum": "integer"
    },
-   "order": 1000,
+   "order": 20,
    "id": "p00026",
    "golden": [
     {
@@ -6286,7 +6152,7 @@
     "vendor.msg": "string",
     "vendor.syslog_program": "string"
    },
-   "order": 1000,
+   "order": 30,
    "id": "p00027",
    "golden": [
     {
@@ -6483,7 +6349,7 @@
     "vendor.syslog_host": "hostname",
     "vendor.mac-address": "mac"
    },
-   "order": 1000,
+   "order": 10,
    "id": "p00028",
    "golden": [
     {
@@ -6720,7 +6586,7 @@
     "vendor.PROTO": "string",
     "vendor.IN": "string"
    },
-   "order": 1000,
+   "order": 10,
    "id": "p00029",
    "golden": [
     {
@@ -6993,7 +6859,7 @@
     "vendor.sn": "string",
     "vendor.msg": "string"
    },
-   "order": 1000,
+   "order": 10,
    "id": "p00030",
    "golden": [
     {
@@ -7299,7 +7165,7 @@
     "vendor.msg_id": "string",
     "vendor.disposition": "string"
    },
-   "order": 1000,
+   "order": 10,
    "id": "p00031",
    "golden": [
     {
@@ -7526,7 +7392,7 @@
     "vendor.msg_id": "string",
     "vendor.msg": "string"
    },
-   "order": 1000,
+   "order": 20,
    "id": "p00032",
    "golden": [
     {
@@ -7568,23 +7434,6 @@
      }
     },
     {
-     "message": "<142>May 18 15:19:05 WatchGuard-Firebox FVE6035FD3AE3 (2024-02-15T01:40:25) firewall: msg_id=\"21FF-0012\" Deny 1-Trusted 0-External tcp 10.0.1.2 175.16.199.1 39457 25 msg=\"ProxyDeny: POP3 line length too long\" proxy_act=\"POP3-Client.1\" line_length=\"22121\" (POP3-proxy-00)",
-     "output": {
-      "vendor": {
-       "serial_number": "FVE6035FD3AE3",
-       "process": "firewall",
-       "msg_id": "21FF-0012",
-       "msg": "Deny 1-Trusted 0-External tcp 10.0.1.2 175.16.199.1 39457 25 msg=\"ProxyDeny: POP3 line length too long\" proxy_act=\"POP3-Client.1\" line_length=\"22121\" (POP3-proxy-00)",
-       "syslog_pri": 142,
-       "syslog_timestamp": "May 18 15:19:05",
-       "syslog_host": "WatchGuard-Firebox",
-       "log_timestamp": "2024-02-15T01:40:25"
-      },
-      "tags": [],
-      "@timestamp": "2024-02-15T01:40:25.000Z"
-     }
-    },
-    {
      "message": "<142>May 10 15:19:05 WatchGuard-Firebox FVE6035FD3AE3 (2024-05-10T09:49:05) firewall[10]: msg_id=\"3100-0069\" [eth0 (External)] IPv6 interface is activated.",
      "output": {
       "vendor": {
@@ -7615,6 +7464,31 @@
        "ike_exchange": "IKE phase-2 negotiation",
        "tunnel": "tunnel.1",
        "reason": "Received AES key length 128, expecting 256",
+       "syslog_pri": 142,
+       "syslog_timestamp": "May 10 15:19:05",
+       "syslog_host": "WatchGuard-Firebox",
+       "log_timestamp": "2024-05-10T09:49:05",
+       "pid": 10,
+       "src_ip": "172.16.12.82",
+       "src_port": 500,
+       "dst_ip": "172.16.12.81",
+       "dst_port": 500
+      },
+      "tags": [],
+      "@timestamp": "2024-05-10T09:49:05.000Z"
+     }
+    },
+    {
+     "message": "<142>May 10 15:19:05 WatchGuard-Firebox FVE6035FD3AE3 (2024-05-10T09:49:05) firewall[10]: msg_id=\"0203-0011\" IKE phase-1 negotiation from 172.16.12.82:500 to 172.16.12.81:500 failed. GatewayEndpoint='gateway.1' Reason=Authentication failure due to mismatched ID setting",
+     "output": {
+      "vendor": {
+       "serial_number": "FVE6035FD3AE3",
+       "process": "firewall",
+       "msg_id": "0203-0011",
+       "msg": "IKE phase-1 negotiation from 172.16.12.82:500 to 172.16.12.81:500 failed. GatewayEndpoint='gateway.1' Reason=Authentication failure due to mismatched ID setting",
+       "ike_exchange": "IKE phase-1 negotiation",
+       "gateway_endpoint": "gateway.1",
+       "reason": "Authentication failure due to mismatched ID setting",
        "syslog_pri": 142,
        "syslog_timestamp": "May 10 15:19:05",
        "syslog_host": "WatchGuard-Firebox",
@@ -7708,7 +7582,7 @@
     "vendor.icmp_seq": "integer"
    },
    "when": "^<\\d+>(?:1 \\S+ \\S+ filterlog |\\w{3} +\\d+ [\\d:]+ (?:\\S+ )?filterlog\\[)",
-   "order": 1000,
+   "order": 10,
    "id": "p00033",
    "golden": [
     {
@@ -7946,7 +7820,7 @@
     "vendor.thread": "integer"
    },
    "when": "^<\\d+>(?:1 \\S+ \\S+ charon |\\w{3} +\\d+ [\\d:]+ (?:\\S+ )?charon\\[)",
-   "order": 1000,
+   "order": 20,
    "id": "p00034",
    "golden": [
     {
@@ -8055,7 +7929,7 @@
     "vendor.lease_age": "integer"
    },
    "when": "^<\\d+>(?:1 \\S+ \\S+ dhcpd |\\w{3} +\\d+ [\\d:]+ (?:\\S+ )?dhcpd\\[)",
-   "order": 1000,
+   "order": 30,
    "id": "p00035",
    "golden": [
     {
@@ -8204,7 +8078,7 @@
     "vendor.peer_port": "port"
    },
    "when": "^<\\d+>(?:1 \\S+ \\S+ openvpn |\\w{3} +\\d+ [\\d:]+ (?:\\S+ )?openvpn\\[)",
-   "order": 1000,
+   "order": 40,
    "id": "p00036",
    "golden": [
     {
@@ -8305,7 +8179,7 @@
     "vendor.src_ip": "ip"
    },
    "when": "^<\\d+>(?:1 \\S+ \\S+ php-fpm |\\w{3} +\\d+ [\\d:]+ (?:\\S+ )?php-fpm\\[)",
-   "order": 1000,
+   "order": 50,
    "id": "p00037",
    "golden": [
     {
@@ -8403,7 +8277,7 @@
     "vendor.address": "ip"
    },
    "when": "^<\\d+>(?:1 \\S+ \\S+ dhcp6c |\\w{3} +\\d+ [\\d:]+ (?:\\S+ )?dhcp6c\\[)",
-   "order": 1000,
+   "order": 60,
    "id": "p00038",
    "golden": [
     {
@@ -8511,7 +8385,7 @@
     "vendor.client_ip": "ip"
    },
    "when": "^<\\d+>(?:1 \\S+ \\S+ unbound |\\w{3} +\\d+ [\\d:]+ (?:\\S+ )?unbound\\[)",
-   "order": 1000,
+   "order": 70,
    "id": "p00039",
    "golden": [
     {
@@ -8596,7 +8470,7 @@
     "vendor.http_status_code": "integer"
    },
    "when": "^<\\d+>(?:1 \\S+ \\S+ haproxy |\\w{3} +\\d+ [\\d:]+ (?:\\S+ )?haproxy\\[)",
-   "order": 1000,
+   "order": 80,
    "id": "p00040",
    "golden": [
     {
@@ -8726,7 +8600,7 @@
     "vendor.syslog_pri": "integer",
     "vendor.pid": "integer"
    },
-   "order": 1000,
+   "order": 90,
    "id": "p00041",
    "golden": [
     {
@@ -8743,51 +8617,6 @@
       },
       "tags": [],
       "@timestamp": "2026-06-26T13:58:50.439Z"
-     }
-    },
-    {
-     "message": "<134>1 2021-07-03T19:10:14.578309-05:00 pfSense.example.com filterlog 72237 - - 146,,,1535324496,igb1.12,match,block,in,4,0x0,,63,28831,0,DF,6,tcp,60,10.170.12.50,175.16.199.1,49616,853,0,S,3664924520,,64240,,mss;sackOK;TS;nop;wscale",
-     "output": {
-      "vendor": {
-       "syslog_pri": 134,
-       "timestamp": "2021-07-03T19:10:14.578309-05:00",
-       "syslog_host": "pfSense.example.com",
-       "process": "filterlog",
-       "pid": 72237,
-       "msg": "146,,,1535324496,igb1.12,match,block,in,4,0x0,,63,28831,0,DF,6,tcp,60,10.170.12.50,175.16.199.1,49616,853,0,S,3664924520,,64240,,mss;sackOK;TS;nop;wscale"
-      },
-      "tags": [],
-      "@timestamp": "2021-07-04T00:10:14.578Z"
-     }
-    },
-    {
-     "message": "<190>Jul 23 18:11:58 dhcpd[6555]: Sending Reply to fe80::e6c9:2b22:f9db:bfad port 546",
-     "output": {
-      "vendor": {
-       "syslog_pri": 190,
-       "timestamp": "Jul 23 18:11:58",
-       "process": "dhcpd",
-       "pid": 6555,
-       "msg": "Sending Reply to fe80::e6c9:2b22:f9db:bfad port 546"
-      },
-      "tags": [],
-      "@timestamp": "2026-07-23T18:11:58.000Z"
-     }
-    },
-    {
-     "message": "<190>Jul 23 18:07:11 dhcp6c[10256]: status code: success",
-     "output": {
-      "vendor": {
-       "syslog_pri": 190,
-       "timestamp": "Jul 23 18:07:11",
-       "process": "dhcp6c",
-       "pid": 10256,
-       "inner_host": "status",
-       "inner_process": "code",
-       "msg": "success"
-      },
-      "tags": [],
-      "@timestamp": "2026-07-23T18:07:11.000Z"
      }
     }
    ],
@@ -8850,7 +8679,7 @@
     "vendor.tx_id": "integer",
     "vendor.dns.ttl": "integer"
    },
-   "order": 1000,
+   "order": 10,
    "id": "p00042",
    "golden": [
     {
@@ -9088,7 +8917,7 @@
     "vendor.fullreqtime": "integer",
     "vendor.line": "integer"
    },
-   "order": 1000,
+   "order": 10,
    "id": "p00043",
    "golden": [
     {
@@ -9115,7 +8944,6 @@
        "request": "0x7fad9e44ac00",
        "url": "https://myurl.test.com/extension",
        "referer": "https://referer.test.com/",
-       "error": "",
        "authtime": "0",
        "dnstime": "5",
        "aptptime": "0",
@@ -9125,7 +8953,6 @@
        "device": "0",
        "auth": "0",
        "ua": "Microsoft BITS/7.8",
-       "exceptions": "",
        "category": "178",
        "reputation": "trusted",
        "categoryname": "Internet Services",
@@ -9233,7 +9060,6 @@
        "request": "0x7fad9be42000",
        "url": "https://myurl.test.com/extension",
        "referer": "https://referer.test.com/",
-       "error": "",
        "authtime": "0",
        "dnstime": "211",
        "aptptime": "0",
@@ -9243,7 +9069,6 @@
        "device": "0",
        "auth": "0",
        "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36",
-       "exceptions": "",
        "country": "Germany",
        "reason": "category",
        "category": "9998",
@@ -9282,7 +9107,6 @@
        "request": "0x7fad8b180000",
        "url": "https://myurl.test.com/extension",
        "referer": "https://referer.test.com/",
-       "error": "",
        "authtime": "0",
        "dnstime": "0",
        "aptptime": "0",
@@ -9292,7 +9116,6 @@
        "device": "0",
        "auth": "0",
        "ua": "CloudKitWin/57.0.0.0 (Windows/10.0.0.0)",
-       "exceptions": "",
        "category": "170",
        "reputation": "trusted",
        "categoryname": "Personal Network Storage",
@@ -9365,7 +9188,7 @@
     "vendor.clients_per_query": "integer",
     "vendor.pid": "integer"
    },
-   "order": 1000,
+   "order": 20,
    "id": "p00044",
    "golden": [
     {
@@ -9540,7 +9363,7 @@
     "vendor.web_policy_id": "integer",
     "vendor.log_version": "integer"
    },
-   "order": 1010,
+   "order": 10,
    "id": "p00045",
    "golden": [
     {
@@ -9870,7 +9693,7 @@
     "vendor.used_quota": "integer",
     "vendor.log_version": "integer"
    },
-   "order": 1010,
+   "order": 20,
    "id": "p00046",
    "golden": [
     {
@@ -10152,7 +9975,7 @@
     "vendor.bytessent": "integer",
     "vendor.bytesrcv": "integer"
    },
-   "order": 1010,
+   "order": 30,
    "id": "p00047",
    "golden": [
     {
@@ -10272,7 +10095,7 @@
     "vendor.src_port": "port",
     "vendor.dst_port": "port"
    },
-   "order": 1010,
+   "order": 40,
    "id": "p00048",
    "golden": [
     {
@@ -10449,7 +10272,7 @@
     "vendor.mailsize": "integer",
     "vendor.from_email_address": "email"
    },
-   "order": 1010,
+   "order": 50,
    "id": "p00049",
    "golden": [
     {
@@ -10722,7 +10545,7 @@
     "vendor.src_ip": "ip",
     "vendor.filesize": "integer"
    },
-   "order": 1010,
+   "order": 60,
    "id": "p00050",
    "golden": [
     {
@@ -10886,7 +10709,7 @@
     "vendor.rule_priority": "integer",
     "vendor.idp_policy_id": "integer"
    },
-   "order": 1010,
+   "order": 70,
    "id": "p00051",
    "golden": [
     {
@@ -11049,7 +10872,7 @@
     "vendor.from_email_address": "email",
     "vendor.to_email_address": "email"
    },
-   "order": 1010,
+   "order": 80,
    "id": "p00052",
    "golden": [
     {
@@ -11322,7 +11145,7 @@
     "vendor.sent_bytes": "integer",
     "vendor.recv_bytes": "integer"
    },
-   "order": 1010,
+   "order": 90,
    "id": "p00053",
    "golden": [
     {
@@ -11545,7 +11368,7 @@
     "vendor.transmittederrors": "float",
     "vendor.receiveddrops": "float"
    },
-   "order": 1010,
+   "order": 100,
    "id": "p00054",
    "golden": [
     {
@@ -11696,7 +11519,7 @@
     "vendor.log_component": "string",
     "vendor.clients_conn_SSID": "integer"
    },
-   "order": 1010,
+   "order": 110,
    "id": "p00055",
    "golden": [
     {
@@ -11770,7 +11593,7 @@
     "vendor.dst_port": "port",
     "vendor.unavailable_minutes": "float"
    },
-   "order": 1000,
+   "order": 10,
    "id": "p00056",
    "golden": [
     {
@@ -11787,7 +11610,7 @@
        "unavailable_minutes": 2325.0
       },
       "tags": [],
-      "@timestamp": "2025-12-31T12:01:04.000Z"
+      "@timestamp": "2026-12-31T12:01:04.000Z"
      }
     },
     {
@@ -11800,7 +11623,7 @@
        "msg": "Hey, that's a new type of alert. Isn't it?"
       },
       "tags": [],
-      "@timestamp": "2025-12-31T14:03:06.000Z"
+      "@timestamp": "2026-12-31T14:03:06.000Z"
      }
     },
     {
@@ -11818,7 +11641,7 @@
        "unavailable_minutes": 2440.0
       },
       "tags": [],
-      "@timestamp": "2025-12-31T13:02:05.000Z"
+      "@timestamp": "2026-12-31T13:02:05.000Z"
      }
     }
    ],
@@ -11892,7 +11715,7 @@
     "vendor.event.recordid": "integer",
     "vendor.event.epochtime": "timestamp"
    },
-   "order": 1000,
+   "order": 20,
    "id": "p00057",
    "golden": [
     {
@@ -12158,7 +11981,7 @@
     "vendor.event.recordid": "integer",
     "vendor.event.epochtime": "timestamp"
    },
-   "order": 1000,
+   "order": 30,
    "id": "p00058",
    "golden": [
     {
@@ -12606,7 +12429,7 @@
     "vendor.event.recordid": "integer",
     "vendor.event.epochtime": "timestamp"
    },
-   "order": 1000,
+   "order": 40,
    "id": "p00059",
    "golden": [
     {
@@ -12826,7 +12649,7 @@
     "vendor.event.lifetime": "integer",
     "vendor.event.recordid": "integer"
    },
-   "order": 1000,
+   "order": 50,
    "id": "p00060",
    "golden": [
     {
@@ -13078,7 +12901,7 @@
     "vendor.event.recordid": "integer",
     "vendor.event.adminid": "email"
    },
-   "order": 1000,
+   "order": 60,
    "id": "p00061",
    "golden": [
     {
@@ -13256,7 +13079,7 @@
     "vendor.event.filemd5": "string",
     "vendor.event.filesha": "string"
    },
-   "order": 1000,
+   "order": 70,
    "id": "p00062",
    "golden": [
     {
@@ -13652,7 +13475,7 @@
     "vendor.file.size": "integer",
     "vendor.user_name": "email"
    },
-   "order": 1000,
+   "order": 80,
    "id": "p00063",
    "golden": [
     {
@@ -14060,7 +13883,7 @@
     "vendor.activity.count": "integer",
     "vendor.user_name": "email"
    },
-   "order": 1000,
+   "order": 90,
    "id": "p00064",
    "golden": [
     {
@@ -14150,7 +13973,7 @@
    "field_types": {
     "vendor.record_id": "integer"
    },
-   "order": 1000,
+   "order": 100,
    "id": "p00065",
    "golden": [
     {
@@ -14255,7 +14078,7 @@
    "field_types": {
     "vendor.record_id": "integer"
    },
-   "order": 1000,
+   "order": 110,
    "id": "p00066",
    "golden": [
     {
@@ -14336,6 +14159,959 @@
    },
    "source_store": "pstore_C",
    "source_id": "p00001"
+  },
+  {
+   "label": "checkpoint_firewall",
+   "format": "cp_fallback",
+   "fallback": true,
+   "steps": [
+    {
+     "grok": {
+      "field": "message",
+      "patterns": [
+       "^<\\d+>\\d* ?\\S+ \\S+ \\S+ \\S+ \\S+ \\[(?<cp_kv>\\w+:+\\\".*)\\]\\s*$",
+       "^<\\d+>\\d* ?\\S+ \\S+ \\S+ \\S+ \\S+ \\[[^\\s\\]=@]+@\\S+ (?<cp_eq>[\\w-]+=\\\".*?)\\s*\\]\\s*$",
+       "^"
+      ]
+     }
+    },
+    {
+     "gsub": [
+      [
+       "cp_kv",
+       "(^|;\\s?)\\w+:+\"\"",
+       ""
+      ],
+      [
+       "cp_eq",
+       "(^|\\s)[\\w-]+=\"\"",
+       ""
+      ]
+     ]
+    },
+    {
+     "kv": {
+      "field": "cp_kv",
+      "target": "vendor",
+      "field_split_pattern": ";\\s*",
+      "value_split_pattern": ":+",
+      "whitespace": "strict"
+     }
+    },
+    {
+     "kv": {
+      "field": "cp_eq",
+      "target": "vendor",
+      "field_split": " ",
+      "value_split": "=",
+      "whitespace": "strict"
+     }
+    },
+    {
+     "grok": {
+      "field": "message",
+      "patterns": [
+       "^<%{NONNEGINT:vendor.syslog_pri:int}>%{NONNEGINT:vendor.syslog_version} ?(?:%{TIMESTAMP_ISO8601:vendor.syslog_timestamp}|%{NOTSPACE:vendor.syslog_timestamp_raw}) %{NOTSPACE:vendor.syslog_host} (?:-|%{NOTSPACE:vendor.syslog_app}) (?:-|%{NOTSPACE:vendor.syslog_procid}) (?:-|%{NOTSPACE:vendor.syslog_msgid}) (?:\\[(?:(?<vendor.sd_id>[^\\s\\]=@]+@[^\\s\\]]+)(?=[ \\]]))?.*\\]|-)(?: (?<vendor.msg>\\S.*?))?\\s*$",
+       "^<%{NONNEGINT:vendor.syslog_pri:int}>%{SYSLOGTIMESTAMP:vendor.syslog_timestamp} %{SYSLOGHOST:vendor.syslog_host} (?<vendor.syslog_program>[\\w.\\-/]+)(?:\\[%{POSINT:vendor.syslog_pid:int}\\])?: (?:message repeated %{INT:vendor.repeat_count:int} times: \\[\\s*(?<vendor.msg>.*?)\\s*\\]|(?:(?<vendor.subsystem>[A-Z][\\w-]*): )?(?<vendor.msg>.*?))\\s*$",
+       "^(?:<%{NONNEGINT:vendor.syslog_pri:int}>)?(?<vendor.msg>.*?)\\s*$"
+      ]
+     }
+    },
+    {
+     "remove": [
+      "cp_kv",
+      "cp_eq"
+     ]
+    },
+    {
+     "date": {
+      "field": "vendor.syslog_timestamp",
+      "formats": [
+       "ISO8601",
+       "MMM dd HH:mm:ss",
+       "MMM  d HH:mm:ss",
+       "MMM d HH:mm:ss"
+      ],
+      "timezone": "UTC"
+     }
+    }
+   ],
+   "field_types": {
+    "vendor.syslog_pri": "integer",
+    "vendor.syslog_host": "hostname"
+   },
+   "order": 99999,
+   "id": "p00067",
+   "golden": [],
+   "status": "active",
+   "origin": "parser-agent:20261120T081750",
+   "rationale": "Fallback: parses the common checkpoint_firewall envelope (syslog header, host, program/severity/ids, timestamp) for unseen message types; rest in vendor.msg or kv. Standalone 100% on all samples, Logstash-identical.",
+   "metrics": {
+    "samples": 58,
+    "parse_rate": 1.0,
+    "coverage_mean": 0.799,
+    "distinct_fields": 213,
+    "date_rate": 1.0
+   }
+  },
+  {
+   "label": "cisco_asa",
+   "format": "asa_fallback",
+   "fallback": true,
+   "steps": [
+    {
+     "grok": {
+      "field": "message",
+      "patterns": [
+       "^(?:<%{NONNEGINT:vendor.syslog_pri:int}>)?(?:%{WORD:vendor.syslog_facility}\\.%{WORD:vendor.syslog_level}: )?(?:(?<vendor.syslog_timestamp>%{MONTH} +%{MONTHDAY}(?: %{YEAR})? %{TIME}|%{TIMESTAMP_ISO8601})(?: (?<vendor.syslog_tz>[A-Z]{2,5}[0-9]?))?:? )?(?:(?<vendor.syslog_host>\\w[\\w.\\-]*|<[^>\\s]+>)(?: %{PROG:vendor.syslog_program}\\[%{POSINT:vendor.syslog_pid}\\])? ?:? )?(?:(?<vendor.device_timestamp>%{MONTH} +%{MONTHDAY}(?: %{YEAR})? %{TIME})(?: (?<vendor.device_tz>[A-Z]{2,5}[0-9]?))?: )?%(?<vendor.product>ASA|FTD|FWSM|PIX)-(?:%{WORD:vendor.event_class}-)?%{INT:vendor.severity:int}-%{INT:vendor.message_id}: (?<vendor.msg>.*?)\\s*$",
+       "^(?:<%{NONNEGINT:vendor.syslog_pri:int}>)?(?:%{WORD:vendor.syslog_facility}\\.%{WORD:vendor.syslog_level}: )?(?<vendor.syslog_timestamp>%{MONTH} +%{MONTHDAY}(?: %{YEAR})? %{TIME}|%{TIMESTAMP_ISO8601})(?: (?<vendor.syslog_tz>[A-Z]{2,5}[0-9]?))?:? (?:(?<vendor.syslog_host>\\w[\\w.\\-]*) ?: )?(?<vendor.msg>.*?)\\s*$"
+      ]
+     }
+    },
+    {
+     "date": {
+      "field": "vendor.syslog_timestamp",
+      "formats": [
+       "MMM d HH:mm:ss",
+       "MMM  d HH:mm:ss",
+       "MMM dd HH:mm:ss",
+       "MMM d yyyy HH:mm:ss",
+       "MMM  d yyyy HH:mm:ss",
+       "MMM dd yyyy HH:mm:ss",
+       "ISO8601"
+      ],
+      "timezone": "UTC"
+     }
+    }
+   ],
+   "field_types": {
+    "vendor.syslog_pri": "integer",
+    "vendor.severity": "integer",
+    "vendor.message_id": "integer"
+   },
+   "order": 99999,
+   "id": "p00068",
+   "golden": [],
+   "status": "active",
+   "origin": "parser-agent:20261120T081750",
+   "rationale": "Fallback: parses the common cisco_asa envelope (syslog header, host, program/severity/ids, timestamp) for unseen message types; rest in vendor.msg or kv. Standalone 100% on all samples, Logstash-identical.",
+   "metrics": {
+    "samples": 136,
+    "parse_rate": 1.0,
+    "coverage_mean": 0.927,
+    "distinct_fields": 15,
+    "date_rate": 1.0
+   }
+  },
+  {
+   "label": "cisco_ios",
+   "format": "ios_fallback",
+   "fallback": true,
+   "steps": [
+    {
+     "grok": {
+      "field": "message",
+      "patterns": [
+       "^(?:<%{NONNEGINT:vendor.syslog_pri:int}>)?(?=(?:(?<vendor.syslog_timestamp>%{MONTH} +%{MONTHDAY} %{TIME}|%{TIMESTAMP_ISO8601}) (?<vendor.syslog_host>[A-Za-z0-9][\\w.\\-]*) )?)(?=(?:.*?(?<vendor.time_sync_flag>[*.])?(?<vendor.device_timestamp>%{MONTH} +%{MONTHDAY}(?: %{YEAR})? %{TIME})(?: (?<vendor.timezone>[A-Za-z]{2,6}))?: )?)(?<vendor.header>.*?)(?:(?<vendor.process>[\\w\\-]+)\\[%{POSINT:vendor.pid}\\]: )?%(?<vendor.facility>[A-Za-z0-9_]+(?:-[A-Za-z0-9_]+)*?)-(?<vendor.severity>[0-7A-Z])-(?<vendor.mnemonic>[A-Za-z0-9_]+) ?: (?<vendor.msg>.*?)\\s*$",
+       "^(?:<%{NONNEGINT:vendor.syslog_pri:int}>)?(?=(?:(?<vendor.syslog_timestamp>%{MONTH} +%{MONTHDAY} %{TIME}|%{TIMESTAMP_ISO8601}) (?<vendor.syslog_host>[A-Za-z0-9][\\w.\\-]*) )?)(?=(?:.*?(?<vendor.time_sync_flag>[*.])?(?<vendor.device_timestamp>%{MONTH} +%{MONTHDAY}(?: %{YEAR})? %{TIME})(?: (?<vendor.timezone>[A-Za-z]{2,6}))?: )?)(?:(?<vendor.header>.*?%{TIME}(?: [A-Za-z]{2,6})?): )?(?<vendor.msg>.*?)\\s*$"
+      ]
+     }
+    },
+    {
+     "date": {
+      "field": "vendor.syslog_timestamp",
+      "formats": [
+       "MMM d HH:mm:ss",
+       "MMM  d HH:mm:ss",
+       "ISO8601"
+      ],
+      "timezone": "UTC"
+     }
+    },
+    {
+     "date": {
+      "field": "vendor.device_timestamp",
+      "formats": [
+       "MMM d HH:mm:ss.SSS",
+       "MMM d HH:mm:ss",
+       "MMM  d HH:mm:ss.SSS",
+       "MMM  d HH:mm:ss",
+       "MMM d yyyy HH:mm:ss.SSS",
+       "MMM d yyyy HH:mm:ss",
+       "MMM  d yyyy HH:mm:ss.SSS",
+       "MMM  d yyyy HH:mm:ss"
+      ],
+      "timezone": "UTC"
+     }
+    }
+   ],
+   "field_types": {
+    "vendor.syslog_pri": "integer",
+    "vendor.pid": "integer"
+   },
+   "order": 99999,
+   "id": "p00069",
+   "golden": [],
+   "status": "active",
+   "origin": "parser-agent:20261120T081750",
+   "rationale": "Fallback: parses the common cisco_ios envelope (syslog header, host, program/severity/ids, timestamp) for unseen message types; rest in vendor.msg or kv. Standalone 100% on all samples, Logstash-identical.",
+   "metrics": {
+    "samples": 59,
+    "parse_rate": 1.0,
+    "coverage_mean": 0.927,
+    "distinct_fields": 13,
+    "date_rate": 1.0
+   }
+  },
+  {
+   "label": "fortinet_fortigate",
+   "format": "fortios_fallback",
+   "fallback": true,
+   "steps": [
+    {
+     "grok": {
+      "field": "message",
+      "patterns": [
+       "^(?:<%{NONNEGINT:_hdr.pri}>)?(?:1 %{TIMESTAMP_ISO8601:_hdr.ts} %{NOTSPACE:_hdr.host} (?:\\S+ ){3}(?:-|\\[[^\\]]*\\]) )?(?<_kvtext>.*)"
+      ]
+     }
+    },
+    {
+     "grok": {
+      "field": "message",
+      "patterns": [
+       "\\bdate=(?<_fgt_ts>\\d{4}-\\d\\d-\\d\\d time=\\d\\d:\\d\\d:\\d\\d)",
+       "^"
+      ]
+     }
+    },
+    {
+     "gsub": [
+      [
+       "_kvtext",
+       "(?:^|\\s)[\\w-]+=\"\"(?=\\s|$)",
+       ""
+      ],
+      [
+       "_kvtext",
+       "(?:^|(?<=\\s))[\\w-]+=(?=[\\w-]+=)",
+       ""
+      ]
+     ]
+    },
+    {
+     "kv": {
+      "field": "_kvtext",
+      "target": "vendor",
+      "field_split": " ",
+      "value_split": "="
+     }
+    },
+    {
+     "rename": {
+      "_hdr.pri": "vendor.syslog_pri",
+      "_hdr.ts": "vendor.syslog_timestamp",
+      "_hdr.host": "vendor.syslog_host"
+     }
+    },
+    {
+     "date": {
+      "field": "_fgt_ts",
+      "formats": [
+       "yyyy-MM-dd 'time='HH:mm:ss"
+      ],
+      "timezone": "UTC"
+     }
+    },
+    {
+     "date": {
+      "field": "vendor.syslog_timestamp",
+      "formats": [
+       "ISO8601"
+      ],
+      "timezone": "UTC"
+     }
+    },
+    {
+     "remove": [
+      "_hdr",
+      "_kvtext",
+      "_fgt_ts"
+     ]
+    },
+    {
+     "convert": {
+      "vendor.syslog_pri": "integer"
+     }
+    }
+   ],
+   "field_types": {
+    "vendor.syslog_pri": "integer",
+    "vendor.srcip": "ip",
+    "vendor.dstip": "ip",
+    "vendor.srcport": "port",
+    "vendor.dstport": "port"
+   },
+   "order": 99999,
+   "id": "p00071",
+   "golden": [],
+   "status": "active",
+   "origin": "parser-agent:20261120T081750",
+   "rationale": "Fallback: parses the common fortinet_fortigate envelope (syslog header, host, program/severity/ids, timestamp) for unseen message types; rest in vendor.msg or kv. Standalone 100% on all samples, Logstash-identical.",
+   "metrics": {
+    "samples": 107,
+    "parse_rate": 1.0,
+    "coverage_mean": 0.793,
+    "distinct_fields": 291,
+    "date_rate": 1.0
+   }
+  },
+  {
+   "label": "juniper_srx",
+   "format": "junos_fallback",
+   "fallback": true,
+   "steps": [
+    {
+     "grok": {
+      "field": "message",
+      "patterns": [
+       "^<\\d+>\\d* \\S+ \\S+ \\S+ \\S+ \\S+ \\[(?:[^\\s\\]=@]+@[^\\s\\]]+ ?)?(?<jn_sd>(?:[^\\]\\\\]|\\\\.)*)\\]",
+       "^"
+      ]
+     }
+    },
+    {
+     "gsub": [
+      [
+       "jn_sd",
+       "(^| )[\\w-]+=\"\"",
+       ""
+      ]
+     ]
+    },
+    {
+     "kv": {
+      "field": "jn_sd",
+      "target": "vendor",
+      "field_split": " ",
+      "value_split": "="
+     }
+    },
+    {
+     "grok": {
+      "field": "message",
+      "patterns": [
+       "^<%{NONNEGINT:vendor.syslog_pri:int}>(?:%{NONNEGINT:vendor.syslog_version})? %{TIMESTAMP_ISO8601:vendor.syslog_timestamp} %{NOTSPACE:vendor.syslog_host} (?:-|%{NOTSPACE:vendor.app_name}) (?:-|%{NOTSPACE:vendor.pid}) (?:-|%{NOTSPACE:vendor.event_type}) (?:-|\\[(?<vendor.sd_id>[^\\s\\]=@]+@[^\\s\\]]+)?(?:[^\\]\\\\]|\\\\.)*\\])(?: (?:(?<vendor.origin_host>[\\w.\\-]+) (?<vendor.process>[^\\s:()\\[\\]]+)(?:\\[%{POSINT:vendor.process_pid}\\])?: )?(?<vendor.msg>\\S.*?))?\\s*$",
+       "^(?:<%{NONNEGINT:vendor.syslog_pri:int}>)?(?:%{SYSLOGTIMESTAMP:vendor.syslog_timestamp} %{SYSLOGHOST:vendor.syslog_host} (?:%{PROG:vendor.process}(?:\\[%{POSINT:vendor.pid}\\])?: )?)?(?<vendor.msg>.*?)\\s*$"
+      ]
+     }
+    },
+    {
+     "remove": [
+      "jn_sd"
+     ]
+    },
+    {
+     "date": {
+      "field": "vendor.syslog_timestamp",
+      "formats": [
+       "ISO8601",
+       "MMM dd HH:mm:ss",
+       "MMM  d HH:mm:ss",
+       "MMM d HH:mm:ss"
+      ],
+      "timezone": "UTC"
+     }
+    }
+   ],
+   "field_types": {
+    "vendor.syslog_pri": "integer",
+    "vendor.source-address": "ip",
+    "vendor.destination-address": "ip",
+    "vendor.source-port": "port",
+    "vendor.destination-port": "port"
+   },
+   "order": 99999,
+   "id": "p00072",
+   "golden": [],
+   "status": "active",
+   "origin": "parser-agent:20261120T081750",
+   "rationale": "Fallback: parses the common juniper_srx envelope (syslog header, host, program/severity/ids, timestamp) for unseen message types; rest in vendor.msg or kv. Standalone 100% on all samples, Logstash-identical.",
+   "metrics": {
+    "samples": 46,
+    "parse_rate": 1.0,
+    "coverage_mean": 0.82,
+    "distinct_fields": 136,
+    "date_rate": 1.0
+   }
+  },
+  {
+   "label": "linux_iptables",
+   "format": "netfilter_fallback",
+   "fallback": true,
+   "steps": [
+    {
+     "grok": {
+      "field": "message",
+      "patterns": [
+       "(?<ipt_kv>(?:[A-Z]+=)[^\\[]*?)(?: \\[(?<ipt_inner>[^\\]]*)\\])?\\s*$",
+       "^"
+      ]
+     }
+    },
+    {
+     "kv": {
+      "field": "ipt_kv",
+      "target": "vendor",
+      "field_split": " ",
+      "value_split": "=",
+      "whitespace": "strict"
+     }
+    },
+    {
+     "grok": {
+      "field": "message",
+      "patterns": [
+       "^(?:<%{NONNEGINT:vendor.syslog_pri:int}>)?(?:%{SYSLOGTIMESTAMP:vendor.syslog_timestamp} (?:(?![A-Z]+:)%{HOSTNAME:vendor.syslog_host} (?:%{WORD:vendor.syslog_facility}\\.%{WORD:vendor.syslog_severity} )?)?)?(?:%{PROG:vendor.syslog_program}(?:\\[%{POSINT:vendor.syslog_pid}\\])?: )?(?:\\[\\s*%{NUMBER:vendor.kernel_uptime}\\] ?)?(?:\\[%{NOTSPACE:vendor.rule_name}\\] ?)?(?:(?<vendor.log_prefix>[^=\\[\\]:]+): )?(?:%{INT:vendor.truncated_value} )?(?=[A-Z]+=)",
+       "^(?:<%{NONNEGINT:vendor.syslog_pri:int}>)?(?:%{SYSLOGTIMESTAMP:vendor.syslog_timestamp} (?:%{HOSTNAME:vendor.syslog_host} (?:%{WORD:vendor.syslog_facility}\\.%{WORD:vendor.syslog_severity} )?)?)?(?:%{PROG:vendor.syslog_program}(?:\\[%{POSINT:vendor.syslog_pid}\\])?: )?(?:\\[\\s*%{NUMBER:vendor.kernel_uptime}\\] ?)?(?<vendor.msg>.*?)\\s*$"
+      ]
+     }
+    },
+    {
+     "remove": [
+      "ipt_kv",
+      "ipt_inner"
+     ]
+    },
+    {
+     "date": {
+      "field": "vendor.syslog_timestamp",
+      "formats": [
+       "MMM dd HH:mm:ss",
+       "MMM  d HH:mm:ss",
+       "MMM d HH:mm:ss"
+      ],
+      "timezone": "UTC"
+     }
+    }
+   ],
+   "field_types": {
+    "vendor.syslog_pri": "integer",
+    "vendor.SRC": "ip",
+    "vendor.DST": "ip",
+    "vendor.SPT": "port",
+    "vendor.DPT": "port"
+   },
+   "order": 99999,
+   "id": "p00073",
+   "golden": [],
+   "status": "active",
+   "origin": "parser-agent:20261120T081750",
+   "rationale": "Fallback: parses the common linux_iptables envelope (syslog header, host, program/severity/ids, timestamp) for unseen message types; rest in vendor.msg or kv. Standalone 100% on all samples, Logstash-identical.",
+   "metrics": {
+    "samples": 20,
+    "parse_rate": 1.0,
+    "coverage_mean": 0.758,
+    "distinct_fields": 35,
+    "date_rate": 1.0
+   }
+  },
+  {
+   "label": "oisf_suricata",
+   "format": "eve_fallback",
+   "fallback": true,
+   "steps": [
+    {
+     "json": {
+      "field": "message",
+      "target": "vendor"
+     }
+    },
+    {
+     "date": {
+      "field": "vendor.timestamp",
+      "formats": [
+       "ISO8601",
+       "yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ"
+      ],
+      "timezone": "UTC"
+     }
+    }
+   ],
+   "field_types": {
+    "vendor.src_ip": "ip",
+    "vendor.dest_ip": "ip",
+    "vendor.src_port": "port",
+    "vendor.dest_port": "port"
+   },
+   "order": 99999,
+   "id": "p00075",
+   "golden": [],
+   "status": "active",
+   "origin": "parser-agent:20261120T081750",
+   "rationale": "Fallback: parses the common oisf_suricata envelope (syslog header, host, program/severity/ids, timestamp) for unseen message types; rest in vendor.msg or kv. Standalone 100% on all samples, Logstash-identical.",
+   "metrics": {
+    "samples": 32,
+    "parse_rate": 1.0,
+    "coverage_mean": 1.0,
+    "distinct_fields": 98,
+    "date_rate": 1.0
+   }
+  },
+  {
+   "label": "sonicwall_firewall",
+   "format": "sonicos_fallback",
+   "fallback": true,
+   "steps": [
+    {
+     "grok": {
+      "field": "message",
+      "patterns": [
+       "(?:^|\\s|>)(?<sw_kv>id=.*)$",
+       "^"
+      ]
+     }
+    },
+    {
+     "gsub": [
+      [
+       "sw_kv",
+       "(^|\\s)\\w+=\"\"",
+       ""
+      ],
+      [
+       "sw_kv",
+       "=\\[([0-9A-Fa-f:.]+)\\]:(\\d+)",
+       "=\"[\\1]:\\2\""
+      ]
+     ]
+    },
+    {
+     "kv": {
+      "field": "sw_kv",
+      "target": "vendor",
+      "field_split": " ",
+      "value_split": "=",
+      "whitespace": "strict"
+     }
+    },
+    {
+     "grok": {
+      "field": "message",
+      "patterns": [
+       "^(?:<%{NONNEGINT:vendor.syslog_pri:int}>)?\\s*(?:%{SYSLOGTIMESTAMP:vendor.syslog_timestamp} )?(?:%{IPORHOST:vendor.syslog_host}\\s+)?(?=id=)",
+       "^(?:<%{NONNEGINT:vendor.syslog_pri:int}>)?\\s*(?:%{SYSLOGTIMESTAMP:vendor.syslog_timestamp} )?(?:%{IPORHOST:vendor.syslog_host}\\s+)?(?<vendor.msg>.*?)\\s*$"
+      ]
+     }
+    },
+    {
+     "remove": [
+      "sw_kv"
+     ]
+    },
+    {
+     "date": {
+      "field": "vendor.time",
+      "formats": [
+       "yyyy-MM-dd HH:mm:ss",
+       "yyyy-MM-dd HH:mm:ss 'UTC'"
+      ],
+      "timezone": "UTC"
+     }
+    }
+   ],
+   "field_types": {
+    "vendor.syslog_pri": "integer",
+    "vendor.fw": "ip",
+    "vendor.pri": "integer",
+    "vendor.m": "integer"
+   },
+   "order": 99999,
+   "id": "p00077",
+   "golden": [],
+   "status": "active",
+   "origin": "parser-agent:20261120T081750",
+   "rationale": "Fallback: parses the common sonicwall_firewall envelope (syslog header, host, program/severity/ids, timestamp) for unseen message types; rest in vendor.msg or kv. Standalone 100% on all samples, Logstash-identical.",
+   "metrics": {
+    "samples": 99,
+    "parse_rate": 1.0,
+    "coverage_mean": 0.788,
+    "distinct_fields": 54,
+    "date_rate": 1.0
+   }
+  },
+  {
+   "label": "sophos_xg",
+   "format": "xg_fallback",
+   "fallback": true,
+   "steps": [
+    {
+     "kv": {
+      "field": "message",
+      "target": "vendor",
+      "field_split_pattern": "(?: +|>)(?=[A-Za-z_][\\w.-]*=)",
+      "whitespace": "strict"
+     }
+    },
+    {
+     "grok": {
+      "field": "message",
+      "patterns": [
+       "^(?:<%{NONNEGINT:vendor.syslog_pri:int}>)?(?:%{SYSLOGTIMESTAMP:vendor.syslog_timestamp} %{SYSLOGHOST:vendor.syslog_host} )?(?=[A-Za-z_][\\w.-]*=)",
+       "^(?:<%{NONNEGINT:vendor.syslog_pri:int}>)?(?:%{SYSLOGTIMESTAMP:vendor.syslog_timestamp} %{SYSLOGHOST:vendor.syslog_host} )?(?<vendor.msg>.*?)\\s*$"
+      ]
+     }
+    },
+    {
+     "grok": {
+      "field": "message",
+      "patterns": [
+       "\\btimestamp=\\\"?(?<_xg_iso>\\d{4}-\\d\\d-\\d\\dT[\\d:]+[+-]\\d\\d:?\\d\\d)",
+       "\\bdate=(?<_xg_dt>\\d{4}-\\d\\d-\\d\\d time=\\d\\d:\\d\\d:\\d\\d)",
+       "^"
+      ]
+     }
+    },
+    {
+     "date": {
+      "field": "_xg_iso",
+      "formats": [
+       "ISO8601",
+       "yyyy-MM-dd'T'HH:mm:ssZ"
+      ],
+      "timezone": "UTC"
+     }
+    },
+    {
+     "date": {
+      "field": "_xg_dt",
+      "formats": [
+       "yyyy-MM-dd 'time='HH:mm:ss"
+      ],
+      "timezone": "UTC"
+     }
+    },
+    {
+     "remove": [
+      "_xg_iso",
+      "_xg_dt"
+     ]
+    }
+   ],
+   "field_types": {
+    "vendor.syslog_pri": "integer",
+    "vendor.src_ip": "ip",
+    "vendor.dst_ip": "ip",
+    "vendor.src_port": "port",
+    "vendor.dst_port": "port"
+   },
+   "order": 99999,
+   "id": "p00079",
+   "golden": [],
+   "status": "active",
+   "origin": "parser-agent:20261120T081750",
+   "rationale": "Fallback: parses the common sophos_xg envelope (syslog header, host, program/severity/ids, timestamp) for unseen message types; rest in vendor.msg or kv. Standalone 100% on all samples, Logstash-identical.",
+   "metrics": {
+    "samples": 146,
+    "parse_rate": 1.0,
+    "coverage_mean": 0.751,
+    "distinct_fields": 207,
+    "date_rate": null
+   }
+  },
+  {
+   "label": "cisco_meraki",
+   "format": "meraki_fallback",
+   "fallback": true,
+   "steps": [
+    {
+     "grok": {
+      "field": "message",
+      "patterns": [
+       "^<%{NONNEGINT:vendor.syslog_pri:int}>(?:%{NONNEGINT:vendor.syslog_version} )?%{NUMBER:vendor.epoch_time} %{NOTSPACE:vendor.device_name} %{NOTSPACE:vendor.category}(?: (?:type=%{NOTSPACE:vendor.type} ?)?(?<vendor.msg>.*?))?\\s*$",
+       "^(?:<%{NONNEGINT:vendor.syslog_pri:int}>)?(?<vendor.msg>.*?)\\s*$"
+      ]
+     }
+    },
+    {
+     "date": {
+      "field": "vendor.epoch_time",
+      "formats": [
+       "UNIX"
+      ],
+      "timezone": "UTC"
+     }
+    }
+   ],
+   "field_types": {
+    "vendor.syslog_pri": "integer",
+    "vendor.epoch_time": "timestamp"
+   },
+   "order": 99999,
+   "id": "p00080",
+   "golden": [],
+   "status": "active",
+   "origin": "parser-agent:20261120T081912",
+   "rationale": "Fallback: parses the common cisco_meraki envelope (syslog header, host, program/ids, timestamp) for unseen message types; rest in vendor.msg. Standalone 100% on all samples, Logstash-identical.",
+   "metrics": {
+    "samples": 141,
+    "parse_rate": 1.0,
+    "coverage_mean": 0.958,
+    "distinct_fields": 7,
+    "date_rate": 1.0
+   }
+  },
+  {
+   "label": "netgate_pfsense",
+   "format": "pfsense_fallback",
+   "fallback": true,
+   "steps": [
+    {
+     "grok": {
+      "field": "message",
+      "patterns": [
+       "^<%{NONNEGINT:vendor.syslog_pri:int}>1 %{TIMESTAMP_ISO8601:vendor.timestamp} %{SYSLOGHOST:vendor.syslog_host} (?:-|%{PROG:vendor.process}) (?:-|%{POSINT:vendor.pid:int}) (?:-|%{NOTSPACE:vendor.msgid}) (?:-|\\[.*?\\]) ?%{GREEDYDATA:vendor.msg}$",
+       "^(?:<%{NONNEGINT:vendor.syslog_pri:int}>)?%{SYSLOGTIMESTAMP:vendor.timestamp} (?:%{SYSLOGHOST:vendor.syslog_host} )?%{PROG:vendor.process}(?:\\[%{POSINT:vendor.pid:int}\\])?: %{GREEDYDATA:vendor.msg}$",
+       "^(?:<%{NONNEGINT:vendor.syslog_pri:int}>)?(?:%{SYSLOGTIMESTAMP:vendor.timestamp} (?:%{SYSLOGHOST:vendor.syslog_host} )?)?%{GREEDYDATA:vendor.msg}$"
+      ]
+     }
+    },
+    {
+     "date": {
+      "field": "vendor.timestamp",
+      "formats": [
+       "ISO8601",
+       "MMM dd HH:mm:ss",
+       "MMM  d HH:mm:ss",
+       "MMM d HH:mm:ss"
+      ],
+      "timezone": "UTC"
+     }
+    }
+   ],
+   "field_types": {
+    "vendor.syslog_pri": "integer",
+    "vendor.pid": "integer"
+   },
+   "order": 99999,
+   "id": "p00081",
+   "golden": [],
+   "status": "active",
+   "origin": "parser-agent:20261120T081912",
+   "rationale": "Fallback: parses the common netgate_pfsense envelope (syslog header, host, program/ids, timestamp) for unseen message types; rest in vendor.msg. Standalone 100% on all samples, Logstash-identical.",
+   "metrics": {
+    "samples": 55,
+    "parse_rate": 1.0,
+    "coverage_mean": 0.926,
+    "distinct_fields": 6,
+    "date_rate": 1.0
+   }
+  },
+  {
+   "label": "paloalto_panos",
+   "format": "panos_fallback",
+   "fallback": true,
+   "steps": [
+    {
+     "grok": {
+      "field": "message",
+      "patterns": [
+       "^(?:<%{NONNEGINT:vendor.syslog_pri:int}>)?(?:%{SYSLOGTIMESTAMP:vendor.syslog_timestamp} (?:%{SYSLOGHOST:vendor.syslog_host} )?)?%{INT:vendor.future_use1},(?<vendor.receive_time>\\d{4}/\\d\\d/\\d\\d \\d\\d:\\d\\d:\\d\\d),(?<vendor.serial_number>[^,]*),(?<vendor.type>[^,]*),(?<vendor.subtype>[^,]*),(?<vendor.config_version>[^,]*),(?<vendor.time_generated>\\d{4}/\\d\\d/\\d\\d \\d\\d:\\d\\d:\\d\\d)?(?:,(?<vendor.msg>.*?))?\\s*$",
+       "^(?:<%{NONNEGINT:vendor.syslog_pri:int}>)?(?:%{SYSLOGTIMESTAMP:vendor.syslog_timestamp} (?:%{SYSLOGHOST:vendor.syslog_host} )?)?(?<vendor.msg>.*?)\\s*$"
+      ]
+     }
+    },
+    {
+     "date": {
+      "field": "vendor.time_generated",
+      "formats": [
+       "yyyy/MM/dd HH:mm:ss"
+      ],
+      "timezone": "UTC"
+     }
+    }
+   ],
+   "field_types": {
+    "vendor.syslog_pri": "integer"
+   },
+   "order": 99999,
+   "id": "p00082",
+   "golden": [],
+   "status": "active",
+   "origin": "parser-agent:20261120T081912",
+   "rationale": "Fallback: parses the common paloalto_panos envelope (syslog header, host, program/ids, timestamp) for unseen message types; rest in vendor.msg. Standalone 100% on all samples, Logstash-identical.",
+   "metrics": {
+    "samples": 143,
+    "parse_rate": 1.0,
+    "coverage_mean": 0.951,
+    "distinct_fields": 11,
+    "date_rate": 1.0
+   }
+  },
+  {
+   "label": "sophos_utm",
+   "format": "utm_fallback",
+   "fallback": true,
+   "steps": [
+    {
+     "grok": {
+      "field": "message",
+      "patterns": [
+       "\\]?: (?<utm_kv>[\\w-]+=\\\".*)$",
+       "^"
+      ]
+     }
+    },
+    {
+     "kv": {
+      "field": "utm_kv",
+      "target": "vendor"
+     }
+    },
+    {
+     "grok": {
+      "field": "message",
+      "patterns": [
+       "^(?:<%{NONNEGINT:vendor.syslog_pri:int}>)?(?<vendor.log_timestamp>\\d{4}:\\d\\d:\\d\\d-\\d\\d:\\d\\d:\\d\\d) %{SYSLOGHOST:vendor.syslog_host} %{PROG:vendor.process}(?:\\[%{POSINT:vendor.pid:int}\\])?: (?=[\\w-]+=\\\")",
+       "^(?:<%{NONNEGINT:vendor.syslog_pri:int}>)?(?<vendor.log_timestamp>\\d{4}:\\d\\d:\\d\\d-\\d\\d:\\d\\d:\\d\\d) %{SYSLOGHOST:vendor.syslog_host} %{PROG:vendor.process}(?:\\[%{POSINT:vendor.pid:int}\\])?: (?<vendor.msg>.*?)\\s*$",
+       "^(?:<%{NONNEGINT:vendor.syslog_pri:int}>)?(?<vendor.msg>.*?)\\s*$"
+      ]
+     }
+    },
+    {
+     "remove": [
+      "utm_kv"
+     ]
+    },
+    {
+     "date": {
+      "field": "vendor.log_timestamp",
+      "formats": [
+       "yyyy:MM:dd-HH:mm:ss"
+      ],
+      "timezone": "UTC"
+     }
+    }
+   ],
+   "field_types": {
+    "vendor.syslog_pri": "integer",
+    "vendor.pid": "integer"
+   },
+   "order": 99999,
+   "id": "p00083",
+   "golden": [],
+   "status": "active",
+   "origin": "parser-agent:20261120T081912",
+   "rationale": "Fallback: parses the common sophos_utm envelope (syslog header, host, program/ids, timestamp) for unseen message types; rest in vendor.msg. Standalone 100% on all samples, Logstash-identical.",
+   "metrics": {
+    "samples": 12,
+    "parse_rate": 1.0,
+    "coverage_mean": 0.83,
+    "distinct_fields": 65,
+    "date_rate": 1.0
+   }
+  },
+  {
+   "label": "watchguard_firebox",
+   "format": "firebox_fallback",
+   "fallback": true,
+   "steps": [
+    {
+     "grok": {
+      "field": "message",
+      "patterns": [
+       "^<%{NONNEGINT:vendor.syslog_pri:int}>%{SYSLOGTIMESTAMP:vendor.syslog_timestamp} %{NOTSPACE:vendor.syslog_host} (?:(?<vendor.serial_number>[^\\s(]+) )?(?:(?<vendor.cluster_member>[^\\s(]+) )?(?:\\(%{TIMESTAMP_ISO8601:vendor.log_timestamp}\\) )?(?<vendor.process>[\\w-]+)(?:\\[%{INT:vendor.pid:int}\\])?: (?:msg_id=\\\"(?<vendor.msg_id>[^\\\"]+)\\\" )?(?<vendor.msg>.*?)\\s*$",
+       "^(?:<%{NONNEGINT:vendor.syslog_pri:int}>)?(?:%{SYSLOGTIMESTAMP:vendor.syslog_timestamp} %{NOTSPACE:vendor.syslog_host} )?(?<vendor.msg>.*?)\\s*$"
+      ]
+     }
+    },
+    {
+     "date": {
+      "field": "vendor.log_timestamp",
+      "formats": [
+       "ISO8601"
+      ],
+      "timezone": "UTC"
+     }
+    }
+   ],
+   "field_types": {
+    "vendor.syslog_pri": "integer",
+    "vendor.pid": "integer"
+   },
+   "order": 99999,
+   "id": "p00084",
+   "golden": [],
+   "status": "active",
+   "origin": "parser-agent:20261120T081912",
+   "rationale": "Fallback: parses the common watchguard_firebox envelope (syslog header, host, program/ids, timestamp) for unseen message types; rest in vendor.msg. Standalone 100% on all samples, Logstash-identical.",
+   "metrics": {
+    "samples": 148,
+    "parse_rate": 1.0,
+    "coverage_mean": 0.921,
+    "distinct_fields": 10,
+    "date_rate": 1.0
+   }
+  },
+  {
+   "label": "zscaler_zia",
+   "format": "nss_fallback",
+   "fallback": true,
+   "steps": [
+    {
+     "grok": {
+      "field": "message",
+      "patterns": [
+       "^(?<vendor.msg>\\s*\\{(?=(?:.*?\\\"sourcetype\\\"\\s*:\\s*\\\"(?<vendor.sourcetype>[^\\\"]+)\\\")?)(?=(?:.*?\\\"version\\\"\\s*:\\s*\\\"(?<vendor.version>[^\\\"]+)\\\")?)(?=(?:.*?\\\"(?:datetime|time)\\\"\\s*:\\s*\\\"(?:[A-Z][a-z]{2} )?(?<_zts>[A-Z][a-z]{2} +\\d+ \\d\\d:\\d\\d:\\d\\d \\d{4})\\\")?).*?)\\s*$",
+       "^<%{NONNEGINT:vendor.syslog_pri:int}>%{SYSLOGTIMESTAMP:vendor.syslog_timestamp} (?:\\[%{IPORHOST:vendor.syslog_host}\\]|%{IPORHOST:vendor.syslog_host}) (?:%{WORD:vendor.program}: )?(?<vendor.msg>.*?)\\s*$",
+       "^(?:<%{NONNEGINT:vendor.syslog_pri:int}>)?(?<vendor.msg>.*?)\\s*$"
+      ]
+     }
+    },
+    {
+     "date": {
+      "field": "_zts",
+      "formats": [
+       "MMM dd HH:mm:ss yyyy",
+       "MMM  d HH:mm:ss yyyy",
+       "MMM d HH:mm:ss yyyy"
+      ],
+      "timezone": "UTC"
+     }
+    },
+    {
+     "date": {
+      "field": "vendor.syslog_timestamp",
+      "formats": [
+       "MMM dd HH:mm:ss",
+       "MMM  d HH:mm:ss",
+       "MMM d HH:mm:ss"
+      ],
+      "timezone": "UTC"
+     }
+    },
+    {
+     "remove": [
+      "_zts"
+     ]
+    }
+   ],
+   "field_types": {
+    "vendor.syslog_pri": "integer"
+   },
+   "order": 99999,
+   "id": "p00085",
+   "golden": [],
+   "status": "active",
+   "origin": "parser-agent:20261120T081912",
+   "rationale": "Fallback: parses the common zscaler_zia envelope (syslog header, host, program/ids, timestamp) for unseen message types; rest in vendor.msg. Standalone 100% on all samples, Logstash-identical.",
+   "metrics": {
+    "samples": 53,
+    "parse_rate": 1.0,
+    "coverage_mean": 0.997,
+    "distinct_fields": 7,
+    "date_rate": 1.0
+   }
   }
  ],
  "rejected": [
@@ -18034,7 +18810,271 @@
    "reason": "update loses fields on a golden example",
    "origin": "parser-agent:20261120T063532",
    "at": "2026-11-20T06:35:32+00:00"
+  },
+  {
+   "spec": {
+    "label": "cisco_meraki",
+    "format": "meraki_fallback",
+    "fallback": true,
+    "steps": [
+     {
+      "grok": {
+       "field": "message",
+       "patterns": [
+        "^<%{NONNEGINT:vendor.syslog_pri:int}>(?:%{NONNEGINT:vendor.syslog_version} )?%{NUMBER:vendor.epoch_time} %{NOTSPACE:vendor.device_name} %{NOTSPACE:vendor.category}(?: (?:type=%{NOTSPACE:vendor.type} ?)?(?<vendor.msg>.*?))?\\s*$",
+        "^(?:<%{NONNEGINT:vendor.syslog_pri:int}>)?(?<vendor.msg>.*?)\\s*$"
+       ]
+      }
+     },
+     {
+      "date": {
+       "field": "vendor.epoch_time",
+       "formats": [
+        "UNIX"
+       ],
+       "timezone": "UTC"
+      }
+     }
+    ],
+    "field_types": {
+     "vendor.syslog_pri": "integer",
+     "vendor.epoch_time": "timestamp"
+    },
+    "order": 99999,
+    "id": "p00070",
+    "golden": []
+   },
+   "reason": "breaks golden examples of other parsers: [{'parser': 'p00009', 'reason': 'golden sample now goes to p00008', 'message': '<134>1 1637691198.348361125 MX84 security_event ids_alerted signature=1:29708:4 priority=1 timestamp=1637691198.330873 dhost=D0:AB:D5:7B:43:73 direction=ingress protocol=tcp/ip src=67.43.156.12:80 dst'}, {'parser': 'p00012', 'reason': 'golden sample now goes to p00011', 'message': \"<134>1 1639132851.416656563 TCP9001 events type=anyconnect_vpn_session_manager msg= 'Sess-ID[396] Peer IP=2.2.2.2 User[user.name2]: Deleted TLS tunnel[396.17] from DB. Reason: DPD kill '\"}]",
+   "origin": "parser-agent:20261120T081750",
+   "at": "2026-11-20T08:17:50+00:00"
+  },
+  {
+   "spec": {
+    "label": "netgate_pfsense",
+    "format": "pfsense_fallback",
+    "fallback": true,
+    "steps": [
+     {
+      "grok": {
+       "field": "message",
+       "patterns": [
+        "^<%{NONNEGINT:vendor.syslog_pri:int}>1 %{TIMESTAMP_ISO8601:vendor.timestamp} %{SYSLOGHOST:vendor.syslog_host} (?:-|%{PROG:vendor.process}) (?:-|%{POSINT:vendor.pid:int}) (?:-|%{NOTSPACE:vendor.msgid}) (?:-|\\[.*?\\]) ?%{GREEDYDATA:vendor.msg}$",
+        "^(?:<%{NONNEGINT:vendor.syslog_pri:int}>)?%{SYSLOGTIMESTAMP:vendor.timestamp} (?:%{SYSLOGHOST:vendor.syslog_host} )?%{PROG:vendor.process}(?:\\[%{POSINT:vendor.pid:int}\\])?: %{GREEDYDATA:vendor.msg}$",
+        "^(?:<%{NONNEGINT:vendor.syslog_pri:int}>)?(?:%{SYSLOGTIMESTAMP:vendor.timestamp} (?:%{SYSLOGHOST:vendor.syslog_host} )?)?%{GREEDYDATA:vendor.msg}$"
+       ]
+      }
+     },
+     {
+      "date": {
+       "field": "vendor.timestamp",
+       "formats": [
+        "ISO8601",
+        "MMM dd HH:mm:ss",
+        "MMM  d HH:mm:ss",
+        "MMM d HH:mm:ss"
+       ],
+       "timezone": "UTC"
+      }
+     }
+    ],
+    "field_types": {
+     "vendor.syslog_pri": "integer",
+     "vendor.pid": "integer"
+    },
+    "order": 99999,
+    "id": "p00074",
+    "golden": []
+   },
+   "reason": "breaks golden examples of other parsers: [{'parser': 'p00041', 'reason': 'golden sample now goes to p00033', 'message': '<134>1 2021-07-03T19:10:14.578309-05:00 pfSense.example.com filterlog 72237 - - 146,,,1535324496,igb1.12,match,block,in,4,0x0,,63,28831,0,DF,6,tcp,60,10.170.12.50,175.16.199.1,49616,853,0,S,3664924520'}, {'parser': 'p00041', 'reason': 'golden sample now goes to p00035', 'message': '<190>Jul 23 18:11:58 dhcpd[6555]: Sending Reply to fe80::e6c9:2b22:f9db:bfad port 546'}]",
+   "origin": "parser-agent:20261120T081750",
+   "at": "2026-11-20T08:17:50+00:00"
+  },
+  {
+   "spec": {
+    "label": "paloalto_panos",
+    "format": "panos_fallback",
+    "fallback": true,
+    "steps": [
+     {
+      "grok": {
+       "field": "message",
+       "patterns": [
+        "^(?:<%{NONNEGINT:vendor.syslog_pri:int}>)?(?:%{SYSLOGTIMESTAMP:vendor.syslog_timestamp} (?:%{SYSLOGHOST:vendor.syslog_host} )?)?%{INT:vendor.future_use1},(?<vendor.receive_time>\\d{4}/\\d\\d/\\d\\d \\d\\d:\\d\\d:\\d\\d),(?<vendor.serial_number>[^,]*),(?<vendor.type>[^,]*),(?<vendor.subtype>[^,]*),(?<vendor.config_version>[^,]*),(?<vendor.time_generated>\\d{4}/\\d\\d/\\d\\d \\d\\d:\\d\\d:\\d\\d)?(?:,(?<vendor.msg>.*?))?\\s*$",
+        "^(?:<%{NONNEGINT:vendor.syslog_pri:int}>)?(?:%{SYSLOGTIMESTAMP:vendor.syslog_timestamp} (?:%{SYSLOGHOST:vendor.syslog_host} )?)?(?<vendor.msg>.*?)\\s*$"
+       ]
+      }
+     },
+     {
+      "date": {
+       "field": "vendor.time_generated",
+       "formats": [
+        "yyyy/MM/dd HH:mm:ss"
+       ],
+       "timezone": "UTC"
+      }
+     }
+    ],
+    "field_types": {
+     "vendor.syslog_pri": "integer"
+    },
+    "order": 99999,
+    "id": "p00076",
+    "golden": []
+   },
+   "reason": "breaks golden examples of other parsers: [{'parser': 'p00015', 'reason': 'golden sample now goes to p00014', 'message': '1,2021/10/26 15:24:03,,TRAFFIC,start,2561,2021/10/26 15:24:03,81.2.69.145,81.2.69.193,192.168.10.111,81.2.69.193,LAn-TO-WAn,,,dns,vsys1,LAN,WAN,ethernet1/2,ethernet1/1,LFPpan,2021/10/26 15:24:03,15907'}, {'parser': 'p00019', 'reason': 'golden sample now goes to p00018', 'message': 'Mar 25 23:58:57 1,2013/03/25 23:58:57,1606001116,CONFIG,0,0,2012/02/25 00:51:50,192.168.0.2,,set,admin,Web,Succeeded, config shared local-user-database user  badguy,0,0x0'}]",
+   "origin": "parser-agent:20261120T081750",
+   "at": "2026-11-20T08:17:50+00:00"
+  },
+  {
+   "spec": {
+    "label": "sophos_utm",
+    "format": "utm_fallback",
+    "fallback": true,
+    "steps": [
+     {
+      "grok": {
+       "field": "message",
+       "patterns": [
+        "\\]?: (?<utm_kv>[\\w-]+=\\\".*)$",
+        "^"
+       ]
+      }
+     },
+     {
+      "kv": {
+       "field": "utm_kv",
+       "target": "vendor"
+      }
+     },
+     {
+      "grok": {
+       "field": "message",
+       "patterns": [
+        "^(?:<%{NONNEGINT:vendor.syslog_pri:int}>)?(?<vendor.log_timestamp>\\d{4}:\\d\\d:\\d\\d-\\d\\d:\\d\\d:\\d\\d) %{SYSLOGHOST:vendor.syslog_host} %{PROG:vendor.process}(?:\\[%{POSINT:vendor.pid:int}\\])?: (?=[\\w-]+=\\\")",
+        "^(?:<%{NONNEGINT:vendor.syslog_pri:int}>)?(?<vendor.log_timestamp>\\d{4}:\\d\\d:\\d\\d-\\d\\d:\\d\\d:\\d\\d) %{SYSLOGHOST:vendor.syslog_host} %{PROG:vendor.process}(?:\\[%{POSINT:vendor.pid:int}\\])?: (?<vendor.msg>.*?)\\s*$",
+        "^(?:<%{NONNEGINT:vendor.syslog_pri:int}>)?(?<vendor.msg>.*?)\\s*$"
+       ]
+      }
+     },
+     {
+      "remove": [
+       "utm_kv"
+      ]
+     },
+     {
+      "date": {
+       "field": "vendor.log_timestamp",
+       "formats": [
+        "yyyy:MM:dd-HH:mm:ss"
+       ],
+       "timezone": "UTC"
+      }
+     }
+    ],
+    "field_types": {
+     "vendor.syslog_pri": "integer",
+     "vendor.pid": "integer"
+    },
+    "order": 99999,
+    "id": "p00078",
+    "golden": []
+   },
+   "reason": "breaks golden examples of other parsers: [{'parser': 'p00043', 'reason': 'golden output changed', 'message': '2023:03:08-15:00:00 sophos-test-vm1 httpproxy[6267]: id=\"0001\" severity=\"info\" sys=\"SecureWeb\" sub=\"http\" name=\"http access\" action=\"pass\" method=\"HEAD\" srcip=\"67.43.156.2\" dstip=\"89.160.20.129\" user='}, {'parser': 'p00043', 'reason': 'golden output changed', 'message': '2023:03:08-15:08:20 sophos-test-vm1 httpproxy[6267]: id=\"0071\" severity=\"info\" sys=\"SecureWeb\" sub=\"http\" name=\"web request warned, forbidden category detected\" action=\"warn\" method=\"OPTIONS\" srcip=\"6'}]",
+   "origin": "parser-agent:20261120T081750",
+   "at": "2026-11-20T08:17:50+00:00"
+  },
+  {
+   "spec": {
+    "label": "watchguard_firebox",
+    "format": "firebox_fallback",
+    "fallback": true,
+    "steps": [
+     {
+      "grok": {
+       "field": "message",
+       "patterns": [
+        "^<%{NONNEGINT:vendor.syslog_pri:int}>%{SYSLOGTIMESTAMP:vendor.syslog_timestamp} %{NOTSPACE:vendor.syslog_host} (?:(?<vendor.serial_number>[^\\s(]+) )?(?:(?<vendor.cluster_member>[^\\s(]+) )?(?:\\(%{TIMESTAMP_ISO8601:vendor.log_timestamp}\\) )?(?<vendor.process>[\\w-]+)(?:\\[%{INT:vendor.pid:int}\\])?: (?:msg_id=\\\"(?<vendor.msg_id>[^\\\"]+)\\\" )?(?<vendor.msg>.*?)\\s*$",
+        "^(?:<%{NONNEGINT:vendor.syslog_pri:int}>)?(?:%{SYSLOGTIMESTAMP:vendor.syslog_timestamp} %{NOTSPACE:vendor.syslog_host} )?(?<vendor.msg>.*?)\\s*$"
+       ]
+      }
+     },
+     {
+      "date": {
+       "field": "vendor.log_timestamp",
+       "formats": [
+        "ISO8601"
+       ],
+       "timezone": "UTC"
+      }
+     }
+    ],
+    "field_types": {
+     "vendor.syslog_pri": "integer",
+     "vendor.pid": "integer"
+    },
+    "order": 99999,
+    "id": "p00080",
+    "golden": []
+   },
+   "reason": "breaks golden examples of other parsers: [{'parser': 'p00032', 'reason': 'golden sample now goes to p00031', 'message': '<142>May 18 15:19:05 WatchGuard-Firebox FVE6035FD3AE3 (2024-02-15T01:40:25) firewall: msg_id=\"21FF-0012\" Deny 1-Trusted 0-External tcp 10.0.1.2 175.16.199.1 39457 25 msg=\"ProxyDeny: POP3 line length t'}]",
+   "origin": "parser-agent:20261120T081750",
+   "at": "2026-11-20T08:17:50+00:00"
+  },
+  {
+   "spec": {
+    "label": "zscaler_zia",
+    "format": "nss_fallback",
+    "fallback": true,
+    "steps": [
+     {
+      "grok": {
+       "field": "message",
+       "patterns": [
+        "^(?<vendor.msg>\\s*\\{(?=(?:.*?\\\"sourcetype\\\"\\s*:\\s*\\\"(?<vendor.sourcetype>[^\\\"]+)\\\")?)(?=(?:.*?\\\"version\\\"\\s*:\\s*\\\"(?<vendor.version>[^\\\"]+)\\\")?)(?=(?:.*?\\\"(?:datetime|time)\\\"\\s*:\\s*\\\"(?:[A-Z][a-z]{2} )?(?<_zts>[A-Z][a-z]{2} +\\d+ \\d\\d:\\d\\d:\\d\\d \\d{4})\\\")?).*?)\\s*$",
+        "^<%{NONNEGINT:vendor.syslog_pri:int}>%{SYSLOGTIMESTAMP:vendor.syslog_timestamp} (?:\\[%{IPORHOST:vendor.syslog_host}\\]|%{IPORHOST:vendor.syslog_host}) (?:%{WORD:vendor.program}: )?(?<vendor.msg>.*?)\\s*$",
+        "^(?:<%{NONNEGINT:vendor.syslog_pri:int}>)?(?<vendor.msg>.*?)\\s*$"
+       ]
+      }
+     },
+     {
+      "date": {
+       "field": "_zts",
+       "formats": [
+        "MMM dd HH:mm:ss yyyy",
+        "MMM  d HH:mm:ss yyyy",
+        "MMM d HH:mm:ss yyyy"
+       ],
+       "timezone": "UTC"
+      }
+     },
+     {
+      "date": {
+       "field": "vendor.syslog_timestamp",
+       "formats": [
+        "MMM dd HH:mm:ss",
+        "MMM  d HH:mm:ss",
+        "MMM d HH:mm:ss"
+       ],
+       "timezone": "UTC"
+      }
+     },
+     {
+      "remove": [
+       "_zts"
+      ]
+     }
+    ],
+    "field_types": {
+     "vendor.syslog_pri": "integer"
+    },
+    "order": 99999,
+    "id": "p00081",
+    "golden": []
+   },
+   "reason": "breaks golden examples of other parsers: [{'parser': 'p00056', 'reason': 'golden output changed', 'message': '<114>Dec 31 12:01:04 [175.16.199.1] ZscalerNSS: Zscaler cloud configuration connection to  175.16.199.1:443 lost and unavailable for the past 2325.00 minutes'}, {'parser': 'p00056', 'reason': 'golden output changed', 'message': \"<114>Dec 31 14:03:06 [81.2.69.193] Hey, that's a new type of alert. Isn't it?\"}]",
+   "origin": "parser-agent:20261120T081750",
+   "at": "2026-11-20T08:17:50+00:00"
   }
  ],
- "updated": "2026-11-20T06:38:53+00:00"
+ "updated": "2026-11-20T08:19:35+00:00"
 }
