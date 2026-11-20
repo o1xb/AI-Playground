@@ -64,6 +64,8 @@ def _apply(store, eng, packet, cand, origin):
                       "residual_drained": moved, "residual_left": left}))
     for r in rep["rejected"]:
         print("  REJECTED", r["label"], "-", r["reason"])
+    for d in rep.get("disputed", []):
+        print("  DISPUTED", d["id"], d["label"], "also matches observed examples of", d["also_matches_observed_of"])
     for u in rep["updated"]:
         print("  UPDATED", u["id"], {k: v for k, v in u.items() if k not in ("id", "rationale")})
     for u in rep["rejected_updates"]:

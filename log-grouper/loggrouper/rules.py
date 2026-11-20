@@ -149,6 +149,9 @@ class RuleStore:
              "format": rule.get("format"), "priority": rule.get("priority") or self.next_priority(),
              "status": rule.get("status", "active"), "origin": origin, "created": now(),
              "hits": 0, "examples": rule.get("examples", [])[:MAX_EXAMPLES],
+             # confirmed = attributed by the learner and checked by the validator; `examples` also
+             # collects lines seen at match time, which can be wrong if the rule over-reaches
+             "confirmed_examples": rule.get("examples", [])[:MAX_EXAMPLES],
              "rationale": rule.get("rationale", "")}
         self.rules["rules"].append(r)
         return r
@@ -166,9 +169,10 @@ class RuleStore:
     def labels(self):
         return sorted({r["label"] for r in self.rules["rules"] if r.get("status", "active") == "active"})
 
-    def label_examples(self):
+    def label_examples(self, confirmed_only=False):
         out = {}
         for r in self.rules["rules"]:
             if r.get("status", "active") == "active":
-                out.setdefault(r["label"], []).extend(r.get("examples", []))
+                key = "confirmed_examples" if confirmed_only else "examples"
+                out.setdefault(r["label"], []).extend(r.get(key, []))
         return out

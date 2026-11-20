@@ -1,12 +1,15 @@
 """Validate learner proposals before they enter the store. Nothing an LLM writes runs unchecked.
 
-Two kinds of proposal:
-  rules         new rules for residue clusters (appended after all existing rules)
-  rule_updates  changes to existing rules to settle a conflict: {"id", "priority_before": <rule id>}
-                (move above another rule) or {"id", "status": "disabled"}
+Proposals:
+  rules         new rules for residue clusters. Appended after all existing rules, unless the rule
+                carries "priority_before": <rule id> (to beat a greedy rule in the same round).
+  rule_updates  changes to existing rules to settle a conflict:
+                {"id", "priority_before": <rule id>} | {"id", "status": "disabled"} | {"id", "pattern": ...}
 
-Every accepted change must pass a regression check: each stored example of every label must still be
-routed to its own label by the full, ordered rule set.
+Ground truth for the checks comes in two strengths:
+  confirmed examples  attributed by a learner and checked here -> a change that re-routes one is refused
+  observed examples   lines a rule matched at run time; usually right, but an over-reaching rule stores
+                      lines it should not have -> re-routing a few is reported, not blocking
 """
 import re
 import time
@@ -18,25 +21,44 @@ MAX_PATTERN = 600
 MAX_SECONDS_PER_1K = 0.25
 
 
-def _routing_score(store, bank):
-    """How many stored examples route to their own label, and which labels lose examples."""
-    ok, lost = 0, {}
+def _banks(store):
+    conf = [(l, e) for l, exs in store.label_examples(confirmed_only=True).items() for e in exs]
+    cset = {e for _, e in conf}
+    obs = [(l, e) for l, exs in store.label_examples().items() for e in exs if e not in cset]
+    return conf, obs
+
+
+def _routes(store, bank):
+    out = []
     for lbl, ex in bank:
         r = store.match(ex)
-        if r is not None and r["label"] == lbl:
-            ok += 1
-        else:
-            lost[lbl] = lost.get(lbl, 0) + 1
-    return ok, lost
+        out.append(r is not None and r["label"] == lbl)
+    return out
 
 
-def _flat_bank(store):
-    return [(lbl, e) for lbl, exs in store.label_examples().items() for e in exs]
+def _regression(store, conf, obs, conf_before, obs_before):
+    """None if acceptable, else a reason. Confirmed examples may never be lost; observed examples may
+    be lost only in small numbers (they are the ones an over-reaching rule may have mis-stored)."""
+    ca, oa = _routes(store, conf), _routes(store, obs)
+    lost_c = sorted({conf[i][0] for i, (b, a) in enumerate(zip(conf_before, ca)) if b and not a})
+    if lost_c:
+        return f"re-routes confirmed examples of {lost_c}", oa
+    lost_o = [obs[i][0] for i, (b, a) in enumerate(zip(obs_before, oa)) if b and not a]
+    per = {}
+    for l in lost_o:
+        per[l] = per.get(l, 0) + 1
+    total = {}
+    for l, _ in obs:
+        total[l] = total.get(l, 0) + 1
+    heavy = sorted(l for l, n in per.items() if n > max(2, total[l] // 2))
+    if heavy:
+        return f"re-routes most observed examples of {heavy}", oa
+    return None, oa
 
 
 def apply_candidates(store, packet, residual, cand, origin):
     clusters = {c["cluster_id"]: c for c in packet["clusters"]}
-    owner = {}                                   # cluster -> label the learner assigned it
+    owner = {}
     for r in cand.get("rules", []):
         for cid in r.get("explains_clusters", []):
             owner.setdefault(cid, r["label"])
@@ -48,12 +70,12 @@ def apply_candidates(store, packet, residual, cand, origin):
             shape_to_cid[shp] = cid
     known_patterns = {(r["pattern"], r.get("flags", "")) for r in store.rules["rules"]}
     sample = residual[:3000]
-    report = {"accepted": [], "rejected": [], "updated": []}
-    bank = _flat_bank(store)
-    base_ok, _ = _routing_score(store, bank)
+    report = {"accepted": [], "rejected": [], "updated": [], "rejected_updates": [], "disputed": []}
+    conf, obs = _banks(store)
+    conf_ok, obs_ok = _routes(store, conf), _routes(store, obs)
 
     for r in cand.get("rules", []):
-        reason = None
+        reason, disputed = None, []
         try:
             if not LABEL_RX.match(r.get("label", "")):
                 raise ValueError("label must be lowercase vendor_product")
@@ -62,15 +84,13 @@ def apply_candidates(store, packet, residual, cand, origin):
             if (r["pattern"], r.get("flags", "")) in known_patterns:
                 raise ValueError("duplicate of existing rule")
             rx = compile_rule(r)
-            # 1) must match the examples it claims to explain
             claimed = [e for cid in r.get("explains_clusters", []) for e in clusters.get(cid, {}).get("examples", [])]
             if not claimed or not any(rx.search(e) for e in claimed):
                 raise ValueError("matches none of its claimed cluster examples")
-            # 2) must not match lines already known to belong to a different label (guards future data)
-            for lbl, e in bank:
+            for lbl, e in conf:
                 if lbl != r["label"] and rx.search(e):
-                    raise ValueError(f"collides with known label {lbl}")
-            # 3) must not over-match residue the learner attributed elsewhere; also check speed
+                    raise ValueError(f"collides with confirmed example of {lbl}")
+            disputed = sorted({lbl for lbl, e in obs if lbl != r["label"] and rx.search(e)})
             t0 = time.time()
             stolen = set()
             for item in sample:
@@ -83,25 +103,28 @@ def apply_candidates(store, packet, residual, cand, origin):
                 raise ValueError(f"too slow ({per1k:.2f}s per 1k lines) - possible catastrophic backtracking")
             if stolen:
                 raise ValueError(f"over-matches clusters owned by other labels: {sorted(stolen)[:5]}")
+            if r.get("priority_before") and store.by_id(r["priority_before"]) is None:
+                raise ValueError("unknown priority_before id")
         except (ValueError, re.error, KeyError) as e:
             reason = str(e)
         if reason:
             store.reject(r, reason, origin)
             report["rejected"].append({"label": r.get("label"), "pattern": r.get("pattern"), "reason": reason})
             continue
-        claimed_ex = [e for cid in r.get("explains_clusters", []) for e in clusters.get(cid, {}).get("examples", [])]
-        nr = store.add({**r, "examples": [e for e in claimed_ex if rx.search(e)][:3]}, origin)
+        prio = store.by_id(r["priority_before"])["priority"] - 1 if r.get("priority_before") else None
+        nr = store.add({**r, "priority": prio, "examples": [e for e in claimed if rx.search(e)][:3]}, origin)
         store._compile()
-        ok, lost = _routing_score(store, bank)       # 4) regression check
-        if ok < base_ok:
+        why, new_obs_ok = _regression(store, conf, obs, conf_ok, obs_ok)
+        if why:
             store.rules["rules"].remove(nr); store._compile()
-            reason = f"regression: would re-route stored examples of {sorted(lost)}"
-            store.reject(r, reason, origin)
-            report["rejected"].append({"label": r["label"], "pattern": r["pattern"], "reason": reason})
+            store.reject(r, "regression: " + why, origin)
+            report["rejected"].append({"label": r["label"], "pattern": r["pattern"], "reason": "regression: " + why})
             continue
         known_patterns.add((r["pattern"], r.get("flags", "")))
-        bank += [(nr["label"], e) for e in nr["examples"]]
-        base_ok, _ = _routing_score(store, bank)
+        conf += [(nr["label"], e) for e in nr["confirmed_examples"]]
+        conf_ok, obs_ok = _routes(store, conf), new_obs_ok
+        if disputed:
+            report["disputed"].append({"id": nr["id"], "label": nr["label"], "also_matches_observed_of": disputed})
         report["accepted"].append({"id": nr["id"], "label": nr["label"], "pattern": nr["pattern"]})
 
     report["updated"], report["rejected_updates"] = apply_updates(store, packet, cand.get("rule_updates", []), origin)
@@ -110,28 +133,32 @@ def apply_candidates(store, packet, residual, cand, origin):
 
 
 def apply_updates(store, packet, updates, origin):
-    """Settle conflicts (one message shape routed to two labels). An update is kept only if it moves
-    conflict examples to the owner label the learner named and breaks no stored example."""
+    """Settle conflicts. An update is kept only if it moves conflict examples to the owner label the
+    learner named, and passes the regression check."""
     conflicts = {c["conflict_id"]: c for c in packet.get("conflicts", [])}
     done, refused = [], []
     for u in updates:
         rule = store.by_id(u.get("id", ""))
-        reason = None
-        if rule is None:
-            reason = "unknown rule id"
-        conf_ex = []
-        for cid in u.get("fixes_conflicts", []):
-            c = conflicts.get(cid)
-            if c:
-                conf_ex += [(u.get("owner_label"), e) for g in c["labels"].values() for e in g["examples"]]
+        reason = None if rule else "unknown rule id"
+        conf_ex = [(u.get("owner_label"), e) for cid in u.get("fixes_conflicts", []) if cid in conflicts
+                   for g in conflicts[cid]["labels"].values() for e in g.get("full_examples", g["examples"])]
         if not reason and not conf_ex:
             reason = "names no known conflict"
+        if not reason and "pattern" in u:
+            try:
+                rx = compile_rule({"pattern": u["pattern"], "flags": u.get("flags", rule.get("flags", ""))})
+            except re.error as e:
+                reason = f"bad pattern: {e}"
+            else:
+                own = rule.get("confirmed_examples") or rule.get("examples", [])
+                if own and sum(bool(rx.search(e)) for e in own) * 2 < len(own):
+                    reason = "tightened pattern no longer matches most of the rule's own examples"
         if reason:
             refused.append({**u, "reason": reason}); continue
-        bank = _flat_bank(store)
-        before_ok, _ = _routing_score(store, bank)
-        before_fix, _ = _routing_score(store, conf_ex)
-        saved = (rule["priority"], rule.get("status", "active"))
+        conf, obs = _banks(store)
+        conf_ok, obs_ok = _routes(store, conf), _routes(store, obs)
+        fix_before = sum(_routes(store, conf_ex))
+        saved = {k: rule.get(k) for k in ("priority", "status", "pattern", "flags")}
         if "priority_before" in u:
             other = store.by_id(u["priority_before"])
             if other is None:
@@ -139,17 +166,19 @@ def apply_updates(store, packet, updates, origin):
             rule["priority"] = other["priority"] - 1
         if u.get("status") in ("disabled", "active"):
             rule["status"] = u["status"]
+        if "pattern" in u:
+            rule["pattern"] = u["pattern"]
+            rule["flags"] = u.get("flags", rule.get("flags", ""))
         store._compile()
-        after_ok, lost = _routing_score(store, bank)
-        after_fix, _ = _routing_score(store, conf_ex)
-        if after_ok < before_ok or after_fix <= before_fix:
-            rule["priority"], rule["status"] = saved
-            store._compile()
-            why = (f"regression on {sorted(lost)}" if after_ok < before_ok
-                   else "does not route the conflict examples to the owner label")
+        why, _ = _regression(store, conf, obs, conf_ok, obs_ok)
+        fix_after = sum(_routes(store, conf_ex))
+        if why or fix_after <= fix_before:
+            rule.update(saved); store._compile()
+            why = why or "does not route the conflict examples to the owner label"
             refused.append({**u, "reason": why})
-            store.reject({"label": rule["label"], "pattern": rule["pattern"]}, "update refused: " + why, origin)
+            store.reject({"label": rule["label"], "pattern": u.get("pattern", rule["pattern"])}, "update refused: " + why, origin)
             continue
-        rule.setdefault("history", []).append({"origin": origin, "change": {k: u[k] for k in u if k != "rationale"}})
-        done.append({**u, "fixed_examples": after_fix - before_fix})
+        rule.setdefault("history", []).append({"origin": origin, "before": saved,
+                                                "change": {k: u[k] for k in u if k != "rationale"}})
+        done.append({**u, "fixed_examples": fix_after - fix_before})
     return done, refused

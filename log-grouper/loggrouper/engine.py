@@ -114,7 +114,7 @@ class Engine:
                     g = by_shape[shp][rec["label"]]
                     g["count"] += 1; g["rules"][rec["rule"]] += 1
                     if len(g["examples"]) < 2:
-                        g["examples"].append(payload[:900])
+                        g["examples"].append(payload)
         # merge structurally similar shapes (key-set Jaccard >= 0.5), then look for multi-label clusters
         merged = []                                  # [rep_shape, keyset, {label: agg}]
         for shp, labels in sorted(by_shape.items(), key=lambda kv: -sum(g["count"] for g in kv[1].values())):
@@ -136,7 +136,9 @@ class Engine:
             big = {l: g for l, g in labels.items() if g["count"] >= min_count}
             if len(big) >= 2:
                 out.append({"shape": shp, "labels": {l: {"count": g["count"], "rules": dict(g["rules"]),
-                                                        "examples": g["examples"]} for l, g in big.items()}})
+                                                        "examples": [e[:1500] for e in g["examples"]],
+                                                        "full_examples": g["examples"]}
+                                                    for l, g in big.items()}})
         out.sort(key=lambda c: -sum(g["count"] for g in c["labels"].values()))
         for i, c in enumerate(out[:max_conflicts]):
             c["conflict_id"] = f"k{i:03d}"

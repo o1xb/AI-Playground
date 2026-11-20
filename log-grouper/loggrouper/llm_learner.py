@@ -12,7 +12,7 @@ SCHEMA = {
             "properties": {
                 "label": {"type": "string"}, "pattern": {"type": "string"}, "flags": {"type": "string"},
                 "confidence": {"type": "string", "enum": ["high", "medium", "low"]},
-                "format": {"type": "string"},
+                "format": {"type": "string"}, "priority_before": {"type": "string"},
                 "explains_clusters": {"type": "array", "items": {"type": "string"}},
                 "rationale": {"type": "string"}},
             "required": ["label", "pattern", "flags", "confidence", "format", "explains_clusters", "rationale"],
@@ -21,6 +21,7 @@ SCHEMA = {
             "type": "object",
             "properties": {
                 "id": {"type": "string"}, "priority_before": {"type": "string"},
+                "pattern": {"type": "string"}, "flags": {"type": "string"},
                 "status": {"type": "string", "enum": ["active", "disabled"]},
                 "owner_label": {"type": "string"},
                 "fixes_conflicts": {"type": "array", "items": {"type": "string"}},

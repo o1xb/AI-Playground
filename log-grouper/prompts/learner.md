@@ -46,14 +46,18 @@ One shape usually means one producer, so a conflict usually means an existing ru
 For each conflict decide which label really produced it, then either:
 - propose an update: `{"id": "<rule id>", "priority_before": "<rule id>", "owner_label": "<label>",
   "fixes_conflicts": ["k000"], "rationale": "..."}` to move the correct rule above the greedy one, or
-  `{"id": "<rule id>", "status": "disabled", ...}` to retire a rule that is plainly wrong; or
-- propose a new, more specific rule for the owner label (it will be appended after existing rules,
-  so it only helps if paired with an update that moves it up: use its future position by proposing
-  the rule first, then a `priority_before` update in a later round); or
+  `{"id": "<rule id>", "status": "disabled", ...}` to retire a rule that is plainly wrong, or
+  `{"id": "<rule id>", "pattern": "<tighter regex>", ...}` to narrow a rule that over-reaches
+  (it must still match most of that rule's own examples); or
+- propose a new, more specific rule for the owner label with `"priority_before": "<rule id>"` so it
+  is placed directly above the greedy rule; or
 - leave it, if the two labels are genuinely different products that share a format (say so in
   `conflict_notes`).
-Updates are refused if they re-route any stored example of any label, or if they do not move the
-conflict examples to `owner_label`.
+Updates are refused if they re-route confirmed examples of any label (or most observed examples
+of one), or if they do not move the conflict examples to `owner_label`.
+
+New rules may also carry `"priority_before": "<rule id>"` outside of conflicts, when an existing
+rule would otherwise claim those lines first.
 
 ## Output
 JSON only:
