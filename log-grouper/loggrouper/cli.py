@@ -130,6 +130,30 @@ def cmd_tool(a):
     eng.close()
 
 
+def cmd_ptool(a):
+    """Shell bridge to the parser agent's tools."""
+    from .parse.agent import ParserTools
+    t = ParserTools(a.parsers, os.path.join(a.out, "groups"), labels=a.labels.split(",") if a.labels else None,
+                    logstash_home=a.logstash_home, enable_code=a.code_tools != "off",
+                    sandbox_backend=a.code_tools if a.code_tools != "off" else "unshare",
+                    workspace=os.path.join(a.state, "parser_workspace"),
+                    drafts_path=os.path.join(a.state, "parser_drafts.json"))
+    fn = {f.__name__: f for f in t.tool_functions()}.get(a.name)
+    if fn is None:
+        sys.exit(f"unknown tool {a.name}; tools: {[f.__name__ for f in t.tool_functions()]}")
+    raw = sys.stdin.read() if a.args == "-" else (a.args or "{}")
+    print(fn(**json.loads(raw)))
+
+
+def cmd_parse_learn(a):
+    from .parse.agent import run_parser_agent
+    out = run_parser_agent(a.parsers, os.path.join(a.out, "groups"), labels=a.labels.split(",") if a.labels else None,
+                           logstash_home=a.logstash_home, enable_code=a.code_tools != "off",
+                           model=a.model, effort=a.effort)
+    print(json.dumps({k: v for k, v in out.items() if k != "summary"}, default=str)[:4000])
+    print(out["summary"])
+
+
 def cmd_review(a):
     store = RuleStore(a.store)
     if a.approve or a.discard:
@@ -227,9 +251,15 @@ def main(argv=None):
     ln.add_argument("--agent", action="store_true", help="tool-using agent (default: single structured call)")
     tl = sp.add_parser("tool"); tl.add_argument("name"); tl.add_argument("args", nargs="?")
     rv = sp.add_parser("review"); rv.add_argument("--approve", nargs="*"); rv.add_argument("--discard", nargs="*")
+    pt = sp.add_parser("ptool"); pt.add_argument("name"); pt.add_argument("args", nargs="?")
+    pl = sp.add_parser("parse-learn")
+    for x in (pt, pl):
+        x.add_argument("--labels", default="")
     sp.add_parser("audit")
     pf = sp.add_parser("profile"); pf.add_argument("--top", type=int, default=15)
     sd = sp.add_parser("seed"); sd.add_argument("script"); sd.add_argument("--origin", default="seed")
+    p.add_argument("--parsers", default="parsers", help="parser/mapping store directory")
+    p.add_argument("--logstash-home", default=os.environ.get("LOGSTASH_HOME"))
     p.add_argument("--model", default="claude-opus-5-5")
     p.add_argument("--effort", default="high", choices=["low", "medium", "high", "xhigh", "max"])
     p.add_argument("--code-tools", choices=["off", "unshare", "docker"], default="off",
@@ -241,7 +271,7 @@ def main(argv=None):
         p.error("run needs --input FILE or --kafka HOST:PORT")
     {"run": cmd_run, "packet": cmd_packet, "apply": cmd_apply, "learn": cmd_learn,
      "profile": cmd_profile, "seed": cmd_seed, "audit": cmd_audit,
-     "tool": cmd_tool, "review": cmd_review}[a.cmd](a)
+     "tool": cmd_tool, "review": cmd_review, "ptool": cmd_ptool, "parse-learn": cmd_parse_learn}[a.cmd](a)
 
 
 if __name__ == "__main__":
