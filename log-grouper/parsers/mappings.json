@@ -1,5 +1,5 @@
 {
- "version": 5,
+ "version": 6,
  "mappings": [
   {
    "parser_id": "p00001",
@@ -387,6 +387,15 @@
     "events": 136,
     "valid_rate": 0.9632,
     "mapped_field_share": 0.803
+   },
+   "review": {
+    "verdict": "changes_requested",
+    "issues": [
+     "113015/113005 AAA rejections carry 'user IP = x.x.x.x' (the authenticating client), which is not mapped to src_endpoint.ip -> parse and map user IP to src_endpoint.ip (and user to user.name); ideally route 113xxx AAA results to Authentication (3002) Logon with status_id.",
+     "302020 ICMP: vendor.foreign_addr (the faddr interface/host token, e.g. 'eth0_fw') is mapped to src_endpoint.name and the ICMP id to src_endpoint.port; faddr is the foreign peer -> map faddr IP to src_endpoint.ip, laddr to dst_endpoint.ip and keep ICMP id/type/code out of port fields."
+    ],
+    "notes": "Severity 0-7 scale and denied/permitted enums correct; Fail(4) for 113015/750003 acceptable. Verify that 302013/302015 'outbound' builds swap the printed order (first address is the responder for outbound) so src/dst follow the initiator.",
+    "at": "2026-11-20T08:42:39"
    }
   },
   {
@@ -513,6 +522,16 @@
     "events": 4,
     "valid_rate": 1.0,
     "mapped_field_share": 0.715
+   },
+   "review": {
+    "verdict": "changes_requested",
+    "issues": [
+     "time defaults to the fabricated constant 100000000000 (1973-03-03) when the message has only uptime ('2y10w'); this is a bogus event time -> use the collector receive/ingest time (and keep uptime in unmapped) rather than a constant.",
+     "%SYS-6-LOGOUT ('User X has exited tty session N(ip)') is a user logoff, not a network connection close -> map to Authentication (3002) activity_id 2 Logoff, user.name = vendor.user, src_endpoint.ip = vendor.src_ip, session.uid = tty_session.",
+     "connection_info.direction_id is set to 1 (Inbound) from mnemonic LOGOUT; nothing in the message indicates direction -> drop the mapping (0 Unknown)."
+    ],
+    "notes": "dst_endpoint.hostname duplicates device.hostname; fine but redundant.",
+    "at": "2026-11-20T08:40:48"
    }
   },
   {
@@ -614,6 +633,14 @@
     "events": 1,
     "valid_rate": 1.0,
     "mapped_field_share": 0.857
+   },
+   "review": {
+    "verdict": "changes_requested",
+    "issues": [
+     "time defaults to the fabricated constant 100000000000 (1973) because these messages have no timestamp -> use collector receive/ingest time instead of a constant."
+    ],
+    "notes": "Class 5019 Log, state_id Disabled, status Failure and severity letter scale (A=Alert->Critical) are reasonable.",
+    "at": "2026-11-20T08:40:49"
    }
   },
   {
@@ -870,6 +897,12 @@
     "events": 54,
     "valid_rate": 1.0,
     "mapped_field_share": 0.789
+   },
+   "review": {
+    "verdict": "approve",
+    "issues": [],
+    "notes": "ACL log src/dst, ports, denied/permitted enums and syslog severity scale correct; time is device time. Minor: device.type_id 0 could be Router/Switch where known; timezone could populate timezone_offset.",
+    "at": "2026-11-20T08:40:50"
    }
   },
   {
@@ -1017,6 +1050,12 @@
     "events": 9,
     "valid_rate": 1.0,
     "mapped_field_share": 0.881
+   },
+   "review": {
+    "verdict": "approve",
+    "issues": [],
+    "notes": "Meraki flows: pattern '1 all'/'0 all' allow/deny semantics, src/dst/ports and epoch time correct. Minor: ICMP type could go to connection_info or unmapped is fine.",
+    "at": "2026-11-20T08:41:36"
    }
   },
   {
@@ -1113,6 +1152,12 @@
     "events": 5,
     "valid_rate": 1.0,
     "mapped_field_share": 0.727
+   },
+   "review": {
+    "verdict": "approve",
+    "issues": [],
+    "notes": "ip_flow_start/end -> Open/Close correct; event time from epoch. Minor: translated_src_ip/translated_port (NAT) could be kept as src_endpoint.intermediate_ips or proxy info rather than unmapped.",
+    "at": "2026-11-20T08:41:37"
    }
   },
   {
@@ -1317,7 +1362,13 @@
      },
      "previous_review": null
     }
-   ]
+   ],
+   "review": {
+    "verdict": "approve",
+    "issues": [],
+    "notes": "HTTP method->activity_id correct; UNKNOWN->0 acceptable. Minor: url parsed fields (hostname/path) could populate http_request.url.hostname.",
+    "at": "2026-11-20T08:41:38"
+   }
   },
   {
    "parser_id": "p00008",
@@ -1603,7 +1654,16 @@
      },
      "previous_review": null
     }
-   ]
+   ],
+   "review": {
+    "verdict": "changes_requested",
+    "issues": [
+     "src_ip/src_port/dst_ip/dst_port and protocol are left in unmapped although they identify the attacker and victim -> map to evidences[0].src_endpoint.ip/port and evidences[0].dst_endpoint.ip/port (and connection_info.protocol_name) in Detection Finding.",
+     "dhost (MAC of the affected internal host) and direction (ingress/egress) left unmapped -> map dhost to the destination/affected endpoint mac (evidences[0].dst_endpoint.mac or device.mac when direction=ingress) and direction to evidences connection_info.direction_id (ingress=1 Inbound, egress=2 Outbound)."
+    ],
+    "notes": "Priority 1..4 -> High..Informational and allowed/blocked enums are correct; event time from 'timestamp' field is correct.",
+    "at": "2026-11-20T08:41:39"
+   }
   },
   {
    "parser_id": "p00009",
@@ -1838,7 +1898,16 @@
      },
      "previous_review": null
     }
-   ]
+   ],
+   "review": {
+    "verdict": "changes_requested",
+    "issues": [
+     "src_ip/src_port/dst_ip/dst_port and client mac left in unmapped -> map to evidences[0].src_endpoint (client 192.168.x, mac) and evidences[0].dst_endpoint (server) in Detection Finding.",
+     "sha256 is used as finding_info.uid and the url as finding_info.desc; these are evidence artifacts -> map sha256 to evidences[0].file.hashes (algorithm_id 3 SHA-256), file name/malware name to malware[0].name, url to evidences[0].url.url_string; use a generated/stable id for finding_info.uid."
+    ],
+    "notes": "block->Denied/Blocked and malicious->High are correct.",
+    "at": "2026-11-20T08:41:40"
+   }
   },
   {
    "parser_id": "p00010",
@@ -2031,7 +2100,13 @@
      },
      "previous_review": null
     }
-   ]
+   ],
+   "review": {
+    "verdict": "approve",
+    "issues": [],
+    "notes": "Air Marshal rogue SSID as detection with Observed/Detected is fine. Minor: device.type_id 0 (MX is a firewall/AP depending on source); src/dst/wired_mac/channel could go into evidences or observables; bssid as finding_info.uid is not unique per finding.",
+    "at": "2026-11-20T08:41:41"
+   }
   },
   {
    "parser_id": "p00011",
@@ -2198,6 +2273,14 @@
     "events": 22,
     "valid_rate": 1.0,
     "mapped_field_share": 0.655
+   },
+   "review": {
+    "verdict": "changes_requested",
+    "issues": [
+     "vendor.dns_server is in the dst_endpoint.ip fallback list, so a wireless disassociation event shows the client's DNS server as the destination peer -> remove dns_server (and dhcp_server for non-DHCP event types) from dst_endpoint.ip; keep in unmapped."
+    ],
+    "notes": "Auth failure -> Fail(4) acceptable; 802.1X/AnyConnect auth events would fit Authentication (3002) better. Epoch time correct.",
+    "at": "2026-11-20T08:42:40"
    }
   },
   {
@@ -2358,6 +2441,15 @@
     "events": 16,
     "valid_rate": 1.0,
     "mapped_field_share": 0.729
+   },
+   "review": {
+    "verdict": "changes_requested",
+    "issues": [
+     "Site-to-Site VPN 'IKE_SA ... established' falls to activity_id 99; it is a tunnel open -> map 'established' to activity_id 1 (Open) (and 'deleted'/'closing' to 2 Close); ideally route VPN connect/disconnect and IKE events to Tunnel Activity (4014).",
+     "Site-to-site local_ip (the MX's own peer address) is left unmapped while remote_ip goes to src_endpoint -> map local_ip to dst_endpoint.ip for site-to-site; for client_vpn_connect, 'local ip' is the VPN-assigned client address -> map to tunnel_interface/src_endpoint.intermediate_ips rather than dropping it."
+    ],
+    "notes": "client_vpn_connect user/remote_ip -> actor.user/src_endpoint correct.",
+    "at": "2026-11-20T08:42:04"
    }
   },
   {
@@ -2737,6 +2829,14 @@
     "events": 107,
     "valid_rate": 0.9907,
     "mapped_field_share": 0.549
+   },
+   "review": {
+    "verdict": "changes_requested",
+    "issues": [
+     "connection_info.direction_id is taken from FortiOS 'direction' (incoming/outgoing); in FortiOS UTM logs that field is the message/packet direction within the session (outgoing = client request, incoming = server response/download), not network inbound/outbound -> do not map it to direction_id; derive direction_id from srcintfrole/dstintfrole (lan->wan = 2 Outbound, wan->lan = 1 Inbound, lan->lan = 3 Lateral) and keep 'direction' in unmapped."
+    ],
+    "notes": "Action/activity/disposition maps, src/dst, bytes in/out, policyid and eventtime (event time) are correct. Ensure eventtime is unit-detected (FortiOS 6.2+ emits ns/us values). vd (VDOM) could go to device.domain or metadata; 'notice' -> Low is acceptable (Informational also defensible).",
+    "at": "2026-11-20T08:42:59"
    }
   },
   {
@@ -2841,6 +2941,12 @@
     "events": 6,
     "valid_rate": 1.0,
     "mapped_field_share": 1.0
+   },
+   "review": {
+    "verdict": "approve",
+    "issues": [],
+    "notes": "PAN-OS SYSTEM: time = time_generated, logged_time = receive_time, severity scale and serial -> device.uid correct. Minor: subtype (vpn/general) could populate metadata.log_provider instead of module; vsys could go to device.domain.",
+    "at": "2026-11-20T08:43:22"
    }
   },
   {
@@ -3034,6 +3140,16 @@
     "events": 20,
     "valid_rate": 0.95,
     "mapped_field_share": 0.499
+   },
+   "review": {
+    "verdict": "changes_requested",
+    "issues": [
+     "connection_info.direction_id is derived from a hard-coded list of interface names (eth0/eno1/eth0.90 -> Inbound, enp0s3 -> Outbound) checked on OUT before IN, so OUT=eth0 would be labelled Inbound; interface names carry no direction meaning -> derive from netfilter fields: IN set and OUT empty = 1 Inbound (to host), OUT set and IN empty = 2 Outbound (from host), both set = forwarded (0 Unknown / 99), drop the name list.",
+     "action_id/disposition_id are keyed on a hard-coded list of specific log prefixes/rule names, so any other prefix yields Unknown -> derive from keywords in the prefix (DROP/REJECT/DENY/-D -> Denied, Blocked/Dropped; ACCEPT/ALLOW/-A -> Allowed) with a fallback.",
+     "MAC (dst_mac:src_mac:ethertype) left unmapped -> split and map to dst_endpoint.mac and src_endpoint.mac."
+    ],
+    "notes": "src/dst IP/ports, protocol and LEN->bytes are correct; time from syslog header is fine.",
+    "at": "2026-11-20T08:43:23"
    }
   },
   {
@@ -3310,6 +3426,15 @@
     "events": 99,
     "valid_rate": 1.0,
     "mapped_field_share": 0.641
+   },
+   "review": {
+    "verdict": "changes_requested",
+    "issues": [
+     "severity_id map is shifted one level low: SonicOS pri uses syslog levels (0 Emergency,1 Alert,2 Critical,3 Error,4 Warning,5 Notice,6 Info,7 Debug) but the map gives 0->5, 1/2->4, 3->3, 4->2, 5->1 -> use 0->6, 1->5, 2->5, 3->4, 4->3, 5->2, 6->1, 7->1 (consistent with the other syslog-scale mappings).",
+     "connection_info.direction_id is keyed on hard-coded srcZone/rule strings (e.g. '17 (LAN->WAN)', '157 (SSLVPN->SERVER)') which only match these samples -> derive from the srcZone/dstZone pair (Trusted/LAN->Untrusted/WAN = 2 Outbound, Untrusted->Trusted/DMZ = 1 Inbound, same-side = 3 Lateral), else 0."
+    ],
+    "notes": "src/dst split from src=ip:port:intf, sent/rcvd -> bytes_out/in, cdur -> duration and m-code activity map are fine. Minor: natSrc/natDst could be kept; Category -> url.categories; m=82 port scan could be a Detection Finding.",
+    "at": "2026-11-20T08:43:49"
    }
   },
   {
@@ -3503,6 +3628,12 @@
     "events": 56,
     "valid_rate": 1.0,
     "mapped_field_share": 0.79
+   },
+   "review": {
+    "verdict": "approve",
+    "issues": [],
+    "notes": "Event time from the embedded log timestamp, Allow/Deny enums, src/dst, interfaces and policy are correct. Minor: direction relies on default interface names (custom names fall to Unknown); app_cat_name/cn could be mapped (app category, tls.certificate.subject).",
+    "at": "2026-11-20T08:43:50"
    }
   },
   {
@@ -3747,6 +3878,15 @@
     "events": 92,
     "valid_rate": 1.0,
     "mapped_field_share": 0.614
+   },
+   "review": {
+    "verdict": "changes_requested",
+    "issues": [
+     "Traffic/security events such as 3000-0169 'IP spoofing: Traffic detected from A to B' are put in Device Config State Change and their parsed src_ip/dst_ip/dst_port are left in unmapped -> route 3000-xxxx packet/IP-spoofing events to Detection Finding (2004) or Network Activity (4001, activity 5 Refuse / action Denied) with src_endpoint.ip/dst_endpoint.ip/port mapped.",
+     "VPN gateway events (0203-xxxx, e.g. 'Remote gateway gateway.1 with IP x:500 did not send KEEP_ALIVE_ACK') leave the peer dst_ip/dst_port/gateway name unmapped -> map to Tunnel Activity (4014) or at least keep peer IP in a mapped endpoint field (dst_endpoint.ip/port, dst_endpoint.name=gateway_endpoint)."
+    ],
+    "notes": "Event time from embedded log timestamp is correct; per-msg_id status/severity tables are plausible but brittle.",
+    "at": "2026-11-20T08:44:16"
    }
   },
   {
@@ -4084,6 +4224,16 @@
     "events": 46,
     "valid_rate": 1.0,
     "mapped_field_share": 0.597
+   },
+   "review": {
+    "verdict": "changes_requested",
+    "issues": [
+     "severity_id fallback maps raw syslog PRI values ad hoc (10->High, 11->Medium, 12->Low, 27->Medium); PRI = facility*8 + level, so 10/11/12/27 are crit/err/warning/err -> compute level = PRI mod 8 and map with the standard scale (0->6, 1-2->5, 3->4, 4->3, 5->2, 6-7->1); unlisted PRIs currently default to Informational.",
+     "KMD_PM_SA_ESTABLISHED (IPsec SA up) yields activity 99 with local-address/remote-address in unmapped -> map to activity_id 1 Open (better Tunnel Activity 4014), local-address -> src/dst per argument1 direction, remote-address -> peer endpoint ip.",
+     "RT_AAMW AAMW_HOST_INFECTED_EVENT_LOG (malware infection verdict on client-ip) lands in Network Activity 99 -> route to Detection Finding (2004) with the client as the affected host (device/evidences), threat level 'th' -> severity, and the embedded 'timestamp' as event time."
+    ],
+    "notes": "RT_FLOW create/close/deny, src/dst, NAT-free fields, client/server byte directions and policy-name are correct.",
+    "at": "2026-11-20T08:44:17"
    }
   },
   {
@@ -4387,6 +4537,15 @@
     "events": 47,
     "valid_rate": 0.9787,
     "mapped_field_share": 0.565
+   },
+   "review": {
+    "verdict": "changes_requested",
+    "issues": [
+     "Management audit records (product WEB_API / Web-UI / SmartConsole with administrator + operation, e.g. 'Log Out', 'Set Object') are emitted as Network Activity 99 with ifdir turned into a traffic direction -> route records that carry 'operation'/'administrator' to Authentication 3002 (Log In/Log Out -> activity 1/2, user = administrator, src_endpoint.ip = client_ip) or Entity Management 3004 (Set/Add/Delete Object -> Update/Create/Delete, entity.name = objectname, fieldschanges in comment/data) and do not set connection_info.direction_id for them.",
+     "sys_message (System Monitor events) is not in the message fallback list and ends up in unmapped -> add vendor.sys_message to the message sources."
+    ],
+    "notes": "Traffic part is correct: severity 0-4 scale, Accept/Drop/Reject enums, s_port/service ports, client_inbound/outbound bytes, loguid and epoch 'time'. Minor: metadata.product.name is hard-coded 'Quantum Security Gateway' even for Management Server logs; 'Detect' disposition could be 15 Detected.",
+    "at": "2026-11-20T08:44:46"
    }
   },
   {
@@ -4503,6 +4662,14 @@
     "events": 10,
     "valid_rate": 1.0,
     "mapped_field_share": 0.957
+   },
+   "review": {
+    "verdict": "changes_requested",
+    "issues": [
+     "severity_id map is one level low and only covers some facilities: level 0->5, 2->4, 3->3, 4->2, 5->1, other facilities default 1 -> compute level = PRI mod 8 and map 0->6, 1->5, 2->5, 3->4, 4->3, 5->2, 6/7->1."
+    ],
+    "notes": "Gaia OS daemon syslog as generic event with process/pid, year-less syslog time and repeat count is acceptable; a system/process class would fit better than Device Config State Change but not material.",
+    "at": "2026-11-20T08:44:47"
    }
   },
   {
@@ -4841,6 +5008,12 @@
     "events": 20,
     "valid_rate": 1.0,
     "mapped_field_share": 0.627
+   },
+   "review": {
+    "verdict": "approve",
+    "issues": [],
+    "notes": "filterlog CSV fields (rule, tracker, action, src/dst, ports, proto, length) are correctly placed; block->Denied/Blocked, reject->Rejected fine. Minor: 'direction' (in/out on the interface) could feed connection_info.direction_id only together with interface role; ttl/tos fine in unmapped.",
+    "at": "2026-11-20T08:45:11"
    }
   },
   {
@@ -5099,6 +5272,12 @@
     "events": 13,
     "valid_rate": 1.0,
     "mapped_field_share": 0.615
+   },
+   "review": {
+    "verdict": "approve",
+    "issues": [],
+    "notes": "charon CFG dump lines: event time and product correct. Minor: config_key/config_value have no message (msg empty) -> build message 'key = value'; IKE SA up/down lines, if present in this format, would fit Tunnel Activity.",
+    "at": "2026-11-20T08:45:13"
    }
   },
   {
@@ -5420,6 +5599,12 @@
     "events": 8,
     "valid_rate": 1.0,
     "mapped_field_share": 0.747
+   },
+   "review": {
+    "verdict": "approve",
+    "issues": [],
+    "notes": "DHCP message types -> OCSF DHCP activity ids correct, client mac/hostname/ip and lease fields fine. Minor: for server-originated OFFER/ACK/Reply the client is the destination; consider dst_endpoint for the client on those, or document client-as-src convention; 'Picking pool address' could be 99 with ip in dst.",
+    "at": "2026-11-20T08:45:14"
    }
   },
   {
@@ -6006,7 +6191,13 @@
      },
      "previous_review": null
     }
-   ]
+   ],
+   "review": {
+    "verdict": "approve",
+    "issues": [],
+    "notes": "OpenVPN peer connect -> Tunnel Activity Open with user and peer endpoint is correct. Minor: peer info IV_PLAT/IV_VER could populate src_endpoint.os.name / agent version; disconnect messages ('client-instance exiting', SIGTERM) should map to 2 Close if present.",
+    "at": "2026-11-20T08:45:32"
+   }
   },
   {
    "id": "m00026",
@@ -6290,6 +6481,12 @@
     "events": 3,
     "valid_rate": 1.0,
     "mapped_field_share": 0.783
+   },
+   "review": {
+    "verdict": "approve",
+    "issues": [],
+    "notes": "dhcp6c client messages -> DHCP Release/Solicit/Request/Inform correct; obtained address to device.ip is reasonable. Minor: prefix_length could be kept with the address.",
+    "at": "2026-11-20T08:45:33"
    }
   },
   {
@@ -6368,6 +6565,12 @@
     "events": 2,
     "valid_rate": 1.0,
     "mapped_field_share": 0.636
+   },
+   "review": {
+    "verdict": "approve",
+    "issues": [],
+    "notes": "unbound query log: client ip -> src_endpoint, qname/type/class -> query correct; activity Query. Minor: dst_endpoint could be the resolver (device), trailing dot in hostname could be stripped.",
+    "at": "2026-11-20T08:45:34"
    }
   },
   {
@@ -6675,6 +6878,14 @@
     "events": 2,
     "valid_rate": 1.0,
     "mapped_field_share": 0.502
+   },
+   "review": {
+    "verdict": "changes_requested",
+    "issues": [
+     "time comes from the year-less syslog header ('Jun 13 20:56:55'), which gets the current year (2026) although HAProxy's own accept_date '13/Jun/2022:20:56:55.187' gives the real year and ms -> map time from vendor.accept_date (format %d/%b/%Y:%H:%M:%S.%f), keep the syslog header as original_time only as a fallback."
+    ],
+    "notes": "Client ip/port -> src, backend/server -> dst, bytes_read -> bytes_in (server->client), Tt -> duration, status code are fine. Minor: http_request line could be parsed into http_request.http_method/url.path (or use HTTP Activity 4002 for HTTP-mode logs).",
+    "at": "2026-11-20T08:45:58"
    }
   },
   {
@@ -6937,6 +7148,12 @@
     "events": 1,
     "valid_rate": 1.0,
     "mapped_field_share": 1.0
+   },
+   "review": {
+    "verdict": "approve",
+    "issues": [],
+    "notes": "RFC5424 time with offset, PRI-mod-8 severity (43 -> err -> High) and host/process are correct. Minor: Application Error (6008) only fits error-level lines; generic info/notice syslog from this format would be better as a generic/OS event class.",
+    "at": "2026-11-20T08:46:00"
    }
   },
   {
@@ -7157,7 +7374,13 @@
      },
      "previous_review": null
     }
-   ]
+   ],
+   "review": {
+    "verdict": "approve",
+    "issues": [],
+    "notes": "webConfigurator login success/failure -> Authentication Logon with status, user, src ip and auth source correct. Minor: syslog header has no host; device.hostname is absent.",
+    "at": "2026-11-20T08:46:01"
+   }
   },
   {
    "id": "m00031",
@@ -7415,6 +7638,12 @@
     "events": 32,
     "valid_rate": 0.9688,
     "mapped_field_share": 0.706
+   },
+   "review": {
+    "verdict": "approve",
+    "issues": [],
+    "notes": "EVE: event timestamp, alert severity 1/2/3 -> High/Medium/Low, allowed/blocked, src/dest, flow toserver/toclient -> out/in and flow_id are correct. Improvements: route event_type=alert to Detection Finding (2004) and event_type=http to HTTP Activity (4002) so http_method/user_agent (now unmapped) get homes; for alerts use the EVE 'direction' (to_client) to avoid src/dst being the responder; http.status into status_code is a slight misuse.",
+    "at": "2026-11-20T08:46:21"
    }
   },
   {
@@ -7647,6 +7876,12 @@
     "events": 7,
     "valid_rate": 1.0,
     "mapped_field_share": 0.588
+   },
+   "review": {
+    "verdict": "approve",
+    "issues": [],
+    "notes": "Sophos UTM packetfilter and httpproxy: pass/drop/reject enums, src/dst/ports/MACs, fwrule, log timestamp and user/domain are correct. Improvements: httpproxy (sys=SecureWeb) records fit HTTP Activity 4002 better; categoryname -> url.categories, reputation, group -> actor.user.groups are left unmapped.",
+    "at": "2026-11-20T08:46:38"
    }
   },
   {
@@ -7722,6 +7957,12 @@
     "events": 5,
     "valid_rate": 1.0,
     "mapped_field_share": 0.619
+   },
+   "review": {
+    "verdict": "approve",
+    "issues": [],
+    "notes": "named daemon messages as Application Lifecycle 99 with event time and host are acceptable. Minor: 'listening on' / 'no longer listening' could be 1 Start / 2 Stop-like activities; listen_port unmapped.",
+    "at": "2026-11-20T08:46:39"
    }
   },
   {
@@ -8023,6 +8264,12 @@
     "events": 52,
     "valid_rate": 1.0,
     "mapped_field_share": 0.614
+   },
+   "review": {
+    "verdict": "approve",
+    "issues": [],
+    "notes": "Sophos Firewall: con_event Start/Stop/Interim -> Open/Close/Traffic, Allowed/Denied, src/dst/zones/MACs, sent/received bytes, rule id and event timestamp with offset are correct. Improvements: direction only maps dst_zone_type WAN -> Outbound; use src/dst zone types (WAN->LAN/DMZ = Inbound, LAN->LAN = Lateral); src_trans_ip/NAT kept unmapped; 'R1' (reserved) country should not go into location.country.",
+    "at": "2026-11-20T08:47:04"
    }
   },
   {
@@ -8323,6 +8570,12 @@
     "events": 35,
     "valid_rate": 1.0,
     "mapped_field_share": 0.807
+   },
+   "review": {
+    "verdict": "approve",
+    "issues": [],
+    "notes": "Content filtering: Allowed/Denied/Warned, src/dst, bytes, url/domain, status and offset timestamp correct. Improvements: http_category should go to url.categories (not message), content_type -> proxy_http_response.content_type; http_status 0 (TLS, no HTTP status) should not be emitted as code 0; HTTP Activity 4002 fits better.",
+    "at": "2026-11-20T08:47:25"
    }
   },
   {
@@ -8737,7 +8990,16 @@
      },
      "previous_review": null
     }
-   ]
+   ],
+   "review": {
+    "verdict": "changes_requested",
+    "issues": [
+     "time ignores the 'timezone' field: date=2020-05-19 time=18:03:30 timezone=IST is emitted as 18:03:30 UTC (1589911410000) instead of 12:33:30 UTC (1589891610000) -> combine date+time with timezone (IST = UTC+05:30) when building time, and set timezone_offset.",
+     "Placeholder '-' values are emitted as data (actor.user.name='-', dst_endpoint.name='-', user_agent/referrer '-') -> treat '-' as null for user_name, server, useragent, referer, cookie."
+    ],
+    "notes": "Method->activity, src/dst, bytessent->bytes_in / bytesrcv->bytes_out and 403->Denied are fine; reason/extra (Antivirus EICAR, WAF anomaly) could feed a finding or status_detail as done.",
+    "at": "2026-11-20T08:47:26"
+   }
   },
   {
    "parser_id": "p00048",
@@ -9110,7 +9372,16 @@
      },
      "previous_review": null
     }
-   ]
+   ],
+   "review": {
+    "verdict": "changes_requested",
+    "issues": [
+     "time ignores the 'timezone' field: date=2020-05-18 time=14:38:35 timezone=CEST is emitted as 14:38:35 UTC (1589812715000) instead of 12:38:35 UTC (1589805515000) -> apply the timezone (CEST = UTC+2) when building time.",
+     "sourceip/destinationip/src_port/dst_port/protocol are left in unmapped and the C2 URL is put in finding_info.desc -> map to evidences[0].src_endpoint.ip/port (infected client), evidences[0].dst_endpoint.ip/port (C2 server) and evidences[0].url.url_string; threatname -> malware[0].name / finding_info.title as now."
+    ],
+    "notes": "Drop->Denied/Dropped, Warning->Medium, eventid as finding uid are fine.",
+    "at": "2026-11-20T08:47:45"
+   }
   },
   {
    "id": "m00038",
@@ -9338,6 +9609,15 @@
     "events": 14,
     "valid_rate": 1.0,
     "mapped_field_share": 0.736
+   },
+   "review": {
+    "verdict": "changes_requested",
+    "issues": [
+     "time ignores the 'timezone' field (IST = UTC+05:30): date=2017-01-31 time=18:34:41 timezone=IST is emitted as 18:34:41 UTC (1485887681000) instead of 13:04:41 UTC -> apply the timezone when building time.",
+     "to_email_address is left in unmapped -> map to email.to (and email.smtp_to)."
+    ],
+    "notes": "Email Activity Scan, spam direction, Accept/Drop/Reject/Quarantine enums, from/subject/message id/size and SMTP endpoints are correct. quarantine_reason could go to status_detail when reason is absent.",
+    "at": "2026-11-20T08:47:46"
    }
   },
   {
@@ -9679,7 +9959,16 @@
      },
      "previous_review": null
     }
-   ]
+   ],
+   "review": {
+    "verdict": "changes_requested",
+    "issues": [
+     "time ignores the 'timezone' field (e.g. date=2017-01-31 time=14:52:11 timezone=IST emitted as 14:52:11 UTC; CEST samples likewise) -> apply the named timezone (IST +05:30, CEST +02:00, ...) when building time.",
+     "File evidence and client are left in unmapped / misplaced: src_ip, filetype, filesize unmapped and sha1sum used only as finding_info.uid -> map to evidences[0].file (name=filename, mime_type=filetype, size=filesize, hashes[{algorithm_id 2 SHA-1, value=sha1sum}]) and evidences[0].src_endpoint.ip = src_ip; 'source' (sender email or download host) to evidences email/url."
+    ],
+    "notes": "Denied/Allowed/Pending enums and malicious->True Positive verdict are fine.",
+    "at": "2026-11-20T08:48:06"
+   }
   },
   {
    "parser_id": "p00051",
@@ -10116,7 +10405,16 @@
      },
      "previous_review": null
     }
-   ]
+   ],
+   "review": {
+    "verdict": "changes_requested",
+    "issues": [
+     "time ignores the 'timezone' field: date=2020-05-18 time=14:38:54 timezone=CEST emitted as 14:38:54 UTC (1589812734000) instead of 12:38:54 UTC -> apply the timezone when building time.",
+     "Attacker/target endpoints are left in unmapped: src_ip/src_port/src_country_code, dst_ip/dst_port, protocol -> map to evidences[0].src_endpoint (ip, port, location.country) and evidences[0].dst_endpoint (ip, port) with connection_info.protocol_name."
+    ],
+    "notes": "IPS signature id/msg/classification, Drop/Detect/Reset enums and rule_priority 1-4 severity scale are correct.",
+    "at": "2026-11-20T08:48:08"
+   }
   },
   {
    "parser_id": "p00052",
@@ -10511,7 +10809,17 @@
      },
      "previous_review": null
     }
-   ]
+   ],
+   "review": {
+    "verdict": "changes_requested",
+    "issues": [
+     "time ignores the 'timezone' field (date=2020-05-18 time=14:38:34 timezone=CEST emitted as 14:38:34 UTC; IST samples likewise) -> apply the named timezone when building time.",
+     "src_ip/src_port/dst_ip/dst_port, url domain and email from/to/subject are left in unmapped -> map to evidences[0].src_endpoint/dst_endpoint (ip, port, country), evidences[0].url, evidences[0].email (from, to, subject, message_uid=mailid); virus name -> malware[0].name.",
+     "Virus detections get no action_id and disposition 15 Detected although the HTTP sample shows status_code 403 (blocked) -> derive action_id 2 / disposition_id 2 Blocked (or 3 Quarantined for mail) from status/quarantine info, and set action_id where log_subtype=Allowed."
+    ],
+    "notes": "Critical severity and analytic name fine; finding_info.uid from url/mailid is not unique per finding.",
+    "at": "2026-11-20T08:48:29"
+   }
   },
   {
    "id": "m00042",
@@ -10657,6 +10965,15 @@
     "events": 13,
     "valid_rate": 1.0,
     "mapped_field_share": 0.532
+   },
+   "review": {
+    "verdict": "changes_requested",
+    "issues": [
+     "time ignores the 'timezone' field (e.g. 2017-03-15 17:23:00 IST emitted as 17:23:00 UTC) -> apply the named timezone when building time.",
+     "Authentication events (log_component 'SSL VPN Authentication', subtype Authentication) are put in Device Config State Change with src_ip and auth_mechanism unmapped -> route subtype=Authentication to Authentication 3002 (activity 1 Logon, status from status, user.name = user_name, src_endpoint.ip = src_ip, auth_protocol from auth_mechanism); DHCP lease events (ipaddress, status Expire) belong in DHCP Activity 4004 (activity 9 Expire, dst_endpoint.ip = ipaddress)."
+    ],
+    "notes": "status Successful/Failed mapping is correct; 'Disconnected' as Success is fine.",
+    "at": "2026-11-20T08:48:30"
    }
   },
   {
@@ -10776,6 +11093,14 @@
     "events": 3,
     "valid_rate": 1.0,
     "mapped_field_share": 0.558
+   },
+   "review": {
+    "verdict": "changes_requested",
+    "issues": [
+     "time ignores the 'timezone' field: date=2018-06-05 time=15:10:00 timezone=CEST emitted as 15:10:00 UTC (1528211400000) instead of 13:10:00 UTC -> apply the named timezone when building time."
+    ],
+    "notes": "Health metrics (total_memory/free/used, users, CPU) have no good home in Inventory Info; message='Usage' is uninformative -> build message from component + values or keep metrics in unmapped deliberately.",
+    "at": "2026-11-20T08:48:48"
    }
   },
   {
@@ -10891,6 +11216,14 @@
     "events": 2,
     "valid_rate": 1.0,
     "mapped_field_share": 0.533
+   },
+   "review": {
+    "verdict": "changes_requested",
+    "issues": [
+     "time ignores the 'timezone' field: date=2017-02-01 time=14:19:47 timezone=IST emitted as 14:19:47 UTC instead of 08:49:47 UTC -> apply the named timezone (IST +05:30) when building time."
+    ],
+    "notes": "ap/ssid/clients_conn_SSID left unmapped; message is just the subtype 'Information' -> consider building a message (AP, SSID, client count).",
+    "at": "2026-11-20T08:48:49"
    }
   },
   {
@@ -11177,6 +11510,14 @@
     "events": 3,
     "valid_rate": 1.0,
     "mapped_field_share": 0.921
+   },
+   "review": {
+    "verdict": "changes_requested",
+    "issues": [
+     "time for year-less syslog headers is placed in the future: 'Dec 31 12:01:04' becomes 2026-12-31 (1798718464000) although the current date is 2026-11-20 -> when inferring the year, use the latest year that does not put the event more than a day in the future (here 2025-12-31)."
+    ],
+    "notes": "NSS feed status: 'lost and unavailable' -> Fail/Failure, dst endpoint of the Zscaler cloud, PRI-based severity are fine. Minor: product name could be 'Zscaler Internet Access' with feature 'Nanolog Streaming Service'; unavailable_minutes could feed duration.",
+    "at": "2026-11-20T08:49:14"
    }
   },
   {
@@ -11394,6 +11735,12 @@
     "events": 6,
     "valid_rate": 1.0,
     "mapped_field_share": 0.312
+   },
+   "review": {
+    "verdict": "approve",
+    "issues": [],
+    "notes": "ZIA firewall: csip/csport -> src, cdip/cdport -> dst, ssip -> proxy_endpoint, outbytes/inbytes -> bytes_out/in, durationms, rule and Allowed/Blocked are correct; datetime with tz GMT gives event time. Minor: login/user are URL-encoded ('jdo%40safemarch.com') -> URL-decode; sdip, tsip, threatcat, ipsrulelabel, nwsvc, locationname unmapped (sdip -> dst when DNAT, threatcat -> could justify a finding).",
+    "at": "2026-11-20T08:49:16"
    }
   },
   {
@@ -11900,7 +12247,16 @@
      },
      "previous_review": null
     }
-   ]
+   ],
+   "review": {
+    "verdict": "changes_requested",
+    "issues": [
+     "The requested URL is never mapped: only host goes to http_request.url.hostname, while b64url (base64-encoded full URL) and b64referer stay unmapped -> base64-decode b64url into http_request.url.url_string (and path/query) and b64referer into http_request.referrer.",
+     "URL categorisation (urlsupercat/urlsubcat/urlcat, urlclass) is left unmapped although it is a primary ZIA web field -> map to http_request.url.categories (and category_ids where known)."
+    ],
+    "notes": "reqmethod->activity, Allowed/Blocked/Cautioned/Isolated enums, threatseverity bands, cltip->src, serverip->dst, reqsize/respsize -> bytes_out/in, client vs server TLS (tls vs proxy_tls) are correct. Minor: file hashes (sha256), filename and threatname/malwarecategory unmapped; cltintip/cltpubip could go to src_endpoint.intermediate_ips.",
+    "at": "2026-11-20T08:49:59"
+   }
   },
   {
    "id": "m00048",
@@ -12064,6 +12420,15 @@
     "events": 6,
     "valid_rate": 1.0,
     "mapped_field_share": 0.315
+   },
+   "review": {
+    "verdict": "changes_requested",
+    "issues": [
+     "The DNS answer (dns_resp, e.g. 192.168.2.200) and response action/rule (resaction, resrulelabel) are left in unmapped -> map dns_resp to answers[0].rdata (with type from restype), and keep request rule/action as now; durationms -> duration.",
+     "query.type is set to the ZIA label 'A record' -> normalise to the RR type mnemonic ('A', 'AAAA', 'MX', ...) as OCSF query.type expects."
+    ],
+    "notes": "clt_sip -> src, srv_dip/srv_dport -> dst, REQ_ALLOW/BLOCK/REDIRECT enums and datetime+tz event time are correct. Minor: domain category (category) and respipcat could go to enrichments/categories.",
+    "at": "2026-11-20T08:50:20"
    }
   },
   {
@@ -12317,7 +12682,13 @@
      },
      "previous_review": null
     }
-   ]
+   ],
+   "review": {
+    "verdict": "approve",
+    "issues": [],
+    "notes": "Tunnel up/down and IPSec phase records -> Tunnel Activity Open/Close, source/destination IPs, rx->bytes_out / tx->bytes_in from the customer side, event datetime are correct. Minor: ikeversion/algo/authentication could populate tunnel/ike details; empty-string fields should be dropped rather than kept in unmapped.",
+    "at": "2026-11-20T08:50:21"
+   }
   },
   {
    "id": "m00050",
@@ -12423,6 +12794,15 @@
     "events": 7,
     "valid_rate": 1.0,
     "mapped_field_share": 0.624
+   },
+   "review": {
+    "verdict": "changes_requested",
+    "issues": [
+     "The admin's client IP (clientip) and access interface (interface: API/UI) are left in unmapped -> map clientip to src_endpoint.ip (Entity Management has src_endpoint) and interface to metadata/api or src_endpoint.svc_name.",
+     "category (e.g. DATA_LOSS_PREVENTION_RESOURCE) is put in 'comment', which OCSF defines as the user-supplied reason for the change -> move category to entity.type/entity.data (keep subcategory) and leave comment empty; preaction/postaction belong in entity.data (before/after)."
+    ],
+    "notes": "Action -> Create/Read/Update/Delete/Activate, result -> status, adminid as actor (Admin) and event time are correct.",
+    "at": "2026-11-20T08:50:50"
    }
   },
   {
@@ -12623,6 +13003,15 @@
     "events": 5,
     "valid_rate": 1.0,
     "mapped_field_share": 0.309
+   },
+   "review": {
+    "verdict": "changes_requested",
+    "issues": [
+     "File hashes filemd5 and filesha (SHA-256) are left in unmapped -> map to file.hashes [{algorithm_id 1 MD5}, {algorithm_id 3 SHA-256}].",
+     "Destination of the data movement is dropped: filedstpath, itemdstname, dsttype (e.g. personal_cloud_storage), srctype, channel are unmapped -> map destination path/name to data_security / resources (or file.path for src and a destination resource), and channel/dsttype to data_security.data_lifecycle_state or finding_info.types; expectedaction vs actiontaken should be preserved (e.g. in status_detail)."
+    ],
+    "notes": "Severity bands, allow/block/confirm enums, rule/dictionaries -> data_security, user/department and event time are correct.",
+    "at": "2026-11-20T08:50:51"
    }
   },
   {
@@ -12862,6 +13251,15 @@
     "events": 7,
     "valid_rate": 1.0,
     "mapped_field_share": 0.471
+   },
+   "review": {
+    "verdict": "changes_requested",
+    "issues": [
+     "ZIA placeholder value 'None' is emitted as real data (finding_info.title='None', finding_info.desc='None', data_security.detection_pattern='None', policy.name='None', policy.uid='0') -> treat 'None'/'NA'/'0' placeholders as null for rule.label, policy, dlp.dict_names, dlp.identifier.",
+     "Collaboration context (collaboration.sender, internal_recipients, external_recipients, channel.name) and label_name are left unmapped although they identify who shared what with whom -> map sender to actor.user (if user_name absent), recipients/channel to resources[] or data_security fields, label_name to data_security.data_classification."
+    ],
+    "notes": "Epoch time, severity bands, CASB detection_system and bucket/file mappings look right.",
+    "at": "2026-11-20T08:51:12"
    }
   },
   {
@@ -12957,6 +13355,14 @@
     "events": 2,
     "valid_rate": 1.0,
     "mapped_field_share": 0.647
+   },
+   "review": {
+    "verdict": "changes_requested",
+    "issues": [
+     "The object acted on (object.type 'Repository', subtype 'Branch', names, subnames) is only partly put in message and otherwise unmapped -> map to resources[0] (type = object.type/subtype, name = object.names, and subnames as a second resource or resources[0].data) in API Activity."
+    ],
+    "notes": "activity.type -> Create/Read/Update/Delete, is_admin -> Admin user type, src_ip, app as api.service and GMT event_time are correct.",
+    "at": "2026-11-20T08:51:13"
    }
   },
   {
@@ -13057,6 +13463,15 @@
     "events": 4,
     "valid_rate": 1.0,
     "mapped_field_share": 0.364
+   },
+   "review": {
+    "verdict": "changes_requested",
+    "issues": [
+     "verdict_id/severity default every non-Benign verdict to True Positive (2) / High, so a ZIA 'Suspicious' verdict is reported as a confirmed TP -> map Suspicious -> verdict_id 4 (Suspicious) / severity Medium, Malicious -> 2 / High (or Critical), Adware/PUA -> 8 Security Risk / Low-Medium, unknown -> 0.",
+     "The analysed file is not represented: md5, sha256 (only as finding_info.uid_alt), extension and type_category are unmapped -> map to evidences[0].file (hashes MD5 and SHA-256, ext, type) or resources; threat tactic/technique ids -> attacks[] when not 'None'; drop 'None' placeholder in finding_info.desc."
+    ],
+    "notes": "Event time from event_time and record id are fine.",
+    "at": "2026-11-20T08:51:35"
    }
   },
   {
@@ -13190,6 +13605,15 @@
     "events": 4,
     "valid_rate": 1.0,
     "mapped_field_share": 0.357
+   },
+   "review": {
+    "verdict": "changes_requested",
+    "issues": [
+     "Recipients are left unmapped: email.other_recipients / triggered_recipients -> email.to (and smtp_to), recipient domains likewise.",
+     "Attachments (file_names, md5s, sizes, file_types) are left unmapped -> map to email.files[] (name, hashes MD5, size, type)."
+    ],
+    "notes": "Scan activity, Allow/Block/Quarantine enums, sender/subject/message-id and event time are correct. 'None' rule label should be null rather than policy.name='None'; mail_sent_epoch could be used for time.",
+    "at": "2026-11-20T08:51:36"
    }
   },
   {
@@ -13439,7 +13863,16 @@
     "valid_rate": 1.0,
     "mapped_field_share": 0.538
    },
-   "id": "m00056"
+   "id": "m00056",
+   "review": {
+    "verdict": "changes_requested",
+    "issues": [
+     "time uses time_generated, which the device writes in its local time without zone and the parser tags as UTC ('15:24:03Z'); the high_res_timestamp in the same record is 2021-10-26T15:24:03.324-07:00, so time is 7 h early (1635261843000 vs 1635287043324) -> take time from vendor.high_res_timestamp (it carries the offset and ms), fall back to time_generated only when absent; same for logged_time vs receive_time.",
+     "Session timing is dropped: start_time and elapsed_time are unmapped -> map start_time to start_time (epoch ms, same zone handling) and elapsed_time (seconds) to duration (ms)."
+    ],
+    "notes": "Action/disposition enums, start/end/drop/deny -> Open/Close/Refuse, src/dst/zones/interfaces, sent->out/received->in and rule are correct. Minor: nat_src_ip/nat_dst_ip/ports unmapped; src_location/dst_location -> *.location.country; src_user/dst_user handled only for src.",
+    "at": "2026-11-20T08:51:54"
+   }
   },
   {
    "parser_id": "p00015",
@@ -13688,7 +14121,15 @@
     "valid_rate": 1.0,
     "mapped_field_share": 0.533
    },
-   "id": "m00057"
+   "id": "m00057",
+   "review": {
+    "verdict": "changes_requested",
+    "issues": [
+     "Session timing is dropped: start_time (session start) and elapsed_time (seconds) are left in unmapped -> map start_time to start_time (epoch ms) and elapsed_time*1000 to duration; time_generated (end-of-session log time) stays as time."
+    ],
+    "notes": "Enums, subtype->activity, src/dst/zones/interfaces, sent/received -> out/in, rule, session id and serial are correct. time_generated is device-local time without zone (parsed as UTC) - apply the device timezone if known. Minor: NAT fields, category -> url categories, src/dst_location -> location.country (skip private-range labels), dst_user unmapped.",
+    "at": "2026-11-20T08:52:10"
+   }
   },
   {
    "parser_id": "p00016",
@@ -14134,7 +14575,17 @@
      },
      "previous_review": null
     }
-   ]
+   ],
+   "review": {
+    "verdict": "changes_requested",
+    "issues": [
+     "All network context of the THREAT record is left in unmapped (src_ip/dst_ip, src_port/dst_port, zones, interfaces, protocol, app, session_id) -> map to evidences[0].src_endpoint / evidences[0].dst_endpoint (ip, port, zone, interface_name), evidences[0].connection_info (protocol_name, uid=session_id) and app name; for direction=server-to-client the attacker is the server, so keep src/dst as logged but use 'direction' to set the attacker/victim role.",
+     "Threat artefacts are unmapped: url_filename (URL for url/spyware DNS, file name for file/virus), file_digest, file_type, dst_user/src_user, user_agent, referer -> map url_filename to evidences[0].url.url_string or evidences[0].file.name by subtype, file_digest to evidences[0].file.hashes (SHA-256), dst_user to evidences[0].dst_endpoint owner / user.",
+     "actor.user.name is taken only from src_user while dst_user (e.g. 'crusher', the victim on a server-to-client download) is dropped -> map dst_user to the affected user (evidences dst user / resources) rather than leaving it unmapped."
+    ],
+    "notes": "Severity informational..critical scale, action enums, threat_id as finding title, rule, sequence number and time_generated/receive_time are correct. finding_info.uid from sequence_number gives '0' in old logs (not unique).",
+    "at": "2026-11-20T08:52:28"
+   }
   },
   {
    "parser_id": "p00018",
@@ -14236,7 +14687,15 @@
     "valid_rate": 1.0,
     "mapped_field_share": 0.625
    },
-   "id": "m00059"
+   "id": "m00059",
+   "review": {
+    "verdict": "changes_requested",
+    "issues": [
+     "The changed object and the admin's origin are left in unmapped: configuration_path (e.g. 'config shared local-user-database user badguy') and host (the IP the admin connected from) -> map configuration_path to message (or entity.name if routed to Entity Management 3004 with command set/edit/delete -> Create/Update/Delete) and host to src_endpoint.ip / actor session origin; before_change_detail/after_change_detail likewise when present."
+    ],
+    "notes": "admin -> actor.user, client (Web/CLI) -> actor.app_name, Succeeded/Failed -> status, time_generated/receive_time are correct.",
+    "at": "2026-11-20T08:52:46"
+   }
   },
   {
    "parser_id": "p00019",
@@ -14338,7 +14797,15 @@
     "valid_rate": 1.0,
     "mapped_field_share": 0.44
    },
-   "id": "m00060"
+   "id": "m00060",
+   "review": {
+    "verdict": "changes_requested",
+    "issues": [
+     "The changed object and the admin's origin are left in unmapped: configuration_path (e.g. 'config shared local-user-database user badguy') and host (the IP the admin connected from) -> map configuration_path to message (or entity.name if routed to Entity Management 3004 with command set/edit/delete -> Create/Update/Delete) and host to src_endpoint.ip / actor session origin; before_change_detail/after_change_detail likewise when present."
+    ],
+    "notes": "admin -> actor.user, client (Web/CLI) -> actor.app_name, Succeeded/Failed -> status, time_generated/receive_time are correct.",
+    "at": "2026-11-20T08:52:47"
+   }
   },
   {
    "parser_id": "p00020",
@@ -14441,7 +14908,13 @@
     "valid_rate": 1.0,
     "mapped_field_share": 0.433
    },
-   "id": "m00061"
+   "id": "m00061",
+   "review": {
+    "verdict": "approve",
+    "issues": [],
+    "notes": "USERID login/logout -> Authentication Logon/Logoff with user, mapped IP and data source is acceptable (these are IP-user mapping events, not firewall-performed authentication). Minor: split 'domain\\user' into user.domain/user.name; timeout_threshold, factor_* (MFA) and data_source_type unmapped; mfa info could set is_mfa.",
+    "at": "2026-11-20T08:53:08"
+   }
   },
   {
    "parser_id": "p00021",
@@ -14590,7 +15063,16 @@
     "valid_rate": 1.0,
     "mapped_field_share": 0.381
    },
-   "id": "m00062"
+   "id": "m00062",
+   "review": {
+    "verdict": "changes_requested",
+    "issues": [
+     "PAN-OS placeholder address 0.0.0.0 is emitted as real data (tunnel_interface.ip='0.0.0.0' when no tunnel IP is assigned) -> treat 0.0.0.0 / :: in private_ip, public_ip, *_ipv6 as null.",
+     "Client endpoint details are left unmapped: client_os/client_os_version, client_version, endpoint_serial_number, src_region, login_duration, auth_method -> map to src_endpoint.os (name/version), src_endpoint.agent_list/version, device serial (src_endpoint.hw_info.serial_number), src_endpoint.location.country, duration (s->ms) and auth info."
+    ],
+    "notes": "event_id -> Open/Close/Other, status success/failure, user, public_ip -> src, private_ip -> tunnel_interface, portal/gateway events and time_generated are correct. high_res_timestamp '1970-01-01' placeholder is correctly not used.",
+    "at": "2026-11-20T08:53:09"
+   }
   },
   {
    "parser_id": "p00022",
@@ -14828,7 +15310,13 @@
     "valid_rate": 1.0,
     "mapped_field_share": 0.472
    },
-   "id": "m00063"
+   "id": "m00063",
+   "review": {
+    "verdict": "approve",
+    "issues": [],
+    "notes": "SCTP log: src/dst, zones, interfaces, rule, packets and action enums follow the traffic mapping. Minor: the record's own 'severity' field is ignored (severity_id fixed at 1) -> map it with the PAN scale; sctp_assoc_id/chunk counters and diameter fields could go to connection_info/unmapped deliberately; activity could use sctp_assoc_end_reason for Close.",
+    "at": "2026-11-20T08:53:38"
+   }
   },
   {
    "parser_id": "p00023",
@@ -15064,7 +15552,15 @@
     "valid_rate": 1.0,
     "mapped_field_share": 0.252
    },
-   "id": "m00064"
+   "id": "m00064",
+   "review": {
+    "verdict": "changes_requested",
+    "issues": [
+     "Decryption failures are reported as successful traffic: a record with error 'TLS Handshake Failure...' gets activity 6 Traffic, no status_id and action Allowed -> when vendor.error is set map status_id 2 Failure (and activity_id 4 Fail); set status_id 1 when error is empty."
+    ],
+    "notes": "TLS version/SNI/certificate fields, policy_name, src/dst/zones and time are correct; prefer high_res_timestamp (has offset/ms). Minor: 0.0.0.0 NAT placeholders, key exchange/cipher fields -> tls.cipher, chain/root status -> tls.certificate.is_self_signed etc.",
+    "at": "2026-11-20T08:53:39"
+   }
   },
   {
    "parser_id": "p00024",
@@ -15311,7 +15807,16 @@
     "valid_rate": 1.0,
     "mapped_field_share": 0.366
    },
-   "id": "m00065"
+   "id": "m00065",
+   "review": {
+    "verdict": "changes_requested",
+    "issues": [
+     "time uses time_generated parsed as UTC while high_res_timestamp in the same record is 2021-11-23T00:44:44.930-08:00, so time is 8 h early -> take time from high_res_timestamp when present (fallback time_generated).",
+     "Tunnel/session context is dropped: start_time, elapsed_time, nat_src_ip/nat_dst_ip, remote_user_ip, tunnel_inspection_rule are unmapped -> map start_time to start_time, elapsed_time to duration (s->ms), remote_user_ip to src_endpoint.intermediate_ips (or the real client), tunnel_inspection_rule to policy.name."
+    ],
+    "notes": "start/end -> Open/Close, src/dst, zones, bytes/packets and action enums are correct. The parsed sample is a field-label template, so the status_detail='end' value comes from the parser alignment, not the mapping.",
+    "at": "2026-11-20T08:53:40"
+   }
   },
   {
    "parser_id": "p00067",
@@ -25996,5 +26501,5 @@
    "at": "2026-11-20T08:14:20+00:00"
   }
  ],
- "updated": "2026-11-20T08:48:25+00:00"
+ "updated": "2026-11-20T08:54:54+00:00"
 }

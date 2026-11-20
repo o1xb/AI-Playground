@@ -167,9 +167,10 @@ def filter(event)
       v = f["value"]
     else
       srcs = f["from"].is_a?(Array) ? f["from"] : [f["from"]]
+      skip = f.key?("skip_values") ? f["skip_values"] : @spec["default_skip"]
       srcs.each do |s|
         x = s == "@timestamp" ? ev["@timestamp"] : lg_get(ev, s)
-        unless lg_empty?(x)
+        unless lg_empty?(x) || skip.include?(lg_key(x))
           v = x
           used << s
           break

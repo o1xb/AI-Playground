@@ -27,6 +27,8 @@ import re
 
 from .schema import Schema
 
+# vendor placeholders that mean "no value"; a field can override with "skip_values": [...] ([] = keep all)
+DEFAULT_SKIP = ["-", "None", "none", "N/A", "n/a", "null", "NULL", "unknown", "Unknown"]
 RUBY_SCRIPT = os.path.join(os.path.dirname(__file__), "ocsf_mapper.rb")
 NUM = re.compile(r"^[-+]?\d+(\.\d+)?([eE][-+]?\d+)?$")
 INT = re.compile(r"^[-+]?\d+$")
@@ -164,9 +166,10 @@ def apply_mapping(spec, ev):
         else:
             v = None
             srcs = f["from"] if isinstance(f["from"], list) else [f["from"]]
+            skip = set(f.get("skip_values", DEFAULT_SKIP))
             for s in srcs:
                 x = _get(ev, s)
-                if x is not None and x != "" and x != [] and x != {}:
+                if x is not None and x != "" and x != [] and x != {} and _key(x) not in skip:
                     v = x; used.append(s)
                     break
         if v is None:
@@ -262,5 +265,6 @@ def prepare(spec, schema=None):
 def ruby_params(prepared):
     data = {k: prepared[k] for k in ("fields", "_class", "_version", "_siblings") if k in prepared}
     data["unmapped"] = prepared.get("unmapped", True)
+    data["default_skip"] = DEFAULT_SKIP
     data["raw_data"] = prepared.get("raw_data", True)
     return base64.b64encode(json.dumps(data, separators=(",", ":")).encode()).decode()
