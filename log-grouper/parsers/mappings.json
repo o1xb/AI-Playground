@@ -1,5 +1,5 @@
 {
- "version": 6,
+ "version": 7,
  "mappings": [
   {
    "parser_id": "p00001",
@@ -6574,10 +6574,7 @@
    }
   },
   {
-   "id": "m00028",
    "parser_id": "p00040",
-   "label": "netgate_pfsense",
-   "format": "haproxy",
    "class_uid": 4001,
    "fields": [
     {
@@ -6871,22 +6868,324 @@
     }
    ],
    "unmapped": true,
+   "label": "netgate_pfsense",
+   "format": "haproxy",
    "status": "active",
-   "origin": "mapping-agent:20261120T081525",
-   "rationale": "HAProxy connection/HTTP log -> Network Activity/Traffic with load_balancer (frontend, status code, termination state), backend/server as dst_endpoint; bytes_read = bytes sent to client = traffic.bytes_in. HTTP Activity unusable (validator bug) and one sample is TCP-mode.",
+   "origin": "mapping-agent:20261120T090355",
+   "rationale": "time now comes from HAProxy accept_date (year + ms) via the updated parser; syslog header kept as metadata.original_time. 4001 kept (TCP-mode log lines present); request line stays in message.",
    "metrics": {
     "events": 2,
     "valid_rate": 1.0,
-    "mapped_field_share": 0.502
+    "mapped_field_share": 0.48
    },
-   "review": {
-    "verdict": "changes_requested",
-    "issues": [
-     "time comes from the year-less syslog header ('Jun 13 20:56:55'), which gets the current year (2026) although HAProxy's own accept_date '13/Jun/2022:20:56:55.187' gives the real year and ms -> map time from vendor.accept_date (format %d/%b/%Y:%H:%M:%S.%f), keep the syslog header as original_time only as a fallback."
-    ],
-    "notes": "Client ip/port -> src, backend/server -> dst, bytes_read -> bytes_in (server->client), Tt -> duration, status code are fine. Minor: http_request line could be parsed into http_request.http_method/url.path (or use HTTP Activity 4002 for HTTP-mode logs).",
-    "at": "2026-11-20T08:45:58"
-   }
+   "id": "m00028",
+   "history": [
+    {
+     "origin": "mapping-agent:20261120T090355",
+     "previous": {
+      "class_uid": 4001,
+      "fields": [
+       {
+        "to": "time",
+        "from": "@timestamp",
+        "type": "timestamp_ms"
+       },
+       {
+        "to": "metadata.product.vendor_name",
+        "value": "Netgate"
+       },
+       {
+        "to": "metadata.product.name",
+        "value": "pfSense"
+       },
+       {
+        "to": "device.type_id",
+        "value": 9
+       },
+       {
+        "to": "activity_id",
+        "value": 6
+       },
+       {
+        "to": "severity_id",
+        "from": "vendor.syslog_pri",
+        "map": {
+         "0": 6,
+         "1": 5,
+         "2": 5,
+         "3": 4,
+         "4": 3,
+         "5": 2,
+         "6": 1,
+         "7": 1,
+         "8": 6,
+         "9": 5,
+         "10": 5,
+         "11": 4,
+         "12": 3,
+         "13": 2,
+         "14": 1,
+         "15": 1,
+         "16": 6,
+         "17": 5,
+         "18": 5,
+         "19": 4,
+         "20": 3,
+         "21": 2,
+         "22": 1,
+         "23": 1,
+         "24": 6,
+         "25": 5,
+         "26": 5,
+         "27": 4,
+         "28": 3,
+         "29": 2,
+         "30": 1,
+         "31": 1,
+         "32": 6,
+         "33": 5,
+         "34": 5,
+         "35": 4,
+         "36": 3,
+         "37": 2,
+         "38": 1,
+         "39": 1,
+         "40": 6,
+         "41": 5,
+         "42": 5,
+         "43": 4,
+         "44": 3,
+         "45": 2,
+         "46": 1,
+         "47": 1,
+         "48": 6,
+         "49": 5,
+         "50": 5,
+         "51": 4,
+         "52": 3,
+         "53": 2,
+         "54": 1,
+         "55": 1,
+         "56": 6,
+         "57": 5,
+         "58": 5,
+         "59": 4,
+         "60": 3,
+         "61": 2,
+         "62": 1,
+         "63": 1,
+         "64": 6,
+         "65": 5,
+         "66": 5,
+         "67": 4,
+         "68": 3,
+         "69": 2,
+         "70": 1,
+         "71": 1,
+         "72": 6,
+         "73": 5,
+         "74": 5,
+         "75": 4,
+         "76": 3,
+         "77": 2,
+         "78": 1,
+         "79": 1,
+         "80": 6,
+         "81": 5,
+         "82": 5,
+         "83": 4,
+         "84": 3,
+         "85": 2,
+         "86": 1,
+         "87": 1,
+         "88": 6,
+         "89": 5,
+         "90": 5,
+         "91": 4,
+         "92": 3,
+         "93": 2,
+         "94": 1,
+         "95": 1,
+         "96": 6,
+         "97": 5,
+         "98": 5,
+         "99": 4,
+         "100": 3,
+         "101": 2,
+         "102": 1,
+         "103": 1,
+         "104": 6,
+         "105": 5,
+         "106": 5,
+         "107": 4,
+         "108": 3,
+         "109": 2,
+         "110": 1,
+         "111": 1,
+         "112": 6,
+         "113": 5,
+         "114": 5,
+         "115": 4,
+         "116": 3,
+         "117": 2,
+         "118": 1,
+         "119": 1,
+         "120": 6,
+         "121": 5,
+         "122": 5,
+         "123": 4,
+         "124": 3,
+         "125": 2,
+         "126": 1,
+         "127": 1,
+         "128": 6,
+         "129": 5,
+         "130": 5,
+         "131": 4,
+         "132": 3,
+         "133": 2,
+         "134": 1,
+         "135": 1,
+         "136": 6,
+         "137": 5,
+         "138": 5,
+         "139": 4,
+         "140": 3,
+         "141": 2,
+         "142": 1,
+         "143": 1,
+         "144": 6,
+         "145": 5,
+         "146": 5,
+         "147": 4,
+         "148": 3,
+         "149": 2,
+         "150": 1,
+         "151": 1,
+         "152": 6,
+         "153": 5,
+         "154": 5,
+         "155": 4,
+         "156": 3,
+         "157": 2,
+         "158": 1,
+         "159": 1,
+         "160": 6,
+         "161": 5,
+         "162": 5,
+         "163": 4,
+         "164": 3,
+         "165": 2,
+         "166": 1,
+         "167": 1,
+         "168": 6,
+         "169": 5,
+         "170": 5,
+         "171": 4,
+         "172": 3,
+         "173": 2,
+         "174": 1,
+         "175": 1,
+         "176": 6,
+         "177": 5,
+         "178": 5,
+         "179": 4,
+         "180": 3,
+         "181": 2,
+         "182": 1,
+         "183": 1,
+         "184": 6,
+         "185": 5,
+         "186": 5,
+         "187": 4,
+         "188": 3,
+         "189": 2,
+         "190": 1,
+         "191": 1
+        },
+        "default": 1
+       },
+       {
+        "to": "metadata.log_name",
+        "from": "vendor.process"
+       },
+       {
+        "to": "device.hostname",
+        "from": "vendor.syslog_host"
+       },
+       {
+        "to": "src_endpoint.ip",
+        "from": "vendor.client_ip"
+       },
+       {
+        "to": "src_endpoint.port",
+        "from": "vendor.client_port",
+        "type": "integer"
+       },
+       {
+        "to": "dst_endpoint.name",
+        "from": "vendor.server_name"
+       },
+       {
+        "to": "dst_endpoint.svc_name",
+        "from": "vendor.backend_name"
+       },
+       {
+        "to": "load_balancer.name",
+        "from": "vendor.frontend_name"
+       },
+       {
+        "to": "load_balancer.code",
+        "from": "vendor.http_status_code",
+        "type": "integer"
+       },
+       {
+        "to": "load_balancer.status_detail",
+        "from": "vendor.termination_state"
+       },
+       {
+        "to": "status_code",
+        "from": "vendor.http_status_code",
+        "type": "string"
+       },
+       {
+        "to": "traffic.bytes_in",
+        "from": "vendor.bytes_read",
+        "type": "integer"
+       },
+       {
+        "to": "duration",
+        "from": "vendor.time_duration",
+        "type": "integer"
+       },
+       {
+        "to": "connection_info.direction_id",
+        "value": 1
+       },
+       {
+        "to": "connection_info.protocol_name",
+        "value": "tcp"
+       },
+       {
+        "to": "message",
+        "from": "vendor.http_request"
+       },
+       {
+        "to": "metadata.original_time",
+        "from": "vendor.timestamp"
+       }
+      ]
+     },
+     "previous_review": {
+      "verdict": "changes_requested",
+      "issues": [
+       "time comes from the year-less syslog header ('Jun 13 20:56:55'), which gets the current year (2026) although HAProxy's own accept_date '13/Jun/2022:20:56:55.187' gives the real year and ms -> map time from vendor.accept_date (format %d/%b/%Y:%H:%M:%S.%f), keep the syslog header as original_time only as a fallback."
+      ],
+      "notes": "Client ip/port -> src, backend/server -> dst, bytes_read -> bytes_in (server->client), Tt -> duration, status code are fine. Minor: http_request line could be parsed into http_request.http_method/url.path (or use HTTP Activity 4002 for HTTP-mode logs).",
+      "at": "2026-11-20T08:45:58"
+     }
+    }
+   ]
   },
   {
    "id": "m00029",
@@ -8581,7 +8880,6 @@
   {
    "parser_id": "p00047",
    "class_uid": 4002,
-   "unmapped": true,
    "fields": [
     {
      "to": "time",
@@ -8706,11 +9004,23 @@
     },
     {
      "to": "dst_endpoint.name",
-     "from": "vendor.server"
+     "from": "vendor.server",
+     "skip_values": [
+      "-",
+      "",
+      "N/A",
+      "None"
+     ]
     },
     {
      "to": "actor.user.name",
-     "from": "vendor.user_name"
+     "from": "vendor.user_name",
+     "skip_values": [
+      "-",
+      "",
+      "N/A",
+      "None"
+     ]
     },
     {
      "to": "http_request.url.path",
@@ -8718,7 +9028,13 @@
     },
     {
      "to": "http_request.url.query_string",
-     "from": "vendor.querystring"
+     "from": "vendor.querystring",
+     "skip_values": [
+      "-",
+      "",
+      "N/A",
+      "None"
+     ]
     },
     {
      "to": "http_request.http_method",
@@ -8730,11 +9046,23 @@
     },
     {
      "to": "http_request.user_agent",
-     "from": "vendor.useragent"
+     "from": "vendor.useragent",
+     "skip_values": [
+      "-",
+      "",
+      "N/A",
+      "None"
+     ]
     },
     {
      "to": "http_request.referrer",
-     "from": "vendor.referer"
+     "from": "vendor.referer",
+     "skip_values": [
+      "-",
+      "",
+      "N/A",
+      "None"
+     ]
     },
     {
      "to": "http_response.code",
@@ -8776,17 +9104,30 @@
     {
      "to": "connection_info.direction_id",
      "value": 1
+    },
+    {
+     "to": "timezone_offset",
+     "from": "vendor.timezone",
+     "map": {
+      "IST": 330,
+      "CEST": 120,
+      "CET": 60,
+      "BST": 60,
+      "GMT": 0,
+      "UTC": 0
+     }
     }
    ],
+   "unmapped": true,
    "label": "sophos_xg",
    "format": "waf_kv",
    "status": "active",
-   "origin": "mapping-agent:20261120T083647",
-   "rationale": "Sophos XG WAF (reverse proxy) -> HTTP Activity (4002) now that the validator bug is fixed (was Network Activity). activity from HTTP method; httpstatus 403 = WAF block (Denied/Blocked). Client sourceip = src, protected server (localip, server name) = dst, inbound. url path/query, method, protocol version, UA, referer -> http_request; status and content type -> http_response/http_status; WAF reason -> status_detail, rule detail (extra) -> message; bytessent (to client) = bytes_in, bytesrcv = bytes_out.",
+   "origin": "mapping-agent:20261120T090355",
+   "rationale": "Event time now honours the Sophos timezone field (parser fix) and timezone_offset is set; '-' placeholders are skipped for user, server, user agent and referrer.",
    "metrics": {
     "events": 2,
     "valid_rate": 1.0,
-    "mapped_field_share": 0.767
+    "mapped_field_share": 0.733
    },
    "id": "m00036",
    "history": [
@@ -8989,17 +9330,219 @@
       ]
      },
      "previous_review": null
+    },
+    {
+     "origin": "mapping-agent:20261120T090355",
+     "previous": {
+      "class_uid": 4002,
+      "fields": [
+       {
+        "to": "time",
+        "from": "@timestamp",
+        "type": "timestamp_ms"
+       },
+       {
+        "to": "metadata.original_time",
+        "from": "vendor.timestamp"
+       },
+       {
+        "to": "metadata.product.vendor_name",
+        "value": "Sophos"
+       },
+       {
+        "to": "metadata.product.name",
+        "value": "Sophos Firewall"
+       },
+       {
+        "to": "metadata.product.uid",
+        "from": "vendor.device"
+       },
+       {
+        "to": "metadata.event_code",
+        "from": "vendor.log_id",
+        "type": "string"
+       },
+       {
+        "to": "metadata.log_name",
+        "from": "vendor.log_type"
+       },
+       {
+        "to": "metadata.log_provider",
+        "from": "vendor.log_component"
+       },
+       {
+        "to": "metadata.log_level",
+        "from": [
+         "vendor.severity",
+         "vendor.priority"
+        ]
+       },
+       {
+        "to": "severity_id",
+        "from": [
+         "vendor.severity",
+         "vendor.priority"
+        ],
+        "map": {
+         "Emergency": 6,
+         "Alert": 5,
+         "Critical": 5,
+         "Error": 4,
+         "Warning": 3,
+         "Notice": 2,
+         "Information": 1,
+         "Informational": 1,
+         "Debug": 1
+        },
+        "default": 0
+       },
+       {
+        "to": "device.name",
+        "from": "vendor.device_name"
+       },
+       {
+        "to": "device.uid",
+        "from": [
+         "vendor.device_serial_id",
+         "vendor.device_id"
+        ],
+        "type": "string"
+       },
+       {
+        "to": "device.hostname",
+        "from": "vendor.syslog_host"
+       },
+       {
+        "to": "device.type_id",
+        "value": 9
+       },
+       {
+        "to": "activity_id",
+        "from": "vendor.method",
+        "map": {
+         "CONNECT": 1,
+         "DELETE": 2,
+         "GET": 3,
+         "HEAD": 4,
+         "OPTIONS": 5,
+         "POST": 6,
+         "PUT": 7,
+         "TRACE": 8
+        },
+        "default": 99
+       },
+       {
+        "to": "action_id",
+        "from": "vendor.httpstatus",
+        "map": {
+         "403": 2,
+         "200": 1
+        },
+        "default": 0
+       },
+       {
+        "to": "disposition_id",
+        "from": "vendor.httpstatus",
+        "map": {
+         "403": 2,
+         "200": 1
+        },
+        "default": 0
+       },
+       {
+        "to": "src_endpoint.ip",
+        "from": "vendor.sourceip"
+       },
+       {
+        "to": "dst_endpoint.ip",
+        "from": "vendor.localip"
+       },
+       {
+        "to": "dst_endpoint.name",
+        "from": "vendor.server"
+       },
+       {
+        "to": "actor.user.name",
+        "from": "vendor.user_name"
+       },
+       {
+        "to": "http_request.url.path",
+        "from": "vendor.url"
+       },
+       {
+        "to": "http_request.url.query_string",
+        "from": "vendor.querystring"
+       },
+       {
+        "to": "http_request.http_method",
+        "from": "vendor.method"
+       },
+       {
+        "to": "http_request.version",
+        "from": "vendor.ws_protocol"
+       },
+       {
+        "to": "http_request.user_agent",
+        "from": "vendor.useragent"
+       },
+       {
+        "to": "http_request.referrer",
+        "from": "vendor.referer"
+       },
+       {
+        "to": "http_response.code",
+        "from": "vendor.httpstatus",
+        "type": "integer"
+       },
+       {
+        "to": "http_response.content_type",
+        "from": "vendor.contenttype"
+       },
+       {
+        "to": "http_status",
+        "from": "vendor.httpstatus",
+        "type": "integer"
+       },
+       {
+        "to": "status_detail",
+        "from": "vendor.reason"
+       },
+       {
+        "to": "message",
+        "from": "vendor.extra"
+       },
+       {
+        "to": "traffic.bytes_in",
+        "from": "vendor.bytessent",
+        "type": "integer"
+       },
+       {
+        "to": "traffic.bytes_out",
+        "from": "vendor.bytesrcv",
+        "type": "integer"
+       },
+       {
+        "to": "firewall_rule.uid",
+        "from": "vendor.fw_rule_id",
+        "type": "string"
+       },
+       {
+        "to": "connection_info.direction_id",
+        "value": 1
+       }
+      ]
+     },
+     "previous_review": {
+      "verdict": "changes_requested",
+      "issues": [
+       "time ignores the 'timezone' field: date=2020-05-19 time=18:03:30 timezone=IST is emitted as 18:03:30 UTC (1589911410000) instead of 12:33:30 UTC (1589891610000) -> combine date+time with timezone (IST = UTC+05:30) when building time, and set timezone_offset.",
+       "Placeholder '-' values are emitted as data (actor.user.name='-', dst_endpoint.name='-', user_agent/referrer '-') -> treat '-' as null for user_name, server, useragent, referer, cookie."
+      ],
+      "notes": "Method->activity, src/dst, bytessent->bytes_in / bytesrcv->bytes_out and 403->Denied are fine; reason/extra (Antivirus EICAR, WAF anomaly) could feed a finding or status_detail as done.",
+      "at": "2026-11-20T08:47:26"
+     }
     }
-   ],
-   "review": {
-    "verdict": "changes_requested",
-    "issues": [
-     "time ignores the 'timezone' field: date=2020-05-19 time=18:03:30 timezone=IST is emitted as 18:03:30 UTC (1589911410000) instead of 12:33:30 UTC (1589891610000) -> combine date+time with timezone (IST = UTC+05:30) when building time, and set timezone_offset.",
-     "Placeholder '-' values are emitted as data (actor.user.name='-', dst_endpoint.name='-', user_agent/referrer '-') -> treat '-' as null for user_name, server, useragent, referer, cookie."
-    ],
-    "notes": "Method->activity, src/dst, bytessent->bytes_in / bytesrcv->bytes_out and 403->Denied are fine; reason/extra (Antivirus EICAR, WAF anomaly) could feed a finding or status_detail as done.",
-    "at": "2026-11-20T08:47:26"
-   }
+   ]
   },
   {
    "parser_id": "p00048",
@@ -9129,10 +9672,6 @@
      "from": "vendor.threatname"
     },
     {
-     "to": "finding_info.desc",
-     "from": "vendor.url"
-    },
-    {
      "to": "finding_info.analytic.name",
      "from": "vendor.threatname"
     },
@@ -9205,18 +9744,42 @@
     {
      "to": "evidences[0].url.url_string",
      "from": "vendor.url"
+    },
+    {
+     "to": "timezone_offset",
+     "from": "vendor.timezone",
+     "map": {
+      "IST": 330,
+      "CEST": 120,
+      "CET": 60,
+      "BST": 60,
+      "GMT": 0,
+      "UTC": 0
+     }
+    },
+    {
+     "to": "malware[0].name",
+     "from": "vendor.threatname"
+    },
+    {
+     "to": "malware[0].classification_ids[0]",
+     "value": 3
+    },
+    {
+     "to": "malware[0].classifications[0]",
+     "value": "Bot"
     }
    ],
    "unmapped": true,
    "label": "sophos_xg",
    "format": "atp_kv",
    "status": "active",
-   "origin": "mapping-agent:20261120T084800",
-   "rationale": "XG ATP (C2/malware callback) -> Detection Finding/Create; eventid = finding uid, threatname = title/analytic; Drop -> Denied/Dropped. Network context now in evidences[0]: src/dst ip+port, protocol (direction unknown), URL.",
+   "origin": "mapping-agent:20261120T090355",
+   "rationale": "Timezone-aware time + timezone_offset; infected client -> evidences[0].src_endpoint, C2 server -> evidences[0].dst_endpoint, C2 URL -> evidences[0].url (removed from finding_info.desc); threatname -> malware[0] (C2 = Bot).",
    "metrics": {
     "events": 4,
     "valid_rate": 1.0,
-    "mapped_field_share": 0.824
+    "mapped_field_share": 0.871
    },
    "id": "m00037",
    "history": [
@@ -9371,25 +9934,230 @@
       ]
      },
      "previous_review": null
+    },
+    {
+     "origin": "mapping-agent:20261120T090355",
+     "previous": {
+      "class_uid": 2004,
+      "fields": [
+       {
+        "to": "time",
+        "from": "@timestamp",
+        "type": "timestamp_ms"
+       },
+       {
+        "to": "metadata.original_time",
+        "from": "vendor.timestamp"
+       },
+       {
+        "to": "metadata.product.vendor_name",
+        "value": "Sophos"
+       },
+       {
+        "to": "metadata.product.name",
+        "value": "Sophos Firewall"
+       },
+       {
+        "to": "metadata.product.uid",
+        "from": "vendor.device"
+       },
+       {
+        "to": "metadata.event_code",
+        "from": "vendor.log_id",
+        "type": "string"
+       },
+       {
+        "to": "metadata.log_name",
+        "from": "vendor.log_type"
+       },
+       {
+        "to": "metadata.log_provider",
+        "from": "vendor.log_component"
+       },
+       {
+        "to": "metadata.log_version",
+        "from": "vendor.log_version",
+        "type": "string"
+       },
+       {
+        "to": "metadata.log_level",
+        "from": [
+         "vendor.severity",
+         "vendor.priority"
+        ]
+       },
+       {
+        "to": "severity_id",
+        "from": [
+         "vendor.severity",
+         "vendor.priority"
+        ],
+        "map": {
+         "Emergency": 6,
+         "Alert": 5,
+         "Critical": 5,
+         "Error": 4,
+         "Warning": 3,
+         "Notice": 2,
+         "Information": 1,
+         "Informational": 1,
+         "Debug": 1
+        },
+        "default": 0
+       },
+       {
+        "to": "device.name",
+        "from": "vendor.device_name"
+       },
+       {
+        "to": "device.uid",
+        "from": [
+         "vendor.device_serial_id",
+         "vendor.device_id"
+        ],
+        "type": "string"
+       },
+       {
+        "to": "device.model",
+        "from": "vendor.device_model"
+       },
+       {
+        "to": "device.hostname",
+        "from": "vendor.syslog_host"
+       },
+       {
+        "to": "device.type_id",
+        "value": 9
+       },
+       {
+        "to": "activity_id",
+        "value": 1
+       },
+       {
+        "to": "is_alert",
+        "value": true
+       },
+       {
+        "to": "action_id",
+        "from": "vendor.log_subtype",
+        "map": {
+         "Drop": 2,
+         "Alert": 3,
+         "Allow": 1
+        }
+       },
+       {
+        "to": "disposition_id",
+        "from": "vendor.log_subtype",
+        "map": {
+         "Drop": 6,
+         "Alert": 19,
+         "Allow": 1
+        }
+       },
+       {
+        "to": "finding_info.uid",
+        "from": "vendor.eventid"
+       },
+       {
+        "to": "finding_info.title",
+        "from": "vendor.threatname"
+       },
+       {
+        "to": "finding_info.desc",
+        "from": "vendor.url"
+       },
+       {
+        "to": "finding_info.analytic.name",
+        "from": "vendor.threatname"
+       },
+       {
+        "to": "finding_info.analytic.type_id",
+        "value": 1
+       },
+       {
+        "to": "finding_info.analytic.category",
+        "from": "vendor.eventtype"
+       },
+       {
+        "to": "actor.user.name",
+        "from": "vendor.user_name"
+       },
+       {
+        "to": "evidences[0].src_endpoint.ip",
+        "from": [
+         "vendor.sourceip",
+         "vendor.src_ip"
+        ]
+       },
+       {
+        "to": "evidences[0].src_endpoint.port",
+        "from": "vendor.src_port",
+        "type": "integer"
+       },
+       {
+        "to": "evidences[0].dst_endpoint.ip",
+        "from": [
+         "vendor.destinationip",
+         "vendor.dst_ip"
+        ]
+       },
+       {
+        "to": "evidences[0].dst_endpoint.port",
+        "from": "vendor.dst_port",
+        "type": "integer"
+       },
+       {
+        "to": "evidences[0].connection_info.protocol_name",
+        "from": "vendor.protocol",
+        "map": {
+         "tcp": "tcp",
+         "udp": "udp",
+         "icmp": "icmp",
+         "tcp/ip": "tcp",
+         "udp/ip": "udp",
+         "sctp": "sctp"
+        },
+        "type": "lower"
+       },
+       {
+        "to": "evidences[0].connection_info.protocol_num",
+        "from": "vendor.protocol",
+        "map": {
+         "tcp": 6,
+         "udp": 17,
+         "icmp": 1,
+         "tcp/ip": 6,
+         "udp/ip": 17,
+         "sctp": 132
+        },
+        "type": "integer"
+       },
+       {
+        "to": "evidences[0].connection_info.direction_id",
+        "value": 0
+       },
+       {
+        "to": "evidences[0].url.url_string",
+        "from": "vendor.url"
+       }
+      ]
+     },
+     "previous_review": {
+      "verdict": "changes_requested",
+      "issues": [
+       "time ignores the 'timezone' field: date=2020-05-18 time=14:38:35 timezone=CEST is emitted as 14:38:35 UTC (1589812715000) instead of 12:38:35 UTC (1589805515000) -> apply the timezone (CEST = UTC+2) when building time.",
+       "sourceip/destinationip/src_port/dst_port/protocol are left in unmapped and the C2 URL is put in finding_info.desc -> map to evidences[0].src_endpoint.ip/port (infected client), evidences[0].dst_endpoint.ip/port (C2 server) and evidences[0].url.url_string; threatname -> malware[0].name / finding_info.title as now."
+      ],
+      "notes": "Drop->Denied/Dropped, Warning->Medium, eventid as finding uid are fine.",
+      "at": "2026-11-20T08:47:45"
+     }
     }
-   ],
-   "review": {
-    "verdict": "changes_requested",
-    "issues": [
-     "time ignores the 'timezone' field: date=2020-05-18 time=14:38:35 timezone=CEST is emitted as 14:38:35 UTC (1589812715000) instead of 12:38:35 UTC (1589805515000) -> apply the timezone (CEST = UTC+2) when building time.",
-     "sourceip/destinationip/src_port/dst_port/protocol are left in unmapped and the C2 URL is put in finding_info.desc -> map to evidences[0].src_endpoint.ip/port (infected client), evidences[0].dst_endpoint.ip/port (C2 server) and evidences[0].url.url_string; threatname -> malware[0].name / finding_info.title as now."
-    ],
-    "notes": "Drop->Denied/Dropped, Warning->Medium, eventid as finding uid are fine.",
-    "at": "2026-11-20T08:47:45"
-   }
+   ]
   },
   {
-   "id": "m00038",
    "parser_id": "p00049",
-   "label": "sophos_xg",
-   "format": "anti_spam_kv",
    "class_uid": 4009,
-   "unmapped": true,
    "fields": [
     {
      "to": "time",
@@ -9545,7 +10313,10 @@
     },
     {
      "to": "status_detail",
-     "from": "vendor.reason"
+     "from": [
+      "vendor.reason",
+      "vendor.quarantine_reason"
+     ]
     },
     {
      "to": "protocol_name",
@@ -9582,11 +10353,25 @@
     },
     {
      "to": "src_endpoint.location.country",
-     "from": "vendor.src_country_code"
+     "from": "vendor.src_country_code",
+     "skip_values": [
+      "R1",
+      "-",
+      "",
+      "N/A",
+      "None"
+     ]
     },
     {
      "to": "dst_endpoint.location.country",
-     "from": "vendor.dst_country_code"
+     "from": "vendor.dst_country_code",
+     "skip_values": [
+      "R1",
+      "-",
+      "",
+      "N/A",
+      "None"
+     ]
     },
     {
      "to": "actor.user.name",
@@ -9600,25 +10385,269 @@
      "to": "firewall_rule.uid",
      "from": "vendor.fw_rule_id",
      "type": "string"
+    },
+    {
+     "to": "timezone_offset",
+     "from": "vendor.timezone",
+     "map": {
+      "IST": 330,
+      "CEST": 120,
+      "CET": 60,
+      "BST": 60,
+      "GMT": 0,
+      "UTC": 0
+     }
+    },
+    {
+     "to": "email.to[0]",
+     "from": "vendor.to_email_address"
+    },
+    {
+     "to": "email.smtp_to[0]",
+     "from": "vendor.to_email_address"
     }
    ],
+   "unmapped": true,
+   "label": "sophos_xg",
+   "format": "anti_spam_kv",
    "status": "active",
-   "origin": "mapping-agent:20261120T082234",
-   "rationale": "XG Anti-Spam -> Email Activity/Scan; spamaction Accept/Drop/REJECT/TMPREJECT/DELIVERED -> action+disposition; Outbound* subtype -> Outbound else Unknown; sender/subject/mailid/size -> email (email.to is an array, left unmapped).",
+   "origin": "mapping-agent:20261120T090355",
+   "rationale": "Timezone-aware time + timezone_offset; to_email_address -> email.to/smtp_to; quarantine_reason as status_detail fallback; Sophos 'R1' (reserved/private) country skipped.",
    "metrics": {
     "events": 14,
     "valid_rate": 1.0,
-    "mapped_field_share": 0.736
+    "mapped_field_share": 0.738
    },
-   "review": {
-    "verdict": "changes_requested",
-    "issues": [
-     "time ignores the 'timezone' field (IST = UTC+05:30): date=2017-01-31 time=18:34:41 timezone=IST is emitted as 18:34:41 UTC (1485887681000) instead of 13:04:41 UTC -> apply the timezone when building time.",
-     "to_email_address is left in unmapped -> map to email.to (and email.smtp_to)."
-    ],
-    "notes": "Email Activity Scan, spam direction, Accept/Drop/Reject/Quarantine enums, from/subject/message id/size and SMTP endpoints are correct. quarantine_reason could go to status_detail when reason is absent.",
-    "at": "2026-11-20T08:47:46"
-   }
+   "id": "m00038",
+   "history": [
+    {
+     "origin": "mapping-agent:20261120T090355",
+     "previous": {
+      "class_uid": 4009,
+      "fields": [
+       {
+        "to": "time",
+        "from": "@timestamp",
+        "type": "timestamp_ms"
+       },
+       {
+        "to": "metadata.original_time",
+        "from": "vendor.timestamp"
+       },
+       {
+        "to": "metadata.product.vendor_name",
+        "value": "Sophos"
+       },
+       {
+        "to": "metadata.product.name",
+        "value": "Sophos Firewall"
+       },
+       {
+        "to": "metadata.product.uid",
+        "from": "vendor.device"
+       },
+       {
+        "to": "metadata.event_code",
+        "from": "vendor.log_id",
+        "type": "string"
+       },
+       {
+        "to": "metadata.log_name",
+        "from": "vendor.log_type"
+       },
+       {
+        "to": "metadata.log_provider",
+        "from": "vendor.log_component"
+       },
+       {
+        "to": "metadata.log_version",
+        "from": "vendor.log_version",
+        "type": "string"
+       },
+       {
+        "to": "metadata.log_level",
+        "from": [
+         "vendor.severity",
+         "vendor.priority"
+        ]
+       },
+       {
+        "to": "severity_id",
+        "from": [
+         "vendor.severity",
+         "vendor.priority"
+        ],
+        "map": {
+         "Emergency": 6,
+         "Alert": 5,
+         "Critical": 5,
+         "Error": 4,
+         "Warning": 3,
+         "Notice": 2,
+         "Information": 1,
+         "Informational": 1,
+         "Debug": 1
+        },
+        "default": 0
+       },
+       {
+        "to": "device.name",
+        "from": "vendor.device_name"
+       },
+       {
+        "to": "device.uid",
+        "from": [
+         "vendor.device_serial_id",
+         "vendor.device_id"
+        ],
+        "type": "string"
+       },
+       {
+        "to": "device.model",
+        "from": "vendor.device_model"
+       },
+       {
+        "to": "device.hostname",
+        "from": "vendor.syslog_host"
+       },
+       {
+        "to": "device.type_id",
+        "value": 9
+       },
+       {
+        "to": "src_endpoint.ip",
+        "from": "vendor.src_ip"
+       },
+       {
+        "to": "src_endpoint.port",
+        "from": "vendor.src_port",
+        "type": "integer"
+       },
+       {
+        "to": "dst_endpoint.ip",
+        "from": "vendor.dst_ip"
+       },
+       {
+        "to": "dst_endpoint.port",
+        "from": "vendor.dst_port",
+        "type": "integer"
+       },
+       {
+        "to": "activity_id",
+        "value": 3
+       },
+       {
+        "to": "direction_id",
+        "from": "vendor.log_subtype",
+        "map": {
+         "Outbound Spam": 2,
+         "Outbound Probable Spam": 2,
+         "Inbound Spam": 1,
+         "Inbound Probable Spam": 1
+        },
+        "default": 0
+       },
+       {
+        "to": "action_id",
+        "from": "vendor.spamaction",
+        "map": {
+         "Accept": 1,
+         "DELIVERED": 1,
+         "Drop": 2,
+         "DROP": 2,
+         "REJECT": 2,
+         "TMPREJECT": 2,
+         "Quarantine": 2
+        }
+       },
+       {
+        "to": "disposition_id",
+        "from": "vendor.spamaction",
+        "map": {
+         "Accept": 1,
+         "DELIVERED": 1,
+         "Drop": 6,
+         "DROP": 6,
+         "REJECT": 25,
+         "TMPREJECT": 14,
+         "Quarantine": 3
+        }
+       },
+       {
+        "to": "message",
+        "from": "vendor.log_subtype"
+       },
+       {
+        "to": "status_detail",
+        "from": "vendor.reason"
+       },
+       {
+        "to": "protocol_name",
+        "from": "vendor.log_component"
+       },
+       {
+        "to": "email.from",
+        "from": "vendor.from_email_address"
+       },
+       {
+        "to": "email.smtp_from",
+        "from": "vendor.from_email_address"
+       },
+       {
+        "to": "email.subject",
+        "from": "vendor.email_subject"
+       },
+       {
+        "to": "email.message_uid",
+        "from": "vendor.mailid"
+       },
+       {
+        "to": "email.size",
+        "from": "vendor.mailsize",
+        "type": "integer"
+       },
+       {
+        "to": "src_endpoint.domain",
+        "from": "vendor.src_domainname"
+       },
+       {
+        "to": "dst_endpoint.domain",
+        "from": "vendor.dst_domainname"
+       },
+       {
+        "to": "src_endpoint.location.country",
+        "from": "vendor.src_country_code"
+       },
+       {
+        "to": "dst_endpoint.location.country",
+        "from": "vendor.dst_country_code"
+       },
+       {
+        "to": "actor.user.name",
+        "from": "vendor.user_name"
+       },
+       {
+        "to": "policy.name",
+        "from": "vendor.av_policy_name"
+       },
+       {
+        "to": "firewall_rule.uid",
+        "from": "vendor.fw_rule_id",
+        "type": "string"
+       }
+      ]
+     },
+     "previous_review": {
+      "verdict": "changes_requested",
+      "issues": [
+       "time ignores the 'timezone' field (IST = UTC+05:30): date=2017-01-31 time=18:34:41 timezone=IST is emitted as 18:34:41 UTC (1485887681000) instead of 13:04:41 UTC -> apply the timezone when building time.",
+       "to_email_address is left in unmapped -> map to email.to (and email.smtp_to)."
+      ],
+      "notes": "Email Activity Scan, spam direction, Accept/Drop/Reject/Quarantine enums, from/subject/message id/size and SMTP endpoints are correct. quarantine_reason could go to status_detail when reason is absent.",
+      "at": "2026-11-20T08:47:46"
+     }
+    }
+   ]
   },
   {
    "parser_id": "p00050",
@@ -9783,18 +10812,78 @@
     {
      "to": "evidences[0].dst_endpoint.ip",
      "from": "vendor.dst_ip"
+    },
+    {
+     "to": "timezone_offset",
+     "from": "vendor.timezone",
+     "map": {
+      "IST": 330,
+      "CEST": 120,
+      "CET": 60,
+      "BST": 60,
+      "GMT": 0,
+      "UTC": 0
+     }
+    },
+    {
+     "to": "evidences[0].file.name",
+     "from": "vendor.filename"
+    },
+    {
+     "to": "evidences[0].file.type_id",
+     "from": "vendor.reason",
+     "map": {
+      "malicious": 1,
+      "cached malicious": 1,
+      "clean": 1,
+      "cached clean": 1,
+      "pending": 1,
+      "cached pending": 1,
+      "suspicious": 1
+     }
+    },
+    {
+     "to": "evidences[0].file.mime_type",
+     "from": "vendor.filetype"
+    },
+    {
+     "to": "evidences[0].file.size",
+     "from": "vendor.filesize",
+     "type": "integer",
+     "skip_values": [
+      "0",
+      "-",
+      ""
+     ]
+    },
+    {
+     "to": "evidences[0].file.hashes[0].algorithm_id",
+     "from": "vendor.reason",
+     "map": {
+      "malicious": 2,
+      "cached malicious": 2,
+      "clean": 2,
+      "cached clean": 2,
+      "pending": 2,
+      "cached pending": 2,
+      "suspicious": 2
+     }
+    },
+    {
+     "to": "evidences[0].file.hashes[0].value",
+     "from": "vendor.sha1sum"
     }
    ],
    "unmapped": true,
    "label": "sophos_xg",
    "format": "sandbox_kv",
    "status": "active",
-   "origin": "mapping-agent:20261120T084800",
-   "rationale": "XG Sandstorm verdicts -> Detection Finding/Create; sha1 = finding uid (log_id fallback for an empty record), filename = title, reason -> verdict (cached malicious = True Positive) + desc; Denied/Allowed/Pending -> Blocked/Allowed/Delayed. Network context now in evidences[0]: src/dst ip.",
+   "origin": "mapping-agent:20261120T090355",
+   "rationale": "Timezone-aware time + timezone_offset; analysed file -> evidences[0].file (name, mime_type, size, SHA-1 hash from sha1sum); client src_ip already in evidences[0].src_endpoint. 'source' (mixed sender email / download host / IP) left unmapped: no single OCSF field fits all three.",
    "metrics": {
     "events": 5,
     "valid_rate": 1.0,
-    "mapped_field_share": 0.672
+    "mapped_field_share": 0.811
    },
    "id": "m00039",
    "history": [
@@ -9958,17 +11047,185 @@
       ]
      },
      "previous_review": null
+    },
+    {
+     "origin": "mapping-agent:20261120T090355",
+     "previous": {
+      "class_uid": 2004,
+      "fields": [
+       {
+        "to": "time",
+        "from": "@timestamp",
+        "type": "timestamp_ms"
+       },
+       {
+        "to": "metadata.original_time",
+        "from": "vendor.timestamp"
+       },
+       {
+        "to": "metadata.product.vendor_name",
+        "value": "Sophos"
+       },
+       {
+        "to": "metadata.product.name",
+        "value": "Sophos Firewall"
+       },
+       {
+        "to": "metadata.product.uid",
+        "from": "vendor.device"
+       },
+       {
+        "to": "metadata.event_code",
+        "from": "vendor.log_id",
+        "type": "string"
+       },
+       {
+        "to": "metadata.log_name",
+        "from": "vendor.log_type"
+       },
+       {
+        "to": "metadata.log_provider",
+        "from": "vendor.log_component"
+       },
+       {
+        "to": "metadata.log_version",
+        "from": "vendor.log_version",
+        "type": "string"
+       },
+       {
+        "to": "metadata.log_level",
+        "from": [
+         "vendor.severity",
+         "vendor.priority"
+        ]
+       },
+       {
+        "to": "severity_id",
+        "from": [
+         "vendor.severity",
+         "vendor.priority"
+        ],
+        "map": {
+         "Emergency": 6,
+         "Alert": 5,
+         "Critical": 5,
+         "Error": 4,
+         "Warning": 3,
+         "Notice": 2,
+         "Information": 1,
+         "Informational": 1,
+         "Debug": 1
+        },
+        "default": 0
+       },
+       {
+        "to": "device.name",
+        "from": "vendor.device_name"
+       },
+       {
+        "to": "device.uid",
+        "from": [
+         "vendor.device_serial_id",
+         "vendor.device_id"
+        ],
+        "type": "string"
+       },
+       {
+        "to": "device.model",
+        "from": "vendor.device_model"
+       },
+       {
+        "to": "device.hostname",
+        "from": "vendor.syslog_host"
+       },
+       {
+        "to": "device.type_id",
+        "value": 9
+       },
+       {
+        "to": "activity_id",
+        "value": 1
+       },
+       {
+        "to": "is_alert",
+        "from": "vendor.reason",
+        "map": {
+         "cached malicious": true,
+         "malicious": true
+        }
+       },
+       {
+        "to": "action_id",
+        "from": "vendor.log_subtype",
+        "map": {
+         "Denied": 2,
+         "Allowed": 1,
+         "Pending": 2
+        }
+       },
+       {
+        "to": "disposition_id",
+        "from": "vendor.log_subtype",
+        "map": {
+         "Denied": 2,
+         "Allowed": 1,
+         "Pending": 14
+        }
+       },
+       {
+        "to": "verdict_id",
+        "from": "vendor.reason",
+        "map": {
+         "cached malicious": 2,
+         "malicious": 2,
+         "cached clean": 5,
+         "clean": 5,
+         "pending": 0,
+         "eligible": 0
+        },
+        "default": 0
+       },
+       {
+        "to": "finding_info.uid",
+        "from": [
+         "vendor.sha1sum",
+         "vendor.filename",
+         "vendor.log_id"
+        ]
+       },
+       {
+        "to": "finding_info.title",
+        "from": "vendor.filename"
+       },
+       {
+        "to": "finding_info.desc",
+        "from": "vendor.reason"
+       },
+       {
+        "to": "actor.user.name",
+        "from": "vendor.user_name"
+       },
+       {
+        "to": "evidences[0].src_endpoint.ip",
+        "from": "vendor.src_ip"
+       },
+       {
+        "to": "evidences[0].dst_endpoint.ip",
+        "from": "vendor.dst_ip"
+       }
+      ]
+     },
+     "previous_review": {
+      "verdict": "changes_requested",
+      "issues": [
+       "time ignores the 'timezone' field (e.g. date=2017-01-31 time=14:52:11 timezone=IST emitted as 14:52:11 UTC; CEST samples likewise) -> apply the named timezone (IST +05:30, CEST +02:00, ...) when building time.",
+       "File evidence and client are left in unmapped / misplaced: src_ip, filetype, filesize unmapped and sha1sum used only as finding_info.uid -> map to evidences[0].file (name=filename, mime_type=filetype, size=filesize, hashes[{algorithm_id 2 SHA-1, value=sha1sum}]) and evidences[0].src_endpoint.ip = src_ip; 'source' (sender email or download host) to evidences email/url."
+      ],
+      "notes": "Denied/Allowed/Pending enums and malicious->True Positive verdict are fine.",
+      "at": "2026-11-20T08:48:06"
+     }
     }
-   ],
-   "review": {
-    "verdict": "changes_requested",
-    "issues": [
-     "time ignores the 'timezone' field (e.g. date=2017-01-31 time=14:52:11 timezone=IST emitted as 14:52:11 UTC; CEST samples likewise) -> apply the named timezone (IST +05:30, CEST +02:00, ...) when building time.",
-     "File evidence and client are left in unmapped / misplaced: src_ip, filetype, filesize unmapped and sha1sum used only as finding_info.uid -> map to evidences[0].file (name=filename, mime_type=filetype, size=filesize, hashes[{algorithm_id 2 SHA-1, value=sha1sum}]) and evidences[0].src_endpoint.ip = src_ip; 'source' (sender email or download host) to evidences email/url."
-    ],
-    "notes": "Denied/Allowed/Pending enums and malicious->True Positive verdict are fine.",
-    "at": "2026-11-20T08:48:06"
-   }
+   ]
   },
   {
    "parser_id": "p00051",
@@ -10199,18 +11456,52 @@
     {
      "to": "evidences[0].connection_info.direction_id",
      "value": 0
+    },
+    {
+     "to": "timezone_offset",
+     "from": "vendor.timezone",
+     "map": {
+      "IST": 330,
+      "CEST": 120,
+      "CET": 60,
+      "BST": 60,
+      "GMT": 0,
+      "UTC": 0
+     }
+    },
+    {
+     "to": "evidences[0].src_endpoint.location.country",
+     "from": "vendor.src_country_code",
+     "skip_values": [
+      "R1",
+      "-",
+      "",
+      "N/A",
+      "None"
+     ]
+    },
+    {
+     "to": "evidences[0].dst_endpoint.location.country",
+     "from": "vendor.dst_country_code",
+     "skip_values": [
+      "R1",
+      "-",
+      "",
+      "N/A",
+      "None"
+     ]
     }
    ],
    "unmapped": true,
    "label": "sophos_xg",
    "format": "idp_kv",
    "status": "active",
-   "origin": "mapping-agent:20261120T084800",
-   "rationale": "XG IPS -> Detection Finding/Create; signature -> finding uid/title/analytic (Rule), classification -> desc; Drop/Detect -> Dropped/Detected; severity from rule_priority (1=High). Network context now in evidences[0]: src/dst ip+port, protocol (direction unknown).",
+   "origin": "mapping-agent:20261120T090355",
+   "rationale": "Timezone-aware time + timezone_offset; attacker/target endpoints in evidences[0] (ip, port, protocol) plus country codes (R1 = reserved skipped).",
    "metrics": {
     "events": 5,
     "valid_rate": 1.0,
-    "mapped_field_share": 0.72
+    "mapped_field_share": 0.77
    },
    "id": "m00040",
    "history": [
@@ -10404,17 +11695,251 @@
       ]
      },
      "previous_review": null
+    },
+    {
+     "origin": "mapping-agent:20261120T090355",
+     "previous": {
+      "class_uid": 2004,
+      "fields": [
+       {
+        "to": "time",
+        "from": "@timestamp",
+        "type": "timestamp_ms"
+       },
+       {
+        "to": "metadata.original_time",
+        "from": "vendor.timestamp"
+       },
+       {
+        "to": "metadata.product.vendor_name",
+        "value": "Sophos"
+       },
+       {
+        "to": "metadata.product.name",
+        "value": "Sophos Firewall"
+       },
+       {
+        "to": "metadata.product.uid",
+        "from": "vendor.device"
+       },
+       {
+        "to": "metadata.event_code",
+        "from": "vendor.log_id",
+        "type": "string"
+       },
+       {
+        "to": "metadata.log_name",
+        "from": "vendor.log_type"
+       },
+       {
+        "to": "metadata.log_provider",
+        "from": "vendor.log_component"
+       },
+       {
+        "to": "metadata.log_version",
+        "from": "vendor.log_version",
+        "type": "string"
+       },
+       {
+        "to": "metadata.log_level",
+        "from": [
+         "vendor.severity",
+         "vendor.priority"
+        ]
+       },
+       {
+        "to": "severity_id",
+        "from": [
+         "vendor.severity",
+         "vendor.priority"
+        ],
+        "map": {
+         "Emergency": 6,
+         "Alert": 5,
+         "Critical": 5,
+         "Error": 4,
+         "Warning": 3,
+         "Notice": 2,
+         "Information": 1,
+         "Informational": 1,
+         "Debug": 1
+        },
+        "default": 0
+       },
+       {
+        "to": "device.name",
+        "from": "vendor.device_name"
+       },
+       {
+        "to": "device.uid",
+        "from": [
+         "vendor.device_serial_id",
+         "vendor.device_id"
+        ],
+        "type": "string"
+       },
+       {
+        "to": "device.model",
+        "from": "vendor.device_model"
+       },
+       {
+        "to": "device.hostname",
+        "from": "vendor.syslog_host"
+       },
+       {
+        "to": "device.type_id",
+        "value": 9
+       },
+       {
+        "to": "activity_id",
+        "value": 1
+       },
+       {
+        "to": "is_alert",
+        "value": true
+       },
+       {
+        "to": "action_id",
+        "from": "vendor.log_subtype",
+        "map": {
+         "Drop": 2,
+         "Detect": 3,
+         "Reset": 2
+        }
+       },
+       {
+        "to": "disposition_id",
+        "from": "vendor.log_subtype",
+        "map": {
+         "Drop": 6,
+         "Detect": 15,
+         "Reset": 21
+        }
+       },
+       {
+        "to": "severity_id",
+        "from": [
+         "vendor.rule_priority",
+         "vendor.priority"
+        ],
+        "map": {
+         "1": 4,
+         "2": 3,
+         "3": 2,
+         "4": 1,
+         "Emergency": 6,
+         "Alert": 5,
+         "Critical": 5,
+         "Error": 4,
+         "Warning": 3,
+         "Notice": 2,
+         "Information": 1,
+         "Informational": 1,
+         "Debug": 1
+        },
+        "default": 0
+       },
+       {
+        "to": "finding_info.uid",
+        "from": "vendor.signature_id",
+        "type": "string"
+       },
+       {
+        "to": "finding_info.title",
+        "from": "vendor.signature_msg"
+       },
+       {
+        "to": "finding_info.desc",
+        "from": "vendor.classification"
+       },
+       {
+        "to": "finding_info.analytic.uid",
+        "from": "vendor.signature_id",
+        "type": "string"
+       },
+       {
+        "to": "finding_info.analytic.name",
+        "from": "vendor.signature_msg"
+       },
+       {
+        "to": "finding_info.analytic.category",
+        "from": "vendor.category"
+       },
+       {
+        "to": "finding_info.analytic.type_id",
+        "value": 1
+       },
+       {
+        "to": "policy.uid",
+        "from": "vendor.idp_policy_id",
+        "type": "string"
+       },
+       {
+        "to": "firewall_rule.uid",
+        "from": "vendor.fw_rule_id",
+        "type": "string"
+       },
+       {
+        "to": "actor.user.name",
+        "from": "vendor.user_name"
+       },
+       {
+        "to": "evidences[0].src_endpoint.ip",
+        "from": "vendor.src_ip"
+       },
+       {
+        "to": "evidences[0].src_endpoint.port",
+        "from": "vendor.src_port",
+        "type": "integer"
+       },
+       {
+        "to": "evidences[0].dst_endpoint.ip",
+        "from": "vendor.dst_ip"
+       },
+       {
+        "to": "evidences[0].dst_endpoint.port",
+        "from": "vendor.dst_port",
+        "type": "integer"
+       },
+       {
+        "to": "evidences[0].connection_info.protocol_name",
+        "from": "vendor.protocol",
+        "map": {
+         "tcp": "tcp",
+         "udp": "udp",
+         "icmp": "icmp",
+         "sctp": "sctp"
+        },
+        "type": "lower"
+       },
+       {
+        "to": "evidences[0].connection_info.protocol_num",
+        "from": "vendor.protocol",
+        "map": {
+         "tcp": 6,
+         "udp": 17,
+         "icmp": 1,
+         "sctp": 132
+        },
+        "type": "integer"
+       },
+       {
+        "to": "evidences[0].connection_info.direction_id",
+        "value": 0
+       }
+      ]
+     },
+     "previous_review": {
+      "verdict": "changes_requested",
+      "issues": [
+       "time ignores the 'timezone' field: date=2020-05-18 time=14:38:54 timezone=CEST emitted as 14:38:54 UTC (1589812734000) instead of 12:38:54 UTC -> apply the timezone when building time.",
+       "Attacker/target endpoints are left in unmapped: src_ip/src_port/src_country_code, dst_ip/dst_port, protocol -> map to evidences[0].src_endpoint (ip, port, location.country) and evidences[0].dst_endpoint (ip, port) with connection_info.protocol_name."
+      ],
+      "notes": "IPS signature id/msg/classification, Drop/Detect/Reset enums and rule_priority 1-4 severity scale are correct.",
+      "at": "2026-11-20T08:48:08"
+     }
     }
-   ],
-   "review": {
-    "verdict": "changes_requested",
-    "issues": [
-     "time ignores the 'timezone' field: date=2020-05-18 time=14:38:54 timezone=CEST emitted as 14:38:54 UTC (1589812734000) instead of 12:38:54 UTC -> apply the timezone when building time.",
-     "Attacker/target endpoints are left in unmapped: src_ip/src_port/src_country_code, dst_ip/dst_port, protocol -> map to evidences[0].src_endpoint (ip, port, location.country) and evidences[0].dst_endpoint (ip, port) with connection_info.protocol_name."
-    ],
-    "notes": "IPS signature id/msg/classification, Drop/Detect/Reset enums and rule_priority 1-4 severity scale are correct.",
-    "at": "2026-11-20T08:48:08"
-   }
+   ]
   },
   {
    "parser_id": "p00052",
@@ -10521,14 +12046,6 @@
      }
     },
     {
-     "to": "disposition_id",
-     "from": "vendor.log_subtype",
-     "map": {
-      "Virus": 15,
-      "Allowed": 1
-     }
-    },
-    {
      "to": "finding_info.uid",
      "from": [
       "vendor.mailid",
@@ -10632,18 +12149,158 @@
     {
      "to": "evidences[0].http_request.user_agent",
      "from": "vendor.user_agent"
+    },
+    {
+     "to": "timezone_offset",
+     "from": "vendor.timezone",
+     "map": {
+      "IST": 330,
+      "CEST": 120,
+      "CET": 60,
+      "BST": 60,
+      "GMT": 0,
+      "UTC": 0
+     }
+    },
+    {
+     "to": "action_id",
+     "from": [
+      "vendor.status_code",
+      "vendor.quarantine_reason",
+      "vendor.log_subtype"
+     ],
+     "map": {
+      "403": 2,
+      "Infected": 2,
+      " Infected": 2,
+      "Other": 2,
+      "Virus": 2,
+      "Allowed": 1
+     },
+     "default": 0
+    },
+    {
+     "to": "disposition_id",
+     "from": [
+      "vendor.status_code",
+      "vendor.quarantine_reason",
+      "vendor.log_subtype"
+     ],
+     "map": {
+      "403": 2,
+      "Infected": 3,
+      " Infected": 3,
+      "Other": 3,
+      "Virus": 2,
+      "Allowed": 1
+     },
+     "default": 0
+    },
+    {
+     "to": "malware[0].name",
+     "from": "vendor.virus"
+    },
+    {
+     "to": "malware[0].classification_ids[0]",
+     "from": "vendor.virus",
+     "map": {},
+     "default": 0
+    },
+    {
+     "to": "malware[0].classifications[0]",
+     "from": "vendor.virus",
+     "map": {},
+     "default": "Unknown"
+    },
+    {
+     "to": "evidences[0].src_endpoint.location.country",
+     "from": "vendor.src_country_code",
+     "skip_values": [
+      "R1",
+      "-",
+      "",
+      "N/A",
+      "None"
+     ]
+    },
+    {
+     "to": "evidences[0].dst_endpoint.location.country",
+     "from": "vendor.dst_country_code",
+     "skip_values": [
+      "R1",
+      "-",
+      "",
+      "N/A",
+      "None"
+     ]
+    },
+    {
+     "to": "evidences[0].src_endpoint.domain",
+     "from": "vendor.src_domainname"
+    },
+    {
+     "to": "evidences[0].email.from",
+     "from": "vendor.from_email_address"
+    },
+    {
+     "to": "evidences[0].email.to[0]",
+     "from": "vendor.to_email_address"
+    },
+    {
+     "to": "evidences[0].email.subject",
+     "from": "vendor.subject"
+    },
+    {
+     "to": "evidences[0].email.message_uid",
+     "from": "vendor.mailid"
+    },
+    {
+     "to": "evidences[0].email.size",
+     "from": "vendor.mailsize",
+     "type": "integer",
+     "skip_values": [
+      "0",
+      "-",
+      ""
+     ]
+    },
+    {
+     "to": "evidences[0].file.name",
+     "from": "vendor.filename"
+    },
+    {
+     "to": "evidences[0].file.type_id",
+     "from": "vendor.ftpcommand",
+     "map": {
+      "RETR": 1,
+      "STOR": 1
+     }
+    },
+    {
+     "to": "evidences[0].file.size",
+     "from": "vendor.file_size",
+     "type": "integer",
+     "skip_values": [
+      "0",
+      "-",
+      ""
+     ]
+    },
+    {
+     "to": "evidences[0].file.path",
+     "from": "vendor.FTP_url"
     }
    ],
    "unmapped": true,
    "label": "sophos_xg",
    "format": "anti_virus_kv",
    "status": "active",
-   "origin": "mapping-agent:20261120T084800",
-   "rationale": "XG Anti-Virus -> Detection Finding/Create; virus = title/analytic, mailid/file/url = finding uid, Virus -> Detected (no explicit action field), Allowed -> Allowed; severity from priority. Network context now in evidences[0]: src/dst ip+port, protocol (direction unknown), URL/domain, user agent.",
+   "origin": "mapping-agent:20261120T090355",
+   "rationale": "Timezone-aware time + timezone_offset; action/disposition derived from HTTP 403 (Blocked), mail quarantine_reason (Quarantined) and subtype Virus (blocked)/Allowed; virus -> malware[0]; evidences[0] gains email (from/to/subject/message_uid), FTP file (name/path/size) and endpoint countries.",
    "metrics": {
     "events": 11,
     "valid_rate": 1.0,
-    "mapped_field_share": 0.618
+    "mapped_field_share": 0.75
    },
    "id": "m00041",
    "history": [
@@ -10808,26 +12465,243 @@
       ]
      },
      "previous_review": null
+    },
+    {
+     "origin": "mapping-agent:20261120T090355",
+     "previous": {
+      "class_uid": 2004,
+      "fields": [
+       {
+        "to": "time",
+        "from": "@timestamp",
+        "type": "timestamp_ms"
+       },
+       {
+        "to": "metadata.original_time",
+        "from": "vendor.timestamp"
+       },
+       {
+        "to": "metadata.product.vendor_name",
+        "value": "Sophos"
+       },
+       {
+        "to": "metadata.product.name",
+        "value": "Sophos Firewall"
+       },
+       {
+        "to": "metadata.product.uid",
+        "from": "vendor.device"
+       },
+       {
+        "to": "metadata.event_code",
+        "from": "vendor.log_id",
+        "type": "string"
+       },
+       {
+        "to": "metadata.log_name",
+        "from": "vendor.log_type"
+       },
+       {
+        "to": "metadata.log_provider",
+        "from": "vendor.log_component"
+       },
+       {
+        "to": "metadata.log_version",
+        "from": "vendor.log_version",
+        "type": "string"
+       },
+       {
+        "to": "metadata.log_level",
+        "from": [
+         "vendor.severity",
+         "vendor.priority"
+        ]
+       },
+       {
+        "to": "severity_id",
+        "from": [
+         "vendor.severity",
+         "vendor.priority"
+        ],
+        "map": {
+         "Emergency": 6,
+         "Alert": 5,
+         "Critical": 5,
+         "Error": 4,
+         "Warning": 3,
+         "Notice": 2,
+         "Information": 1,
+         "Informational": 1,
+         "Debug": 1
+        },
+        "default": 0
+       },
+       {
+        "to": "device.name",
+        "from": "vendor.device_name"
+       },
+       {
+        "to": "device.uid",
+        "from": [
+         "vendor.device_serial_id",
+         "vendor.device_id"
+        ],
+        "type": "string"
+       },
+       {
+        "to": "device.model",
+        "from": "vendor.device_model"
+       },
+       {
+        "to": "device.hostname",
+        "from": "vendor.syslog_host"
+       },
+       {
+        "to": "device.type_id",
+        "value": 9
+       },
+       {
+        "to": "activity_id",
+        "value": 1
+       },
+       {
+        "to": "is_alert",
+        "from": "vendor.log_subtype",
+        "map": {
+         "Virus": true
+        }
+       },
+       {
+        "to": "disposition_id",
+        "from": "vendor.log_subtype",
+        "map": {
+         "Virus": 15,
+         "Allowed": 1
+        }
+       },
+       {
+        "to": "finding_info.uid",
+        "from": [
+         "vendor.mailid",
+         "vendor.file_path",
+         "vendor.url"
+        ]
+       },
+       {
+        "to": "finding_info.title",
+        "from": "vendor.virus"
+       },
+       {
+        "to": "finding_info.desc",
+        "from": "vendor.quarantine_reason"
+       },
+       {
+        "to": "finding_info.analytic.name",
+        "from": "vendor.virus"
+       },
+       {
+        "to": "finding_info.analytic.type_id",
+        "value": 5
+       },
+       {
+        "to": "finding_info.src_url",
+        "from": "vendor.url"
+       },
+       {
+        "to": "actor.user.name",
+        "from": "vendor.user_name"
+       },
+       {
+        "to": "status_code",
+        "from": "vendor.status_code"
+       },
+       {
+        "to": "policy.name",
+        "from": "vendor.av_policy_name"
+       },
+       {
+        "to": "firewall_rule.uid",
+        "from": "vendor.fw_rule_id",
+        "type": "string"
+       },
+       {
+        "to": "evidences[0].src_endpoint.ip",
+        "from": "vendor.src_ip"
+       },
+       {
+        "to": "evidences[0].src_endpoint.port",
+        "from": "vendor.src_port",
+        "type": "integer"
+       },
+       {
+        "to": "evidences[0].dst_endpoint.ip",
+        "from": "vendor.dst_ip"
+       },
+       {
+        "to": "evidences[0].dst_endpoint.port",
+        "from": "vendor.dst_port",
+        "type": "integer"
+       },
+       {
+        "to": "evidences[0].connection_info.protocol_name",
+        "from": "vendor.protocol",
+        "map": {
+         "tcp": "tcp",
+         "udp": "udp",
+         "icmp": "icmp",
+         "tcp/ip": "tcp",
+         "udp/ip": "udp",
+         "sctp": "sctp"
+        },
+        "type": "lower"
+       },
+       {
+        "to": "evidences[0].connection_info.protocol_num",
+        "from": "vendor.protocol",
+        "map": {
+         "tcp": 6,
+         "udp": 17,
+         "icmp": 1,
+         "tcp/ip": 6,
+         "udp/ip": 17,
+         "sctp": 132
+        },
+        "type": "integer"
+       },
+       {
+        "to": "evidences[0].connection_info.direction_id",
+        "value": 0
+       },
+       {
+        "to": "evidences[0].url.url_string",
+        "from": "vendor.url"
+       },
+       {
+        "to": "evidences[0].url.hostname",
+        "from": "vendor.domainname"
+       },
+       {
+        "to": "evidences[0].http_request.user_agent",
+        "from": "vendor.user_agent"
+       }
+      ]
+     },
+     "previous_review": {
+      "verdict": "changes_requested",
+      "issues": [
+       "time ignores the 'timezone' field (date=2020-05-18 time=14:38:34 timezone=CEST emitted as 14:38:34 UTC; IST samples likewise) -> apply the named timezone when building time.",
+       "src_ip/src_port/dst_ip/dst_port, url domain and email from/to/subject are left in unmapped -> map to evidences[0].src_endpoint/dst_endpoint (ip, port, country), evidences[0].url, evidences[0].email (from, to, subject, message_uid=mailid); virus name -> malware[0].name.",
+       "Virus detections get no action_id and disposition 15 Detected although the HTTP sample shows status_code 403 (blocked) -> derive action_id 2 / disposition_id 2 Blocked (or 3 Quarantined for mail) from status/quarantine info, and set action_id where log_subtype=Allowed."
+      ],
+      "notes": "Critical severity and analytic name fine; finding_info.uid from url/mailid is not unique per finding.",
+      "at": "2026-11-20T08:48:29"
+     }
     }
-   ],
-   "review": {
-    "verdict": "changes_requested",
-    "issues": [
-     "time ignores the 'timezone' field (date=2020-05-18 time=14:38:34 timezone=CEST emitted as 14:38:34 UTC; IST samples likewise) -> apply the named timezone when building time.",
-     "src_ip/src_port/dst_ip/dst_port, url domain and email from/to/subject are left in unmapped -> map to evidences[0].src_endpoint/dst_endpoint (ip, port, country), evidences[0].url, evidences[0].email (from, to, subject, message_uid=mailid); virus name -> malware[0].name.",
-     "Virus detections get no action_id and disposition 15 Detected although the HTTP sample shows status_code 403 (blocked) -> derive action_id 2 / disposition_id 2 Blocked (or 3 Quarantined for mail) from status/quarantine info, and set action_id where log_subtype=Allowed."
-    ],
-    "notes": "Critical severity and analytic name fine; finding_info.uid from url/mailid is not unique per finding.",
-    "at": "2026-11-20T08:48:29"
-   }
+   ]
   },
   {
-   "id": "m00042",
    "parser_id": "p00053",
-   "label": "sophos_xg",
-   "format": "event_kv",
    "class_uid": 5019,
-   "unmapped": true,
    "fields": [
     {
      "to": "time",
@@ -10956,33 +12830,183 @@
     {
      "to": "metadata.log_provider",
      "from": "vendor.log_component"
+    },
+    {
+     "to": "timezone_offset",
+     "from": "vendor.timezone",
+     "map": {
+      "IST": 330,
+      "CEST": 120,
+      "CET": 60,
+      "BST": 60,
+      "GMT": 0,
+      "UTC": 0
+     }
     }
    ],
+   "unmapped": true,
+   "label": "sophos_xg",
+   "format": "event_kv",
    "status": "active",
-   "origin": "mapping-agent:20261120T082234",
-   "rationale": "XG Event log mixes System(7)/Authentication(4)/Admin(2); Event Log Activity and Authentication are unusable (validator at_least_one bug), so Device Config State Change/Log on the firewall with status_id from status, message, user as actor. Compromise for the auth records.",
+   "origin": "mapping-agent:20261120T090355",
+   "rationale": "Timezone-aware time (parser now applies the Sophos timezone field) + timezone_offset. Class kept: event_kv mixes DHCP, RED, definition updates, admin config, IPsec and auth events in one parser, so one class cannot fit all; auth-only routing needs a parser split.",
    "metrics": {
     "events": 13,
     "valid_rate": 1.0,
-    "mapped_field_share": 0.532
+    "mapped_field_share": 0.587
    },
-   "review": {
-    "verdict": "changes_requested",
-    "issues": [
-     "time ignores the 'timezone' field (e.g. 2017-03-15 17:23:00 IST emitted as 17:23:00 UTC) -> apply the named timezone when building time.",
-     "Authentication events (log_component 'SSL VPN Authentication', subtype Authentication) are put in Device Config State Change with src_ip and auth_mechanism unmapped -> route subtype=Authentication to Authentication 3002 (activity 1 Logon, status from status, user.name = user_name, src_endpoint.ip = src_ip, auth_protocol from auth_mechanism); DHCP lease events (ipaddress, status Expire) belong in DHCP Activity 4004 (activity 9 Expire, dst_endpoint.ip = ipaddress)."
-    ],
-    "notes": "status Successful/Failed mapping is correct; 'Disconnected' as Success is fine.",
-    "at": "2026-11-20T08:48:30"
-   }
+   "id": "m00042",
+   "history": [
+    {
+     "origin": "mapping-agent:20261120T090355",
+     "previous": {
+      "class_uid": 5019,
+      "fields": [
+       {
+        "to": "time",
+        "from": "@timestamp",
+        "type": "timestamp_ms"
+       },
+       {
+        "to": "metadata.original_time",
+        "from": "vendor.timestamp"
+       },
+       {
+        "to": "metadata.product.vendor_name",
+        "value": "Sophos"
+       },
+       {
+        "to": "metadata.product.name",
+        "value": "Sophos Firewall"
+       },
+       {
+        "to": "metadata.product.uid",
+        "from": "vendor.device"
+       },
+       {
+        "to": "metadata.event_code",
+        "from": "vendor.log_id",
+        "type": "string"
+       },
+       {
+        "to": "metadata.log_name",
+        "from": "vendor.log_type"
+       },
+       {
+        "to": "metadata.log_provider",
+        "from": "vendor.log_component"
+       },
+       {
+        "to": "metadata.log_version",
+        "from": "vendor.log_version",
+        "type": "string"
+       },
+       {
+        "to": "metadata.log_level",
+        "from": [
+         "vendor.severity",
+         "vendor.priority"
+        ]
+       },
+       {
+        "to": "severity_id",
+        "from": [
+         "vendor.severity",
+         "vendor.priority"
+        ],
+        "map": {
+         "Emergency": 6,
+         "Alert": 5,
+         "Critical": 5,
+         "Error": 4,
+         "Warning": 3,
+         "Notice": 2,
+         "Information": 1,
+         "Informational": 1,
+         "Debug": 1
+        },
+        "default": 0
+       },
+       {
+        "to": "device.name",
+        "from": "vendor.device_name"
+       },
+       {
+        "to": "device.uid",
+        "from": [
+         "vendor.device_serial_id",
+         "vendor.device_id"
+        ],
+        "type": "string"
+       },
+       {
+        "to": "device.model",
+        "from": "vendor.device_model"
+       },
+       {
+        "to": "device.hostname",
+        "from": "vendor.syslog_host"
+       },
+       {
+        "to": "device.type_id",
+        "value": 9
+       },
+       {
+        "to": "activity_id",
+        "value": 1
+       },
+       {
+        "to": "status_id",
+        "from": "vendor.status",
+        "map": {
+         "Successful": 1,
+         "Success": 1,
+         "Failed": 2,
+         "Failure": 2,
+         "Connected": 1,
+         "Disconnected": 1
+        }
+       },
+       {
+        "to": "status",
+        "from": "vendor.status"
+       },
+       {
+        "to": "message",
+        "from": "vendor.message"
+       },
+       {
+        "to": "status_detail",
+        "from": "vendor.reason"
+       },
+       {
+        "to": "actor.user.name",
+        "from": [
+         "vendor.user_name",
+         "vendor.name"
+        ]
+       },
+       {
+        "to": "metadata.log_provider",
+        "from": "vendor.log_component"
+       }
+      ]
+     },
+     "previous_review": {
+      "verdict": "changes_requested",
+      "issues": [
+       "time ignores the 'timezone' field (e.g. 2017-03-15 17:23:00 IST emitted as 17:23:00 UTC) -> apply the named timezone when building time.",
+       "Authentication events (log_component 'SSL VPN Authentication', subtype Authentication) are put in Device Config State Change with src_ip and auth_mechanism unmapped -> route subtype=Authentication to Authentication 3002 (activity 1 Logon, status from status, user.name = user_name, src_endpoint.ip = src_ip, auth_protocol from auth_mechanism); DHCP lease events (ipaddress, status Expire) belong in DHCP Activity 4004 (activity 9 Expire, dst_endpoint.ip = ipaddress)."
+      ],
+      "notes": "status Successful/Failed mapping is correct; 'Disconnected' as Success is fine.",
+      "at": "2026-11-20T08:48:30"
+     }
+    }
+   ]
   },
   {
-   "id": "m00043",
    "parser_id": "p00054",
-   "label": "sophos_xg",
-   "format": "system_health_kv",
    "class_uid": 5001,
-   "unmapped": true,
    "fields": [
     {
      "to": "time",
@@ -11084,32 +13108,155 @@
     {
      "to": "device.interface_name",
      "from": "vendor.interface"
+    },
+    {
+     "to": "timezone_offset",
+     "from": "vendor.timezone",
+     "map": {
+      "IST": 330,
+      "CEST": 120,
+      "CET": 60,
+      "BST": 60,
+      "GMT": 0,
+      "UTC": 0
+     }
     }
    ],
+   "unmapped": true,
+   "label": "sophos_xg",
+   "format": "system_health_kv",
    "status": "active",
-   "origin": "mapping-agent:20261120T082234",
-   "rationale": "XG System Health (memory/users/interface usage) -> Device Inventory Info/Log for the firewall; metric values left unmapped (no metrics slot).",
+   "origin": "mapping-agent:20261120T090355",
+   "rationale": "Timezone-aware time (parser now applies the Sophos timezone field) + timezone_offset.",
    "metrics": {
     "events": 3,
     "valid_rate": 1.0,
-    "mapped_field_share": 0.558
+    "mapped_field_share": 0.625
    },
-   "review": {
-    "verdict": "changes_requested",
-    "issues": [
-     "time ignores the 'timezone' field: date=2018-06-05 time=15:10:00 timezone=CEST emitted as 15:10:00 UTC (1528211400000) instead of 13:10:00 UTC -> apply the named timezone when building time."
-    ],
-    "notes": "Health metrics (total_memory/free/used, users, CPU) have no good home in Inventory Info; message='Usage' is uninformative -> build message from component + values or keep metrics in unmapped deliberately.",
-    "at": "2026-11-20T08:48:48"
-   }
+   "id": "m00043",
+   "history": [
+    {
+     "origin": "mapping-agent:20261120T090355",
+     "previous": {
+      "class_uid": 5001,
+      "fields": [
+       {
+        "to": "time",
+        "from": "@timestamp",
+        "type": "timestamp_ms"
+       },
+       {
+        "to": "metadata.original_time",
+        "from": "vendor.timestamp"
+       },
+       {
+        "to": "metadata.product.vendor_name",
+        "value": "Sophos"
+       },
+       {
+        "to": "metadata.product.name",
+        "value": "Sophos Firewall"
+       },
+       {
+        "to": "metadata.product.uid",
+        "from": "vendor.device"
+       },
+       {
+        "to": "metadata.event_code",
+        "from": "vendor.log_id",
+        "type": "string"
+       },
+       {
+        "to": "metadata.log_name",
+        "from": "vendor.log_type"
+       },
+       {
+        "to": "metadata.log_provider",
+        "from": "vendor.log_component"
+       },
+       {
+        "to": "metadata.log_version",
+        "from": "vendor.log_version",
+        "type": "string"
+       },
+       {
+        "to": "metadata.log_level",
+        "from": [
+         "vendor.severity",
+         "vendor.priority"
+        ]
+       },
+       {
+        "to": "severity_id",
+        "from": [
+         "vendor.severity",
+         "vendor.priority"
+        ],
+        "map": {
+         "Emergency": 6,
+         "Alert": 5,
+         "Critical": 5,
+         "Error": 4,
+         "Warning": 3,
+         "Notice": 2,
+         "Information": 1,
+         "Informational": 1,
+         "Debug": 1
+        },
+        "default": 0
+       },
+       {
+        "to": "device.name",
+        "from": "vendor.device_name"
+       },
+       {
+        "to": "device.uid",
+        "from": [
+         "vendor.device_serial_id",
+         "vendor.device_id"
+        ],
+        "type": "string"
+       },
+       {
+        "to": "device.model",
+        "from": "vendor.device_model"
+       },
+       {
+        "to": "device.hostname",
+        "from": "vendor.syslog_host"
+       },
+       {
+        "to": "device.type_id",
+        "value": 9
+       },
+       {
+        "to": "activity_id",
+        "value": 1
+       },
+       {
+        "to": "message",
+        "from": "vendor.log_subtype"
+       },
+       {
+        "to": "device.interface_name",
+        "from": "vendor.interface"
+       }
+      ]
+     },
+     "previous_review": {
+      "verdict": "changes_requested",
+      "issues": [
+       "time ignores the 'timezone' field: date=2018-06-05 time=15:10:00 timezone=CEST emitted as 15:10:00 UTC (1528211400000) instead of 13:10:00 UTC -> apply the named timezone when building time."
+      ],
+      "notes": "Health metrics (total_memory/free/used, users, CPU) have no good home in Inventory Info; message='Usage' is uninformative -> build message from component + values or keep metrics in unmapped deliberately.",
+      "at": "2026-11-20T08:48:48"
+     }
+    }
+   ]
   },
   {
-   "id": "m00044",
    "parser_id": "p00055",
-   "label": "sophos_xg",
-   "format": "wireless_protection_kv",
    "class_uid": 5001,
-   "unmapped": true,
    "fields": [
     {
      "to": "time",
@@ -11207,24 +13354,147 @@
     {
      "to": "message",
      "from": "vendor.log_subtype"
+    },
+    {
+     "to": "timezone_offset",
+     "from": "vendor.timezone",
+     "map": {
+      "IST": 330,
+      "CEST": 120,
+      "CET": 60,
+      "BST": 60,
+      "GMT": 0,
+      "UTC": 0
+     }
     }
    ],
+   "unmapped": true,
+   "label": "sophos_xg",
+   "format": "wireless_protection_kv",
    "status": "active",
-   "origin": "mapping-agent:20261120T082234",
-   "rationale": "XG Wireless Protection AP client counts -> Device Inventory Info/Log; AP/SSID/client count left unmapped.",
+   "origin": "mapping-agent:20261120T090355",
+   "rationale": "Timezone-aware time (parser now applies the Sophos timezone field) + timezone_offset.",
    "metrics": {
     "events": 2,
     "valid_rate": 1.0,
-    "mapped_field_share": 0.533
+    "mapped_field_share": 0.6
    },
-   "review": {
-    "verdict": "changes_requested",
-    "issues": [
-     "time ignores the 'timezone' field: date=2017-02-01 time=14:19:47 timezone=IST emitted as 14:19:47 UTC instead of 08:49:47 UTC -> apply the named timezone (IST +05:30) when building time."
-    ],
-    "notes": "ap/ssid/clients_conn_SSID left unmapped; message is just the subtype 'Information' -> consider building a message (AP, SSID, client count).",
-    "at": "2026-11-20T08:48:49"
-   }
+   "id": "m00044",
+   "history": [
+    {
+     "origin": "mapping-agent:20261120T090355",
+     "previous": {
+      "class_uid": 5001,
+      "fields": [
+       {
+        "to": "time",
+        "from": "@timestamp",
+        "type": "timestamp_ms"
+       },
+       {
+        "to": "metadata.original_time",
+        "from": "vendor.timestamp"
+       },
+       {
+        "to": "metadata.product.vendor_name",
+        "value": "Sophos"
+       },
+       {
+        "to": "metadata.product.name",
+        "value": "Sophos Firewall"
+       },
+       {
+        "to": "metadata.product.uid",
+        "from": "vendor.device"
+       },
+       {
+        "to": "metadata.event_code",
+        "from": "vendor.log_id",
+        "type": "string"
+       },
+       {
+        "to": "metadata.log_name",
+        "from": "vendor.log_type"
+       },
+       {
+        "to": "metadata.log_provider",
+        "from": "vendor.log_component"
+       },
+       {
+        "to": "metadata.log_version",
+        "from": "vendor.log_version",
+        "type": "string"
+       },
+       {
+        "to": "metadata.log_level",
+        "from": [
+         "vendor.severity",
+         "vendor.priority"
+        ]
+       },
+       {
+        "to": "severity_id",
+        "from": [
+         "vendor.severity",
+         "vendor.priority"
+        ],
+        "map": {
+         "Emergency": 6,
+         "Alert": 5,
+         "Critical": 5,
+         "Error": 4,
+         "Warning": 3,
+         "Notice": 2,
+         "Information": 1,
+         "Informational": 1,
+         "Debug": 1
+        },
+        "default": 0
+       },
+       {
+        "to": "device.name",
+        "from": "vendor.device_name"
+       },
+       {
+        "to": "device.uid",
+        "from": [
+         "vendor.device_serial_id",
+         "vendor.device_id"
+        ],
+        "type": "string"
+       },
+       {
+        "to": "device.model",
+        "from": "vendor.device_model"
+       },
+       {
+        "to": "device.hostname",
+        "from": "vendor.syslog_host"
+       },
+       {
+        "to": "device.type_id",
+        "value": 9
+       },
+       {
+        "to": "activity_id",
+        "value": 1
+       },
+       {
+        "to": "message",
+        "from": "vendor.log_subtype"
+       }
+      ]
+     },
+     "previous_review": {
+      "verdict": "changes_requested",
+      "issues": [
+       "time ignores the 'timezone' field: date=2017-02-01 time=14:19:47 timezone=IST emitted as 14:19:47 UTC instead of 08:49:47 UTC -> apply the named timezone (IST +05:30) when building time."
+      ],
+      "notes": "ap/ssid/clients_conn_SSID left unmapped; message is just the subtype 'Information' -> consider building a message (AP, SSID, client count).",
+      "at": "2026-11-20T08:48:49"
+     }
+    }
+   ]
   },
   {
    "id": "m00045",
@@ -26501,5 +28771,5 @@
    "at": "2026-11-20T08:14:20+00:00"
   }
  ],
- "updated": "2026-11-20T08:54:54+00:00"
+ "updated": "2026-11-20T09:15:27+00:00"
 }
