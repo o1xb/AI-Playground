@@ -26,7 +26,7 @@ from .mapping import prepare
 from .schema import Schema
 from .validate import mapping_metrics, mapping_verdict
 
-DEFAULT_MODEL = os.environ.get("LG_EMBED_MODEL", "google/embeddinggemma-300m")
+DEFAULT_MODEL = os.environ.get("LG_EMBED_MODEL", "google/embeddinggemma-2")
 CACHE_DIR = os.environ.get("LG_EMBED_CACHE", os.path.join(os.path.expanduser("~"), ".cache", "loggrouper"))
 # always offered as one-liners: the classes security telemetry most often lands in
 COMMON_CLASSES = ["network_activity", "http_activity", "dns_activity", "authentication", "detection_finding",
@@ -39,11 +39,28 @@ COMMON_ENUMS = ["activity_id", "severity_id", "action_id", "disposition_id", "st
 
 
 # ------------------------------------------------------------------ embedder
+def _device():
+    """LG_EMBED_DEVICE overrides; otherwise CUDA GPU, then Apple Silicon (MPS), then CPU."""
+    d = os.environ.get("LG_EMBED_DEVICE")
+    if d:
+        return d
+    try:
+        import torch
+        if torch.cuda.is_available():
+            return "cuda"
+        if getattr(torch.backends, "mps", None) and torch.backends.mps.is_available():
+            return "mps"
+    except ImportError:
+        pass
+    return "cpu"
+
+
 class Embedder:
-    def __init__(self, model=DEFAULT_MODEL, device="cpu"):
+    def __init__(self, model=DEFAULT_MODEL, device=None):
         from sentence_transformers import SentenceTransformer
         self.name = model
-        self.m = SentenceTransformer(model, device=device)
+        self.device = device or _device()
+        self.m = SentenceTransformer(model, device=self.device)
         self.has_prompts = hasattr(self.m, "encode_query") and "gemma" in model.lower()
 
     def docs(self, texts, batch_size=64):

@@ -1,4 +1,4 @@
-# Status (parked)
+# Status (parked) — see JOURNEY.md for the full story
 
 ## Done
 - Grouping: rule store + learner agent (tools, sandboxed code tools, review gate). See bench/RESULTS.md.
