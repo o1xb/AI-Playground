@@ -1,3 +1,12 @@
 {
- "rejected": []
+ "rejected": [
+  {
+   "label": "mimecast_email_security",
+   "pattern": "\"_partition\"\\s*:\\s*\\d+\\s*,\\s*\"accountId\"\\s*:\\s*\"[A-Z]+\\d*[A-Z0-9]*\"\\s*,\\s*(\"action\"\\s*:\\s*\"\\w+\"\\s*,\\s*)?\"aggregateId\"\\s*:",
+   "flags": "",
+   "reason": "collides with known label ivanti_connect_secure",
+   "origin": "subagent:packet-1",
+   "at": "2026-11-20T04:30:09+00:00"
+  }
+ ]
 }

@@ -1,5 +1,5 @@
 {
- "version": 1,
+ "version": 7,
  "rules": [
   {
    "id": "r00001",
@@ -12,8 +12,11 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 2,
+   "examples": [
+    "<190>date=2023-12-13 time=07:56:14 tz=\"+0200\" devname=firewallhost01 device_id=FMG123TZ13111111 log_id=0001010018 type=event subtype=system pri=information desc=\"User login/logout successful\" user=\"philipp\" userfrom=\"JSON(192.168.0.10)\" msg=\"user 'philipp' with profile 'Super_User' login accepted from JSON(192.168.0.10)\" session_id=12345 adminprof=\"Super_User\"",
+    "date= desc=\"Object update request from device of FortiClient received\" msg=\"Send new version object to device (sn:FSAxxxxxxxxx, ip=127.0.0.1): objid=0000000000, curr_ver=00091.03310\""
+   ],
    "rationale": ""
   },
   {
@@ -42,8 +45,11 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 2,
+   "examples": [
+    "sshd: : <<stiae.medium> error: Bind to port erc on amqu failed: unknown",
+    "sshd: : <<dun.medium> error: Bind to port Duisau on psum failed: failure"
+   ],
    "rationale": ""
   },
   {
@@ -87,8 +93,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 206,
+   "examples": [
+    "{\"event_simpleName\":\"FileDeleted\",\"aid\":\"a1b2c3d4e5f64789a0b1c2d3e4f50617\",\"cid\":\"2cc98db1a47b4c98b913c94d43bfab70\",\"aip\":\"192.0.2.1\",\"ConfigBuild\":\"1007.3.0021003.15\",\"ConfigStateHash\":\"1234567890\",\"EffectiveTransmissionClass\":\"2\",\"Entitlements\":\"15\",\"EventOrigin\":\"1\",\"timestamp\":\"1743508799999\",\"name\":\"FileDeletedV4\",\"event_platform\":\"Win\",\"id\":\"00000011-0000-4000-8000-000000000011\",\"ComputerNam",
+    "{\"Attacks\":[{\"Tactic\":\"Command and Control\",\"Technique\":\"Data Obfuscation\"}],\"ConfigStateHash\":\"466154258\",\"ContextBaseFileName\":\"git\",\"ContextProcessId\":\"686164702295376714\",\"ContextTimeStamp\":\"1779484899.083\",\"EffectiveTransmissionClass\":\"2\",\"Entitlements\":\"15\",\"EventOrigin\":1,\"FileCategory\":\"3\",\"IsOnRemovableDisk\":\"0\",\"LocalAddressIP4\":\"192.0.2.15\",\"aid\":\"AID-15\",\"cid\":\"deadbeefdeadbeefdeadbeef",
+    "{\"AssemblyFlags\":\"0\",\"AssemblyId\":\"1182308886256\",\"AssemblyName\":\"MainUI, Version=192.0.2.87, Culture=neutral, PublicKeyToken=null\",\"Attacks\":[{\"Tactic\":\"Defense Evasion\",\"Technique\":\"Process Injection\"}],\"ConfigStateHash\":\"4065707593\",\"ContextProcessId\":\"73372850946\",\"ContextTimeStamp\":\"1779484849.078\",\"DotnetModuleFlags\":\"8\",\"DotnetModuleId\":\"140710246870312\",\"EffectiveTransmissionClass\":\"3\",\"En",
+    "{\"event_simpleName\":\"NewScriptWritten\",\"ContextTimeStamp\":\"1625677504.770\",\"ConfigStateHash\":\"1620585913\",\"ContextProcessId\":\"365053504406857894\",\"Size\":\"0\",\"ContextThreadId\":\"0\",\"aip\":\"67.43.156.14\",\"SHA256HashData\":\"2d9a331f045a9c6b13d45eabe948b5c7dfdc25e1251bff6756fa306581087da9\",\"FileIdentifier\":\"05000001000000000000000000000000b588050000000000\",\"ConfigBuild\":\"1007.4.0013701.1\",\"event_platform",
+    "{\"AuthenticationId\":\"999\",\"ConfigBuild\":\"1007.3.0011603.1\",\"ConfigStateHash\":\"3338885535\",\"ContextTimeStamp\":\"1604855185.108\",\"EffectiveTransmissionClass\":\"3\",\"Entitlements\":\"15\",\"ImageFileName\":\"\\\\Device\\\\HarddiskVolume1\\\\Windows\\\\System32\\\\gpsvc.dll\",\"InterfaceGuid\":\"367ABB81-9844-35F1-AD32-98F038001003\",\"InterfaceVersion\":\"131072\",\"RpcClientProcessId\":\"219053851298\",\"RpcClientThreadId\":\"2204792"
+   ],
    "rationale": ""
   },
   {
@@ -102,8 +114,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 18,
+   "examples": [
+    "{\"accountId\":\"1234567890123456789\",\"accountName\":\"Default\",\"activityType\":1234,\"agentId\":null,\"agentUpdatedVersion\":null,\"comments\":null,\"createdAt\":\"2022-04-06T08:45:43.122415Z\",\"data\":{\"accountName\":\"Default\",\"description\":null,\"fileContentHash\":\"aaf4c61ddcc5e8a2dabede0f3b482cxxxxxxxxxx\",\"fullScopeDetails\":\"Site Default site of Account Default\",\"fullScopeDetailsPath\":\"test/default\",\"groupName\":n",
+    "{\"agentDetectionInfo\":{\"accountId\":\"11111111111111111\",\"accountName\":\"REDACTED\",\"agentDetectionState\":null,\"agentDomain\":\"domain.com\",\"agentIpV4\":\"192.168.100.226,10.251.20.65,127.0.0.1\",\"agentIpV6\":\"2a02:cf40::1,2a02:cf40::2,2a02:cf40::3,2a02:cf40::4,2a02:cf40::5,2a02:cf40::6,2a02:cf40::7,2a02:cf40::8,2a02:cf40::9,2a02:cf40::a,2a02:cf40::b,2a02:cf40::c,2a02:cf40::d,2a02:cf40::e,2a02:cf40::f,2a02:",
+    "{\"accountId\":\"1234567890123456789\",\"accountName\":\"Default\",\"activityType\":1234,\"agentId\":\"1234567890123456789\",\"agentUpdatedVersion\":null,\"comments\":null,\"createdAt\":\"2022-04-06T08:26:45.579474Z\",\"data\":{\"accountName\":\"Default\",\"computerName\":\"user-test\",\"ipAddress\":\"81.2.69.143\",\"externalIp\":null,\"fullScopeDetails\":\"Group Default Group in Site Default site of Account Default\",\"fullScopeDetailsPat",
+    "{\"agentDetectionInfo\":{\"accountId\":\"1234567890123456789\",\"accountName\":\"Default\",\"agentDetectionState\":null,\"agentDomain\":\"WORKGROUP\",\"agentIpV4\":\"10.0.0.1\",\"agentIpV6\":\"2a02:cf40:add:4002:91f2:a9b2:e09a:6fc6\",\"agentLastLoggedInUpn\":null,\"agentLastLoggedInUserMail\":null,\"agentLastLoggedInUserName\":\"\",\"agentMitigationMode\":\"detect\",\"agentOsName\":\"linux\",\"agentOsRevision\":\"1234\",\"agentRegisteredAt\":",
+    "{\"id\": \"01911119-abcd-7454-1234-6abcdef67893\", \"aiInvestigation\": null, \"analystVerdict\": \"UNDEFINED\", \"analytics\": {\"category\": \"Reputation\", \"name\": \"Agent Policy\", \"typeValue\": \"STATIC\", \"uid\": \"analytic-uid-001\"}, \"assets\": [{\"accessible\": true, \"agentUuid\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\", \"agentVersion\": \"24.2.2.20\", \"assetTypeClassifier\": \"Linux Server\", \"category\": \"Server\", \"connec"
+   ],
    "rationale": ""
   },
   {
@@ -117,8 +135,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 29,
+   "examples": [
+    "{ \"_id\": \"5182808a2a99fc688d4a8157\", \"access_method\": \"Client\", \"account_id\": \"533708960054\", \"account_name\": \"csa-rules-setup\", \"acked\": \"false\", \"action\": \"bypass\", \"activity\": \"Login Failed\", \"alert\": \"yes\", \"alert_id\": \"314eba43aa95c8ea4f7416732e2c1921\", \"alert_name\": \"[CASB] Alert on Upload and Download for Sensitive Keywords in Cloud Storage\", \"alert_source\": \"Malware\", \"alert_type\": \"anomal",
+    "{\"event\":{\"id\":\"045b4a05e63667d3b25279e1\"},\"netskope\":{\"alerts\":{\"insertion_epoch_timestamp\":1643398205,\"access_method\":\"Client\",\"acked\":\"false\",\"is_alert\":\"yes\",\"alert\":{\"name\":\"example.com/images/favicon.ico\",\"type\":\"malsite\"},\"type\":\"malsite\",\"app\":{\"session\":{\"id\":\"5227418687549615144\"},\"category\":\"Prohibited Sites\"},\"browser\":{\"session\":{\"id\":\"3264708578582859888\"}},\"category\":{\"name\":\"Prohib",
+    "{\"netskope\":{\"events\":{\"event_type\":\"application\",\"insertion\":{\"timestamp\":1643512589},\"access_method\":\"API Connector\",\"ack\":\"yes\",\"activity\":{\"name\":\"Upload\"},\"alert\":{\"is_present\":\"no\",\"name\":\"legal-hold-alert\",\"type\":\"legal hold\"},\"app\":{\"name\":\"Slack\",\"category\":\"Cloud Storage\"},\"category\":{\"name\":\"Cloud Storage\"},\"cci\":\"88\",\"ccl\":\"high\",\"count\":1,\"device\":{\"type\":\"Other\"},\"instance\":{\"id\":\"ne",
+    "{\"event\":{\"id\":\"5b052d559134cbd545cc1bdb\"},\"netskope\":{\"alerts\":{\"insertion_epoch_timestamp\":1640277165,\"access_method\":\"API Connector\",\"acked\":\"false\",\"action\":\"alert\",\"activity\":{\"name\":\"Introspection Scan\"},\"is_alert\":\"yes\",\"alert\":{\"name\":\"DLP-alert\",\"type\":\"nspolicy\"},\"app\":{\"name\":\"Example\",\"category\":\"Cloud Storage\"},\"category\":{\"name\":\"Cloud Storage\"},\"cci\":\"89\",\"ccl\":\"high\",\"count\":1,\"dev",
+    "{\"_id\": \"f0e1d2c3b4a5968778695a4b02\", \"access_method\": \"API Connector\", \"action\": \"block\", \"alert\": \"no\", \"app\": \"Google Drive\", \"appcategory\": \"Cloud Storage\", \"cci\": 82, \"ccl\": \"excellent\", \"device\": \"Windows Device\", \"device_classification\": \"managed\", \"dlp_file\": \"sensitive_report.docx\", \"dlp_incident_id\": 4815162342108100, \"dlp_is_unique_count\": \"true\", \"dlp_match_info\": \"SSN rule matched 7 t"
+   ],
    "rationale": ""
   },
   {
@@ -132,8 +156,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 17,
+   "examples": [
+    "{\"action\":\"activation_begin\",\"description\":\"Starting activation process\",\"isotimestamp\":\"2021-07-20T11: 41: 31+00: 00\",\"object\":null,\"timestamp\":1626781291,\"username\":\"narroway\"}",
+    "{\"access_device\":{\"browser\":null,\"browser_version\":null,\"epkey\":null,\"flash_version\":null,\"hostname\":\"pilot\",\"ip\":\"89.160.20.156\",\"is_encryption_enabled\":\"unknown\",\"is_firewall_enabled\":\"unknown\",\"is_password_set\":\"unknown\",\"java_version\":null,\"location\":{\"city\":null,\"country\":null,\"state\":null},\"os\":null,\"os_version\":null,\"security_agents\":\"unknown\"},\"alias\":\"\",\"application\":{\"key\":\"DIY231J8BR23Q",
+    "{\"access_device\":{\"browser\":\"Chrome\",\"browser_version\":\"92.0.4515.107\",\"flash_version\":\"uninstalled\",\"hostname\":null,\"ip\":\"2a02:cf40:add:4002:91f2:a9b2:e09a:6fc6\",\"is_encryption_enabled\":\"unknown\",\"is_firewall_enabled\":\"unknown\",\"is_password_set\":\"unknown\",\"java_version\":\"uninstalled\",\"location\":{\"city\":\"Ann Arbor\",\"country\":\"United States\",\"state\":\"Michigan\"},\"os\":\"Windows\",\"os_version\":\"10\"},\"al",
+    "{\"action\":\"user_update\",\"description\":\"{\\\"email\\\": \\\"narroway@example.com\\\", \\\"Sync Ref. Code\\\": \\\"41c7e5714a91d17dea11157539d5d1ac\\\"}\",\"isotimestamp\":\"2021-07-20T11:45:11+00:00\",\"object\":\"narroway\",\"timestamp\":1626781511,\"username\":\"narroway\"}",
+    "{\"action\":\"admin_login\",\"description\":\"{\\\"ip_address\\\": \\\"204.10.190.10\\\", \\\"role\\\": \\\"Help Desk\\\", \\\"device\\\": \\\"720-297-5641\\\", \\\"factor\\\": \\\"sms\\\", \\\"saml_idp\\\": \\\"Okta\\\", \\\"primary_auth_method\\\": \\\"Single Sign-On\\\"}\",\"isotimestamp\":\"2024-06-27T16:39:52+00:00\",\"object\":null,\"timestamp\":1719506392,\"username\":\"Tijd Eenmens\"}"
+   ],
    "rationale": ""
   },
   {
@@ -147,8 +177,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 21,
+   "examples": [
+    "{\"EPOEvents.AgentGUID\":\"66666666-7777-4888-8999-000000000006\",\"EPOEvents.AnalyzerDetectionMethod\":\"Access Protection\",\"EPOEvents.AnalyzerHostName\":\"lab-host-file.example.com\",\"EPOEvents.AnalyzerIPV4\":1177773066,\"EPOEvents.AnalyzerMAC\":\"00005e005303\",\"EPOEvents.AnalyzerName\":\"Trellix Endpoint Security\",\"EPOEvents.AnalyzerVersion\":\"10.7.20.14066\",\"EPOEvents.AutoGUID\":\"FFFFFFFF-0000-4111-8111-3333333",
+    "{\"EPOProductEvents.AgentGUID\":\"89A1D5C1-2B3E-4F67-8A9B-0C1D2E3F4A5B\",\"EPOProductEvents.AutoID\":1,\"EPOProductEvents.DetectedUTC\":\"2026-07-21T14:53:20+05:30\",\"EPOProductEvents.Error\":0,\"EPOProductEvents.ExtraDATNames\":null,\"EPOProductEvents.HostName\":\"HOST-EXAMPLE-02\",\"EPOProductEvents.IPV6\":\"2001:DB8:85A3:0:8A2E:370:7334:1\",\"EPOProductEvents.InitiatorID\":null,\"EPOProductEvents.InitiatorType\":\"Comma",
+    "{\"EPOEvent\":{\"AnalyzerIPv4\":\"175.16.199.1\",\"SourceMAC\":\"010a010a010b\",\"BladeName\":\"IDS_BLADE_NAME_SPB\",\"AccessRequested\":\"read\",\"TargetFileName\":\"eicar.com\",\"SourcePort\":\"12345\",\"SourceFileSize\":\"68\",\"ProductFamily\":\"HOSTIPS\",\"ThreatActionTaken\":\"IDS_ALERT_ACT_TAK_DEL\",\"AnalyzerEngineVersion\":\"5800.7501\",\"AutoGUID\":\"01234567-ABCD-ABCD-ABCD-ABCD01234567\",\"ThreatHandled\":\"1\",\"HostName\":\"HOST1234\",\"A",
+    "{\"OrionAuditLog.AutoId\":1941,\"OrionAuditLog.CmdName\":\"Create user\",\"OrionAuditLog.EndTime\":\"2026-07-16T13:15:04+05:30\",\"OrionAuditLog.Message\":\"New user \\\"alice.johnson\\\" created with role \\\"Security Officer\\\"\",\"OrionAuditLog.Priority\":2,\"OrionAuditLog.StartTime\":\"2026-07-16T13:15:03+05:30\",\"OrionAuditLog.Success\":true,\"OrionAuditLog.UserId\":1,\"OrionAuditLog.UserName\":\"admin\"}",
+    "{\"EPOEvent\":{\"CmdName\":\"Logon Attempt\",\"Message\":\"Failed Logon for user \\\"admin\\\" from IP address: 203.0.113.20\",\"UserName\":\"admin\",\"Priority\":\"2\",\"Success\":\"0\",\"StartTime\":\"2021-05-03 06:27:04\",\"RemoteAddress\":\"203.0.113.20\"}}"
+   ],
    "rationale": ""
   },
   {
@@ -252,8 +288,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 334,
+   "examples": [
+    "<5>1 2021-03-10T22:19:06Z VAULT {\"format\":\"elastic\",\"version\":\"1.0\",\"syslog\":{\"audit_record\":{\"Rfc5424\":\"yes\",\"Timestamp\":\"Mar 10 14:19:06\",\"IsoTimestamp\":\"2021-03-10T22:19:06Z\",\"Hostname\":\"VAULT\",\"Vendor\":\"Cyber-Ark\",\"Product\":\"Vault\",\"Version\":\"11.7.0000\",\"MessageID\":\"180\",\"Desc\":\"Add User\",\"Severity\":\"Info\",\"Issuer\":\"Administrator\",\"Action\":\"Add User\",\"SourceUser\":\"PSMApp_ASR-WIN\",\"TargetUser\":",
+    "<5>1 2021-03-11T17:38:14Z VAULT {\"format\":\"elastic\",\"version\":\"1.0\",\"raw\":\"<syslog>\\n\\n  <audit_record>\\n    <Rfc5424>yes</Rfc5424>\\n    <Timestamp>Mar 11 09:38:14</Timestamp>\\n    <IsoTimestamp>2021-03-11T17:38:14Z</IsoTimestamp>\\n    <Hostname>VAULT</Hostname>\\n    <Vendor>Cyber-Ark</Vendor>\\n    <Product>Vault</Product>\\n    <Version>11.7.0000</Version>\\n    <MessageID>33</MessageID>\\n    <Desc",
+    "<5>1 2021-03-10T09:11:22Z VAULT {\"format\":\"elastic\",\"version\":\"1.0\",\"syslog\":{\"audit_record\":{\"Rfc5424\":\"yes\",\"Timestamp\":\"Mar 10 01:11:22\",\"IsoTimestamp\":\"2021-03-10T09:11:22Z\",\"Hostname\":\"VAULT\",\"Vendor\":\"Cyber-Ark\",\"Product\":\"Vault\",\"Version\":\"11.7.0000\",\"MessageID\":\"265\",\"Desc\":\"Add Group Member\",\"Severity\":\"Info\",\"Issuer\":\"Administrator\",\"Action\":\"Add Group Member\",\"SourceUser\":\"PSMAppUsers\",",
+    "<5>1 2021-03-10T08:28:30Z VAULT {\"format\":\"elastic\",\"version\":\"1.0\",\"syslog\":{\"audit_record\":{\"Rfc5424\":\"yes\",\"Timestamp\":\"Mar 10 00:28:30\",\"IsoTimestamp\":\"2021-03-10T08:28:30Z\",\"Hostname\":\"VAULT\",\"Vendor\":\"Cyber-Ark\",\"Product\":\"Vault\",\"Version\":\"11.7.0000\",\"MessageID\":\"8\",\"Desc\":\"Logoff\",\"Severity\":\"Info\",\"Issuer\":\"PVWAAppUser\",\"Action\":\"Logoff\",\"SourceUser\":\"\",\"TargetUser\":\"\",\"Safe\":\"\",\"File\":\"\"",
+    "<5>1 2021-03-10T14:38:57Z VAULT {\"format\":\"elastic\",\"version\":\"1.0\",\"syslog\":{\"audit_record\":{\"Rfc5424\":\"yes\",\"Timestamp\":\"Mar 10 06:38:57\",\"IsoTimestamp\":\"2021-03-10T14:38:57Z\",\"Hostname\":\"VAULT\",\"Vendor\":\"Cyber-Ark\",\"Product\":\"Vault\",\"Version\":\"11.7.0000\",\"MessageID\":\"294\",\"Desc\":\"Store password\",\"Severity\":\"Info\",\"Issuer\":\"PasswordManager\",\"Action\":\"Store password\",\"SourceUser\":\"\",\"TargetUser\":"
+   ],
    "rationale": ""
   },
   {
@@ -267,8 +309,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 16,
+   "examples": [
+    "vectra_json_lockdown -: {\"version\": \"7.4\", \"account_id\": 4, \"user\": \"vectrademo\", \"headend_addr\": \"89.160.20.112\", \"account_uid\": \"conrad@corp.example.com\", \"href\": \"https://x29-1-13.sc.tvec/accounts/4\", \"action\": \"unlock\", \"success\": true, \"will_retry\": false, \"category\": \"LOCKDOWN\", \"vectra_timestamp\": \"1676619238\"}",
+    "vectra_json_campaigns -: {\"campaign_name\": \"badactor.net\", \"campaign_id\": 9, \"action\": \"START\", \"src_name\": \"BThomas-Win7\", \"src_ip\": \"175.16.199.0\", \"src_hid\": 417, \"dest_name\": \"badactor.net\", \"dest_ip\": \"89.160.20.112\", \"dest_id\": \"external\", \"det_id\": 108, \"reason\": \"External Remote Access\", \"campaign_link\": \"https://x29-1-13.sc.tvec/campaigns/9\", \"timestamp\": \"1676367545.810779\", \"version\": \"",
+    "vectra_json_account_v2 -: {\"version\": \"7.4\", \"account_id\": 17, \"headend_addr\": \"89.160.20.112\", \"account_uid\": \"deacon@lab.tme.local\", \"threat\": 70, \"certainty\": 34, \"quadrant\": \"high\", \"score_decreases\": false, \"privilege\": 1, \"href\": \"https://x29-1-13.sc.tvec/accounts/10\", \"category\": \"ACCOUNT SCORING\", \"tags\": \"[]\", \"host_access_history\": \"[{\\\"id\\\": 276, \\\"name\\\": \\\"dc2-aws-us-west-01\\\", \\\"priv",
+    "vectra_json -: {\"version\": \"7.8\", \"detection_id\": 3390, \"category\": \"EXFILTRATION\", \"severity\": 6.9, \"threat\": 69, \"certainty\": 73, \"d_type\": \"hidden_dns_tunnel_exfil\", \"d_type_vname\": \"Hidden DNS Tunnel\", \"triaged\": false, \"headend_addr\": \"89.160.20.112\", \"dvchost\": \"89.160.20.112\", \"href\": \"https://89.160.20.112/detections/3390?detail_id=81305\", \"dd_dst_ip\": \"89.160.20.112\", \"dd_dst_port\": 53, \"",
+    "vectra_json_v2 -: {\"bytes_sent\": 30801, \"bytes_received\": 521891, \"dst_ports\": \"[445, 4444]\", \"version\": \"7.4\", \"detection_id\": 126, \"category\": \"LATERAL MOVEMENT\", \"severity\": \"8.9\", \"threat\": 89, \"certainty\": 88, \"d_type\": \"stage_loader\", \"d_type_vname\": \"Internal Stage Loader\", \"triaged\": false, \"headend_addr\": \"89.160.20.112\", \"dvchost\": \"x29-1-13.sc.tvec\", \"href\": \"https://x29-1-13.sc.tvec/de"
+   ],
    "rationale": ""
   },
   {
@@ -282,8 +330,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 71,
+   "examples": [
+    "{\"ts\": 1738666230.234567,\"uid\": \"ChYnuE3TtPcM9xWq1r\",\"id.orig_h\": \"10.0.0.1\",\"id.orig_p\": 49155,\"id.resp_h\": \"10.0.0.5\",\"id.resp_p\": 1812,\"username\": \"alice.williams\",\"mac\": \"00:14:22:e9:54:5e\",\"framed_addr\": \"10.10.10.103\",\"connect_info\": \"802.11ax\",\"result\": \"failed\"}",
+    "{\"ts\":1352718265.222457,\"uid\":\"CpIIXl4DFGswmjH2bl\",\"id.orig_h\":\"192.168.1.10\",\"id.orig_p\":64342,\"id.resp_h\":\"192.168.1.164\",\"id.resp_p\":502,\"func\":\"READ_COILS\"}",
+    "{\"ts\":1543877987.381899,\"uid\":\"CWWzPB3RjqhFf528c\",\"id.orig_h\":\"192.168.1.10\",\"id.orig_p\":33782,\"id.resp_h\":\"192.168.1.9\",\"id.resp_p\":25,\"trans_depth\":1,\"helo\":\"EXAMPLE.COM\",\"last_reply\":\"220 2.0.0 SMTP server ready\",\"path\":[\"192.168.1.9\"],\"tls\":true,\"fuids\":[],\"is_webmail\":false}",
+    "{\"ts\":1573030980.989353,\"uid\":\"Ctefoj1tgOPt4D0EK2\",\"id.orig_h\":\"192.168.1.1\",\"id.orig_p\":37598,\"id.resp_h\":\"89.160.20.156\",\"id.resp_p\":53,\"seen.indicator\":\"89.160.20.156\",\"seen.indicator_type\":\"Intel::ADDR\",\"seen.where\":\"Conn::IN_RESP\",\"seen.node\":\"worker-1-2\",\"matched\":[\"Intel::ADDR\"],\"sources\":[\"ETPRO Rep: AbusedTLD Score: 127\"]}",
+    "{\"ts\":1547188416.857497,\"uid\":\"CAcJw21BbVedgFnYH4\",\"id.orig_h\":\"192.168.86.167\",\"id.orig_p\":38340,\"id.resp_h\":\"89.160.20.156\",\"id.resp_p\":53,\"proto\":\"udp\",\"service\":\"dns\",\"duration\":0.076967,\"orig_bytes\":75,\"resp_bytes\":178,\"conn_state\":\"SF\",\"local_orig\":true,\"local_resp\":false,\"missed_bytes\":0,\"history\":\"Dd\",\"orig_pkts\":1,\"orig_ip_bytes\":103,\"resp_pkts\":1,\"resp_ip_bytes\":206,\"tunnel_parents\":[]}"
+   ],
    "rationale": ""
   },
   {
@@ -297,8 +351,13 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 4,
+   "examples": [
+    "{\"ISP_name\":\"Cato Networks Inc.\",\"account_id\":\"12345\",\"account_name\":\"Demo-Mode\",\"action\":\"Block\",\"ad_name\":\"jane.smith@example.com\",\"app_stack\":\"TCP, TLS, HTTP(S)\",\"application_id\":\"http\",\"application_name\":\"HTTP(S)\",\"application_risk\":\"2\",\"application_type\":\"System\",\"cato_app\":\"http\",\"client_ip\":\"81.2.69.144\",\"client_version\":\"5.21.5.8548\",\"configured_host_name\":\"WORKSTATION-01\",\"congestion_algo",
+    "{\"ISP_name\":\"Cato Networks Inc.\",\"account_id\":\"12345\",\"account_name\":\"Demo-Mode\",\"action\":\"Block\",\"ad_name\":\"john.doe@example.com\",\"app_stack\":\"TCP, TLS, HTTP(S)\",\"application_id\":\"http\",\"application_name\":\"HTTP(S)\",\"application_risk\":\"2\",\"application_type\":\"System\",\"categories\":\"Porn\",\"cato_app\":\"http\",\"client_class\":\"unclassified tls\",\"client_ip\":\"81.2.69.144\",\"client_version\":\"5.21.5.8548\",\"con",
+    "{\"ISP_name\":\"Cato Networks Inc.\",\"account_id\":\"12345\",\"account_name\":\"Demo-Mode\",\"action\":\"Prompt\",\"ad_name\":\"John Doe\",\"app_stack\":\"TCP, TLS, HTTP(S)\",\"socket_version\":\"25.0.22040\",\"application_id\":\"http\",\"application_name\":\"HTTP(S)\",\"application_risk\":\"2\",\"application_type\":\"System\",\"categories\":\"Anonymizers\",\"cato_app\":\"http\",\"client_class\":\"unclassified tls\",\"client_ip\":\"1.128.0.0\",\"client_ver",
+    "{\"ISP_name\":\"Microsoft Corporation\",\"account_id\":\"12345\",\"account_name\":\"Demo-Mode\",\"action\":\"Block\",\"ad_name\":\"Jane Smith\",\"app_stack\":\"UDP, DNS, DNS\",\"application_id\":\"dns\",\"application_name\":\"DNS\",\"application_risk\":\"4\",\"application_type\":\"System\",\"cato_app\":\"dns\",\"client_ip\":\"1.128.0.0\",\"client_version\":\"5.21.5.8548\",\"configured_host_name\":\"WORKSTATION-02\",\"connection_origin\":\"Cato Client\",\"de"
+   ],
    "rationale": ""
   },
   {
@@ -327,8 +386,10 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 1,
+   "examples": [
+    "{\"args\":{\"query_options\":{},\"request_options\":{},\"seqno\":1,\"session\":\"projects/project-id/instances/instance-id/databases/dev-db/sessions/ABCDEF1234567890Aye8_QwuELYD9rxa74YTWc-lu9LNuDDADbi4EOGm2C2j0ixe\",\"sql\":\"select * from TestTable\",\"transaction\":{\"Selector\":{\"SingleUse\":{\"Mode\":{\"ReadOnly\":{\"TimestampBound\":{\"Strong\":true},\"return_read_timestamp\":true}}}}}},\"cluster_name\":\"root\",\"code\":\"TSPN00"
+   ],
    "rationale": ""
   },
   {
@@ -372,8 +433,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 484,
+   "examples": [
+    "<142>May 10 15:19:05 WatchGuard-Firebox FVE6035FD3AE3 (2024-05-10T09:49:05) firewall[10]: msg_id=\"4101-0002\" RapidDeploy configuration from a USB drive was not applied: config line missing",
+    "<142>May 10 15:19:05 WatchGuard-Firebox FVE6035FD3AE3 (2024-05-10T09:49:05) firewall[10]: msg_id=\"5501-0026\" System integrity check could not complete because of an error. Checksum check: Failed to access file etc/code-signed",
+    "<142>May 12 15:19:05 WatchGuard-Firebox FVE6035FD3AE3 (2024-05-10T09:49:05) firewall[10]: msg_id=\"2DFF-0004\" Allow 1-Trusted 0-External tcp 10.0.1.2 81.2.69.144 53246 80 msg=\"ProxyReplace: IP protocol\" proxy_act=\"TCP-UDP-Proxy.1\" rule_name=\"HTTP-Client.1\" new_action=\"HTTP-Client.1\" (TCP-UDP-proxy-00)",
+    "<142>May 10 15:19:05 WatchGuard-Firebox FVE6035FD3AE3 (2024-05-10T09:49:05) firewall[10]: msg_id=\"5501-001C\" USB auto restore failed due to not detect the USB drive",
+    "<139>Jan 16 15:19:05 WatchGuard-Firebox FVE6035FD3AE3 (2024-01-19T08:48:15) firewall: msg_id=\"1BFF-0002\" Deny 1-Trusted 0-External tcp 10.0.1.2 175.16.199.1 39374 25 msg=\"ProxyDeny: SMTP AUTH\" proxy_act=\"SMTP-Outgoing.1\" rule_name=\"PLAIN\" authtype=\"PLAIN\" (SMTP-proxy-00)"
+   ],
    "rationale": ""
   },
   {
@@ -387,8 +454,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 221,
+   "examples": [
+    "<190>Oct 27 2026 12:23:56 fw-01 : %FTD-6-302303: Built TCP state-bypass connection 21798030 from vpn:198.51.100.12/61041 (198.51.100.12/61041)(LOCAL\\user-103) to adm:192.0.2.17/5044 (192.0.2.17/5044)",
+    "May  5 17:51:17 dev01: %FTD-6-303002: FTP connection from net:192.168.2.2/63656 to fw111:10.192.18.4/21, user testuser Stored file /export/home/sys",
+    "<182>Jul  7 11:22:54 198.51.100.10 %FTD-6-113005: AAA user authentication Rejected : reason = Users account has expired : server = 203.0.113.20 : user = ***** : user IP = 192.0.2.30",
+    "Dec 11 2018 08:01:38 127.0.0.1: %FTD-6-106015: Deny TCP (no connection) from 192.168.2.222/1234 to 192.168.1.34/5679 flags RST  on interface outside",
+    "Aug 14 2019 15:03:28 siem-ftd  %FTD-1-430004: SrcIP: 10.0.1.20, DstIP: 10.0.100.30, SrcPort: 41540, DstPort: 8000, Protocol: tcp, FileDirection: Download, FileAction: Detect, FileSHA256: 2546dcffc5ad854d4ddc64fbf056871cd5a00f2471cb7a5bfd4ac23b6e9eedad, ThreatName: Unknown, FileName: eicar_com.zip, FileType: ZIP, FileSize: 184, ApplicationProtocol: HTTP, Client: cURL, User: No Authentication Requir"
+   ],
    "rationale": ""
   },
   {
@@ -402,8 +475,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 615,
+   "examples": [
+    "Dec 11 2018 08:01:24 <IP>: %ASA-4-106023: Deny udp src dmz:192.168.1.33/5555 dst outside:192.168.0.12/53 by access-group \"dmz\" [0x123a465e, 0x4c7bf613]",
+    "Nov 17 2023 11:05:08: %ASA-6-302014: Teardown TCP connection 261246338 for outside:67.43.156.15/63790(LOCAL\\First Last) to inside:192.168.0.1/53 duration 0:35:58 bytes 27451 TCP FINs from outside (First Last)",
+    "May  5 18:40:50 dev01: %ASA-4-106021: Deny TCP reverse path check from 192.168.2.2 to 10.10.10.10 on interface fw111",
+    "Oct 10 2018 12:34:56 localhost CiscoASA[999]: %ASA-6-302013: Built outbound TCP connection 11829 for outside:192.168.98.165/80 (192.168.98.165/80) to inside:172.31.98.44/1295 (172.31.98.44/1295)",
+    "Sep 12 2014 06:53:00 GIFRCHN01 : %ASA-2-106016: Deny IP spoof from ("
+   ],
    "rationale": ""
   },
   {
@@ -417,8 +496,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 236,
+   "examples": [
+    "<179>Mar 16 06:42:55 cisco-ise-host CISE_Threat_Centric_NAC 0000001938 1 0 2021-03-16 06:42:55.540 +00:00 0000001981 91018 ERROR IRF: Adapter connection failed, ConfigVersionId=86, Details=Adapter cannot connect to the server. Ensure that the server is reachable, AdapterInstanceName=Karnataka, AdapterInstanceUuid=1cb1a7e3-324a-4258-ab0e-5ce429589987, Status=Active, Connectivity=Disconnected,",
+    "<181>Mar 10 10:44:58 isehost CISE_Administrative_and_Operational_Audit 0000120910 1 0 2022-03-10 10:44:58.154 +00:00 0000157129 51025 NOTICE User change password: Authentication for web services failed, ConfigVersionId=276, AdminInterface=ERS, AdminIPAddress=81.2.69.143, AdminName=someadmin, OperationMessageText=Login failed - bad credentials.,",
+    "<181>Jun 27 10:17:55 host-1.example.local CISE_Administrative_and_Operational_Audit 0000032102 1 0 2022-06-27 10:17:55.789 +00:00 0000044502 52001 NOTICE Configuration-Changes: Changed configuration, ConfigVersionId=81, AdminInterface=GUI, AdminName=someadmin, ConfigChangeData=Object modified:\\,Description = QA Collector\\,status = ENABLED, AcsInstance=host-1.example.local,",
+    "<181>Mar 15 10:50:00 host004 CISE_Failed_Attempts 1000100021 1 0 2022-03-15 10:50:00.100 +00:00 1000200021 5437 NOTICE Failed-Attempt: Device Registration Web Authentication Failed, ConfigVersionId=77, Device IP Address=192.0.2.43, Device Port=40681, DestinationIPAddress=198.51.100.33, DestinationPort=1812, Protocol=Radius, NetworkDeviceName=device006, User-Name=user06, NAS-IP-Address=192.0.2.43, ",
+    "<181>Mar 3 11:37:34 cisco-ise-host CISE_Passed_Authentications 0000083423 1 0 2022-03-03 11:37:34.978 +00:00 0000083490 5200 NOTICE Passed-Authentication: Authentication succeeded, ConfigVersionId=1696, Device IP Address=81.2.69.143, DestinationIPAddress=81.2.69.193, DestinationPort=1812, UserName=92-09-00-00-00-01, Protocol=Radius, NetworkDeviceName=Simulator, User-Name=92-09-00-00-00-01, NAS-IP-"
+   ],
    "rationale": ""
   },
   {
@@ -432,8 +517,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 96,
+   "examples": [
+    "<94>Nov 24 14:22:57 REDACTED.africa.example.net mail_logs: Info: MID 204841507 Custom Log Entry: Mail Not DKIM Signed",
+    "<38>Nov 14 22:05:23 xsqr0cprxmi366e0g.spain.st mail_logs: Info: MID 108550225 SHA db9df39406755510613a2e5e8071c727fe2c763ef9538f247a7ea26a15fc775a filename Youtube queued for possible file analysis upload",
+    "<166>Mar 17 18:24:37 mail_logs: Info: Message done DCID 8 MID 6 to RID [0]",
+    "<166>Mar 17 18:24:37 consolidated_event: CEF:0|Cisco|C100V Email Security Virtual Appliance|14.0.0-657|ESA_CONSOLIDATED_LOG_EVENT|Consolidated Log Event|5|deviceExternalId=42127C7DDEE76852677B-F80CE8074CD3 ESAMID=1053 ESAICID=134 ESAAMPVerdict=UNKNOWN ESAASVerdict=NEGATIVE ESAAVVerdict=NEGATIVE  ESACFVerdict=MATCH endTime=Thu Mar 18 08:04:46 2021 ESADLPVerdict=NOT_EVALUATED dvc=1.128.3.4 ESAAttach",
+    "<166>Mar 17 18:24:37 amp: Info:   Retrospective verdict received. SHA256: 16454aff5082c2e9df43f3e3b9cdba3c6ae1766416e548c30a971786db570bfc, Timestamp: 1475832815.7, Verdict: MALICIOUS, Reputation Score: 0, Spyname: W32.16454AFF50-100.SBX."
+   ],
    "rationale": ""
   },
   {
@@ -447,8 +538,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 170,
+   "examples": [
+    "<134>1 1647479376.407283267 MX84_8 airmarshal_events type=rogue_ssid_detected ssid='' bssid='BE:17:D8:C7:E2:9D' src='BE:17:D8:C7:E2:9D' dst='FF:FF:FF:FF:FF:FF' wired_mac='AC:17:C8:C7:E2:9D' vlan_id='0' channel='36' rssi='11' fc_type='0' fc_subtype='8'",
+    "<134>1 1647478092.108472035 MX84_7 airmarshal_events type=rogue_ssid_detected ssid='' bssid='BE:17:C8:C7:E1:41' src='BE:17:C8:C7:E1:41' dst='FF:FF:FF:FF:FF:FF' wired_mac='AC:17:C8:C7:E1:41' vlan_id='0' channel='1' rssi='27' fc_type='0' fc_subtype='8'",
+    "<134>1 1647479294.302067007 MX84_1 airmarshal_events type=rogue_ssid_detected ssid='' bssid='AA:17:C8:C7:D8:51' src='AA:17:C8:C7:D8:51' dst='FF:FF:FF:FF:FF:FF' wired_mac='AC:17:C8:C7:D8:51' vlan_id='0' channel='6' rssi='27' fc_type='0' fc_subtype='8'",
+    "<134>1 1647479461.791503607 MX84_6 airmarshal_events type=ssid_spoofing_detected ssid='AwesomeWifi Guest' vap='13' bssid='AA:17:C8:C7:DF:FD' src='AA:17:C8:C7:DF:FD' dst='AE:17:E8:C7:DF:FD' channel='11' rssi='10' fc_type='0' fc_subtype='5'",
+    "<134>1 1647478114.277373007 MX84 airmarshal_events type=ssid_spoofing_detected ssid='AwesomeWifi' vap='1' bssid='AC:17:C8:C7:D8:51' src='AC:17:C8:C7:D8:51' dst='78:28:CA:AA:69:96' channel='6' rssi='48' fc_type='0' fc_subtype='5'"
+   ],
    "rationale": ""
   },
   {
@@ -462,8 +559,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 63,
+   "examples": [
+    "<131>WLC001: *Dot1x_NW_MsgTask_0: Aug 29 10:46:48.939: %DOT1X-3-ABORT_AUTH: [PA]1x_bauth_sm.c:487  Authentication Aborted for  client de:fb:48:7c:4f:f7 Abort Reason:DOT1X RESTARTED DUE TO EAPOL-START/CLIENT ROAM",
+    "<132>WLC001: *Dot1x_NW_MsgTask_4: Sep 06 23:08:09.371: %LOG-4-Q_IND: [PA]dtl_net.c:3393 STA(Target MAC Address) [2c:6d:c1:f5:0c:80, 192.168.2.2] ARP (op ARP REQUEST) received with invalid SPA(Source IP Address) 169.254.161.111/TPA(Destination IP Address) 192.168.2.2",
+    "<157>15928209: example-wlc-04.example.com: 16005703: Jun  2 16:05:58.818 SGT: %MAB-5-FAIL: Chassis 1 R0/0: wncd: Authentication failed for client (0200.0000.0018) with reason (Cred Fail) on Interface capwap_90000f62 AuditSessionID 000000000000000000000006",
+    "<189>31174913: Jun  2 16:03:35: %SESSION_MGR-5-FAIL: Chassis 1 R0/3: wncd: Authorization failed or unapplied for client (0200.0000.0032) on Interface capwap_90c0019a AuditSessionID 000000000000000000000007. Failure Reason: VLAN Failure. Failed attribute name 600.",
+    "<134>WLC001: *sisfSwitcherTask: Aug 20 11:26:35.845: %SISF-6-ENTRY_CREATED: sisf_shim_utils.c:485 Entry created A=fe80::1e24:cdff:fe11:2f90 V=0 I=wired:1 P=0000 M="
+   ],
    "rationale": ""
   },
   {
@@ -477,8 +580,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 29,
+   "examples": [
+    "<189>: 2023 May  2 12:57:15 UTC: %ETHPORT-5-IF_DOWN_ADMIN_DOWN: In",
+    "<187>10.100.0.32: 2023 Apr 27 09:36:56 UTC: last message repeated 2 times",
+    "<187>May  2 15:21:27 10.100.0.33 : 2023 May  2 15:21:27.206 UTC: %DAEMON-3-SYSTEM_MSG: error: PAM: Authentication failure for admin from 172.20.240.105 - sshd[10020]",
+    "<189>May  3 13:55:35 10.100.0.35 2023 May  3 13:55:35.928 AEST: %LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet2/0/4, changed state to down",
+    "<189>switchname: 2023 Apr 26 09:08:48 UTC: %SYSMGR-5-CFGWRITE_DONE: Configuration copy successful."
+   ],
    "rationale": ""
   },
   {
@@ -507,8 +616,10 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 1,
+   "examples": [
+    "2023 May  1 22:58:09 switchname last message repeated 7 time"
+   ],
    "rationale": ""
   },
   {
@@ -522,8 +633,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 23,
+   "examples": [
+    "<131>WLC001: *RRM-DCLNT-5_0: Aug 21 20:12:58.040: %RRM-3-RRM_LOGMSG: rrmLrad.c:5135 RRM LOG: Client not found: CC:73:14:61:B0:8F",
+    "<189>6959563: Jun  2 15:42:55.816 SGT: %WEBSERVER-5-LOGIN_PASSED: Chassis 1 Login Successful from host 172.16.0.3 by user 'user0006' using crypto cipher 'ECDHE-RSA-AES128-GCM-SHA256'",
+    "<189>31175681: Jun  2 16:05:50: %SSH-5-SSH2_USERAUTH: User '' authentication for SSH2 Session from 172.16.0.10 (tty = 0) using crypto cipher 'aes128-ctr', hmac 'hmac-sha1' Failed",
+    "<190>Mar 03 2023 09:13:09 sac-firewall : %FDT-6-716039: Group <DfltGrpPolicy> User <*****> IP <192.168.0.8> Authentication: rejected, Session Type: WebVPN.",
+    "<190>Mar 03 2023 09:01:16 sac-firewall : %FDT-6-113004: AAA user accounting Successful : server =  192.168.0.8 : user = sample-user"
+   ],
    "rationale": ""
   },
   {
@@ -537,8 +654,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 107,
+   "examples": [
+    "Oct 6 14:03:23 <local0.info> 81.2.69.144 10/06/2014:14:03:23 GMT ns1 0-PPE-0 : SSLVPN ICAEND_CONNSTAT 4471 0 : Source 192.168.1.53:22 - Destination 1.128.0.0:443 - SSLRelayAddress 10.0.0.53:443 - customername BetaInc - username:domainname someusername:example.domain.com - startTime \"2023-04-01T09:00:00Z\" - endTime \"2023-04-01T09:45:00Z\" - Duration 00:01:04 - Total_bytes_send 500000 - Total_bytes_r",
+    "<134> 09/04/2025:18:24:36 GMT DCLVNSGP001 0-PPE-6 : default SSLVPN UDPFLOWSTAT 58680561 0 : [TECHSUPPORT] User username.example.com - Client_ip 175.16.199.1 - Nat_ip 89.160.20.129 - Vserver 67.43.156.1:443 - Source 81.2.69.194:63685 - Destination 1.128.0.1:53 - Start_time \"09/09/2024:20:44:03 GMT\" - End_time \"09/09/2024:20:46:06 GMT\" - Duration 00:05:53  - Total_bytes_send 656 - Total_bytes_recv 2",
+    "Oct 6 14:03:23 <local0.info> 81.2.69.144 10/06/2014:14:03:23 GMT ns1 0-PPE-0 : SSLVPN LOGOUT 4471 0 : User JaneSmith - Client_ip 192.168.1.51 - Nat_ip 10.0.0.51 - Vserver 1.128.0.0:10443 - Start_time \"2023-04-01T08:00:00Z\" - End_time \"2023-04-01T12:00:00Z\" - Duration 00:00:04 - Http_resources_accessed 15 - NonHttp_services_accessed 5 - Total_TCP_connections 20 - Total_UDP_flows 10 - Total_policies",
+    "Oct 6 14:03:23 <local0.info> 81.2.69.144 10/06/2014:14:03:23 GMT ns1 0-PPE-0 : ICA APPLICATION_LAUNCH 4471 0 : session_guid STU901 - device_serial_number 1007 - client_cookie stu901 - flags 112233 - startup_duration 45 - launch_mechanism 1 - app_launch_time 2023-04-05T12:38:00Z - app_process_id 9876 - app_name ExampleApp - module_path C:/Program Files/ExampleApp",
+    "<134> 02/06/2025:17:50:13 GMT PRODSYVPX01 0-PPE-1 : default AAATM LOGOUT 12956311 0 :  User username.example.com.au - Client_ip  - Nat_ip \"Mapped Ip\" - Vserver 0.0.0.0:0 - Start_time \"02/06/2025:17:50:13 GMT\" - End_time \"02/06/2025:17:50:13 GMT\" - Duration 00:00:00  - Http_resources_accessed 0 - Total_TCP_connections 0 - Total_policies_allowed 0 - Total_policies_denied 0 - Total_bytes_send 0 - Tot"
+   ],
    "rationale": ""
   },
   {
@@ -552,8 +675,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 69,
+   "examples": [
+    "<129> id=firewall sn=ZZZZZZZZZ time=\"2022-02-24 03:29:07\" fw=192.168.33.1 pri=1 c=32 m=609 msg=\"IPS Prevention Alert: WEB-ATTACKS Apache Log4j2 JNDI Log Messages Remote Code Execution\" sid=2307 ipscat=\"WEB-ATTACKS Apache Log4j2 JNDI Log Messages Remote Code Execution\" ipspri=2 n=8158 src=216.160.83.61:54192:X20-V60 dst=:8080:X20-V68 dstV6=2a02:cf40:add:4002:91f2:a9b2:e09a:6fc6 fw_action=\"drop\"",
+    "<134>  id=firewall sn=0040103CE114 time=\"2022-05-16 08:19:02\" fw=10.0.0.96 pri=6 c=262144 gcat=6 m=98 msg=\"Connection Opened\" src=81.2.69.193:64903:X1 dst=10.0.0.96:443:X1 usr=\"admin\" proto=tcp/https sent=64 sess=\"Web\" app=12 n=484 fw_action=\"NA\" dpi=0",
+    "<134>  id=firewall sn=0040103CE114 time=\"2022-05-16 08:19:21\" fw=10.0.0.96 pri=6 c=262144 gcat=6 m=98 msg=\"Connection Opened\" src=10.0.0.96:54606:X1 natSrc=10.0.0.96:58515 dst=169.254.169.254:80:X1 natDst=169.254.169.254:80 proto=tcp/http sent=52 app=9 n=504 fw_action=\"NA\" dpi=0",
+    "<134>  id=firewall sn=0040103CE114 time=\"2022-05-16 08:19:16\" fw=10.0.0.96 pri=6 c=1024 gcat=6 m=537 msg=\"Connection Closed\" srcMac=06:08:25:81:11:30 src=89.160.20.156:43808:X1 srcZone=Untrusted dst=10.0.0.96:22:X1 dstZone=Untrusted proto=tcp/22 sent=180 rcvd=416 spkt=3 rpkt=8 cdur=334116 rule=\"Default Access Rule\" app=42 n=495 fw_action=\"NA\" dpi=0",
+    "<135>  id=firewall sn=0040103CE114 time=\"2022-05-16 08:19:02\" fw=10.0.0.96 pri=7 c=512 gcat=6 m=713 srcMac=00:06:b1:dd:4f:d4 src=10.0.0.96:443:X1 srcZone=Untrusted dstMac=00:17:c5:30:f9:d9 dst=81.2.69.193:64901:X1 dstZone=Untrusted usr=\"admin\" proto=tcp/https sent=46 sess=\"Web\" rule=\"15 (WAN->WAN)\" app=12 msg=\"\ufffd\" note=\"TCP Flag(s): RST\" n=738 fw_action=\"drop\""
+   ],
    "rationale": ""
   },
   {
@@ -582,8 +711,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 55,
+   "examples": [
+    "date=2019-05-10 time=14:18:54 logid=\"0004000017\" type=\"traffic\" subtype=\"sniffer\" level=\"notice\" vd=\"root\" eventtime=1557523134021045897 srcip=216.160.83.56 srcport=50463 srcintf=\"port1\" srcintfrole=\"undefined\" dstip=81.2.69.142 dstport=443 dstintf=\"port1\" dstintfrole=\"undefined\" sessionid=2193276 proto=6 action=\"accept\" policyid=3 policytype=\"sniffer\" service=\"HTTPS\" dstcountry=\"United States\" sr",
+    "<185>date=2026-03-31 time=07:48:26 devname=\"MYDEV\" devid=\"MYDEVID\" eventtime=1773733509096718719 tz=\"-0500\" logid=\"0419016384\" type=\"utm\" subtype=\"ips\" eventtype=\"signature\" level=\"alert\" vd=\"root\" severity=\"high\" srcip=10.11.12.1 dstip=10.7.1.5 srcintf=\"eth0\" srcintfrole=\"undefined\" dstintf=\"eth1\" dstintfrole=\"undefined\" sessionid=1234567 action=\"detected\" proto=6 service=\"HTTP\" vrf=2 policyid=11",
+    "date=2020-09-28 time=15:36:26 eventtime=1601332560336851635 tz=\"-0700\" logid=\"0114032601\" type=\"event\" subtype=\"switch-controller\" level=\"information\" vd=\"vdom1\" logdesc=\"Switch-Controller discovered\" user=\"daemon_admin\" ui=\"cmdbsvr\" sn=\"S248EPTF18001384\" name=\"S248EPTF18001384\" msg=\"S248EPTF18001384 Discovered\"",
+    "<189>date=2020-04-23 time=12:32:00 devname=\"testswitch3\" devid=\"someotherrouteridagain\" logid=\"0101037127\" type=\"event\" subtype=\"vpn\" level=\"notice\" vd=\"root\" eventtime=1587231120608961118 tz=\"-0500\" logdesc=\"Progress IPsec phase 1\" msg=\"progress IPsec phase 1\" action=\"negotiate\" remip=67.43.156.13 locip=67.43.156.14 remport=500 locport=500 outintf=\"wan1\" cookies=\"345khj34566/0000000000000000\" use",
+    "date=2019-05-13 time=16:09:43 logid=\"0112053200\" type=\"event\" subtype=\"connector\" level=\"information\" vd=\"root\" eventtime=1557788982 logdesc=\"IP address added\" cfgobj=\"aws1\" action=\"object-add\" addr=\"89.160.20.128\" cldobjid=\"i-0fe5a1ef16bb94796\" netid=\"vpc-97e81c"
+   ],
    "rationale": ""
   },
   {
@@ -597,8 +732,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 133,
+   "examples": [
+    "Nov 16 00:30:06 sophos device_name=\"SFW\" timestamp=\"2021-11-15T18:30:06-0600\" device_model=\"SFVH\" device_serial_id=\"C01001BQC8TFFFF\" log_id=050901616001 log_type=\"Content Filtering\" log_component=\"HTTP\" log_subtype=\"Allowed\" log_version=1 severity=\"Information\" fw_rule_id=\"12\" web_policy_id=12 http_category=\"General Business\" http_category_type=\"Acceptable\" url=\"http://info.cspserver.net/api/v1/co",
+    "Nov 16 00:25:10 sophos device_name=\"SFW\" timestamp=\"2021-11-15T18:25:10-0600\" device_model=\"SFVH\" device_serial_id=\"C01001BQC8TFFFF\" log_id=\"010101600001\" log_type=\"Firewall\" log_component=\"Firewall Rule\" log_subtype=\"Allowed\" log_version=1 severity=\"Information\" duration=32 fw_rule_id=\"12\" nat_rule_id=\"12\" fw_rule_type=\"USER\" web_policy_id=12 ips_policy_id=8 app_filter_policy_id=6 ether_type=\"Unk",
+    "<30>device=\"SFW\" date=2017-01-31 time=14:03:33 timezone=\"IST\" device_name=\"CR750iNG-XP\" device_id=C44310050024-P29PUA log_id=050901616001 log_type=\"Content Filtering\" log_component=\"HTTP\" log_subtype=\"Allowed\" status=\"\" priority=Information fw_rule_id=2 user_name=\"jsmith\" user_gp=\"Open Group\" iap=1 category=\"Entertainment\" category_type=\"Unproductive\" url=\"https://r8---sn-ci5gup-qxas.googlevideo.c",
+    "Nov 16 00:25:03 sophos device_name=\"SFW\" timestamp=\"2021-11-15T18:25:03-0600\" device_model=\"SFVH\" device_serial_id=\"C01001BQC8TFFFF\" log_id=\"010101600001\" log_type=\"Firewall\" log_component=\"Firewall Rule\" log_subtype=\"Allowed\" log_version=1 severity=\"Information\" fw_rule_id=\"12\" nat_rule_id=\"12\" fw_rule_type=\"USER\" web_policy_id=12 ips_policy_id=8 app_filter_policy_id=6 ether_type=\"Unknown (0x0000",
+    "<30>device=\"SFW\" date=2020-05-18 time=14:38:50 timezone=\"CEST\" device_name=\"XG230\" device_id=1234567890123456 log_id=041107413001 log_type=\"Anti-Spam\" log_component=\"SMTP\" log_subtype=\"Spam\" status=\"\" priority=Warning fw_rule_id=22 user_name=\"\" av_policy_name=\"Spam\" from_email_address=\"ripxfc@17buddies.net\" to_email_address=\"hein.mueck@elasticuser.de\" email_subject=\"nimm dringend Geld\" mailid=\"<oE"
+   ],
    "rationale": ""
   },
   {
@@ -612,8 +753,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 8,
+   "examples": [
+    "<129>2023-03-09 13:22:20.996 +0100  barracuda NF ALER TCP 81.2.69.144 44534 67.43.156.4 80 DENY HTTP_ATTACK_SOURCES MGMT/LAN/WAN interface traffic:deny",
+    "<134>2023-03-20 17:24:05.197 +0100  barracuda TR 81.2.69.144 443 89.160.20.112 20783 \"-\" \"-\" GET TLSv1.2 67.43.156.2 HTTP/1.1 503 877 113 0 189 1.128.0.1 443 0 \"-\" INTERNAL PROFILED PROTECTED INVALID /t4 \"-\" \"-\" \"-\" \"Mozilla/5.0\" 216.160.83.56 20783 \"-\" \"-\" \"-\" \"-\" 186ffd5c490-e0b89cc7",
+    "<129>2023-03-09 13:22:20.996 +0100  barracuda NF ALER TCP 81.2.69.144 44534 67.43.156.4 80 DENY HTTP_ATTACK_SOURCES MGMT/LAN/WAN interface traffic:deny  ",
+    "<190>2024-09-07 15:41:57.830 +0200  barracuda TR 81.2.69.144 443 89.160.20.112 58944 \"-\" \"-\" GARBAGE TLSv1.3 81.2.69.144 HTTP/1.1 404 954 206 0 0 1.128.0.1 443 0 \"-\" INTERNAL DEFAULT PROTECTED INVALID / \"-\" \"-\" \"-\" \"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36\" 216.160.83.56 58944 \"-\" \"-\" \"-\" \"-\" 19205a1d2f6-accb8ac",
+    "<190>2024-09-17 15:41:57.830 +0200  barracuda TR 81.2.69.144 80 1.128.0.1 59494 \"-\" \"-\" CONNECT HTTP google.com HTTP/1.1 404 954 89 0 0 81.2.69.144 80 0 \"-\" INTERNAL PROFILED PROTECTED INVALID google.com:443 \"-\" \"-\" \"-\" \"Go-http-client/1.1\" 1.128.0.1 59494 \"-\" \"-\" \"-\" \"-\" 1911d1f152a-37719640"
+   ],
    "rationale": ""
   },
   {
@@ -627,8 +774,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 566,
+   "examples": [
+    "1,2021/11/16 10:45:35,007051000184334,THREAT,spyware,2561,2021/11/16 10:45:35,89.160.20.156,89.160.20.112,,,intrazone-default,,,dns,vsys1,LAN,LAN,ethernet1/2,ethernet1/2,LFPpan,2021/11/16 10:45:35,32165,2,58434,53,0,0,0x3000,udp,drop,\"www.virussign.com\",generic:www.virussign.com(327891564),any,medium,client-to-server,7029847907104718990,0x0,United States,United States,,,0,,,0,,,,,,,,0,0,0,0,0,,PA-",
+    "Oct 30 09:51:23 1,2012/10/30 09:51:23,01606001116,THREAT,url,1,2012/04/10 04:38:14,192.168.0.2,175.16.199.1,0.0.0.0,0.0.0.0,rule1,crusher,,web-browsing,vsys1,trust,untrust,ethernet1/2,ethernet1/1,forwardAll,2012/04/10 04:38:15,24316,1,58969,80,0,0,0x200000,tcp,block-url,\"findnolimits.com/go.php?sid=1\",(9999),dead-sites,informational,client-to-server,0,0x0,192.168.0.0-192.168.255.255,United States,",
+    "1,2021/11/16 11:17:43,007051000184334,THREAT,spyware,2561,2021/11/16 11:17:43,89.160.20.156,89.160.20.112,,,intrazone-default,,,dns,vsys1,LAN,LAN,ethernet1/2,ethernet1/2,LFPpan,2021/11/16 11:17:43,48919,2,58744,53,0,0,0x3000,udp,drop,\"www.virussign.com\",generic:www.virussign.com(327891564),any,medium,client-to-server,7029847907104735044,0x0,United States,United States,,,0,,,0,,,,,,,,0,0,0,0,0,,PA-",
+    "1,2021/11/16 11:29:29,007051000184334,THREAT,spyware,2561,2021/11/16 11:29:29,89.160.20.156,89.160.20.112,,,intrazone-default,,,dns,vsys1,LAN,LAN,ethernet1/2,ethernet1/2,LFPpan,2021/11/16 11:29:29,49250,1,59424,53,0,0,0x3000,udp,drop,\"www.virussign.com\",generic:www.virussign.com(327891564),any,medium,client-to-server,7029847907104735138,0x0,United States,United States,,,0,,,0,,,,,,,,0,0,0,0,0,,PA-",
+    "Oct 30 09:46:17 1,2012/10/30 09:46:17,01606001116,THREAT,url,1,2012/04/10 04:39:55,192.168.0.2,175.16.199.1,0.0.0.0,0.0.0.0,rule1,crusher,,web-browsing,vsys1,trust,untrust,ethernet1/2,ethernet1/1,forwardAll,2012/04/10 04:39:57,26360,1,59304,80,0,0,0x208000,tcp,alert,\"lkmpmlm.com/fff9999.php?aid=0&uid=6cbbc5081e7548e276611ff5059df6ed30c8f8f1&os=513\",(9999),not-resolved,informational,client-to-serve"
+   ],
    "rationale": ""
   },
   {
@@ -642,8 +795,10 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 1,
+   "examples": [
+    "{\"_offset\":72539,\"_partition\":60,\"accountId\":\"CUSB4A274\",\"aggregateId\":\"5lkyib_sMEys4HHIS_BfnA_1731607398\",\"direction\":\"Internal\",\"processingId\":\"NTURKsdD8cexyo31Pcs68lEJJMGjyOBtykAvjo4-hDM_1731607398\",\"recipients\":\"william.freije@example.com\",\"senderEnvelope\":\"jae.black@example.com\",\"subtype\":null,\"timestamp\":1731607405621,\"type\":\"journal\"}"
+   ],
    "rationale": ""
   },
   {
@@ -687,8 +842,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 101,
+   "examples": [
+    "<174>May 23 15:11:08 INFO  uvm[0]:  {\"entitled\":true,\"protocol\":6,\"hostname\":\"ubuntu\",\"CServerPort\":443,\"protocolName\":\"TCP\",\"serverLatitude\":37.751,\"localAddr\":\"10.0.0.25\",\"class\":\"class com.untangle.uvm.app.SessionEvent\",\"SServerAddr\":\"67.43.156.1\",\"remoteAddr\":\"67.43.156.1\",\"serverIntf\":1,\"CClientAddr\":\"10.0.0.25\",\"serverCountry\":\"US\",\"sessionId\":110221865771928,\"SClientAddr\":\"1.128.0.172\",\"cli",
+    "<174>May 22 16:32:28 INFO  uvm[0]:  {\"timeStamp\":\"2023-05-22 16:32:28.771\",\"flagged\":false,\"blocked\":false,\"sessionId\":110221865377229,\"ruleId\":0,\"class\":\"class com.untangle.app.firewall.FirewallEvent\"}",
+    "<174>May 23 12:00:57 INFO  uvm[0]:  {\"timeStamp\":\"2023-05-23 12:00:57.41\",\"rxBytes\":195720,\"txBytes\":493180,\"txRate\":49318,\"interfaceId\":1,\"rxRate\":19572,\"class\":\"class com.untangle.uvm.logging.InterfaceStatEvent\"}",
+    "<174>May 22 16:29:47 INFO  uvm[0]:  {\"diskFreePercent\":0.7587046,\"cpuSystem\":0.0012578616,\"diskUsedPercent\":0.24129538,\"diskTotal\":30109741056,\"diskFree\":22844399616,\"cpuUser\":0.25308177,\"memUsedPercent\":0.34260815,\"diskUsed\":7265341440,\"class\":\"class com.untangle.uvm.logging.SystemStatEvent\",\"load15\":1,\"swapUsedPercent\":0.062393393,\"swapFree\":2879647744,\"memFree\":2711891968,\"memTotal\":4125229056,",
+    "<174>May 23 15:55:44 INFO  uvm[0]:  {\"msg\":\"ET SCAN NMAP -sS window 1024\",\"ipDestination\":\"1.128.0.72\",\"ipSource\":\"81.2.69.142\",\"classtype\":\"attempted-recon\",\"signatureId\":2009582,\"sportItype\":58524,\"timeStamp\":\"2023-05-23 15:55:44.769\",\"generatorId\":1,\"protocol\":\"tcp\",\"blocked\":true,\"category\":\"scan\",\"ruleId\":\"2\",\"class\":\"class com.untangle.app.intrusion_prevention.IntrusionPreventionLogEvent\",\"d"
+   ],
    "rationale": ""
   },
   {
@@ -717,8 +878,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 85,
+   "examples": [
+    "<30>Sep 28 09:25:49 infoblox.localdomain 10.0.0.1 dhcpd[25691]: DHCPACK on 192.168.0.4 to 00:50:56:83:96:03 via eth2 relay 192.168.0.4 lease-duration 3600 uid 01:9a:df:6e:f6:1f:23",
+    "<30>Mar 27 08:32:59 infoblox.localdomain dhcpd[2567]: DHCPREQUEST for 192.168.0.4 (192.168.0.1) from 00:50:56:83:6c:a0 (DESKTOP-ABCD) via eth3 TransID 8767dc3c uid 01:00:50:56:83:6c:a0",
+    "<30>Mar 11 23:51:31 infoblox.localdomain named[7741]: responses: client @0x7fb550117f90 192.168.0.1#46982: received notify for zone 'local_14.com'",
+    "<30>Mar 27 08:32:59 infoblox_localdomain.com dhcpd[29258]: DHCPACK on 192.168.0.4 to 00:00:00:00:00:00 (h00000000000",
+    "<30>Mar 11 23:51:31 infoblox.localdomain named[17742]: queries: client @0x7f1dd4114af0 192.168.0.6#40100 (mail.example.org): view default: query: mail.example.org IN MX + (192.168.0.1)"
+   ],
    "rationale": ""
   },
   {
@@ -732,8 +899,11 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 2,
+   "examples": [
+    "Sep 27 05:04:49 userro oree nimadmi7341.www.home RT_FLOW - kmd [",
+    "Nov 10 03:01:24 kmd: restart "
+   ],
    "rationale": ""
   },
   {
@@ -747,8 +917,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 589,
+   "examples": [
+    "2024-06-18T12:46:38.182641-05:00 8360-Primaire kernel[1234]: Event|1228|LOG_ERR|Supportability|-|Collection of support-files named support1 failed due to timeout.",
+    "2024-06-18T12:53:38.182641-05:00 8360-Primaire sshd[1234]: Event|5210|LOG_ERR|SSHS|-|User user1 login from 192.168.1.1 for SSH session failed during password based authentication.",
+    "2024-06-18T12:45:38.182641-05:00 8360-Primaire l3interface[1234]: Event|1732|LOG_ERR|LAYER3INTF|-|IPv6 address 2a02:cf40:: is not applied on interface eth0, as only one global ipv6 address will be in effect.",
+    "2024-06-18T12:47:38.182641-05:00 8360-Primaire hpe-rpvst[1234]: Event|5012|LOG_INFO|RPVST|-|spanning tree mode changed from RSTP to MSTP, it will trigger the reconvergence.",
+    "2024-06-18T12:47:38.182641-05:00 8360-Primaire hpe-replication[1234]: Event|2705|LOG_WARN|REPLICATIONMGR|-|Multicast L3 Bridge Control Forwarding entry with uuid 123e4567-e89b-12d3-a456-426614174000 has no reference to a VLAN"
+   ],
    "rationale": ""
   },
   {
@@ -762,8 +938,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 291,
+   "examples": [
+    "Dec 13 12:49:34 a-mac-with-esc-key logd[63]: _purge_uuidtext unlinking /var/db/uuidtext/E3/55D24FAC0838679583537F319C7B72",
+    "Dec 13 13:29:58 a-mac-with-esc-key Google Chrome[85294]: objc[85294]: __weak variable at 0x60801005a980 holds 0x2121212121212121 instead of 0x608001a3f8a0. This is probably incorrect use of objc_storeWeak() and objc_loadWeak(). Break on objc_weak_error to debug.",
+    "Dec 13 12:49:34 a-mac-with-esc-key logd[63]: _purge_uuidtext unlinking /var/db/uuidtext/1E/79F11C7D5333F1BD0630540535F725",
+    "Dec 13 12:49:31 a-mac-with-esc-key logd[63]: _purge_uuidtext uuidtext file for 701F1C0F-0070-0000-FD68-88C3FF7F0000 mentioned but not found",
+    "Dec 13 12:49:31 a-mac-with-esc-key logd[63]: _purge_uuidtext uuidtext file for 703FD007-0070-0000-FD68-88C3FF7F0000 mentioned but not found"
+   ],
    "rationale": ""
   },
   {
@@ -807,8 +989,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 65,
+   "examples": [
+    "1157689368.370   3057 10.105.33.214 TCP_MISS/200 14411 GET http://radio.music.yahoo.com/radio/player/ymsgr/initstationfeed.asp? adeolaegbedokun DIRECT/67.43.156.132 text/xml",
+    "1157689345.641   1810 10.105.33.214 TCP_MISS/200 1645 POST http://shttp.msg.yahoo.com/notify/ adeolaegbedokun DIRECT/175.16.199.239 text/plain",
+    "1157689322.780   1464 10.105.21.199 TCP_HIT/200 5626 GET http://www.google-analytics.com/urchin.js badeyek NONE/- text/javascript",
+    "1157689324.281   1465 10.105.21.199 TCP_REFRESH_HIT/304 215 GET http://www.goonernews.com/shop/arsenal_shop_ad.jpg badeyek DIRECT/175.16.199.61 -",
+    "1157689384.316   2828 10.105.21.199 TCP_SWAPFAIL_MISS/200 633 GET http://us.js2.yimg.com/us.js.yimg.com/lib/pim/r/dclient/d/js/uk/77cf3e56414f974dfd8616f56f0f632c_1.js badeyek DIRECT/67.43.156.169 application/x-javascript"
+   ],
    "rationale": ""
   },
   {
@@ -837,8 +1025,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 50,
+   "examples": [
+    "type=USER_CHAUTHTOK msg=audit(1784285181.000:3460): pid=625010 uid=0 auid=1005 ses=188532 subj=unconfined msg='op=PAM:chauthtok acct=\"example_target_user\" exe=\"/usr/bin/passwd\" hostname=example-host-03.example.local addr=? terminal=pts/12 res=success'\u001dUID=\"root\" AUID=\"example_admin\"",
+    "type=USER_CHAUTHTOK msg=audit(1610903560.001:597): pid=2960 uid=0 auid=1000 ses=14 msg='op=changing uid id=1004 exe=\"/usr/sbin/usermod\" hostname=ubuntu-bionic addr=127.0.0.1 terminal=pts/2 res=success'",
+    "type=USER_ROLE_CHANGE msg=audit(1481077043.140:415): pid=1298 uid=0 auid=1000 ses=1 subj=system_u:system_r:sshd_t:s0-s0:c0.c1023 msg='pam: default-context=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023 selected-context=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023 exe=\"/usr/sbin/sshd\" hostname=pool-96-241-146-97.washdc.fios.verizon.net addr=89.160.20.156 terminal=ssh res=success'",
+    "type=USER_AUTH msg=audit(1610903558.178:595): pid=2954 uid=0 auid=1000 ses=14 msg='op=PAM:authentication acct=\"root\" exe=\"/usr/bin/chfn\" hostname=ubuntu-bionic addr=127.0.0.1 terminal=pts/2 res=success'",
+    "type=CRED_ACQ msg=audit(1489519256.193:19600330): user pid=4151 uid=0 auid=700 ses=11988 msg='op=PAM:setcred acct=\"root\" exe=\"/usr/bin/sudo\" hostname=? addr=? term"
+   ],
    "rationale": ""
   },
   {
@@ -852,8 +1046,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 130,
+   "examples": [
+    "2026-08-14T11:03:49.000000+00:00 host01 sudo[3843970]: root : TTY=pts/2 ; PWD=/home ; USER=root ; COMMAND=/bin/systemctl stop rsyslog",
+    "Feb 22 10:50:01 precise32 sudo:  vagrant : TTY=pts/0 ; PWD=/home/vagrant ; USER=root ; COMMAND=/usr/bin/vi /etc/apt/sources.list.d/elastic.list",
+    "Mar 15 10:30:04 webserver sudo: pam_unix(sudo:auth): authentication failure; logname=jsmith uid=1001 euid=0 tty=/dev/pts/0 ruser=jsmith rhost=  user=jsmith",
+    "Feb 22 11:04:32 precise32 sshd[3403]: pam_unix(sshd:session): session closed for user vagrant",
+    "Feb  9 21:21:02 precise32 sudo: pam_unix(sudo:session): session opened for "
+   ],
    "rationale": ""
   },
   {
@@ -867,8 +1067,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 8,
+   "examples": [
+    "id=firewall time=\"2024-03-08 10:14:08\" fw=\"stormy-1\" tz=+0000 startime=\"2024-03-08 10:14:08\" pri=5 confid=00 slotlevel=0 ruleid=4 srcif=\"Ethernet0\" srcifname=\"out\" ipproto=tcp proto=ssl version=TLSv1.3 src=192.168.197.1 srcport=61549 srcportname=ad2008-dyn_tcp srcmac=00:50:56:c0:00:08 dst=192.168.197.134 dstport=443 dstportname=https dstname=Firewall_out modsrc=192.168.197.1 modsrcport=61549 origd",
+    "id=firewall time=\"2024-03-08 15:14:51\" fw=\"stormy-1\" tz=+0000 startime=\"2024-03-08 15:14:51\" SavedEvaluation=153 DynamicMem=0 HostMem=0 FragMem=0 ICMPMem=0 ConnMem=0 AssocMem=0 EtherStateMem=0 IPStateMem=0 DTrackMem=0 Logged=10 LogOverflow=0 HostrepMax=0 HostrepScore=0 HostrepRequests=0 PvmFacts=0 PvmOverflow=0 Accepted=289 Blocked=0 Byte(i/o)=97364/145065 Fragmented=0 TCPPacket=178 TCPByte(i/o)=8",
+    "id=firewall time=\"2024-03-08 15:14:56\" fw=\"stormy-1\" tz=+0000 startime=\"2024-03-08 15:14:56\" error=1 user=\"admin\" address=192.168.197.1 sessionid=1 msg=\"QUIT\" logtype=\"server\"",
+    "id=firewall time=\"2024-06-07 18:46:18\" fw=\"stormy-1\" tz=+0000 startime=\"2024-06-07 10:40:42\" pri=5 confid=01 slotlevel=2 ruleid=7 srcif=\"Ethernet1\" srcifname=\"segment0\" ipproto=tcp dstif=\"Ethernet0\" dstifname=\"out\" proto=http src=89.160.20.128 srcport=55008 srcportname=ephemeral_fw_tcp srcname=vm-internal srcmac=00:0c:29:8d:6c:55 srccontinent=\"eu\" srccountry=\"se\" dst=1.128.91.48 dstport=80 dstport",
+    "id=firewall time=\"2026-03-02 08:00:05\" fw=\"SN310A0000000001\" tz=+0100 startime=\"2026-03-02 08:00:03\" pri=5 phase=1 side=initiator ikev=2 remoteid=203.0.113.50 cookie_i=0x45718953174ba1b9 cookie_r=0x93b571aa2f43d0d1 src=203.0.113.1 srcname=Firewall_out dst=203.0.113.50 dstname=remote_gateway msg=\"Phase established\" logtype=\"vpn\""
+   ],
    "rationale": ""
   },
   {
@@ -882,8 +1088,10 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 1,
+   "examples": [
+    "device_name=\"SF01V\" device_id=SFDemo-c45b327 log_id=058420116010 log_type=\"Content Filtering\" log_component=\"Web Content Policy\" log_subtype=\"Alert\" user=\"gi123456\" src_ip=10.108.108.49 transaction_id=\"e4a127f7-a850-477c-920e-a471b38727c1\" dictionary_name=\"complicated_Custom\" site_category=Information Technology website=\"ta-web-static-testing.qa.astaro.de\" direction=\"in\" action=\"Deny\" file_name=\"c"
+   ],
    "rationale": ""
   },
   {
@@ -897,8 +1105,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 8,
+   "examples": [
+    "2023:03:08-15:00:00 sophos-test-vm1 httpproxy[6267]: id=\"0001\" severity=\"info\" sys=\"SecureWeb\" sub=\"http\" name=\"http access\" action=\"pass\" method=\"HEAD\" srcip=\"67.43.156.2\" dstip=\"89.160.20.129\" user=\"testuser\" group=\"testgroup\" ad_domain=\"example.com\" statuscode=\"200\" cached=\"0\" profile=\"HTTP_Sophos_Profile_1\" filteraction=\"REF_HTTP_ACTION\" size=\"311\" request=\"0x7fad9e44ac00\" url=\"https://myurl.t",
+    "2023:04:28-00:00:04 sophos-test-vm1 dhcpd: DHCPDISCOVER from 04:7b:cb:a1:d2:93 via eth7: unknown client",
+    "2023:04:28-06:50:45 sophos-test-vm1 dhcpd: DHCPACK on 89.160.20.129 to 04:7b:cb:a1:d2:93 (CLIENTHOST) via eth1",
+    "2023:04:28-07:43:18 sophos-test-vm1 named[7442]: no longer listening on 89.160.20.129#53",
+    "2023:04:28-03:30:27 sophos-test-vm2 dhcpd: Listening on LPF/eth0/04:7b:cb:a1:d2:93/89.160.20.0/24"
+   ],
    "rationale": ""
   },
   {
@@ -912,8 +1126,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 7,
+   "examples": [
+    "\"2023-05-05 12:40:01\",\"LastName, Tiredacted M (Ti) (Tiredacted.LastName@example.com)\",\"LastName, Tiredacted M (Ti) (Tiredacted.LastName@example.com),5CG0310TPJ\",\"192.168.4.66\",\"81.2.69.192\",\"Allowed\",\"1 (A)\",\"NOERROR\",\"outlook.office365.com.\",\"Software/Technology,Webmail,Business Services,Allow List,Organizational Email,Application,Web-based Email,Online Document Sharing and Collaboration\",\"AD Use",
+    "\"2023-03-08 10:21:28\",\"NetworkName\",\"\",\"175.16.199.104\",\"67.43.156.205\",\"\",\"ALLOWED\",\"http://analyticsnew.overwolf.com/\",\"\",\" \",\"200\",\"\",\"\",\"\",\"\",\"Games,Software/Technology\",\"\",\"\",\"\",\"\",\"\",\"Networks\",\"\",\"NetworkName\",\"Networks\",\"HEAD\",\"\",\"\",\"\",\"13671956\",\"\",\"\"",
+    "\"2023-03-08 06:54:32\",\"NetworkName\",\"\",\"175.16.199.104\",\"67.43.156.204\",\"application/octet-stream\",\"ALLOWED\",\"http://luna.avcdn.net/ez/xow7/jx7fcbcz7axphe46u2zh6iufcuewqpfrmfibkydoufe3qq.bin\",\"\",\"Avast Antivirus\",\"200\",\"\",\"797\",\"466\",\"a459e1374395119b8a5aa26cf97738c3864d3130e93c083fbab6da3fe1ad9175\",\"Computer Security\",\"\",\"\",\"UNKNOWN\",\"\",\"0\",\"Networks\",\"\",\"NetworkName\",\"Networks\",\"GET\",\"\",\"\",\"jx7f",
+    "\"2024-09-11 23:17:13\",\"Firewall Tunnel Name\",\"Network Tunnels\",\"1\",\"16606\",\"SERVER-ORACLE BEA WebLogic Server Plug-ins Certificate overflow attempt\",\"50516\",\"HIGH\",\"Attempted User Privilege Gain\",\"cve-2009-1016\",\"TCP\",\"12345\",\"172.17.3.4\",\"80\",\"67.43.156.12\",\"40762\",\"Would Block\",\"IDS\",\"50516\",\"S2C\",\"21171\",\"PROFILE\",\"eu-central-2b\",\"\",\"\\[]\",\"DEN1\",\"8151514\",\"67.43.156.12\",\"TRUE\",\"FTD\",\"1232132131",
+    "\"2020-08-26 20:32:45\",\"elasticuser\",\"192.168.1.1\",\"61095\",\"81.2.69.144\",\"445\",\"Test Category\""
+   ],
    "rationale": ""
   },
   {
@@ -927,8 +1147,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 10,
+   "examples": [
+    "ICMP TTL:64 TOS:0x0 ID:6922 IpLen:20 DgmLen:84 DF",
+    "ICMP TTL:114 TOS:0x0 ID:0 IpLen:20 DgmLen:84",
+    "05/30-19:09:10.917356  [**] [1:527:8] BAD-TRAFFIC same SRC/DST [**] [Classification: Potentially Bad Traffic] [Priority: 2] {UDP} 0.0.0.0:68 -> 255.255.255.255:67",
+    "09/04-21:49:55.900215 ,1,1000004,0,\"Pinging...\",ICMP,10.100.10.190,,175.16.199.1,,00:50:56:9D:A5:BE,00:25:90:3A:05:13,0x62,,,,,,64,0,37607,84,86016,8,0,83,1",
+    "09/04-21:50:40.666095 ,1,1000005,0,\"UDP Connection\",UDP,10.100.10.75,55776,10.100.10.255,32414,00:0C:29:B8:43:CE,FF:FF:FF:FF:FF:FF,0x3F,,,,,,64,0,37712,49,50176,,,,"
+   ],
    "rationale": ""
   },
   {
@@ -957,8 +1183,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 18,
+   "examples": [
+    "2018-12-31 12:02:53 10.44.0.136 GET /Director - 443 - 10.50.6.188 Mozilla/4.0+(compatible;+MSIE+8.0;+Windows+NT+5.1;+Trident/4.0) - 401 0 0 0",
+    "2018-05-05 05:05:55 67.43.156.15 12345 192.168.101.101 443 HTTP/1.1 GET /fee&fie=foe 400 - URL -",
+    "2020-10-07 23:00:17 192.168.16.11 GET /Production-UI/data/finance/legacy/GLATrnsDetail $filter=Subsys%20eq%20%27JE%27%20and%20Ref%20eq%20%27HSNG08-MR%27%20and%20BatchId%20eq%20%27FY21HSNG0820%27&$orderby=RecNo&$skip=0&$top=20 443 - 192.168.7.63 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/67.43.156.13+Safari/537.36 https://onesolfarm.ggcity.org/Production",
+    "2026-05-25 05:21:53 67.43.156.15 51517 192.168.101.101 8181 HTTP/1.1 M-POST /CIMListener/\\..\\..\\..\\..\\..\\mydll 403 - Forbidden TCP",
+    "2019-03-06 18:43:17 10.0.140.107 GET /health-monitoring - 80 - 10.0.140.2 - 200 0 0 15"
+   ],
    "rationale": ""
   },
   {
@@ -987,8 +1219,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 47,
+   "examples": [
+    "\t\t\"PolicyStatement\": \"EC2 instance manually deleted by IAM user\",",
+    "        \"eventCreationTime\": 1581601520236,",
+    "        \"eventCreationTime\": 1686845212400,",
+    "        \"customerIDString\": \"8f69fe9e-b995-4204-95ad-44f9bcf75b6b\",",
+    "        \"eventCreationTime\": 1582101000000,"
+   ],
    "rationale": ""
   },
   {
@@ -1002,8 +1240,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 10,
+   "examples": [
+    "\t\tdelegate=<KSAgentApp: 0x10052a250>",
+    "\t\t\tversion=1.32.3889.0961",
+    "\t\t\t        <ping status=\"ok\"></ping>",
+    "\t\t\tcreationDate=2015-09-11 20:38:12",
+    "\t\t\t        <ping r=\"1\" rd=\"3633\" a=\"1\" ad=\"3633\" ping_freshness=\"{1BFFDCCA-5966-4598-819C-C1D075E480C5}\"></ping>"
+   ],
    "rationale": ""
   },
   {
@@ -1017,8 +1261,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 28,
+   "examples": [
+    "<14>Aug 14 2019 14:02:31 platformSettingEdit.cgi: siem-management: admin@10.0.255.31, System > Configuration > Configuration > /platinum/platformSettingEdit.cgi?type=AuditLog, Page View\u0000x0a\u0000x00",
+    "<14>Aug 14 2019 14:02:03 mojo_server.pl: siem-management: admin@10.0.255.31, System > Monitoring > Syslog, Page View\u0000x0a\u0000x00",
+    "<14>Aug 14 2019 14:01:12 sfdccsm: siem-management: admin@10.0.255.31, Devices > Platform Settings > Platform Settings Editor, Modified: Syslog\u0000x0a\u0000x00",
+    "<14>Aug 14 2019 14:00:37 sfdccsm: siem-management: admin@10.0.255.31, Devices > Platform Settings > Platform Settings Editor, Page View\u0000x0a\u0000x00",
+    "<14>Aug 14 2019 14:01:36 ActionQueueScrape.pl: siem-management: admin@localhost, Task Queue, Successful task completion : Pre-deploy Device Configuration for siem-ftd\u0000x0a\u0000x00"
+   ],
    "rationale": ""
   },
   {
@@ -1062,8 +1312,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 60,
+   "examples": [
+    "orroq: NetScreen device_id=vitaedic [orin]system-high-00038(ons): OSPF routing instance in vrouter remagn ecillu",
+    "ptasnul: NetScreen device_id=utaliqui [mcorpor]system-medium-00023(ostru): VIP/load balance server 10.110.144.189 cannot be contacted",
+    "eosqu: NetScreen device_id=reetdolo [umquam]system-low-00075(enderi): The local device labore in the Virtual Security Device group uasiarch changed state from iamquisn to inoperable. (2019-5-28 04:48:31)",
+    "preh: NetScreen device_id=dol [No Name]system-low-00625: Session (id gnamal src-ip 10.119.181.171 dst-ip 10.166.144.66 dst port 3051) route is invalid. (2019-10-3 20:11:40)",
+    "giat: NetScreen device_id=ttenb [eirure]system-high-00549(rem): add-route-> untrust-vr: exer"
+   ],
    "rationale": ""
   },
   {
@@ -1077,8 +1333,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 60,
+   "examples": [
+    "2017-12-29T3:15:58.mipsamvo eiusmod3517.internal.invalid CylancePROTECT oreveri ehende [eaqueip] Event Type: AuditLog, Event Name: ZoneAddDevice, Message: Device: olup; SHA256: labor, User: )dol (sciun metcons",
+    "riosa 2018-6-19T3:46:49.tNe pisc3553.internal.home CylancePROTECT rautod olest eataev Event Type: ExploitAttempt, Event Name: DeviceEdit, Device Name: ritati, IP Address: (10.43.110.203), Action: allow, Process ID: 1359, Process Name: nim.exe, User Name: ame, Violation Type: amvolu, Zone Names: mip",
+    "Aug 1 12:54:32 atis6201.internal.invalid CylancePROTECT Event Type:nisiut, Event Name:threat_changed, Message: Device:quirawas auto assigned to Zone:rror, User:tatema",
+    "uatDuis 2016-4-9T5:22:51.ude maveniam1399.mail.lan CylancePROTECT siutaliq exercit [tempor] Event Type: omnis, Event Name: SystemSecurity, Device Name: eip, Agent Version: lupta, IP Address: (10.124.61.119), MAC Address: (01:00:5e:dc:bb:8b), Logged On Users: (occ), OS: ect Zone Names: reetdolo",
+    "olo 2016-6-20T4:35:42.uaera sitas4259.mail.corp CylancePROTECT atquovo iumto aboreetd Event Type: AuditLog, Event Name: ZoneAddDevice, Message: Zone: dun; Policy: enim; Value: saute, User: vel quu (undeo)"
+   ],
    "rationale": ""
   },
   {
@@ -1107,8 +1369,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 60,
+   "examples": [
+    "<134>1 1700036617.740693756 AB_1234_Amsterdam_MX01 events carrier_change device port1 up false",
+    "<134>1 1639132850.430422377 AP1 events type=disassociation radio='1' vap='1' client_mac='B0:A4:60:9B:3B:A6' channel='100' reason='1' instigator='2' duration='223.031691642' auth_neg_dur='0.005054229' last_auth_ago='223.020414600' is_wpa='1' full_conn='0.384002374' ip_resp='0.384002374' ip_src='10.197.39.50' http_resp='0.647356228' arp_resp='0.013562625' arp_src='10.197.39.50' dns_server='10.128.12",
+    "<134>1 1664385452.707589827 AP_XXXX flows allow src=172.16.12.23 dst=224.0.0.2 mac=4C:AB:4F:0D:3D:AA protocol=2",
+    "<134>1 1647478402.126325721 MR_device_2 events type=wpa_auth radio='1' vap='1' client_mac=",
+    "<134>1 1647479325.755292025 MX100 ip_flow_end src=10.0.2.99 dst=10.0.0.1 protocol=icmp translated_dst_ip=89.160.20.112"
+   ],
    "rationale": ""
   },
   {
@@ -1167,8 +1435,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 19,
+   "examples": [
+    "<166>Sep 12 11:00:00 antivirus: Info: sophos  antivirus - MID 68016096 0 - Virus 'CXmail/MalPE-FL' 'body.scan/redactedFileName.rar/redactedFileName.exe' 1 0",
+    "<166>Sep 12 11:00:00 antivirus: Info: sophos  antivirus - MID 66784457 0 - Virus 'CXmail/MalPE-HB' 'body.scan/242426.cab/rockro9046.exe' 1 0",
+    "<166>Mar 17 18:31:14 gui_logs: Info: Passphrase has been changed for user admin",
+    "<166>Mar 17 18:31:14 error_logs: Info: Internal SMTP giving up on message to example.com with subject 'Warning <System> example.com: Your \"IronPort Email Encryption\" key will expire in under 60...': Unrecoverable error.",
+    "<166>Sep 12 11:00:00 antivirus: Info: sophos  antivirus - MID 67753636 0 - Virus 'Troj/MSIL-TAR' 'body.scan/otherFileName.exe' 1 0"
+   ],
    "rationale": ""
   },
   {
@@ -1212,8 +1486,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 24,
+   "examples": [
+    "Oct 26 19:58:50 undeomni.exe[4938]: RPD_ISIS_LSPCKSUM: : IS-IS 715 LSP checksum error, interface enp0s1965, LSP id tasun, sequence 3203, checksum eratv, lifetime ipsa",
+    "Aug 30 15:48:33 FSAD_TERMINATED_CONNECTION: restart [6703]: xea: Open file ites` closed due to unknown",
+    "Jun 19 03:46:49 modtempo.exe[5276]: CHASSISD_RELEASE_MASTERSHIP: : Release mastership notification",
+    "Jul 25 09:47:41 PWC_LOCKFILE_BAD_FORMAT: restart [3426]: illum: PID lock file has bad format: eprehe",
+    "Feb 17 03:30:32 LIBJNX_EXEC_PIPE: restart [946]: olors: Unable to create pipes for command 'deny': unknown"
+   ],
    "rationale": ""
   },
   {
@@ -1257,8 +1537,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 7,
+   "examples": [
+    "1773416922.391    104 10.105.21.199 58938 TCP_MISS/200 904 123 364 123 528 GET http://example.com/ 1.1 badeyek HIER_DIRECT/203.0.113.10 80 text/html - - \"-\" \"curl/8.14.1\" \"example.com\" \"-\" -",
+    "1773416923.379    790 10.105.21.199 58962 TCP_MISS/200 640 161 292 161 348 GET http://httpbin.org/get 1.1 - HIER_DIRECT/192.0.2.30 80 application/json - - \"http://test.example.com/\" \"curl/8.14.1\" \"httpbin.org\" \"-\" -",
+    "1773416969.734      0 10.105.21.199 32844 TCP_MEM_HIT/200 905 123 365 123 - GET http://example.com/ 1.1 - HIER_NONE/- - text/html - - \"-\" \"curl/8.14.1\" ",
+    "1773416971.100    220 10.105.21.199 32890 TCP_TUNNEL/200 15432 1980 39 120 - CONNECT secure.example.com:443 1.1 badeyek HIER_DIRECT/198.51.100.20 443 - - - \"-\" \"curl/8.14.1\" \"secure.example.com:443\" \"-\" \"secure.example.com\" -",
+    "1773416971.500    180 10.105.21.199 32892 TCP_MISS/200 1200 200 310 200 890 GET http://httpbin.org/headers 1.1 - HIER_DIRECT/192.0.2.30 80 application/json - - \"http://test.example.com/\" \"Mozilla/5.0 (X11; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0\" \"httpbin.org\" \"192.168.1.50\" \"httpbin.org\" -"
+   ],
    "rationale": ""
   },
   {
@@ -1302,8 +1588,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 10,
+   "examples": [
+    "2023-08-28 08:58:43 exchange03 fe80::e478:3abc:f96c:ea94%4 POST /mapi/nspi/ MailboxId=33455f09-88cb-0000-a1a5-730f900d10bd@example.com&FrontEnd=EXCHANGE03.EXAMPLE.COM&RequestId=e393c31b-3ae7-0000-ad11-0632a39901b0&ClientRequestInfo=R:{BD33627D-6B8C-4648-9740-AD9172BB0FEB}:106;RT:GetProps;CI:{DC96322E-2662-4791-BE5D-44163F6033E0}:5;CID:{45ADD272-0FE6-4A23-A58E-A9E379DF101C}&ResponseInfo=XRC:0;SC:0;",
+    "2021-11-28 00:00:04 W3SVC1 10.44.0.136 GET /cdgo SERVER-STATUS=200 443 - 67.43.156.13 HTTP/1.1 Chrome/2.12.1 - example.com 200 0 0 34018 303 46",
+    "2023-08-28 08:58:33 exchange02 fe80::d9e3:e981:da2d:427b%3 POST /autodiscover/autodiscover.xml &reqId=bc5918ae-b6a0-0000-9b09-bb94ce79a2fc 444 EXAMPLE\\user02 fe80::d9e3:e981:da2d:427b%3 Microsoft+Office/16.0+(Windows+NT+10.0;+Microsoft+Outlook+16.0.5404;+Pro) - 200 0 0 78 10.0.40.92,10.93.4.75 51385",
+    "2020-10-05 21:40:30 W3SVC2 freca1 10.24.129.162 GET /robots.txt - 80 - 10.24.136.240 HTTP/1.1 Twitterbot/1.0 - - images.hogeschoolrotterdam.nl 200 0 0 346 306 0 67.43.156.14",
+    "2020-10-08 22:00:22 W3SVC2 freca1 10.24.129.162 GET /Blob/ff64cd9efcf4424dbf06b3b8133eeea2/f2e0b2998b1f43cb98e5b31c7faa91f4.jpg width=60&height=20&mode=crop 80 - 10.24.136.240 HTTP/1.1 Mozilla/5.0+(iPhone;+CPU+iPhone+OS+13_7+like+Mac+OS+X)+AppleWebKit/605.1.15+(KHTML,+like+Gecko)+Version/13.1.2+Mobile/15E148+Safari/604.1 imagedpi=1;+imagequality=30;+_ga=GA1.2.14440223724.16021494379;+_gid=GA1.2.12"
+   ],
    "rationale": ""
   },
   {
@@ -1362,8 +1654,10 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 1,
+   "examples": [
+    "<185>May 3 13:20:50 10.100.0.34 6031594: May 3 13:20:48.739 AEST: %EARL-SW2_DFC1-1-EXCESSIVE_PARITY_ERROR: EARL 0: Parity error detected in VRAM"
+   ],
    "rationale": ""
   },
   {
@@ -1407,8 +1701,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 13,
+   "examples": [
+    "{\"ts\":1507565599.578328,\"id\":\"FtIFnm3ZqI1s96P74l\",\"machine\":\"I386\",\"compile_ts\":1467139314.0,\"os\":\"Windows XP\",\"subsystem\":\"WINDOWS_CUI\",\"is_exe\":true,\"is_64bit\":false,\"uses_aslr\":true,\"uses_dep\":true,\"uses_code_integrity\":false,\"uses_seh\":true,\"has_import_table\":true,\"has_export_table\":false,\"has_cert_table\":true,\"has_debug_data\":false,\"section_names\":[\".text\",\".rdata\",\".data\",\".rsrc\",\".reloc\"]}",
+    "{\"ts\":1547688801.566262,\"fuid\":\"F9ip9a3MDAq3XLBOn2\",\"tx_hosts\":[\"89.160.20.156\"],\"rx_hosts\":[\"10.178.98.102\"],\"conn_uids\":[\"C6sjVo23iNApLnlAt6\"],\"source\":\"SSL\",\"depth\":0,\"analyzers\":[\"X509\",\"MD5\",\"SHA1\"],\"mime_type\":\"application/pkix-cert\",\"duration\":0.0,\"local_orig\":false,\"is_orig\":false,\"seen_bytes\":1092,\"missing_bytes\":0,\"overflow_bytes\":0,\"timedout\":false,\"md5\":\"48f0e38385112eeca5fc9ffd402eaec",
+    "{\"ts\":1547688801.566262,\"fuid\":\"FShtIS1gydeSFf8M63\",\"tx_hosts\":[\"89.160.20.156\"],\"rx_hosts\":[\"10.178.98.102\"],\"conn_uids\":[\"C6sjVo23iNApLnlAt6\"],\"source\":\"SSL\",\"depth\":0,\"analyzers\":[\"X509\",\"MD5\",\"SHA1\"],\"mime_type\":\"application/pkix-cert\",\"duration\":0.0,\"local_orig\":false,\"is_orig\":false,\"seen_bytes\":2089,\"missing_bytes\":0,\"overflow_bytes\":0,\"timedout\":false,\"md5\":\"b9742f12eb97eff531d94f7800c6706",
+    "{\"ts\":1617069763.671838,\"fuid\":\"Fe722V1qt2DSlqCiOa\",\"tx_hosts\":[\"89.160.20.156\"],\"rx_hosts\":[\"10.156.0.2\"],\"conn_uids\":[\"ClG5ErV7bkgKgOaV\"],\"source\":\"SSL\",\"depth\":0,\"analyzers\":[\"X509\",\"SHA256\",\"SHA1\",\"MD5\"],\"mime_type\":\"application/x-x509-user-cert\",\"duration\":0.0,\"local_orig\":false,\"is_orig\":false,\"seen_bytes\":893,\"missing_bytes\":0,\"overflow_bytes\":0,\"timedout\":false,\"md5\":\"5abbc8a9137f692486159",
+    "{\"ts\":1617069792.519193,\"fuid\":\"FSMkdM3YUSoEVpLZN4\",\"tx_hosts\":[\"169.254.169.254\"],\"rx_hosts\":[\"10.156.0.2\"],\"conn_uids\":[\"CgbPEj2jf5Ca7Lw0x2\"],\"source\":\"HTTP\",\"depth\":0,\"analyzers\":[\"SHA1\",\"MD5\"],\"mime_type\":\"text/html\",\"duration\":0.00005316734313964844,\"local_orig\":false,\"is_orig\":false,\"seen_bytes\":1609,\"total_bytes\":1609,\"missing_bytes\":0,\"overflow_bytes\":0,\"timedout\":false,\"md5\":\"1ab1d3a926a9"
+   ],
    "rationale": ""
   },
   {
@@ -1422,8 +1722,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 48,
+   "examples": [
+    "                \"ValueString\": \"0\"",
+    "                \"Key\": \"partition\",",
+    "                \"Key\": \"offset\",",
+    "                \"Key\": \"appId\",",
+    "{\"metadata\":{\"eventType\":\"CustomerIOCEvent\",\"customerIDString\":\"abcdefabcdefabcdefabcdefabcdefabcd\",\"offset\":123456789,\"eventCreationTime\":1760000000000,\"version\":\"1.0\"},\"event\":{\"AgentIdString\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"ProcessId\":\"11111111111\",\"ComputerName\":\"DESKTOP-AAAAAAA\",\"MD5String\":\"2f0eaaf91fc7a5c70d1f4be9b18a1cf5\",\"ParentProcessId\":\"11111111110\",\"ProcessStartTime\":1700000000,\"F"
+   ],
    "rationale": ""
   },
   {
@@ -1437,8 +1743,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 6,
+   "examples": [
+    "09/04-21:53:15.301504 10.100.20.59:57263 -> 10.100.10.190:22",
+    "Type:0  Code:0  ID:101  Seq:1  ECHO REPLY",
+    "09/04-21:42:42.860730 10.100.20.59:57263 -> 10.100.10.190:22",
+    "09/04-21:53:15.299702 10.100.10.1:53 -> 10.100.10.190:36635",
+    "09/04-21:53:15.309468 175.16.199.1 -> 10.100.10.190"
+   ],
    "rationale": ""
   },
   {
@@ -1452,8 +1764,11 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 2,
+   "examples": [
+    "003001000000,2024/04/18 18:39:20,audit,0,gui,Mustang,\"User Mustang accessed node: Panorama/Managed Devices/Summary\",none",
+    "003001000000,2024/04/18 18:38:20,audit,2561,gui-op,Mustang,\"<show><config-locks><vsys>all</vsys></config-locks></show>\",success"
+   ],
    "rationale": ""
   },
   {
@@ -1467,8 +1782,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 6,
+   "examples": [
+    "2023-11-10T10:54:26.287911-05:00 8360-Primaire hpe-restd[1956]: Even",
+    "2024-06-18T12:58:38.182641-05:00 8360-Primaire tunnel[",
+    "2023-10-26T17:50:43.453625-05:00 8360-Primaire hpe-mstpd[745]: Event|2007|",
+    "2024-08-01T13:12:03.990790-04:00 6300-DIST-RDL hpe-sysmond[3512]: Even",
+    "2024-06-18T12:59:38.182641-05:00 8360-Primaire hpe"
+   ],
    "rationale": ""
   },
   {
@@ -1482,8 +1803,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 24,
+   "examples": [
+    "<30>Sep 30 11:30:55 anudhcp.anu.edu.au 10.0.0.1 dhcpd[11411]: DHCPACK to 192.168.0.4 (9c:ad:97:7a:fd:33) via eth2",
+    "<131>May 31 13:21:52 10.54.17.251 dhcpd[1122]: Unable to add forward map from PRinter12345.domain.subdomain.subsubdomain to 10.71.68.10 by server 127.0.0.1#53: REFUSED",
+    "<30>Mar 27 08:32:59 10.0.0.1 dhcpd[2750]: DHCPDISCOVER from 00:50:56:83:d0:f6 via eth1 TransID 6214ab45: network 10.50.0.0/20: no free leases",
+    "<30>Mar 27 08:32:59 10.0.0.1 dhcpd[15752]: DHCPACK on 192.168.0.4 to 9a:df:6e:f6:1f:23 via eth2 relay 192.168.0.3 lease-duration 7257600 (RENEW) uid 01:9a:df:6e:f6:1f:23",
+    "<131>May 31 13:21:52 10.54.17.251 dhcpd[1122]: Reverse map update for 10.71.68.10 abandoned because of non-retryable failure: REFUSED"
+   ],
    "rationale": ""
   },
   {
@@ -1527,8 +1854,12 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 3,
+   "examples": [
+    "<187>May 3 13:20:50 10.100.0.34 6031594: May 3 13:20:48.739 AEST: last message repeated 5 time",
+    "Apr 4 03:39:57 --- last message repeated 1 time ---",
+    "<187>109692: 10.100.0.36: May 9 14:40:12.903: last message repeated 8 time"
+   ],
    "rationale": ""
   },
   {
@@ -1542,8 +1873,10 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 1,
+   "examples": [
+    "<188>May  5 17:51:17 dev01: %FTD<Up>-4-313005: No matching connection for ICMP error message: icmp src Processing:192.168.2.2 dst Office:192.168.2.3 (type 3, code 2) on Processing interface. Original IP payload: udp src 192.168.2.2 dst 192.168.2.3."
+   ],
    "rationale": ""
   },
   {
@@ -1557,8 +1890,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 10,
+   "examples": [
+    "Apr 15 2018 09:34:34 EDT: %ASA-session-5-106100: access-list acl_in permitted tcp inside/10.0.0.16(2241) -> outside/192.168.0.99(2000) hit-cnt 1 first hit [0x71a87d94, 0x0]",
+    "Jan 22 14:05:11 test.example.com : Jan 22 14:05:11 PST: %ASA-svc-4-722051: Group <GroupPolicy_NAME> User <user_NAME> IP <81.2.69.144> IPv4 Address <10.20.0.1> IPv6 address <::> assigned to session",
+    "Feb 12 11:48:23 myhost.example.com : Feb 12 11:48:23 EST: %ASA-svc-4-722041: TunnelGroup <MY_TUNGROUP> GroupPolicy <GroupPolicy_USER_SET> User <user3@example.com> IP <10.2.3.4> No IPv6 address available for SVC connection",
+    "Sep 25 12:42:21 host1.example.com : Sep 25 12:42:21 EDT: %ASA-auth-4-113005: AAA user authentication Rejected : reason = AAA failure : server = myservername : user = myusername : user IP = 10.11.74.55",
+    "Feb 12 11:37:00 myhost.example.com : Feb 12 11:37:00 EST: %ASA-auth-4-113011: AAA retrieved user specific group policy (GroupPolicy_USER_SET) for user = user2@example.com"
+   ],
    "rationale": ""
   },
   {
@@ -1647,8 +1986,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 51,
+   "examples": [
+    "{\"customer_uid\":\"TEST-JvOsaJktSS-eyL-dXhxOvA\",\"incident_uid\":\"8e7edfb1-27d2-4837-98ca-e7d794119c3b\",\"type\":\"INCIDENT_CREATION\",\"resolution_id\":1,\"conclusion\":\"Suspicious Activity\",\"remediation\":\"Investigate further activity at the endpoint by downloading a full dump of the endpoint's recorded data. Give particular attention to activities performed by cmd.exe.\",\"priority_id\":4,\"category_id\":1,\"modi",
+    "{\"actor\": {\"app_name\": \"Test Actor-App_Name\",\"app_uid\": \"Test Actor-App_UID\",\"app_ver\": \"Test Actor-App_Ver\",\"cmd_line\": \"Test Actor-CMD_Line\",\"file\": {\"accessed\": 1613021404000,\"accessor\": \"Test Actor-File-Accessor\",\"attribute_ids\": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17],\"attributes\": 12345678901,\"company_name\": \"Microsoft Corporation\",\"confidentiality_id\": 0,\"content_type\": {\"family_id\": 0,",
+    "{\"category_id\":1,\"count\":1,\"device_end_time\":1721812942435,\"device_ip\":\"192.168.100.100\",\"device_location\":{\"desc\":\"Default\",\"on_premises\":false },\"device_time\":1721812956826,\"feature_name\":\"COMPLIANCE\",\"feature_uid\":\"123E4567-E89B-12D3-A456-426614174000\",\"id\":1,\"message\":\"Host Integrity check passed\\n  Requirement:\\\"Symantec Definition up-to-date?\\\" passed\\n\",\"policy\":{\"name\":\"Default Host Integr",
+    "{\"lineage\":[\"C:\\\\Windows\\\\System32\\\\cmd.exe\",\"C:\\\\Windows\\\\explorer.exe\"],\"feature_uid\":\"1DF0351C-146D-4F07-B155-BF5C7077FF40\",\"type\":\"event_query_results\",\"seq_num\":8,\"ref_uid\":\"00000000-0000-4000-8000-000000000001\",\"legacy_product_uid\":\"00000000-0000-4000-8000-000000000002\",\"id\":1,\"product_uid\":\"31B0C880-0229-49E8-94C5-48D56B1BD7B9\",\"feature_name\":\"DETECTION_RESPONSE\",\"device_group\":\"Default/WGS",
+    "{\"lineage\":[\"/usr/bin/bash\",\"/usr/sbin/sshd\"],\"feature_uid\":\"1DF0351C-146D-4F07-B155-BF5C7077FF40\",\"type\":\"event_query_results\",\"seq_num\":6,\"ref_uid\":\"00000000-0000-4000-8000-000000000001\",\"legacy_product_uid\":\"00000000-0000-4000-8000-000000000002\",\"id\":1,\"product_uid\":\"31B0C880-0229-49E8-94C5-48D56B1BD7B9\",\"feature_name\":\"DETECTION_RESPONSE\",\"device_group\":\"Default/WGS/0001-XX-Example/0001 Client"
+   ],
    "rationale": ""
   },
   {
@@ -1662,8 +2007,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 24,
+   "examples": [
+    "Sep 20 13:57:58 mwr cia5990.api.localdomain: pitlabo.exe[3498]: UI_DBASE_MISMATCH_MAJOR: : Database header major version number mismatch for file 'ende': expecting 6053, got 4884",
+    "Jul 11 02:45:07 NASD_RADIUS_MESSAGE_UNEXPECTED message repeated [33]: abore: Unknown response from RADIUS server: unknown",
+    "Nov 30 00:21:57 SNMP_TRAP_LINK_DOWN message repeated [7368]: ngelit: ifIndex 4197, ifAdminStatus ons, ifOperStatus unknown, ifName lo3193",
+    "Apr 8 16:33:58 UI_LOST_CONN message repeated [7847]: loreeuf: Lost connection to daemon orainci",
+    "May 8 07:27:59 sunt prehen6218.www.localhost: onse.exe[254]: RPD_KRT_IFL_CELL_RELAY_MODE_INVALID: : ifl : inibusBo, failure"
+   ],
    "rationale": ""
   },
   {
@@ -1677,8 +2028,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 58,
+   "examples": [
+    "January 29 06:09:59 boNemoe4402.www.invalid proto=udp service=http status=deny src=10.150.92.220 dst=10.102.123.34 src_port=7178 dst_port=3994 server_app=reeufugi pid=7880 app_name=enderitq traff_direct=external block_count=5286 logon_user=sumdo@litesse6379.api.domain msg=failure",
+    "August 16 08:45:59 dolore6103.www5.example proto=udp service=http status=deny src=10.38.22.45 dst=10.72.29.73 src_port=1493 dst_port=203 server_app=piscing pid=1044 app_name=entsu traff_direct=unknown block_count=4979 logon_user=onproide@luptat6494.www.example msg=failure",
+    "June 19 03:46:49 eratv211.api.host proto=rdp service=https status=deny src=10.38.86.177 dst=10.115.68.40 src_port=5768 dst_port=5483 server_app=boNem pid=5137 app_name=ssusci traff_direct=internal block_count=2841 logon_user=mpo@unte893.internal.host msg=success",
+    "August 7 16:01:23 abori7686.internal.host proto=rdp service=https status=deny src=10.183.243.246 dst=10.137.85.123 src_port=218 dst_port=7073 server_app=ntsunti pid=2313 app_name=magnam traff_direct=internal block_count=6402 logon_user=cid@emi4534.www.localdomain msg=failure",
+    "October 25 19:09:57 abor1370.www.domain proto=ipv6-icmp service=https status=deny src=10.97.236.123 dst=10.77.78.180 src_port=5159 dst_port=5380 server_app=reetdol pid=4984 app_name=ugi traff_direct=inbound block_count=4782 logon_user=nisi@emveleum3661.localhost msg=unknown"
+   ],
    "rationale": ""
   },
   {
@@ -1707,8 +2064,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 38,
+   "examples": [
+    "Feb 22 11:47:05 localhost groupadd[6991]: new group: name=apache, GID=48",
+    "Oct 11 09:10:48 plinode useradd[25494]: failed adding user 'aol', exit code: 4",
+    "2026-08-20T10:08:02.000000+00:00 host01 userdel[2848204]: removed group 'testuser1' owned by 'testuser1'",
+    "<85>1 2026-10-18T03:12:07.521344+02:00 host-2 sudo - - -    bob.smith : HOST=host-2.example.local ; PWD=/var/lib/bob.smith ; USER=root ; COMMAND=/usr/sbin/needrestart -p",
+    "2026-08-20T10:07:04.000000+00:00 host01 groupadd[2846675]: new group: name=testgroup, GID=16005"
+   ],
    "rationale": ""
   },
   {
@@ -1737,8 +2100,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 50,
+   "examples": [
+    "configd: : <<ccaecat.medium> CREATE onsequ",
+    "anacron[7360]: Normal exit tperspic",
+    "runner[2558]: <<icabo.high> Failed to exec edquiac",
+    "ccd: : <<umetMa.low> Device eleumiu2454.api.local: tat",
+    "xinetd[3450]: Started working: aconsequ available services"
+   ],
    "rationale": ""
   },
   {
@@ -1767,8 +2136,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 6,
+   "examples": [
+    "{\"WP_EventInfo.ActionID\":4,\"WP_EventInfo.BadLinkRatingID\":4,\"WP_EventInfo.ContentID\":0,\"WP_EventInfo.Count\":1,\"WP_EventInfo.DomainName\":\"reports.blockedSiteDSSError\",\"WP_EventInfo.DownloadRatingID\":4,\"WP_EventInfo.EventAutoID\":503,\"WP_EventInfo.ExploitRatingID\":4,\"WP_EventInfo.ListID\":1,\"WP_EventInfo.ObserverMode\":true,\"WP_EventInfo.PhishingRatingID\":4,\"WP_EventInfo.PopupRatingID\":4,\"WP_EventInfo.",
+    "{\"EpoComplianceHistory.AutoId\":3,\"EpoComplianceHistory.ChartName\":\"Trellix Agent Compliance Summary\",\"EpoComplianceHistory.TaskName\":\"Generate Records for Trellix Agent Compliance History Reporting\",\"EpoComplianceHistory.CountComputers\":3,\"EpoComplianceHistory.CountNonCompliant\":0,\"EpoComplianceHistory.PercentNonCompliant\":0.0,\"EpoComplianceHistory.PercentCompliant\":100.0,\"EpoComplianceHistory.Cou",
+    "{\"WP_EventInfo.ActionID\":4,\"WP_EventInfo.BadLinkRatingID\":4,\"WP_EventInfo.ContentID\":0,\"WP_EventInfo.Count\":1,\"WP_EventInfo.DomainName\":\"reports.blockedSiteDSSError\",\"WP_EventInfo.DownloadRatingID\":4,\"WP_EventInfo.EventAutoID\":504,\"WP_EventInfo.ExploitRatingID\":4,\"WP_EventInfo.ListID\":1,\"WP_EventInfo.ObserverMode\":true,\"WP_EventInfo.PhishingRatingID\":4,\"WP_EventInfo.PopupRatingID\":4,\"WP_EventInfo.",
+    "{\"EPOLeafNode.AutoID\":7,\"EPOLeafNode.NodeName\":\"DESKTOP-T9VZ2XL\",\"EPOLeafNode.Type\":1,\"EPOLeafNode.ParentID\":2,\"EPOLeafNode.AgentGUID\":\"B2E6C90A-5D14-4F73-A8C2-1E45D7B93068\",\"EPOLeafNode.LastUpdate\":\"2026-09-08T11:52:07+05:30\",\"EPOLeafNode.AgentVersion\":\"5.8.6.185\",\"EPOLeafNode.NodePath\":null,\"EPOLeafNode.ServerKeyHash\":\"zCpCbtDGJO5y9CB7kjIW+lY9lEPxhJhunES4S5Aayao=\",\"EPOLeafNode.TenantId\":1,\"EPOLe",
+    "{\"EPOLeafNode.AutoID\":6,\"EPOLeafNode.NodeName\":\"SERVER-K3NP8QW\",\"EPOLeafNode.Type\":4,\"EPOLeafNode.ParentID\":2,\"EPOLeafNode.AgentGUID\":\"9D4F7A16-2C58-4E90-8B31-7F60A2D9C143\",\"EPOLeafNode.LastUpdate\":\"2026-09-08T09:15:44+05:30\",\"EPOLeafNode.AgentVersion\":\"5.8.6.185\",\"EPOLeafNode.NodePath\":\"My Organization\\\\Servers\\\\SERVER-K3NP8QW\",\"EPOLeafNode.ServerKeyHash\":\"zCpCbtDGJO5y9CB7kjIW+lY9lEPxhJhunES4S5Aa"
+   ],
    "rationale": ""
   },
   {
@@ -1797,8 +2172,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 7,
+   "examples": [
+    "{\"_id\":\"dlp-match-info-text-1\",\"timestamp\":1722282950,\"type\":\"dlp\",\"record_type\":\"incident\",\"dlp_match_info\":\"SSN rule matched 7 times\",\"user\":\"user@example.com\",\"srcip\":\"89.160.20.112\"}",
+    "{\"_id\":\"5182808a2a99fc688d4a8257\",\"access_method\":\"API Connector\",\"action\":\"block\",\"activity\":\"Create\",\"alert\":\"yes\",\"alert_name\":\"Example DLP Alert\",\"alert_type\":\"dlp\",\"app\":\"Google Drive\",\"dlp_profile\":\"Example Confidential Keywords\",\"dlp_rule\":\"Example Member ID\",\"dstip\":\"81.2.69.192\",\"file_type\":\"Microsoft Excel Spreadsheet\",\"md5\":\"deadbeefcafe00000000000000000000\",\"object\":\"Example Corporate ",
+    "{\"_id\":\"dlp-match-info-object-1\",\"timestamp\":1722282952,\"type\":\"dlp\",\"record_type\":\"incident\",\"dlp_match_info\":[{\"action_threshold_met\":true,\"dlp_action\":\"block\",\"dlp_policy\":\"Example_DLP_Policy\",\"dlp_profile_name\":\"Example_PII_Profile\",\"dlp_scan_type\":\"Real-time\"}],\"user\":\"user@example.com\",\"srcip\":\"89.160.20.112\"}",
+    "{\"_id\":\"user-no-at-1\",\"timestamp\":1782003582,\"type\":\"nspolicy\",\"record_type\":\"application\",\"user\":\"svc-example-user\",\"severity\":\"unknown\"}",
+    "{\"_id\":\"5182808a2a99fc688d4a8357\",\"access_method\":\"Client\",\"action\":\"Detection\",\"activity\":\"Download\",\"alert\":\"yes\",\"alert_name\":\"Example-Malware.Test\",\"alert_type\":\"malware\",\"app\":\"Example Security Check\",\"appcategory\":\"Security\",\"device\":\"Windows Device\",\"dstip\":\"81.2.69.142\",\"mal_id\":\"30520723a5b106e6d0aea46a87a35a5f\",\"mal_type\":\"Trojan\",\"md5\":\"deadbeefcafe00000000000000000000\",\"scanner_result\""
+   ],
    "rationale": ""
   },
   {
@@ -1812,8 +2193,14 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 10,
+   "examples": [
+    "{\"accountName\":\"Elastic\",\"applicationInstallationDate\":\"2023-04-19T18:30:00Z\",\"applicationInstallationPath\":null,\"applicationName\":\"Brave\",\"coreCount\":4,\"cpe\":\"cpe:2.3:a:brave:brave:112.1.50.121:*:*:*:*:*:*:*\",\"cpuCount\":2,\"detectionDate\":\"2025-06-02T04:46:51.710582Z\",\"endpointId\":\"2162143406517023959\",\"endpointName\":\"DESKTOP-R1E2DQ2\",\"endpointType\":\"desktop\",\"endpointUuid\":\"187d5f3c7af341079041ba",
+    "{\"application\":\"7-Zip 22.01\",\"applicationName\":\"7-Zip\",\"applicationVendor\":\"Igor Pavlov\",\"applicationVersion\":\"22.01\",\"baseScore\":\"7.80\",\"cveId\":\"CVE-2024-11477\",\"cvssVersion\":\"3.1\",\"daysDetected\":72,\"detectionDate\":\"2025-06-02T04:46:51.710578Z\",\"endpointId\":\"2162143406517023959\",\"endpointName\":\"DESKTOP-R1E2DQ2\",\"endpointType\":\"desktop\",\"id\":\"2228104981028298282\",\"lastScanDate\":\"2025-08-11T18:02:2",
+    "{\"application\":\"Microsoft Edge 112.0.1722.68\",\"applicationName\":\"Microsoft Edge\",\"applicationVendor\":\"Microsoft Corporation\",\"applicationVersion\":\"112.0.1722.68\",\"baseScore\":\"4.30\",\"cveId\":\"CVE-2024-29057\",\"cvssVersion\":\"3.1\",\"daysDetected\":59,\"detectionDate\":\"2025-06-02T04:46:51.710587Z\",\"endpointId\":\"2162143406517023959\",\"endpointName\":\"DESKTOP-R1E2DQ2\",\"endpointType\":\"desktop\",\"id\":\"22281049810",
+    "{\"activeContentFileId\":\"fileid_001\",\"activeContentHash\":\"hash_001\",\"activeContentPath\":\"C:\\\\content\\\\file1\",\"agentDomain\":\"domain1\",\"agentGroupId\":\"group_01\",\"agentId\":\"agent_001\",\"agentInfected\":false,\"agentIp\":\"89.160.20.128\",\"agentIsActive\":true,\"agentIsDecommissioned\":false,\"agentMachineType\":\"x64\",\"agentName\":\"Agent_1\",\"agentNetworkStatus\":\"online\",\"agentOs\":\"Windows 10\",\"agentUuid\":\"uuid_001",
+    "{\"activeContentFileId\":\"fileid_002\",\"activeContentHash\":\"hash_002\",\"activeContentPath\":\"D:\\\\content\\\\file2\",\"agentDomain\":\"domain2\",\"agentGroupId\":\"group_02\",\"agentId\":\"agent_002\",\"agentInfected\":true,\"agentIp\":\"89.160.20.156\",\"agentIsActive\":true,\"agentIsDecommissioned\":false,\"agentMachineType\":\"x86\",\"agentName\":\"Agent_2\",\"agentNetworkStatus\":\"offline\",\"agentOs\":\"Windows Server 2019\",\"agentUuid\":"
+   ],
    "rationale": ""
   },
   {
@@ -1902,8 +2289,12 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 3,
+   "examples": [
+    "{\"ts\":\"2021-01-03T01:19:58.792683Z\",\"host\":\"192.168.4.142\"}",
+    "{\"ts\":\"2021-01-03T12:17:22.496004Z\",\"host\":\"192.168.4.115\"}",
+    "{\"ts\":\"2021-01-03T01:19:27.353353Z\",\"host\":\"192.168.4.29\"}"
+   ],
    "rationale": ""
   },
   {
@@ -1947,8 +2338,10 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 1,
+   "examples": [
+    "id=YYYYYY sn=XXXX time=\"2019-03-14 16:37:19 UTC\" fw=172.29.1.2 pri=1 c=32 m=1388 msg=\"IPSec VPN Decryption Failed\" n=1064050271 src=67.43.156.15 dst=81.2.69.193 note=\"Replay check failure.\""
+   ],
    "rationale": ""
   },
   {
@@ -1992,8 +2385,11 @@
    "status": "active",
    "origin": "subagent:run2-from-scratch",
    "created": "2026-11-20T04:24:02+00:00",
-   "hits": 0,
-   "examples": [],
+   "hits": 2,
+   "examples": [
+    "Mar 17 17:35:40 NASD_usage message repeated [7744]: eumfu: unknown: quidex",
+    "Jun 25 18:53:40 usp_trace_ipc_reconnect message repeated illum.exe:USP trace client cannot reconnect to server"
+   ],
    "rationale": ""
   },
   {
@@ -2025,7 +2421,734 @@
    "hits": 0,
    "examples": [],
    "rationale": ""
+  },
+  {
+   "id": "r00136",
+   "label": "cisco_secure_endpoint",
+   "pattern": "\"self\"\\s*:\\s*\"https://api\\.(\\w+\\.)?amp\\.cisco\\.com/v1/events|\"connector_guid\"\\s*:\\s*\"[^\"]*\",\\s*\"group_guids\"",
+   "flags": "",
+   "confidence": "high",
+   "format": "events_api_json",
+   "priority": 2320,
+   "status": "active",
+   "origin": "subagent:packet-1",
+   "created": "2026-11-20T04:30:09+00:00",
+   "hits": 408,
+   "examples": [
+    "{\"version\":\"v1.2.0\",\"metadata\":{\"links\":{\"self\":\"https://api.eu.amp.cisco.com/v1/events?limit=500&offset=500\",\"prev\":\"https://api.eu.amp.cisco.com/v1/events?limit=500&offset=0\"},\"results\":{\"total\":972,\"current_item_count\":472,\"index\":500,\"items_per_page\":500}},\"data\":{\"id\":1492784107692000800,\"timestamp\":1610627262,\"timestamp_nanoseconds\":692000000,\"date\":\"2021-01-14T12:27:42+00:00\",\"event_type\":\"Cloud IOC\",\"event_type_id\":1107296274,\"connector_guid\":\"test_connector_guid\",\"group_guids\":[\"test_group_guid\"],\"severity\":\"Critical\",\"start_timestamp\":1610627262,\"start_date\":\"2021-01-14T12:27:42+00:00\",\"computer\":{\"connector_guid\":\"test_connector_guid\",\"hostname\":\"Demo_Qakbot_1\",\"external_ip\":\"81.2",
+    "{\"version\":\"v1.2.0\",\"metadata\":{\"links\":{\"self\":\"https://api.eu.amp.cisco.com/v1/events?limit=500&offset=500\",\"prev\":\"https://api.eu.amp.cisco.com/v1/events?limit=500&offset=0\"},\"results\":{\"total\":972,\"current_item_count\":472,\"index\":500,\"items_per_page\":500}},\"data\":{\"id\":6412680266518626000,\"timestamp\":1610655485,\"timestamp_nanoseconds\":478000000,\"date\":\"2021-01-14T20:18:05+00:00\",\"event_type\":\"Threat Detected\",\"event_type_id\":1090519054,\"detection\":\"W32.E4FCCBFA69-95.SBX.TG\",\"detection_id\":\"6412680266518626316\",\"connector_guid\":\"test_connector_guid\",\"group_guids\":[\"test_group_guid\"],\"severity\":\"Medium\",\"computer\":{\"connector_guid\":\"test_connector_guid\",\"hostname\":\"Demo_Qakbot_3\",\"external",
+    "{\"version\":\"v1.2.0\",\"metadata\":{\"links\":{\"self\":\"https://api.eu.amp.cisco.com/v1/events?limit=500&offset=500\",\"prev\":\"https://api.eu.amp.cisco.com/v1/events?limit=500&offset=0\"},\"results\":{\"total\":972,\"current_item_count\":472,\"index\":500,\"items_per_page\":500}},\"data\":{\"id\":6419247189909832000,\"timestamp\":1610639423,\"timestamp_nanoseconds\":732000000,\"date\":\"2021-01-14T15:50:23+00:00\",\"event_type\":\"Retrospective Detection\",\"event_type_id\":553648147,\"detection\":\"W32.Variant:Gen.20gl.1201\",\"detection_id\":\"6419229327140847658\",\"connector_guid\":\"test_connector_guid\",\"group_guids\":[\"test_group_guid\"],\"severity\":\"High\",\"computer\":{\"connector_guid\":\"test_connector_guid\",\"hostname\":\"Demo_WannaCry_Rans",
+    "{\"version\":\"v1.2.0\",\"metadata\":{\"links\":{\"self\":\"https://api.eu.amp.cisco.com/v1/events?limit=500&offset=500\",\"prev\":\"https://api.eu.amp.cisco.com/v1/events?limit=500&offset=0\"},\"results\":{\"total\":972,\"current_item_count\":472,\"index\":500,\"items_per_page\":500}},\"data\":{\"id\":1492784107692000800,\"timestamp\":1610627262,\"timestamp_nanoseconds\":692000000,\"date\":\"2021-01-14T12:27:42+00:00\",\"event_type\":\"",
+    "{\"version\":\"v1.2.0\",\"metadata\":{\"links\":{\"self\":\"https://api.eu.amp.cisco.com/v1/events?limit=500\",\"next\":\"https://api.eu.amp.cisco.com/v1/events?limit=500&offset=500\"},\"results\":{\"total\":972,\"current_item_count\":500,\"index\":0,\"items_per_page\":500}},\"data\":{\"id\":6159251512150196000,\"timestamp\":1610705858,\"timestamp_nanoseconds\":350000000,\"date\":\"2021-01-15T10:17:38+00:00\",\"event_type\":\"Threat Dete"
+   ],
+   "rationale": "API host api.*.amp.cisco.com/v1/events and AMP connector_guid/group_guids fields identify Cisco Secure Endpoint (AMP for Endpoints)."
+  },
+  {
+   "id": "r00137",
+   "label": "crowdstrike_falcon",
+   "pattern": "^\\s+\"(PatternDispositionFlags|KillSubProcess|KillProcess|KillParent|PolicyDisabled|RegistryOperationBlocked|HandleOperationDowngraded|QuarantineFile|ProcessBlocked|FsOperationBlocked|IncidentEndTime|AuditKeyValues|MitreAttack|GrandparentImageFileName|MostRecentActivityTimeStamp|PrecedingActivityTimeStamp|ContextTimeStamp|EndTimeEpoch)\"\\s*:|^\\s+\"Objective\"\\s*:\\s*\"Falcon |^\\s+\"eventType\"\\s*:\\s*\"IncidentSummaryEvent\"|\\\\\\\\CrowdStrike\\\\\\\\",
+   "flags": "",
+   "confidence": "medium",
+   "format": "pretty_json_fragment",
+   "priority": 2330,
+   "status": "active",
+   "origin": "subagent:packet-1",
+   "created": "2026-11-20T04:30:09+00:00",
+   "hits": 44,
+   "examples": [
+    "        \"eventType\": \"IncidentSummaryEvent\",",
+    "        \"Objective\": \"Falcon Detection Method\",",
+    "\t\t\"ResourceName\": \"\",",
+    "            \"KillSubProcess\": false,",
+    "            \"reg query HKEY_LOCAL_MACHINE\\\\SYSTEM\\\\CrowdStrike\\\\{9b03c1d9-3138-44ed-9fae-d9f4c034b88d}\\\\{16e0423f-7058-48c9-a204-725362b67639}\\\\Default\","
+   ],
+   "rationale": "Falcon PatternDispositionDetails flag names, IncidentSummaryEvent, 'Falcon Detection Method' and CrowdStrike registry paths in line-split Falcon streaming-API JSON."
+  },
+  {
+   "id": "r00138",
+   "label": "crowdstrike_falcon",
+   "pattern": "\"CustomerIdString\"\\s*:|\"AgentIdString\"\\s*:|\"ExternalApiType\"\\s*:\\s*\"Event_FileVantage|FileVantage (Policy|Rule)",
+   "flags": "",
+   "confidence": "high",
+   "format": "filevantage_json",
+   "priority": 2340,
+   "status": "active",
+   "origin": "subagent:packet-1",
+   "created": "2026-11-20T04:30:09+00:00",
+   "hits": 3,
+   "examples": [
+    "{\"ChangeId\":\"ca65aa54f7b9453b8ef199a5b2c8e3c4\",\"Host\":{\"Name\":\"LINUX-TEST-HOST-01\"},\"User\":{\"Name\":\"testuser\",\"ID\":\"1000\"},\"Policy\":{\"Name\":\"FileVantage Policy\",\"RuleGroupName\":\"FileVantage Rule Group\",\"RuleBasePath\":\"/home/testuser/filevantage/\",\"ID\":\"8fd42a5c9ac24959a98d9e430837b5e6\"},\"Prevalence\":{\"Key\":\"1:3:DIR:CREATE:/home/testuser/filevantage/suppressed::node:testuser\"},\"Suppression\":{\"Suppressed\":false},\"ContentDiff\":{\"Exists\":false,\"SHA256\":\"\"},\"CustomerIdString\":\"2cc98db1a47b4c98b913c94d43bfab70\",\"UTCTimestamp\":1764581217862,\"Nonce\":1314049827115114419,\"AgentIdString\":\"2e3d9c94d9c34764860b1f3b444c6d4d\",\"EventUUID\":\"ca65aa54-f7b9-453b-8ef1-99a5b2c8e3c4\",\"cid\":\"2cc98db1a47b4c98b913c94",
+    "{\"ChangeId\":\"784c387c806a4adda54f83bc938d022d\",\"Host\":{\"Name\":\"LINUX-TEST-HOST-01\"},\"User\":{\"Name\":\"root\",\"ID\":\"0\"},\"Policy\":{\"Name\":\"FileVantage Policy\",\"RuleGroupName\":\"FileVantage Rule Group\",\"RuleBasePath\":\"/home/testuser/filevantage/\",\"ID\":\"8fd42a5c9ac24959a98d9e430837b5e6\"},\"Prevalence\":{\"Key\":\"1:3:FILE:ATTRIBUTES:/home/testuser/filevantage/test.txt::chattr:root\"},\"Suppression\":{\"Suppressed\":false},\"ContentDiff\":{\"Exists\":false,\"SHA256\":\"\"},\"CustomerIdString\":\"2cc98db1a47b4c98b913c94d43bfab70\",\"UTCTimestamp\":1764940158406,\"Nonce\":7339193177690829435,\"AgentIdString\":\"2e3d9c94d9c34764860b1f3b444c6d4d\",\"EventUUID\":\"784c387c-806a-4add-a54f-83bc938d022d\",\"cid\":\"2cc98db1a47b4c98b913c94d43bfa",
+    "{\"ChangeId\":\"26a2448c6c174cac8cd2b46b74fe93ed\",\"Host\":{\"Name\":\"LINUX-TEST-HOST-01\"},\"User\":{\"Name\":\"testuser\",\"ID\":\"1000\"},\"Policy\":{\"Name\":\"FileVantage Policy\",\"RuleGroupName\":\"FileVantage Rule Group\",\"RuleBasePath\":\"/home/testuser/filevantage/\",\"ID\":\"8fd42a5c9ac24959a98d9e430837b5e6\"},\"Prevalence\":{\"Key\":\"1:3:FILE:CREATE:/home/testuser/filevantage/test.txt::vi:testuser\"},\"Suppression\":{\"Suppressed\":false},\"ContentDiff\":{\"Exists\":false,\"SHA256\":\"adb\"},\"CustomerIdString\":\"2cc98db1a47b4c98b913c94d43bfab70\",\"UTCTimestamp\":1763453435173,\"Nonce\":8348878083986819890,\"AgentIdString\":\"2e3d9c94d9c34764860b1f3b444c6d4d\",\"EventUUID\":\"26a2448c-6c17-4cac-8cd2-b46b74fe93ed\",\"cid\":\"2cc98db1a47b4c98b913c94",
+    "{\"ChangeId\":\"ca65aa54f7b9453b8ef199a5b2c8e3c4\",\"Host\":{\"Name\":\"LINUX-TEST-HOST-01\"},\"User\":{\"Name\":\"testuser\",\"ID\":\"1000\"},\"Policy\":{\"Name\":\"FileVantage Policy\",\"RuleGroupName\":\"FileVantage Rule Group\",\"RuleBasePath\":\"/home/testuser/filevantage/\",\"ID\":\"8fd42a5c9ac24959a98d9e430837b5e6\"},\"Prevalence\":{\"Key\":\"1:3:DIR:CREATE:/home/testuser/filevantage/suppressed::node:testuser\"},\"Suppression\":{\"Suppr",
+    "{\"ChangeId\":\"784c387c806a4adda54f83bc938d022d\",\"Host\":{\"Name\":\"LINUX-TEST-HOST-01\"},\"User\":{\"Name\":\"root\",\"ID\":\"0\"},\"Policy\":{\"Name\":\"FileVantage Policy\",\"RuleGroupName\":\"FileVantage Rule Group\",\"RuleBasePath\":\"/home/testuser/filevantage/\",\"ID\":\"8fd42a5c9ac24959a98d9e430837b5e6\"},\"Prevalence\":{\"Key\":\"1:3:FILE:ATTRIBUTES:/home/testuser/filevantage/test.txt::chattr:root\"},\"Suppression\":{\"Suppressed\""
+   ],
+   "rationale": "FileVantage policy names and Falcon AgentIdString/CustomerIdString fields."
+  },
+  {
+   "id": "r00139",
+   "label": "apple_macos",
+   "pattern": "^\\s+(processor=<KSActionProcessor:|lockFile=<KSLockFile:|<KSTicket:0x|serverType=Omaha\\b|isProcessing=(YES|NO) actionsCompleted=|errors=\\d+ currentActionErrors=|events=\\d+ currentActionEvents=|actionQueue=\\(|<app appid=\"[^\"]*\" cohort=)",
+   "flags": "",
+   "confidence": "medium",
+   "format": "keystone_dump",
+   "priority": 2350,
+   "status": "active",
+   "origin": "subagent:packet-1",
+   "created": "2026-11-20T04:30:09+00:00",
+   "hits": 24,
+   "examples": [
+    "\t\t\terrors=0 currentActionErrors=0",
+    "\t\t\tisProcessing=NO actionsCompleted=0 progress=0.00",
+    "\t\tprocessor=<KSActionProcessor:0x1002769e0",
+    "\t\t\tserverType=Omaha",
+    "\t\t\t    <app appid=\"com.google.Chrome\" cohort=\"1:1y5:gy3@0.05\" cohortname=\"Stable\" status=\"ok\">"
+   ],
+   "rationale": "Google Keystone/Omaha updater object-dump tokens (KSActionProcessor, KSTicket, KSLockFile, serverType=Omaha), same family as the existing apple_macos xc=<KS / delegate=<KS rule."
+  },
+  {
+   "id": "r00140",
+   "label": "mimecast_email_security",
+   "pattern": "\"id\"\\s*:\\s*\"eN[o-r][\\w-]+\"\\s*,\\s*\"auditType\"\\s*:|^\\{\\s*\"auditType\"\\s*:\\s*\"[^\"]+\"\\s*,\\s*\"category\"\\s*:\\s*\"\\w+_logs\"",
+   "flags": "",
+   "confidence": "high",
+   "format": "audit_json",
+   "priority": 2360,
+   "status": "active",
+   "origin": "subagent:packet-1",
+   "created": "2026-11-20T04:30:09+00:00",
+   "hits": 39,
+   "examples": [
+    "{\"id\":\"eNoVzdEKgjAYQOF3-W8Vaps69S7KooSEJGXSzdAVMtdi04FF757dH77zASvayYi-gxQIcbI0HEtcRI5aRS7SxkN1L7ywzPb1gR3rdxOx_LbKcqYciiXdIe7pczKj02u-VuADn7p-HPTjDxKUkGCdUOxDO9lRK2Fa3YnltA2iDQ2X3Alje_2EFH1_LYQrrw\",\"auditType\":\"Archive Mailbox Restore\",\"user\":\"johndoe@example.com\",\"eventTime\":\"2021-10-12T19:20:01+0000\",\"eventInfo\":\"Archive mailbox restore created. Restored data from johdoe@example.com to johndoe@example.com by johndoe@example.com, Date: 2021-10-12, Time: 19:20:01+0000, IP: 67.43.156.15, Application: Administration Console\",\"category\":\"archive_service_logs\"}",
+    "{\"id\":\"eNqrVipOTS4tSs1MUbJSCij080lzDChMMjXw8o3IjnCLDIrRT8wJS_PXNg12dQt3j_QMr4oyi_SO0Xf1jswtM7TINncxTNTO97OsNPQqqAwNU9JRSixNySzJyU8HmWhsaGlsZGpiYaqjlFxaXJKfm1qUnJ-SCrTK2cTM0dwUqLwstag4Mz9PycqwFgBNvCvh\",\"auditType\":\"Folder Log Entry\",\"user\":\"johndoe@example.com\",\"eventTime\":\"2021-10-11T18:23:10+0000\",\"eventInfo\":\"Action Performed - Deleted New Folder by johndoe@example.com<John Doe> Date: 2021-10-11 Time: 19:23:10 +0100 IP: 67.43.156.15 Application: Administration Console\",\"category\":\"profile_group_logs\"}",
+    "{ \"id\": \"eNqrVipOTS4tSs1MUbJS8o0ILw8pL_cyqQosLi-MzKjKcvMzCwtL89c2DXZ1C3eP9AyvijKL9I7Rd_WOzC0ztMg2dzFM1M73s6w09CqoDA1T0lFKLE3JLMnJTwcZaGxoaWxkYmZorKOUXFpckp-bWpScn5IKtMnZxMzR3BSovCy1qDgzP0_JyrAWAIqvLHI\", \"auditType\": \"User Logged On\", \"user\": \"johndoe@example.com\", \"eventTime\": \"2021-10-11T16:03:38+0000\", \"eventInfo\": \"Succesfully enrolled user for user device enrollment, Remote IP is 67.43.156.15\", \"category\": \"authentication_logs\"} ",
+    "{\"id\":\"eNoVzdEKgjAYQOF3-W8Vaps69S7KooSEJGXSzdAVMtdi04FF757dH77zASvayYi-gxQIcbI0HEtcRI5aRS7SxkN1L7ywzPb1gR3rdxOx_LbKcqYciiXdIe7pczKj02u-VuADn7p-HPTjDxKUkGCdUOxDO9lRK2Fa3YnltA2iDQ2X3Alje_2EFH1_LYQrrw\",\"auditType\":\"Archive Mailbox Restore\",\"user\":\"johndoe@example.com\",\"eventTime\":\"2021-10-12T19:20:01+0000\",\"eventInfo\":\"Archive mailbox restore created. Restored data from johdoe@example.com to johndoe@",
+    "{\"id\":\"eNoVzrsOgjAAQNF_6cwAWEFIHHgFDQSQR0zchNZaEAqUAtH47-J-k3M_gONKjJgiYILzLuAPeknInHX7IXZD2xuIVatlH_Ytqd_8KnJr8deGqpPncsVTykSHQ7SQMRerU9A2MsIOJUwO58XD00kveGMdsl6O_ShYUHOrn92wkjQlRyCBu0B0ejHytyHUNEPRJVAJPrEWjxVDeFtyisyGlqrDrZ_xyCnrgKl8f64uPXA\",\"auditType\":\"API Application Updated\",\"user\":\"user.name@company.mime-api.com\",\"eventTime\":\"2024-10-17T02:06:51+0000\",\"eventInfo\":\"API Gateway Application te"
+   ],
+   "rationale": "Mimecast audit events: eNq-prefixed opaque ids followed by auditType."
+  },
+  {
+   "id": "r00141",
+   "label": "mimecast_email_security",
+   "pattern": "\"ttpDefinition\"\\s*:|\"id\"\\s*:\\s*\"MTOKEN:|\"impersonationResults\"\\s*:|\"actionTriggered\"\\s*:\\s*\"[^\"]*\".*\"definition\"\\s*:|\"definition\"\\s*:\\s*\"[^\"]*Attachment Protect Definition",
+   "flags": "",
+   "confidence": "high",
+   "format": "ttp_json",
+   "priority": 2370,
+   "status": "active",
+   "origin": "subagent:packet-1",
+   "created": "2026-11-20T04:30:09+00:00",
+   "hits": 21,
+   "examples": [
+    "{\"senderAddress\":\"<>\",\"recipientAddress\":\"johndoe@example.com\",\"fileName\":\"Titus-Test Doc - Classification - InternalUseOnly.docx\",\"fileType\":\"application\\/vnd.openxmlformats-officedocument.wordprocessingml.document\",\"result\":\"safe\",\"actionTriggered\":\"user release, none\",\"date\":\"2021-10-14T11:24:23+0000\",\"details\":\"Safe                                              \\r\\nTime taken: 0 hrs, 0 min, 5 sec\",\"route\":\"inbound\",\"messageId\":\"<DB8P194MB0824EE4C8D360CCE3DEB0243A1B89@DB8P194MB0824.EURP194.PROD.OUTLOOK.COM>\",\"subject\":\"FW: Titus classification work\",\"fileHash\":\"2fb26be55ac710e4d9f80677ba24ae212dbb36bd934a0569fe521839e9f5d16e\",\"definition\":\"Inbound - Safe file with On-Demand Sandbox\"}",
+    "{\"actionTriggered\":\"none\",\"date\":\"2024-11-17T00:52:30+0000\",\"definition\":\"Default Internal Attachment Protect Definition\",\"details\":\"Malicious                                         \\r\\nTime taken: 0 hrs, 0 min, 1 sec\",\"fileHash\":\"168dde02cf41aed3bf31ad831b75d8ee0b738304baa6957c40e29b2487f15116\",\"fileName\":\"Sandbox Test.xlsx\",\"fileType\":\"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet\",\"messageId\":\"\\u003c675ddc8ccedda6a7-363046@hapi.b41.one\\u003e\",\"recipientAddress\":\"charles.weldon@demo-int.elastic.mime-api.com\",\"result\":\"malicious\",\"route\":\"internal\",\"senderAddress\":\"eric.boyt@demo-int.elastic.mime-api.com\",\"subject\":\"RE\"}",
+    "{\"actionTriggered\":\"none\",\"date\":\"2024-11-16T18:37:47+0000\",\"definition\":\"Default Internal Attachment Protect Definition\",\"details\":\"[MALICIOUS_ACTIVITY: Exploit: Attempting to exploit CVE-2010-1240\\r\\nTime taken: 0 hrs, 0 min, 1 sec]\",\"fileHash\":\"22a65c438289353d96c707cf55e26be723e3157f0aa00734843a9bdc8f98bab0\",\"fileName\":\"zero-day.pdf\",\"fileType\":\"application/pdf\",\"messageId\":\"\\u003c52b1654770446898-195170@hapi.b41.one\\u003e\",\"recipientAddress\":\"jennifer.milligan@demo-int.elastic.mime-api.com\",\"result\":\"malicious\",\"route\":\"internal\",\"senderAddress\":\"hardie.davis@demo-int.elastic.mime-api.com\",\"subject\":\"FW\"}",
+    "{\"userEmailAddress\":\"johndoe@example.com\",\"fromUserEmailAddress\":\"noreply@r.livingsocial.com\",\"url\":\"https:\\/\\/www.livingsocial.com\\/browse\\/?locale=en_US&topCategory=all-deals&p=14&utm_source=newsletter_im&utm_medium=email&t_division=boston&date=20211016&uu=1bea09ca-8a29-11e9-b7f7-0242ac120002&CID=US&tx=0&s=body&c=banner&d=dynamic-banner-4&utm_campaign=194d1bb8-dc74-4bed-b470-0154e934bfb3_0_20211",
+    "{\"userEmailAddress\":\"dl-ga-all_enron_worldwide1@demo-int.elastic.mime-api.com\",\"fromUserEmailAddress\":\"coo.jeff@demo-int.elastic.mime-api.com\",\"url\":\"http://www.enron.com/corp/pressroom/releases/2002/ene/012902Release.html\",\"ttpDefinition\":\"Default Internal URL Protect Definition\",\"subject\":\"Management Changes\",\"action\":\"warn\",\"adminOverride\":\"N/A\",\"userOverride\":\"None\",\"scanResult\":\"malicious\",\"c"
+   ],
+   "rationale": "Mimecast Targeted Threat Protection fields: ttpDefinition, MTOKEN ids, impersonationResults, Attachment Protect Definition."
+  },
+  {
+   "id": "r00142",
+   "label": "mimecast_email_security",
+   "pattern": "^\\{\\s*\"senderAddress\"\\s*:\\s*\"[^\"]*\"\\s*,\\s*\"recipientAddress\"\\s*:\\s*\"[^\"]*\"\\s*,\\s*\"subject\"\\s*:.*\"route\"\\s*:\\s*\"(inbound|outbound|internal)\"\\s*,\\s*\"policy\"\\s*:",
+   "flags": "",
+   "confidence": "medium",
+   "format": "dlp_json",
+   "priority": 2380,
+   "status": "active",
+   "origin": "subagent:packet-1",
+   "created": "2026-11-20T04:30:09+00:00",
+   "hits": 15,
+   "examples": [
+    "{\"senderAddress\":\"webmaster@empirepartners.b41.one\",\"recipientAddress\":\"vkamins@demo-int.elastic.mime-api.com\",\"subject\":\"New CERA.com Coming Soon! - CERA Alert\",\"eventTime\":\"2024-11-17T19:47:39+0000\",\"route\":\"inbound\",\"policy\":\"Confidential\",\"action\":\"block\",\"messageId\":\"<ae9f2f0678ed116f-152138@hapi.b41.one>\"}",
+    "{\"senderAddress\":\"zimin.lu@demo-int.elastic.mime-api.com\",\"recipientAddress\":\"vkaminski@demo-visionary.b41.one\",\"subject\":\"Re\",\"eventTime\":\"2024-11-17T20:57:30+0000\",\"route\":\"outbound\",\"policy\":\"Confidential\",\"action\":\"hold\",\"messageId\":\"<5f9f4f4f0e0afb06-147953@hapi.b41.one>\"}",
+    "{\"senderAddress\":\"<>\",\"recipientAddress\":\"johndoe@example.com\",\"subject\":\"Undelivered Mail Returned to Sender\",\"eventTime\":\"2021-10-15T20:41:25+0000\",\"route\":\"inbound\",\"policy\":\"Content Inspection - Watermark\",\"action\":\"hold\",\"messageId\":\"<20211015204122.2CA6DFCAE2@mail.emailsec.ninja>\"}",
+    "{\"senderAddress\":\"webmaster@empirepartners.b41.one\",\"recipientAddress\":\"vkamins@demo-int.elastic.mime-api.com\",\"subject\":\"New CERA.com Coming Soon! - CERA Alert\",\"eventTime\":\"2024-11-17T19:47:39+0000\",\"route\":\"inbound\",\"policy\":\"Confidential\",\"action\":\"hold\",\"messageId\":\"<ae9f2f0678ed116f-152138@hapi.b41.one>\"}",
+    "{\"senderAddress\":\"<>\",\"recipientAddress\":\"johndoe@example.com\",\"subject\":\"Undelivered Mail Returned to Sender\",\"eventTime\":\"2021-10-15T20:41:19+0000\",\"route\":\"inbound\",\"policy\":\"Content Inspection - Watermark\",\"action\":\"hold\",\"messageId\":\"<20211015204116.6A8CFFCC60@mail.emailsec.ninja>\"}"
+   ],
+   "rationale": "Mimecast DLP log field set (senderAddress, recipientAddress, route, policy, action) in Mimecast's camelCase order."
+  },
+  {
+   "id": "r00143",
+   "label": "mimecast_email_security",
+   "pattern": "\"searchReason\"\\s*:\\s*\"[^\"]*\".*\"searchText\"|\"searchText\"\\s*:.*\"searchReason\"\\s*:",
+   "flags": "",
+   "confidence": "medium",
+   "format": "search_json",
+   "priority": 2390,
+   "status": "active",
+   "origin": "subagent:packet-1",
+   "created": "2026-11-20T04:30:09+00:00",
+   "hits": 12,
+   "examples": [
+    "{\"createTime\":\"2023-07-19T20:58:43+0000\",\"emailAddr\":\"dhamilton@mc-hapi.hamilton321.net\",\"source\":\"archive\",\"searchText\":\"1b471db32c0875e2ec5729e7166f10cec038f47894e88021352ca241782b1bc0 [User : dhamilton@mc-hapi.hamilton321.net]\",\"searchReason\":\"\",\"description\":\"Threat Remediation search\"}",
+    "{\"createTime\":\"2024-11-12T16:21:27+0000\",\"description\":\"Message Tracking Search\",\"emailAddr\":\"\\u003c\\u003e\",\"searchReason\":\"\",\"searchText\":\"[User : dhamilton@mimecast.local]\",\"source\":\"archive\"}",
+    "{\"createTime\":\"2023-08-02T15:53:16+0000\",\"emailAddr\":\"dhamilton@mc-hapi.hamilton321.net\",\"source\":\"archive\",\"searchText\":\"<75117693bccaae9e-67627@hapi.b41.one>\",\"searchReason\":\"\",\"description\":\"Message Tracking Search\"}",
+    "{\"createTime\":\"2024-11-12T16:22:16+0000\",\"emailAddr\":\"dhamilton@mimecast.local\",\"source\":\"archive\",\"searchText\":\"demo-int.elastic.mime-api.com\",\"searchReason\":\"\",\"descript",
+    "{\"createTime\":\"2023-06-09T19:15:50+0000\",\"emailAddr\":\"dhamilton@mc-hapi.hamilton321.net\",\"source\":\"archive\",\"searchText\":\"pete\",\"searchReason\":\"\",\"description\":\"Audit [Page 1] - Depth 100\"}"
+   ],
+   "rationale": "Mimecast archive search log fields searchText/searchReason ('Message Tracking Search')."
+  },
+  {
+   "id": "r00144",
+   "label": "mimecast_email_security",
+   "pattern": "\"aCode\"\\s*:\\s*\"[^\"]+\"\\s*,\\s*\"acc\"\\s*:\\s*\"",
+   "flags": "",
+   "confidence": "high",
+   "format": "siem_legacy_json",
+   "priority": 2400,
+   "status": "active",
+   "origin": "subagent:packet-1",
+   "created": "2026-11-20T04:30:09+00:00",
+   "hits": 10,
+   "examples": [
+    "{\"Act\":\"Acc\",\"AttCnt\":2,\"AttNames\":\"\\\"filename.docx\\\", \\\"filename2.xlsx\\\"\",\"AttSize\":1267,\"MsgId\":\"messageId@mssageId\",\"MsgSize\":2116,\"aCode\":\"BY81J52RPjSmp7MrubnlZg\",\"acc\":\"C0A0\",\"datetime\":\"2017-05-26T19:36:48+0100\"}",
+    "{\"Act\":\"Acc\",\"AttCnt\":0,\"AttNames\":\"\",\"AttSize\":0,\"MsgId\":\"messageId@mssageId\",\"MsgSize\":2116,\"aCode\":\"BY81J52RPjSmp7MrubnlZg\",\"acc\":\"C0A0\",\"datetime\":\"2017-05-26T19:36:48+0100\"}",
+    "{\"MsgId\":\"<CWXP123MB37349110AF6F6A2BC94F702EC4979@CWXP123MB3734.GBRP123.PROD.domain.tld>\",\"Recipient\":\"recipient@domain.tld\",\"Route\":\"Internal\",\"ScanResultInfo\":\"Blocked URL Category\",\"Sender\":\"sender@domain.tld\",\"Subject\":\"Coffee Briefing\",\"URL\":\"https://domain.com/login/\",\"UrlCategory\":\"Phishing & Fraud\",\"aCode\":\"vit87EEXMPaEyl22Lrb92A\",\"acc\":\"C46A75\",\"datetime\":\"2021-03-04T21:31:08+0000\"}",
+    "{\"Act\":\"Acc\",\"Cphr\":\"TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA\",\"Dir\":\"Internal\",\"IP\":\"81.2.69.144\",\"MsgId\":\"<messageId@messageId>\",\"Rcpt\":\"auser@mimecast.com\",\"Sender\":\"from@mimecast.com\",\"SpamInfo\":\"[]\",\"SpamLimit\":0,\"SpamProcessingDetail\":{\"spf\":{\"info\":\"SPF_FAIL\",\"allow\":true},\"dkim\":{\"info\":\"DKIM_UNKNOWN\",\"allow\":true}},\"SpamScore\":1,\"Subject\":\"message subject\",\"TlsVer\":\"TLSv1\",\"aCode\":\"7O7I7MvGP1mj",
+    "{\"Action\":\"Hold\",\"CustomName\":\"false\",\"CustomThreatDictionary\":\"false\",\"Definition\":\"Default Impersonation Definition\",\"Hits\":\"1\",\"IP\":\"0.0.0.0\",\"InternalName\":\"true\",\"MsgId\":\"<ABCDEF@domain.tld>\",\"NewDomain\":\"false\",\"Recipient\":\"recipient@domain\",\"ReplyMismatch\":\"false\",\"Route\":\"Inbound\",\"Sender\":\"sender@domain\",\"SimilarCustomExternalDomain\":\"false\",\"SimilarInternalDomain\":\"false\",\"SimilarMimecas"
+   ],
+   "rationale": "Legacy Mimecast SIEM fields aCode/acc/AttCnt/MsgId."
+  },
+  {
+   "id": "r00145",
+   "label": "mimecast_email_security",
+   "pattern": "^\\{\"(meta\"\\s*:\\s*\\{\"status\"\\s*:\\s*\\d+\\s*,\\s*\"pagination\"[^}]*\\}\\}\\s*,\\s*\"data\"\\s*:\\s*\\[\\]\\s*,\\s*\"fail\"\\s*:\\s*\\[\\]|fail\"\\s*:\\s*\\[\\]\\s*,\\s*\"meta\"\\s*:\\s*\\{\"status\"\\s*:\\s*\\d+\\s*,\\s*\"pagination\")",
+   "flags": "",
+   "confidence": "low",
+   "format": "api_envelope",
+   "priority": 2410,
+   "status": "active",
+   "origin": "subagent:packet-1",
+   "created": "2026-11-20T04:30:09+00:00",
+   "hits": 4,
+   "examples": [
+    "{\"meta\":{\"status\":200,\"pagination\":{\"pageSize\":10,\"totalCount\":519,\"next\":\"nextToken\"}},\"data\":[],\"fail\":[]}",
+    "{\"fail\":[],\"meta\":{\"status\":200,\"pagination\":{\"pageSize\":500,\"next\":\"nextToken\"}},\"data\":[]}",
+    "{\"meta\":{\"status\":200,\"pagination\":{\"pageSize\":10,\"totalCount\":449,\"pageToken\":\"next-page\"}},\"data\":[],\"fail\":[]}",
+    "{\"meta\":{\"status\":200,\"pagination\":{\"pageSize\":0,\"totalCount\":0,\"next\":\"next\"}},\"data\":[],\"fail\":[]}"
+   ],
+   "rationale": "Mimecast API 2.0 response envelope (meta.status/pagination + data + fail arrays), empty page."
+  },
+  {
+   "id": "r00146",
+   "label": "mimecast_email_security",
+   "pattern": "\"Content-Disposition\"\\s*:\\s*\"attachment; filename=\\\\\"malware_(grid|customer)_stix_\\d+",
+   "flags": "",
+   "confidence": "high",
+   "format": "threat_intel_stix",
+   "priority": 2420,
+   "status": "active",
+   "origin": "subagent:packet-1",
+   "created": "2026-11-20T04:30:09+00:00",
+   "hits": 42,
+   "examples": [
+    "{ \"Content-Disposition\":\"attachment; filename=\\\"malware_grid_stix_20211028161801144.stix\\\"\",\"type\": \"malware\", \"id\": \"malware--656138d6-faef-4a9d-907a-d6932bc459cb\", \"created\": \"2021-10-29T15:07:26.653Z\", \"modified\": \"2021-10-29T15:07:26.653Z\", \"name\": \"Business Proposal_Final.pdf\", \"labels\": [ \"virus\" ] } ",
+    "{ \"Content-Disposition\":\"attachment; filename=\\\"malware_grid_stix_20211028161801144.stix\\\"\",\"type\": \"malware\", \"id\": \"malware--e64907e6-9129-4ffa-b426-277c4c691898\", \"created\": \"2021-10-29T15:07:00.259Z\", \"modified\": \"2021-10-29T15:07:00.259Z\", \"name\": \"VM: Caller 908-999-4562\", \"labels\": [ \"virus\" ] }",
+    "{ \"Content-Disposition\":\"attachment; filename=\\\"malware_grid_stix_20211028161801144.stix\\\"\",\"type\": \"malware\", \"id\": \"malware--2e6bcc79-7be4-4abb-9b37-01c2c2bfd509\", \"created\": \"2021-10-29T15:07:17.538Z\", \"modified\": \"2021-10-29T15:07:17.538Z\", \"name\": \"RE: Read: Data base forms.ip.zip\", \"labels\": [ \"virus\" ] }",
+    "{ \"Content-Disposition\":\"attachment; filename=\\\"malware_customer_stix_20211028161801144.stix\\\"\",\"type\": \"relationship\", \"id\": \"relationship--ad6f72cf-40ee-4d26-9427-d4cd8149c677\", \"created\": \"2021-10-29T15:07:07.295Z\", \"modified\": \"2021-10-29T15:07:07.295Z\", \"relationship_type\": \"indicates\", \"source_ref\": \"indicator--a84c0ac6-f99e-4d1e-b552-74e9023d1505\", \"target_ref\": \"malware--10310709-f696-47e7",
+    "{ \"Content-Disposition\":\"attachment; filename=\\\"malware_customer_stix_20211028161801144.stix\\\"\",\"type\": \"relationship\", \"id\": \"relationship--4f282fef-e96d-44d2-ab1d-4244a3a0643f\", \"created\": \"2021-10-29T15:07:14.044Z\", \"modified\": \"2021-10-29T15:07:14.044Z\", \"relationship_type\": \"indicates\", \"source_ref\": \"indicator--90b29bf9-ea1a-423b-8542-4c4590f4038c\", \"target_ref\": \"malware--9bbe2b25-411f-4a98"
+   ],
+   "rationale": "Mimecast Threat Intel feed files (feed types malware_grid / malware_customer) named in the embedded Content-Disposition header."
+  },
+  {
+   "id": "r00147",
+   "label": "thinkst_opencanary",
+   "pattern": "\"node_id\"\\s*:\\s*\"[^\"]*canary|\"logtype\"\\s*:\\s*\\d+\\s*,\\s*\"node_id\"\\s*:",
+   "flags": "",
+   "confidence": "high",
+   "format": "event_json",
+   "priority": 2430,
+   "status": "active",
+   "origin": "subagent:packet-1",
+   "created": "2026-11-20T04:30:09+00:00",
+   "hits": 32,
+   "examples": [
+    "{\"dst_host\": \"1.128.0.1\", \"dst_port\": 80, \"local_time\": \"2025-05-21 02:41:42.788252\", \"local_time_adjusted\": \"2025-05-21 02:41:42.788260\", \"logdata\": {\"HOSTNAME\": \"localhost\", \"PATH\": \"/index.html\", \"SKIN\": \"nasLogin\", \"USERAGENT\": \"Mozilla/5.0 (compatible; Nmap Scripting Engine; https://nmap.org/book/nse.html)\"}, \"logtype\": 3000, \"node_id\": \"opencanary-1\", \"src_host\": \"1.128.0.10\", \"src_port\": 39124, \"utc_time\": \"2025-05-21 02:41:42.788257\"}",
+    "{\"dst_host\": \"1.128.0.1\", \"dst_port\": 6379, \"local_time\": \"2025-05-21 02:39:58.364086\", \"local_time_adjusted\": \"2025-05-21 02:39:58.364096\", \"logdata\": {\"ARGS\": \"sip:nm SIP/2.0 Via: SIP/2.0/TC(and -172 more bytes)\", \"CMD\": \"OPTIONS\"}, \"logtype\": 17001, \"node_id\": \"opencanary-1\", \"src_host\": \"1.128.0.10\", \"src_port\": 37990, \"utc_time\": \"2025-05-21 02:39:58.364093\"}",
+    "{\"dst_host\": \"1.128.0.1\", \"dst_port\": 80, \"local_time\": \"2025-05-21 03:17:23.474957\", \"local_time_adjusted\": \"2025-05-21 03:17:23.475040\", \"logdata\": {\"HOSTNAME\": \"localhost\", \"PATH\": \"/\", \"USERAGENT\": \"curl/7.64.0\"}, \"logtype\": 3003, \"node_id\": \"opencanary-1\", \"src_host\": \"1.128.0.10\", \"src_port\": 57480, \"utc_time\": \"2025-05-21 03:17:23.475031\"}",
+    "{\"dst_host\": \"1.128.0.1\", \"dst_port\": 80, \"local_time\": \"2025-05-21 02:41:42.788252\", \"local_time_adjusted\": \"2025-05-21 02:41:42.788260\", \"logdata\": {\"HOSTNAME\": \"localhost\", \"PATH\": \"/index.html\", \"SKIN\": \"nasLogin\", \"USERAGENT\": \"Mozilla/5.0 (compatible; Nmap Scripting Engine; https://nmap.org/book/nse.html)\"}, \"logtype\": 3000, \"node_id\": \"opencanary-1\", \"src_host\": \"1.128.0.10\", \"src_port\": 39",
+    "{\"dst_host\": \"1.128.0.1\", \"dst_port\": \"139\", \"local_time\": \"2024-04-03 20:55:37.895544\", \"local_time_adjusted\": \"2024-04-03 14:55:37.895572\", \"logdata\": {\"CWR\": \"\", \"ECE\": \"\", \"ID\": \"41150\", \"IN\": \"eth0\", \"LEN\": \"52\", \"MAC\": \"00:15:5d:c9:15:00:1a:cc:b7:d0:be:bf:08:00\", \"OUT\": \"\", \"PREC\": \"0x00\", \"PROTO\": \"TCP\", \"RES\": \"0x20\", \"SYN\": \"\", \"TOS\": \"0x00\", \"TTL\": \"51\", \"URGP\": \"63477\", \"WINDOW\": \"3\"}, "
+   ],
+   "rationale": "OpenCanary event schema (logtype numeric code + node_id opencanary-N)."
+  },
+  {
+   "id": "r00148",
+   "label": "sysdig_falco",
+   "pattern": "\"output\"\\s*:\\s*\"[\\dT:.+-]+: (Emergency|Alert|Critical|Error|Warning|Notice|Informational|Debug) |\"output_fields\"\\s*:\\s*\\{\\s*\"(container|evt|proc|user|fd|k8s)\\.",
+   "flags": "",
+   "confidence": "high",
+   "format": "alert_json",
+   "priority": 2440,
+   "status": "active",
+   "origin": "subagent:packet-1",
+   "created": "2026-11-20T04:30:09+00:00",
+   "hits": 22,
+   "examples": [
+    "{\"hostname\":\"a2000de987ff\",\"output\":\"2024-05-13T13:23:38.089890892+0000: Warning Sensitive file opened for reading by non-trusted program (file=/etc/shadow gparent=runc ggparent=init gggparent=init evt_type=openat user=root user_uid=0 user_loginuid=-1 process=event-generator proc_exepath=/bin/event-generator parent=containerd-shim command=event-generator run --loop terminal=0 container_id=84c0b936c919 container_name=elastic-package-service-falco-event-generator-1)\",\"priority\":\"Informational\",\"rule\":\"Read sensitive file untrusted\",\"source\":\"syscall\",\"tags\":[\"T1555\",\"container\",\"filesystem\",\"host\",\"maturity_stable\",\"mitre_credential_access\"],\"time\":\"2024-05-13T13:23:38.089890892Z\", \"output_fie",
+    "{\"hostname\":\"a2000de987ff\",\"output\":\"2024-05-13T13:23:29.089890892+0000: Warning Sensitive file opened for reading by non-trusted program (file=/etc/shadow gparent=runc ggparent=init gggparent=init evt_type=openat user=root user_uid=0 user_loginuid=-1 process=event-generator proc_exepath=/bin/event-generator parent=containerd-shim command=event-generator run --loop terminal=0 container_id=84c0b936c919 container_name=elastic-package-service-falco-event-generator-1)\",\"priority\":\"Warning\",\"rule\":\"Read sensitive file untrusted\",\"source\":\"syscall\",\"tags\":[\"T1555\",\"container\",\"filesystem\",\"host\",\"maturity_stable\",\"mitre_credential_access\"],\"time\":\"2024-05-13T13:23:29.089890892Z\", \"output_fields\": ",
+    "{\"hostname\":\"97ade2b595f0\",\"output\":\"2024-05-07T18:54:26.271403849+0000: Warning Sensitive file opened for reading by trusted program after startup (file=/etc/shadow pcmdline=event-generator run --loop gparent=containerd-shim ggparent=runc gggparent=init evt_type=openat user=root user_uid=0 user_loginuid=-1 process=httpd proc_exepath=/bin/event-generator parent=event-generator command=httpd --loglevel info run ^syscall.ReadSensitiveFileUntrusted$ --sleep 6s terminal=0 container_id=9656db3bb358 container_name=elastic-package-service-falco-event-generator-1)\",\"priority\":\"Warning\",\"rule\":\"Read sensitive file trusted after startup\",\"source\":\"syscall\",\"tags\":[\"T1555\",\"container\",\"filesystem\",\"hos",
+    "{\"hostname\":\"a2000de987ff\",\"output\":\"2024-05-13T13:23:38.089890892+0000: Warning Sensitive file opened for reading by non-trusted program (file=/etc/shadow gparent=runc ggparent=init gggparent=init evt_type=openat user=root user_uid=0 user_loginuid=-1 process=event-generator proc_exepath=/bin/event-generator parent=containerd-shim command=event-generator run --loop terminal=0 container_id=84c0b936",
+    "{\"uuid\":\"7466e462-ddde-434d-8dee-390ca5656f83\",\"output\":\"21:35:04.518808525: Notice A shell was spawned in a container with an attached terminal (evt_type=execve user=root user_uid=0 user_loginuid=-1 process=sh proc_exepath=/bin/sh parent=containerd-shim command=sh terminal=34816 exe_flags=EXE_WRITABLE container_id=8645a7a530c3 container_image=docker.io/library/busybox container_image_tag=latest c"
+   ],
+   "rationale": "Falco alert JSON: output string '<time>: <Priority> ...' with output_fields keyed by Falco field classes."
+  },
+  {
+   "id": "r00149",
+   "label": "gravitational_teleport",
+   "pattern": "^\\{(?=.*\"code\"\\s*:\\s*\"T[0-9A-Z]{3,5}[IWE]\")(?=.*\"event\"\\s*:\\s*\"[a-z_]+(\\.[a-z_0-9]+)*\")",
+   "flags": "",
+   "confidence": "high",
+   "format": "audit_json",
+   "priority": 2450,
+   "status": "active",
+   "origin": "subagent:packet-1",
+   "created": "2026-11-20T04:30:09+00:00",
+   "hits": 264,
+   "examples": [
+    "{\"action\":9,\"addr.local\":\"2a02:cf40:::3022\",\"addr.remote\":\"127.0.0.1:41106\",\"cluster_name\":\"im-a-cluster-name\",\"code\":\"TS009E\",\"ei\":0,\"error\":\"EOF\",\"event\":\"sftp\",\"login\":\"root\",\"namespace\":\"default\",\"path\":\"/tmp/file\",\"server_hostname\":\"im-a-server-hostname\",\"server_id\":\"e106fdd0-51db-4efa-a9ab-c3afa7a1565a\",\"sid\":\"\",\"time\":\"2019-04-22T19:41:23Z\",\"uid\":\"16bfdc34-2766-a5d3-dfd6f7ff7ad6\",\"user\":\"root\",\"working_directory\":\"/root\"}",
+    "{\"action\":18,\"addr.local\":\"2a02:cf40:::3022\",\"addr.remote\":\"127.0.0.1:41106\",\"cluster_name\":\"im-a-cluster-name\",\"code\":\"TS018E\",\"ei\":0,\"error\":\"EOF\",\"event\":\"sftp\",\"login\":\"root\",\"namespace\":\"default\",\"path\":\"/tmp/file\",\"server_hostname\":\"im-a-server-hostname\",\"server_id\":\"e106fdd0-51db-4efa-a9ab-c3afa7a1565a\",\"sid\":\"\",\"time\":\"2019-04-22T19:41:23Z\",\"uid\":\"16bfdc34-2766-a5d3-dfd6f7ff7ad6\",\"user\":\"root\",\"working_directory\":\"/root\"}",
+    "{\"action\":10,\"addr.local\":\"2a02:cf40:::3022\",\"addr.remote\":\"127.0.0.1:41106\",\"cluster_name\":\"im-a-cluster-name\",\"code\":\"TS010E\",\"ei\":0,\"error\":\"EOF\",\"event\":\"sftp\",\"login\":\"root\",\"namespace\":\"default\",\"path\":\"/tmp/file\",\"server_hostname\":\"im-a-server-hostname\",\"server_id\":\"e106fdd0-51db-4efa-a9ab-c3afa7a1565a\",\"sid\":\"\",\"time\":\"2019-04-22T19:41:23Z\",\"uid\":\"16bfdc34-2766-a5d3-dfd6f7ff7ad6\",\"user\":\"root\",\"working_directory\":\"/root\"}",
+    "{\"action\":9,\"addr.local\":\"2a02:cf40:::3022\",\"addr.remote\":\"127.0.0.1:41106\",\"cluster_name\":\"im-a-cluster-name\",\"code\":\"TS009E\",\"ei\":0,\"error\":\"EOF\",\"event\":\"sftp\",\"login\":\"root\",\"namespace\":\"default\",\"path\":\"/tmp/file\",\"server_hostname\":\"im-a-server-hostname\",\"server_id\":\"e106fdd0-51db-4efa-a9ab-c3afa7a1565a\",\"sid\":\"\",\"time\":\"2019-04-22T19:41:23Z\",\"uid\":\"16bfdc34-2766-a5d3-dfd6f7ff7ad6\",\"user\":\"ro",
+    "{\"ei\":0,\"event\":\"db.session.cassandra.register\",\"code\":\"TCA04I\",\"time\":\"2022-06-02T08:46:33.825Z\",\"cluster_name\":\"im-a-cluster-name\",\"user\":\"alice\",\"sid\":\"2126ee07-cfe1-4213-8032-70b3e6e1ac79\",\"db_service\":\"cassandra\",\"db_protocol\":\"cassandra\",\"db_uri\":\"localhost:65054\",\"db_user\":\"cassandra\",\"event_types\":[\"TOPOLOGY_CHANGE\",\"STATUS_CHANGE\",\"SCHEMA_CHANGE\"]}"
+   ],
+   "rationale": "Teleport audit event codes (T####I/W/E, e.g. TC000I, TDB00W) together with dotted event names (cert.create, db.session.start)."
+  },
+  {
+   "id": "r00150",
+   "label": "proofpoint_on_demand",
+   "pattern": "\"cid\"\\s*:\\s*\"pphosted_|\\bppops\\.net\\b|\"pps\"\\s*:\\s*\\{\\s*\"agent\"",
+   "flags": "",
+   "confidence": "high",
+   "format": "maillog_json",
+   "priority": 2460,
+   "status": "active",
+   "origin": "subagent:packet-1",
+   "created": "2026-11-20T04:30:09+00:00",
+   "hits": 53,
+   "examples": [
+    "{\"data\":\"2024-06-19T05:28:32.325542-07:00 m0000123 sendmail[17414]: 45ABSW12341234: from=<mailive@example.com>, size=1557, class=0, nrcpts=1, msgid=<171012345678974.123456.3315712345678901186@test.example.net>, proto=ESMTP, daemon=MTA, tls_verify=NONE, tls_version=NONE, cipher=NONE, auth=NONE, relay=m0000123.ppops.net [127.0.0.1]\",\"id\":\"OWIsabCDeFgH/h1234n1Cw\",\"metadata\":{\"customerId\":\"c82abcde-5678-42dd-1234-1234563f9cff\",\"origin\":{\"data\":{\"agent\":\"m0000123.ppops.net\",\"cid\":\"pphosted_prodmgt_hosted\"},\"schemaVersion\":\"20200420\"}},\"pps\":{\"agent\":\"m0000123.ppops.net\",\"cid\":\"pphosted_prodmgt_hosted\"},\"sm\":{\"auth\":\"NONE\",\"class\":\"0\",\"daemon\":\"MTA\",\"from\":\"<mailive@example.com>\",\"msgid\":\"<1710123",
+    "{\"data\":\"2024-06-19T05:28:32.533564-07:00 m0000123 sendmail[17416]: 45ABSW12341234: to=john@example.com, delay=00:00:00, xdelay=00:00:00, mailer=relay, tls_verify=OK, tls_version=TLSv1.2, cipher=ECDHE-RSA-AES256-GCM, pri=121557, relay=test4.example.net. [216.160.83.56], dsn=2.0.0, stat=Sent (Ok: queued)\",\"id\":\"NABCDefGH0/I1234slqccQ\",\"metadata\":{\"customerId\":\"c82abcde-5678-42dd-1234-1234563f9cff\",\"origin\":{\"data\":{\"agent\":\"m0000123.ppops.net\",\"cid\":\"pphosted_prodmgt_hosted\"},\"schemaVersion\":\"20200420\"}},\"pps\":{\"agent\":\"m0000123.ppops.net\",\"cid\":\"pphosted_prodmgt_hosted\"},\"sm\":{\"delay\":\"00:00:00\",\"dsn\":\"2.0.0\",\"mailer\":\"relay\",\"pri\":\"121557\",\"qid\":\"45ABSW12341234\",\"relay\":\"test4.example.net. ",
+    "{\"data\":\"2024-06-19T05:28:32.533564-07:00 m0000123 sendmail[17416]: 45ABSW12341234: to=john@example.com, delay=00:00:00, xdelay=00:00:00, mailer=relay, tls_verify=OK, tls_version=TLSv1.2, cipher=ECDHE-RSA-AES256-GCM, pri=121557, relay=test4.example.net. [216.160.83.56], dsn=2.0.0, stat=Sent (Ok: queued)\",\"id\":\"NABCDefGH0/I1234slqccQ\",\"metadata\":{\"customerId\":\"c82abcde-5678-42dd-1234-1234563f9cff\",\"origin\":{\"data\":{\"agent\":\"m0000123.ppops.net\",\"cid\":\"pphosted_prodmgt_hosted\"},\"schemaVersion\":\"20200420\"}},\"pps\":{\"agent\":\"m0000123.ppops.net\",\"cid\":\"pphosted_prodmgt_hosted\"},\"sm\":{\"delay\":\"00:00:00\",\"dsn\":\"2.0.0\",\"mailer\":\"relay\",\"pri\":\"121557\",\"qid\":\"45ABSW12341234\",\"relay\":\"test4.example.net. ",
+    "{\"msgParts\":[{\"labeledCharset\":\"UTF-8\",\"md5\":\"5d41402abc4b2a76b9719d911017c592\",\"sha256\":\"2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824\",\"sizeDecodedBytes\":388,\"isArchive\":false,\"isCorrupted\":false,\"isTimedOut\":false,\"dataBase64\":\"U0NBTEABCDEFGHIJKLMTIxOThhMTY4KQ==\\n\",\"metadata\":{},\"isVirtual\":false,\"detectedSizeBytes\":388,\"detectedMime\":\"text/plain\",\"detectedName\":\"text.txt\",\"u",
+    "{\"msgParts\":[{\"labeledCharset\":\"UTF-8\",\"md5\":\"5d41402abc4b2a76b9719d911017c592\",\"sha256\":\"2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824\",\"sizeDecodedBytes\":\"388\",\"isArchive\":\"false\",\"isCorrupted\":false,\"isTimedOut\":false,\"dataBase64\":\"U0NBTEABCDEFGHIJKLMTIxOThhMTY4KQ==\\n\",\"metadata\":{},\"isVirtual\":false,\"detectedSizeBytes\":388,\"detectedMime\":\"text/plain\",\"urls\":[{\"isRewritten\":t"
+   ],
+   "rationale": "Proofpoint-hosted agent/cid (pphosted_*, *.ppops.net) wrapping sendmail maillog."
+  },
+  {
+   "id": "r00151",
+   "label": "proofpoint_on_demand",
+   "pattern": "\"resolveStatus\"\\s*:|\"msgParts\"\\s*:\\s*\\[|\"final_module\"\\s*:",
+   "flags": "",
+   "confidence": "high",
+   "format": "message_json",
+   "priority": 2470,
+   "status": "active",
+   "origin": "subagent:packet-1",
+   "created": "2026-11-20T04:30:09+00:00",
+   "hits": 0,
+   "examples": [
+    "{\"connection\":{\"country\":\"us\",\"helo\":\"test.example.net\",\"host\":\"test.example.net\",\"ip\":\"81.2.69.192\",\"protocol\":\"smtp:smtp\",\"resolveStatus\":\"ok\",\"sid\":\"3yabcdefusr\",\"tls\":{\"inbound\":{\"cipher\":\"ECDHE-RSA-AES128-GCM-SHA256\",\"cipherBits\":128,\"version\":\"TLSv1.2\"}}},\"envelope\":{\"from\":\"mailive@example.com\",\"rcpts\":[\"mailive@example.org\"]},\"filter\":{\"actions\":[{\"action\":\"accept\",\"isFinal\":true,\"module\":\"access\",\"rule\":\"pod-maillive\"}],\"delivered\":{\"rcpts\":[\"mailive@example.org\"]},\"disposition\":\"retry\",\"durationSecs\":0.06053,\"msgSizeBytes\":819,\"qid\":\"44Mabcdefg10968\",\"routeDirection\":\"outbound\",\"routes\":[\"allow_relay\",\"testroute\"],\"suborgs\":{\"rcpts\":[\"0\"],\"sender\":\"0\"},\"verified\":{\"rcpts\":[\"mailive",
+    "{\"connection\":{\"country\":\"us\",\"helo\":\"user2.example.net\",\"host\":\"user2.example.net\",\"ip\":\"1.128.0.0\",\"protocol\":\"smtp:smtp\",\"resolveStatus\":\"ok\",\"sid\":\"3yabcdefu99\",\"tls\":{\"inbound\":{\"cipher\":\"ECDHE-RSA-AES128-GCM-SHA256\",\"cipherBits\":128,\"version\":\"TLSv1.2\"}}},\"envelope\":{\"from\":\"mailive@example.org\",\"rcpts\":[\"mailive@example.org\"]},\"filter\":{\"actions\":[{\"action\":\"accept\",\"isFinal\":true,\"module\":\"access\",\"rule\":\"pod-maillive\"}],\"delivered\":{\"rcpts\":[\"mailive@example.org\"]},\"disposition\":\"accept\",\"durationSecs\":0.062857,\"msgSizeBytes\":819,\"qid\":\"44MJMABCDEF8544\",\"routeDirection\":\"outbound\",\"routes\":[\"allow_relay\",\"testroute\"],\"suborgs\":{\"rcpts\":[\"0\"],\"sender\":\"0\"},\"verified\":{\"rcpts\":[\"maili",
+    "{\"connection\":{\"country\":\"**\",\"helo\":\"m0000123.ppops.net\",\"host\":\"localhost\",\"ip\":\"175.16.199.1\",\"protocol\":\"smtp:smtp\",\"resolveStatus\":\"ok\",\"sid\":\"3y8abcde1e\",\"tls\":{\"inbound\":{\"cipher\":\"ECDHE-RSA-AES256-GCM-SHA384\",\"cipherBits\":256,\"version\":\"TLSv1.2\"}}},\"envelope\":{\"from\":\"pps@m0000123.ppops.net\",\"rcpts\":[\"pps@m0000123.ppops.net\"]},\"filter\":{\"actions\":[{\"action\":\"accept\",\"isFinal\":true,\"module\":\"access\",\"rule\":\"system\"}],\"delivered\":{\"rcpts\":[\"pps@m0000123.ppops.net\"]},\"disposition\":\"discard\",\"durationSecs\":0.071901,\"msgSizeBytes\":1044,\"qid\":\"44MABCDEFG11361\",\"routeDirection\":\"outbound\",\"routes\":[\"allow_relay\",\"firewallsafe\"],\"suborgs\":{\"rcpts\":[\"0\"],\"sender\":\"0\"},\"verified\":{\"rcpts\":[\"pp"
+   ],
+   "rationale": "PoD message log fields msgParts/final_module/connection.resolveStatus."
+  },
+  {
+   "id": "r00152",
+   "label": "proofpoint_on_demand",
+   "pattern": "\"cadmin-api-gateway\"|\"audit\"\\s*:\\s*\\{\"action\"\\s*:\\s*\"\\w+\"\\s*,\\s*\"level\"\\s*:.*\"eventSubCategory\"",
+   "flags": "",
+   "confidence": "medium",
+   "format": "audit_json",
+   "priority": 2480,
+   "status": "active",
+   "origin": "subagent:packet-1",
+   "created": "2026-11-20T04:30:09+00:00",
+   "hits": 1,
+   "examples": [
+    "{\"audit\":{\"action\":\"create\",\"level\":\"INFO\",\"resourceName\":\"new_test_key\",\"resourceType\":\"config\",\"tags\":[{\"name\":\"eventSubCategory\",\"value\":\"threatProtectionApiKeys\"},{\"name\":\"eventDetails\",\"value\":\"Create New Threat Protection API Key with name new_test_key\"},{\"name\":\"create.threatProtectionApiKeys\",\"value\":\"true\"}],\"user\":{\"email\":\"alice@example.com\",\"id\":\"abcdefg4-1234-4621-1234-bcbf45123456\",\"ipAddress\":\"1.128.0.0\"}},\"guid\":\"762e1234-1234-4690-abcd-c1954e5364d4\",\"metadata\":{\"customerId\":\"c821c1de-6e78-1234-5678-abcdefgf9cff\",\"origin\":{\"data\":{\"agent\":\"81.2.69.144\",\"cid\":\"pphosted_prodmgt_hosted\",\"version\":\"1.0\"},\"schemaVersion\":\"1.0\",\"type\":\"cadmin-api-gateway\"}},\"ts\":\"2023-10-25T21:49:5",
+    "{\"audit\":{\"action\":\"delete\",\"level\":\"INFO\",\"resourceName\":\"new_test_key\",\"resourceType\":\"config\",\"tags\":[{\"name\":\"eventSubCategory\",\"value\":\"threatProtectionApiKeys\"},{\"name\":\"eventDetails\",\"value\":\"Revoke Threat Protection API Key with name new_test_key\"},{\"name\":\"delete.threatProtectionApiKeys\",\"value\":\"true\"}],\"user\":{\"email\":\"smith@example.org\",\"id\":\"abcdefg4-1234-1234-b6a4-bcbf45123456\",\"ipAddress\":\"175.16.199.1\"}},\"guid\":\"3b8abcdef-1234-42e1-5678-abcde8192536\",\"metadata\":{\"customerId\":\"c821c1de-6e78-1234-5678-abcdefgf9cff\",\"origin\":{\"data\":{\"agent\":\"175.16.199.1\",\"cid\":\"pphosted_prodmgt_hosted\",\"version\":\"1.0\"},\"schemaVersion\":\"1.0\",\"type\":\"cadmin-api-gateway\"}},\"ts\":\"2023-10-25T21:50:",
+    "{\"audit\":{\"action\":\"execute\",\"level\":\"INFO\",\"resourceType\":\"smart_search\",\"tags\":[{\"name\":\"eventSubCategory\",\"value\":\"search\"},{\"name\":\"eventDetails\",\"value\":\"Search Query: {\\\"uiDateRange\\\":\\\"last.24.hours\\\",\\\"cid\\\":\\\"pphosted_prodmgt_hosted\\\",\\\"from\\\":\\\"2024-04-15T10:29:53.376Z\\\",\\\"to\\\":\\\"2024-04-16T10:29:53.376Z\\\"} and result count is [2000]\"},{\"name\":\"execute.search\",\"value\":\"true\"}],\"user\":{\"email\":\"mery@example.org\",\"id\":\"a7e6abcd-1234-7901-1234-abcdefc31236\",\"ipAddress\":\"89.160.20.112\"}},\"guid\":\"abcdefb9c-1234-5678-9123-1234567eb3e4\",\"metadata\":{\"customerId\":\"c8211234-1234-5678-a327-abcde13f9cff\",\"origin\":{\"data\":{\"agent\":\"89.160.20.112\",\"cid\":\"pphosted_prodmgt_hosted\",\"version\":\"1.0\"}",
+    "{\"audit\":{\"action\":\"create\",\"level\":\"INFO\",\"resourceName\":\"test_route\",\"resourceType\":\"policy_routes\",\"tags\":[{\"name\":\"eventSubCategory\",\"value\":\"policyRoutes\"},{\"name\":\"eventDetails\",\"value\":\"Policy Route: test_route and Description: .\"},{\"name\":\"create.policyRoutes\",\"value\":\"true\"}],\"user\":{\"email\":\"jack@example.com\",\"id\":\"a7e6abcd-1234-7901-1234-abcdefc31236\",\"ipAddress\":\"216.160.83.56\"}},\"guid"
+   ],
+   "rationale": "Proofpoint admin audit with origin type cadmin-api-gateway and pphosted cid."
+  },
+  {
+   "id": "r00153",
+   "label": "redhat_keycloak",
+   "pattern": "\\[org\\.keycloak\\.|\\bKeycloak \\d+\\.\\d+",
+   "flags": "",
+   "confidence": "high",
+   "format": "jboss_log",
+   "priority": 2490,
+   "status": "active",
+   "origin": "subagent:packet-1",
+   "created": "2026-11-20T04:30:09+00:00",
+   "hits": 20,
+   "examples": [
+    "2021-10-22 22:16:12,150 DEBUG [org.keycloak.events] (default task-8) operationType=CREATE, realmId=test, clientId=7bcaf1cb-820a-40f1-91dd-75ced03ef03b, userId=ce637d23-b89c-4fca-9088-1aea1d053e19, ipAddress=10.2.2.156, resourceType=CLIENT_SCOPE, resourcePath=client-scopes/3b4139b4-66e1-4309-88c1-63ee5abc93a6",
+    "2021-10-22 23:05:03,371 DEBUG [org.keycloak.events] (default task-8) operationType=CREATE, realmId=test, clientId=7bcaf1cb-820a-40f1-91dd-75ced03ef03b, userId=ce637d23-b89c-4fca-9088-1aea1d053e19, ipAddress=10.2.2.156, resourceType=GROUP, resourcePath=groups/a57cd49f-fdfd-4d25-9fd2-2a46de44a9e6/children",
+    "2021-10-22 22:46:14,913 DEBUG [org.keycloak.events] (default task-1) operationType=DELETE, realmId=test, clientId=7bcaf1cb-820a-40f1-91dd-75ced03ef03b, userId=ce637d23-b89c-4fca-9088-1aea1d053e19, ipAddress=10.2.2.156, resourceType=GROUP, resourcePath=groups/d043d5af-6100-483a-9c41-b1a30d5149f7",
+    "2021-10-22 21:24:41,076 WARN  [org.keycloak.events] (default task-10) type=LOGIN_ERROR, realmId=master, clientId=security-admin-console, userId=null, ipAddress=172.18.0.1, error=user_not_found, auth_method=openid-connect, auth_type=code, redirect_uri=http://127.0.0.1:9090/auth/admin/master/console/, cod",
+    "2021-10-22 22:11:32,131 DEBUG [org.keycloak.events] (default task-3) type=CODE_TO_TOKEN, realmId=test, clientId=security-admin-console, userId=ce637d23-b89c-4fca-9088-1aea1d053e19, ipAddress=10.2.2.156, token_id=561459c0-75f1-46d4-986d-d1c96d12b513, grant_type=authorization_code, refresh_token_type=Refresh, scope=openid, refresh_token_id=07434488-ca99-412a-99a0-c2e47c93d6d1, code_id=bae6e56e-368f-"
+   ],
+   "rationale": "org.keycloak logger category and Keycloak version banner."
+  },
+  {
+   "id": "r00154",
+   "label": "sophos_central",
+   "pattern": "\"event_service_event_id\"\\s*:|\"core_remedy_items\"\\s*:|\"amsi_threat_data\"\\s*:|\"ips_threat_data\"\\s*:",
+   "flags": "",
+   "confidence": "high",
+   "format": "siem_json",
+   "priority": 2500,
+   "status": "active",
+   "origin": "subagent:packet-1",
+   "created": "2026-11-20T04:30:09+00:00",
+   "hits": 8,
+   "examples": [
+    "{\"description\":\"Manual PUA cleanup required: 'PUAqsw3kby31j' at 'C:\\\\Program Files (x86)\\\\Trojan Horse\\\\bin\\\\eicar.com'\",\"source\":\"User Name\",\"severity\":\"medium\",\"data\":{\"policy_type\":30,\"user_match_uuid\":{\"type\":3,\"data\":\"SltcnDmTSoSky+G00P5iTQ==\"},\"make_actionable_at\":1674533519751,\"certificates\":[],\"core_remedy_items\":{\"totalItems\":1,\"items\":[{\"result\":\"SUCCESS\",\"sophosPid\":\"\",\"suspendResult\":\"NOT_APPLICABLE\",\"processPath\":\"\",\"descriptor\":\"C:\\\\foo.dll\",\"type\":\"file\"}]},\"created_at\":1669273672085,\"endpoint_id\":\"0320820b-84b4-41ea-95fd-5893fb17e420\",\"endpoint_java_id\":\"0320820b-84b4-41ea-95fd-5893fb17e420\",\"endpoint_platform\":\"windows\",\"endpoint_type\":\"computer\",\"event_service_id\":{\"type\":3",
+    "{\"description\":\"Manual PUA cleanup required: 'PUAqsw3kby31j' at 'C:\\\\Program Files (x86)\\\\Trojan Horse\\\\bin\\\\eicar.com'\",\"source\":\"Domain\\\\User\",\"severity\":\"medium\",\"data\":{\"policy_type\":30,\"user_match_uuid\":{\"type\":3,\"data\":\"SltcnDmTSoSky+G00P5iTQ==\"},\"make_actionable_at\":1674533519751,\"certificates\":[],\"core_remedy_items\":{\"totalItems\":1,\"items\":[{\"result\":\"SUCCESS\",\"sophosPid\":\"\",\"suspendResult\":\"NOT_APPLICABLE\",\"processPath\":\"\",\"descriptor\":\"C:\\\\foo.dll\",\"type\":\"file\"}]},\"created_at\":1669273672085,\"endpoint_id\":\"0320820b-84b4-41ea-95fd-5893fb17e420\",\"endpoint_java_id\":\"0320820b-84b4-41ea-95fd-5893fb17e420\",\"endpoint_platform\":\"windows\",\"endpoint_type\":\"computer\",\"event_service_id\":{\"type",
+    "{\"description\":\"Manual PUA cleanup required: 'PUAqsw3kby31j' at 'C:\\\\Program Files (x86)\\\\Trojan Horse\\\\bin\\\\eicar.com'\",\"source\":\"\\\\User Name\",\"severity\":\"medium\",\"data\":{\"policy_type\":30,\"user_match_uuid\":{\"type\":3,\"data\":\"SltcnDmTSoSky+G00P5iTQ==\"},\"make_actionable_at\":1674533519751,\"certificates\":[],\"core_remedy_items\":{\"totalItems\":1,\"items\":[{\"result\":\"SUCCESS\",\"sophosPid\":\"\",\"suspendResult\":\"NOT_APPLICABLE\",\"processPath\":\"\",\"descriptor\":\"C:\\\\foo.dll\",\"type\":\"file\"}]},\"created_at\":1669273672085,\"endpoint_id\":\"0320820b-84b4-41ea-95fd-5893fb17e420\",\"endpoint_java_id\":\"0320820b-84b4-41ea-95fd-5893fb17e420\",\"endpoint_platform\":\"windows\",\"endpoint_type\":\"computer\",\"event_service_id\":{\"type\"",
+    "{\"description\":\"Manual PUA cleanup required: 'PUAqsw3kby31j' at 'C:\\\\Program Files (x86)\\\\Trojan Horse\\\\bin\\\\eicar.com'\",\"source\":\"User Name\",\"severity\":\"medium\",\"data\":{\"policy_type\":30,\"user_match_uuid\":{\"type\":3,\"data\":\"SltcnDmTSoSky+G00P5iTQ==\"},\"make_actionable_at\":1674533519751,\"certificates\":[],\"core_remedy_items\":{\"totalItems\":1,\"items\":[{\"result\":\"SUCCESS\",\"sophosPid\":\"\",\"suspendResult\":\"",
+    "{\"description\":\"Manual PUA cleanup required: 'PUAqsw3kby31j' at 'C:\\\\Program Files (x86)\\\\Trojan Horse\\\\bin\\\\eicar.com'\",\"source\":\"Domain\\\\User\",\"severity\":\"medium\",\"data\":{\"policy_type\":30,\"user_match_uuid\":{\"type\":3,\"data\":\"SltcnDmTSoSky+G00P5iTQ==\"},\"make_actionable_at\":1674533519751,\"certificates\":[],\"core_remedy_items\":{\"totalItems\":1,\"items\":[{\"result\":\"SUCCESS\",\"sophosPid\":\"\",\"suspendResult"
+   ],
+   "rationale": "Sophos Central SIEM API fields (event_service_event_id, core_remedy_items, amsi_threat_data)."
+  },
+  {
+   "id": "r00155",
+   "label": "hashicorp_vault",
+   "pattern": "\"(client_token|accessor)\"\\s*:\\s*\"hmac-sha256:|^\\{\"time\"\\s*:\\s*\"[^\"]+\"\\s*,\\s*\"type\"\\s*:\\s*\"(request|response)\"\\s*,\\s*\"auth\"\\s*:\\s*\\{",
+   "flags": "",
+   "confidence": "high",
+   "format": "audit_json",
+   "priority": 2510,
+   "status": "active",
+   "origin": "subagent:packet-1",
+   "created": "2026-11-20T04:30:09+00:00",
+   "hits": 13,
+   "examples": [
+    "{\"time\":\"2021-12-30T17:11:12.468537924Z\",\"type\":\"request\",\"auth\":{\"client_token\":\"hmac-sha256:b19f5a3ebd8fa029e884e32cb160d7f1041d7fcba68d796aab9290411fac7ffb\",\"accessor\":\"hmac-sha256:b31666f6a411cf7f9a950833e71035a863a1bb3ab536318529057e3f95787ac4\",\"display_name\":\"oidc-12349999999999999999\",\"policies\":[\"default\",\"group-admin\"],\"token_policies\":[\"default\",\"group-admin\"],\"metadata\":{\"account_id\":\"12349999999999999999\",\"email\":\"example@gmail.com\",\"role\":\"gmail\"},\"entity_id\":\"e4f5c67a-6f7e-789d-ae56-a1fe3ae23046\",\"token_type\":\"service\",\"token_ttl\":3600,\"token_issue_time\":\"2021-12-30T17:11:09Z\"},\"request\":{\"operation\":\"help\",\"mount_type\":\"pki\",\"client_token\":\"hmac-sha256:b19f5a3ebd8fa029e884e32c",
+    "{\"time\":\"2021-06-29T17:26:11.402530449Z\",\"type\":\"request\",\"auth\":{\"client_token\":\"hmac-sha256:95b624915ff8dd55a4028bb57d1af8c6d487a99033b507b99a5a6e943b4933ef\",\"accessor\":\"hmac-sha256:8fa4f7f3d1fd812064950025cde2b1565829a9dc5075253399e5ede8f8a1d98e\",\"display_name\":\"token-375f9cb3-4355-42c7-eab5-029f8a310ca7-runner\",\"policies\":[\"app-continuous-delivery\",\"app-github-runner\",\"default\"],\"token_policies\":[\"app-continuous-delivery\",\"app-github-runner\",\"default\"],\"metadata\":{\"AllocationID\":\"375f9cb3-4355-42c7-eab5-029f8a310ca7\",\"Namespace\":\"\",\"NodeID\":\"b70676cb-731b-976b-edc4-a5b1bb963fe4\",\"Task\":\"runner\"},\"token_type\":\"service\",\"token_ttl\":259200,\"token_issue_time\":\"2021-04-29T21:53:46Z\"},\"request",
+    "{\"time\":\"2021-06-29T18:01:29.545476939Z\",\"type\":\"request\",\"auth\":{\"client_token\":\"hmac-sha256:f69c28fde8609df2a0ec6a316c0293179fa922a8a3a660a314859e6cff8e5fef\",\"accessor\":\"hmac-sha256:2ee197e25b333d83ba45d0c40aca153e0ad6c9e42b04b6de6a5b5b575de58771\",\"display_name\":\"token-c1d6c089-2f46-ff11-5988-38636bddf8d9-homeassistant\",\"policies\":[\"app-home-assistant\",\"default\"],\"token_policies\":[\"app-home-assistant\",\"default\"],\"metadata\":{\"AllocationID\":\"c1d6c089-2f46-ff11-5988-38636bddf8d9\",\"Namespace\":\"\",\"NodeID\":\"a28cef3a-f9e6-ad7d-bc5f-2c5ac27eec51\",\"Task\":\"homeassistant\"},\"token_type\":\"service\",\"token_ttl\":259200,\"token_issue_time\":\"2021-06-24T21:22:03Z\"},\"request\":{\"id\":\"3aa3f349-b55a-53e3-a795-dd4",
+    "{\"time\":\"2021-07-21T12:37:50.936443Z\",\"type\":\"response\",\"auth\":{\"client_token\":\"hmac-sha256:3aae134b7843218bf089cd9b01a55ec417346a242b5383a7fac2ab49692f403a\",\"accessor\":\"bar\",\"display_name\":\"testtoken\",\"policies\":[\"root\"],\"token_policies\":[\"web\"],\"identity_policies\":[\"ident1\",\"ident2\"],\"external_namespace_policies\":{\"ns1\":[\"baz\"]},\"no_default_policy\":true,\"metadata\":{\"id\":\"007\"},\"remaining_uses\":5",
+    "{\"time\":\"2021-06-29T18:01:29.547355273Z\",\"type\":\"response\",\"auth\":{\"client_token\":\"hmac-sha256:f69c28fde8609df2a0ec6a316c0293179fa922a8a3a660a314859e6cff8e5fef\",\"accessor\":\"hmac-sha256:2ee197e25b333d83ba45d0c40aca153e0ad6c9e42b04b6de6a5b5b575de58771\",\"display_name\":\"token-c1d6c089-2f46-ff11-5988-38636bddf8d9-homeassistant\",\"policies\":[\"app-home-assistant\",\"default\"],\"token_policies\":[\"app-home-ass"
+   ],
+   "rationale": "Vault audit device format: type request/response with HMAC-SHA256 hashed client_token/accessor."
+  },
+  {
+   "id": "r00156",
+   "label": "symantec_endpoint_security",
+   "pattern": "\"cybox\"\\s*:\\s*\\{|\"collector_device_name\"\\s*:|\"is_user_present\"\\s*:\\s*(true|false)\\s*,\\s*\"type_id\"\\s*:\\s*\\d{4}",
+   "flags": "",
+   "confidence": "medium",
+   "format": "icdx_json",
+   "priority": 2520,
+   "status": "active",
+   "origin": "subagent:packet-1",
+   "created": "2026-11-20T04:30:09+00:00",
+   "hits": 22,
+   "examples": [
+    "{\"activity_id\": 1,\"actor\": {\"app_name\": \"Test Actor-App_Name\",\"app_uid\": \"Test Actor-App_UID\",\"app_ver\": \"Test Actor-App_Ver\",\"cmd_line\": \"Test Actor-CMD_Line\",\"file\": {\"accessed\": 1613021404000,\"accessor\": \"Test Actor-File-Accessor\",\"attribute_ids\": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17],\"attributes\": 12345678901,\"company_name\": \"Microsoft Corporation\",\"confidentiality_id\": 0,\"content_type\": {\"family_id\": 0,\"subtype\": \"Test Actor-File-Content_Type-SubType\",\"type_id\": 0},\"created\": 1613021404000,\"creator\": \"Test Actor-File-Creator\",\"creator_process\": \"Test Actor-File-Creator_Process\",\"desc\": \"Test Actor-File-Desc\",\"folder\": \"c:\\\\windows\\\\system32\\\\actor\\\\file\\\\folder\",\"folder_uid\": \"Tes",
+    "{\"activity_id\": 1,\"actor\": {\"app_name\": \"Test Actor-App_Name\",\"app_uid\": \"Test Actor-App_UID\",\"app_ver\": \"Test Actor-App_Ver\",\"cmd_line\": \"Test Actor-CMD_Line\",\"file\": {\"accessed\": 1613021404000,\"accessor\": \"Test Actor-File-Accessor\",\"attribute_ids\": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17],\"attributes\": 12345678901,\"company_name\": \"Microsoft Corporation\",\"confidentiality_id\": 0,\"content_type\": {\"family_id\": 0,\"subtype\": \"Test Actor-File-Content_Type-SubType\",\"type_id\": 0},\"created\": 1613021404000,\"creator\": \"Test Actor-File-Creator\",\"creator_process\": \"Test Actor-File-Creator_Process\",\"desc\": \"Test Actor-File-Desc\",\"folder\": \"c:\\\\windows\\\\system32\\\\actor\\\\file\\\\folder\",\"folder_uid\": \"Tes",
+    "{\"activity_id\": 1,\"actor\": {\"app_name\": \"Test Actor-App_Name\",\"app_uid\": \"Test Actor-App_UID\",\"app_ver\": \"Test Actor-App_Ver\",\"cmd_line\": \"Test Actor-CMD_Line\",\"file\": {\"accessed\": 1613021404000,\"accessor\": \"Test Actor-File-Accessor\",\"attribute_ids\": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17],\"attributes\": 12345678901,\"company_name\": \"Microsoft Corporation\",\"confidentiality_id\": 0,\"content_type\": {\"family_id\": 0,\"subtype\": \"Test Actor-File-Content_Type-SubType\",\"type_id\": 0},\"created\": 1613021404000,\"creator\": \"Test Actor-File-Creator\",\"creator_process\": \"Test Actor-File-Creator_Process\",\"desc\": \"Test Actor-File-Desc\",\"folder\": \"c:\\\\windows\\\\system32\\\\actor\\\\file\\\\folder\",\"folder_uid\": \"Tes",
+    "{\"actor\":{\"file\":{\"attribute_ids\":[1],\"attributes\":12345678902,\"signature_value_ids\":[0],\"type_id\":1},\"integrity_id\":0,\"start_time\":1613021404000},\"category_id\":5,\"end_time\":\"2024-02-29T01:00:01.000Z\",\"is_user_present\":false,\"type_id\":8000}",
+    "{\"category_id\": 1,\"collector_device_ip\": \"10.0.0.1\",\"collector_device_name\": \"Test Collector_Device_Name\",\"collector_name\": \"Test Collector_Name\",\"collector_uid\": \"Test Collector_UID\",\"composite\": 1,\"container\": {\"host_name\": \"Test Container-Host_Name\",\"image_name\": \"Test Container-Image_Name\",\"image_uid\": \"Test Container-Image_UID\",\"name\": \"Test Container-Name\",\"networks\": [{\"bssid\": \"Test Contai"
+   ],
+   "rationale": "Symantec Endpoint Security / ICDx event schema (cybox, collector_*, is_user_present with 4-digit type_id)."
+  },
+  {
+   "id": "r00157",
+   "label": "cisco_meraki",
+   "pattern": "^<\\d+>1 \\d{9,10}\\.\\d+ \\S+ (cellular_firewall|vpn_firewall|bridge_anyconnect_client_vpn_firewall|firewall|flows|urls|events|ids-alerts|security_event|airmarshal_events|ip_flow_start|ip_flow_end) ",
+   "flags": "",
+   "confidence": "high",
+   "format": "syslog_kv",
+   "priority": 2530,
+   "status": "active",
+   "origin": "subagent:packet-1",
+   "created": "2026-11-20T04:30:09+00:00",
+   "hits": 3,
+   "examples": [
+    "<134>1 948136486.721741837 MX60 cellular_firewall src=10.10.10.11 dst=10.241.77.255 mac=24:2F:FA:1E:B7:E6 protocol=udp sport=9562 dport=53 pattern: allow all",
+    "<134>1 948136486.721741837 MX60 bridge_anyconnect_client_vpn_firewall src=10.241.192.1 dst=10.241.77.255 mac=24:2F:FA:1E:B7:E6 protocol=udp sport=9562 dport=53 pattern: allow all",
+    "<134>1 948136486.721741837 MX60 vpn_firewall src=10.241.192.1 dst=10.241.77.255 mac=24:2F:FA:1E:B7:E6 protocol=udp sport=9562 dport=53 pattern: allow all"
+   ],
+   "rationale": "Meraki syslog header (<pri>1 epoch device type) with Meraki log types; existing rule required a 10-digit epoch."
+  },
+  {
+   "id": "r00158",
+   "label": "paloalto_panos",
+   "pattern": "^(\\w{3} [ \\d]?\\d \\d\\d:\\d\\d:\\d\\d )?\\d+,\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d(\\.\\d+)?Z,[^,]*,GLOBALPROTECT,",
+   "flags": "",
+   "confidence": "high",
+   "format": "globalprotect_csv",
+   "priority": 2540,
+   "status": "active",
+   "origin": "subagent:packet-1",
+   "created": "2026-11-20T04:30:09+00:00",
+   "hits": 3,
+   "examples": [
+    "Nov 30 16:09:08 931201168,2021-10-22T16:10:10.000000Z,no-serial,GLOBALPROTECT,globalprotect,9.1,2021-10-22T16:10:05.000000Z,vsys1,gateway-hip-check,host-info,,,host\\\\user,,HOSTNAME,10.1.1.1,,10.2.2.2,fc00::1,8cbc136b-e262-4cf8-912c-95ea132d9fef,SERIALNR,5.2.6,,,1,,,HIP report is not needed,success,,0,,0,GlobalProtect_External_Gateway,1305925,true",
+    "Nov 30 16:09:08 931201168,2021-11-09T21:45:36.000000Z,no-serial,GLOBALPROTECT,globalprotect,9.1,2021-11-09T21:45:14.000000Z,vsys1,gateway-tunnel-latency,tunnel,,,user,,HOSTNAME,10.3.3.3,,10.4.4.4,,8cbc136b-e262-4cf8-912c-95ea132d9fef,SERIALNR,5.2.8,,,1,,,\"Pre-tunnel latency: 35ms, Post-tunnel latency: 16ms\",success,,0,,0,GlobalProtect_External_Gateway,1041590,true",
+    "Nov 30 16:09:08 931201168,2021-11-09T21:45:36.000000Z,no-serial,GLOBALPROTECT,globalprotect,9.1,2021-11-09T21:45:14.000000Z,vsys1,gateway-tunnel-latency,tunnel,,,user,,HOSTNAME,,fc00::1234,,fc00::abcd,8cbc136b-e262-4cf8-912c-95ea132d9fef,SERIALNR,5.2.8,,,1,,,\"Pre-tunnel latency: 35ms, Post-tunnel latency: 16ms\",success,,0,,0,GlobalProtect_External_Gateway,1041590,true"
+   ],
+   "rationale": "PAN-OS GLOBALPROTECT log type in CSV with ISO-8601 timestamps."
+  },
+  {
+   "id": "r00159",
+   "label": "paloalto_panos",
+   "pattern": "\\d{12},\\d{4}/\\d\\d/\\d\\d \\d\\d:\\d\\d:\\d\\d,(audit|config|system|traffic|threat),\\d+,",
+   "flags": "",
+   "confidence": "high",
+   "format": "audit_csv",
+   "priority": 2550,
+   "status": "active",
+   "origin": "subagent:packet-1",
+   "created": "2026-11-20T04:30:09+00:00",
+   "hits": 2,
+   "examples": [
+    "<190>Aug 6 15:45:10 10.1.1.1 013101009361,2024/08/06 15:45:10,audit,2561,gui-op,redact,\"<debug><dataplane><packet-diag><show><setting/></show></packet-diag></dataplane></debug>\",success"
+   ],
+   "rationale": "PAN-OS serial,receive-time,type CSV header after a syslog PRI/host prefix (existing rule is ^-anchored)."
+  },
+  {
+   "id": "r00160",
+   "label": "paloalto_panos",
+   "pattern": "^\\d,\\d{4}/\\d\\d/\\d\\d \\d\\d:\\d\\d:\\d\\d,\\d+,\\w+,(start|end|drop|deny),\\d+,\\d{4}/\\d\\d/\\d\\d \\d\\d:\\d\\d:\\d\\d,",
+   "flags": "",
+   "confidence": "medium",
+   "format": "traffic_csv",
+   "priority": 2560,
+   "status": "active",
+   "origin": "subagent:packet-1",
+   "created": "2026-11-20T04:30:09+00:00",
+   "hits": 3,
+   "examples": [
+    "1,2021/11/23 00:44:44,1234567890,START,start,2561,2021/11/23 00:44:44,10.0.0.10,175.16.199.1,10.0.0.20,10.0.0.30,rule,,d-user,app,vsys,s-zone,d-zone,inbound,outbound,log,,id,100,9000,9550,9200,9300,0,tcp,action,4,1000,user,src-loc,dst-loc,0,0,0,0,vsys-name,d-name,imsi,imei,1000,1000,1000,10,10,10,10,10,10,20,200,75,50,1000,1000,end,action,2021-11-23T00:44:44.930-08:00,1234567890,rule1,81.2.69.192,100,100,pcap,dug,100,100,2021-11-23T00:44:44.930-08:00,asd,ast,100,app-sc,cat,tech,4,char,con,no,no",
+    "1,2021/11/23 00:44:44,1234567890,START,start,2561,2021/11/23 00:44:44,10.0.0.10,175.16.199.1,10.0.0.20,10.0.0.30,rule,,d-user,app,vsys,s-zone,d-zone,inbound,outbound,log,,id,100,9000,9550,9200,9300,0,tcp,action,4,1000,user,src-loc,dst-loc,0,0,0,0,vsys-name,d-name,imsi,imei,1000,1000,1000,10,10,10,10,10,10,20,200,75,50,1000,1000,end,action,2021-11-23T00:44:44.930-08:00,1234567890,rule1,81.2.69.192,100,100,pcap,dug,100,100,1969-12-31T16:00:00.000-08:00,asd,ast,100,app-sc,cat,tech,4,char,con,no,no",
+    "1,2021/11/23 00:44:44,1234567890,START,start,2561,2021/11/23 00:44:44,10.0.0.10,175.16.199.1,10.0.0.20,10.0.0.30,rule,,d-user,app,vsys,s-zone,d-zone,inbound,outbound,log,,id,100,9000,9550,9200,9300,0,tcp,action,4,1000,user,src-loc,dst-loc,0,0,0,0,vsys-name,d-name,imsi,imei,1000,1000,1000,10,10,10,10,10,10,20,200,75,50,1000,1000,end,action,2021-11-23T00:44:44.930-08:00,1234567890,rule1,81.2.69.192,"
+   ],
+   "rationale": "PAN-OS traffic CSV field order (future_use,receive_time,serial,type,subtype start/end,config_version,generated_time)."
+  },
+  {
+   "id": "r00161",
+   "label": "cisco_esa",
+   "pattern": "\\bantispam: (Info|Warning|Debug|Critical): ",
+   "flags": "",
+   "confidence": "high",
+   "format": "syslog",
+   "priority": 2570,
+   "status": "active",
+   "origin": "subagent:packet-1",
+   "created": "2026-11-20T04:30:09+00:00",
+   "hits": 3,
+   "examples": [
+    "<166>Mar 17 18:24:37 antispam: Info: case antispam - engine (72324) : case-daemon: Initializing Child",
+    "<166>Mar 17 18:24:37 antispam: Info: case antispam - engine (15703) : case-daemon: server killed by SIGHUP, shutting down",
+    "<166>Mar 17 18:24:37 antispam: Info: case antispam - engine (15703) : case-daemon: all children killed, exitting"
+   ],
+   "rationale": "ESA 'antispam: Info: case antispam - engine' log subscription prefix, sibling of existing antivirus: Info: rule."
+  },
+  {
+   "id": "r00162",
+   "label": "nozomi_guardian",
+   "pattern": "\"_asset_kb_id\"\\s*:|\"appliance_hosts\"\\s*:|\"is_ai_enriched\"\\s*:|\"capture_device\"\\s*:\\s*\"[^\"]*\"\\s*,\\s*\"is_ai_enriched\"",
+   "flags": "",
+   "confidence": "medium",
+   "format": "asset_json",
+   "priority": 2580,
+   "status": "active",
+   "origin": "subagent:packet-1",
+   "created": "2026-11-20T04:30:09+00:00",
+   "hits": 7,
+   "examples": [
+    "{\"id\":\"aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee\",\"ip\":[\"203.0.113.50\"],\"os\":\"Mac OS X\",\"name\":\"string-epoch-uptime-host\",\"risk\":2,\"time\":1746643849541,\"type\":\"typehost\",\"level\":\"level1\",\"roles\":[\"other\"],\"zones\":[\"Undefined\"],\"vendor\":\"unknown\",\"os:info\":{\"source\":\"passive\"},\"lifecycle\":\"life-cycle\",\"protocols\":[\"smb\",\"http\"],\"type:info\":{\"source\":\"passive\"},\"created_at\":\"1781182494314\",\"mac_vendor\":[\"Cisco Systems, Inc\"],\"mac_address\":[\"d9:a8:80:ef:9d:d2\"],\"vendor:info\":{\"source\":\"passive\"},\"product_name\":\"pname\",\"serial_number\":\"123456789\",\"capture_device\":\"demo\",\"is_ai_enriched\":false,\"lifecycle:info\":{\"source\":\"passive\"},\"os_or_firmware\":\"fware\",\"appliance_hosts\":[\"Demo Sensor iq e6ef8db9\"],",
+    "{\"id\":\"f855ca08-ec50-4953-ba47-abb18464013e\",\"ip\":[\"0.0.0.0\"],\"os\":\"Mac OS X\",\"name\":\"0.0.0.0\",\"risk\":2,\"time\":1746643849541,\"type\":\"typehost\",\"level\":\"level1\",\"roles\":[\"other\"],\"zones\":[\"Undefined\"],\"vendor\":\"unknown\",\"os:info\":{\"source\":\"passive\"},\"lifecycle\":\"life-cycle\",\"protocols\":[\"smb\",\"http\"],\"type:info\":{\"source\":\"passive\"},\"created_at\":1681948201431,\"mac_vendor\":[\"Cisco Systems, Inc\"],\"mac_address\":[\"d9:a8:80:ef:9d:d2\"],\"vendor:info\":{\"source\":\"passive\"},\"product_name\":\"pname\",\"serial_number\":\"123456789\",\"capture_device\":\"demo\",\"is_ai_enriched\":false,\"lifecycle:info\":{\"source\":\"passive\"},\"os_or_firmware\":\"fware\",\"appliance_hosts\":[\"Demo Sensor iq e6ef8db9\"],\"end_of_sale_date\":17479",
+    "{\"id\":\"f855ca08-hy50-4953-ba47-abb18464013e\",\"ip\":[\"67.43.156.0\"],\"os\":\"Mac OS X\",\"name\":\"hostname\",\"risk\":2,\"time\":1746643869542,\"type\":\"typehost\",\"level\":\"level2\",\"roles\":[\"other\"],\"zones\":[\"Undefined\"],\"vendor\":\"unknown\",\"os:info\":{\"source\":\"passive\"},\"lifecycle\":\"life-cycle\",\"protocols\":[\"smb\",\"http\"],\"type:info\":{\"source\":\"passive\"},\"created_at\":1681948201431,\"mac_vendor\":[\"Cisco Systems, Inc\"],\"mac_address\":[\"d9:a8:80:ef:9d:d2\"],\"vendor:info\":{\"source\":\"passive\"},\"product_name\":\"pname\",\"serial_number\":\"123456789\",\"capture_device\":\"demo\",\"is_ai_enriched\":false,\"lifecycle:info\":{\"source\":\"passive\"},\"os_or_firmware\":\"fware\",\"appliance_hosts\":[\"Demo Sensor iq e6ef8db9\"],\"end_of_sale_date\":",
+    "{\"id\":\"cmc-node-001\",\"uid\":\"node-uuid-cmc-001\",\"ip\":\"10.10.10.5\",\"type\":\"controller\",\"label\":\"CMC PLC\",\"level\":\"2\",\"roles\":[\"other\"],\"vendor\":\"Vendor\",\"protocols\":[\"modbus\"],\"capture_device\":\"eth0\",\"capture_devices\":[\"eth0\"],\"appliance_id\":\"guardian-1\",\"appliance_site\":\"site-a\",\"appliance_hosts\":[\"guardian-host\"],\"created_at\":1725960106182,\"last_activity_time\":1747206000000,\"first_activity_time\":1",
+    "{\"id\":\"9b492faf-5cf2-4b91-b745-f1e903bba5d1\",\"ip\":\"ff02::1:ff35:a124\",\"os\":\"Windows XP SP3\",\"name\":\"00112231@81.2.69.144\",\"type\":\"controller\",\"zone\":\"Layer2\",\"label\":\"ACMEincHQ_SW2\",\"level\":\"1.5\",\"roles\":[\"other\"],\"subnet\":\"10.1.1.0\\/24\",\"vendor\":\"Rockwell Automation\",\"os:info\":{\"source\":\"none\"},\"is_public\":false,\"lifecycle\":\"end_of_sale\",\"protocols\":[\"ethernetip\"],\"type:info\":{\"source\":\"passive\","
+   ],
+   "rationale": "Nozomi asset fields (_asset_kb_id, appliance_hosts, capture_device, is_ai_enriched)."
+  },
+  {
+   "id": "r00163",
+   "label": "nozomi_guardian",
+   "pattern": "\"bpf_filter\"\\s*:\\s*\"ip6? host [^\"]*\"\\s*,\\s*\"created_at\"|\"_private_status\"\\s*:|\"_is_licensed\"\\s*:",
+   "flags": "",
+   "confidence": "medium",
+   "format": "node_json",
+   "priority": 2590,
+   "status": "active",
+   "origin": "subagent:packet-1",
+   "created": "2026-11-20T04:30:09+00:00",
+   "hits": 0,
+   "examples": [
+    "{\"id\":\"9b492faf-5cf2-4b91-b745-f1e903bba5d1\",\"ip\":\"ff02::1:ff35:a124\",\"os\":\"Windows XP SP3\",\"name\":\"00112231@81.2.69.144\",\"type\":\"controller\",\"zone\":\"Layer2\",\"label\":\"ACMEincHQ_SW2\",\"level\":\"1.5\",\"roles\":[\"other\"],\"subnet\":\"10.1.1.0\\/24\",\"vendor\":\"Rockwell Automation\",\"os:info\":{\"source\":\"none\"},\"is_public\":false,\"lifecycle\":\"end_of_sale\",\"protocols\":[\"ethernetip\"],\"type:info\":{\"source\":\"passive\",\"protocol\":\"ethernetip\"},\"bpf_filter\":\"ip host 81.2.69.144\",\"created_at\":1725960106182,\"is_learned\":true,\"label:info\":{\"source\":\"none\"},\"mac_vendor\":\"Schweitzer Engineering Laboratories\",\"properties\":{\"_type.passive\":\"controller\",\"_vendor.passive\":\"Rockwell Automation\\/Allen-Bradley\",\"ethernetip\\/ve",
+    "{\"id\":\"9b492faf-5fd4-4b91-b745-f1e903bba5d1\",\"ip\":\"2a02:cf40::\",\"os\":\"Windows XP SP3\",\"name\":\"00112231@81.2.69.192\",\"type\":\"controller\",\"zone\":\"Layer2\",\"label\":\"ACMEincHQ_SW2\",\"level\":\"1.5\",\"roles\":[\"other\"],\"subnet\":\"10.1.1.0\\/24\",\"vendor\":\"Rockwell Automation\",\"os:info\":{\"source\":\"none\"},\"is_public\":false,\"lifecycle\":\"end_of_sale\",\"protocols\":[\"ethernetip\"],\"type:info\":{\"source\":\"passive\",\"protocol\":\"ethernetip\"},\"bpf_filter\":\"ip host 81.2.69.192\",\"created_at\":1725960106184,\"is_learned\":false,\"label:info\":{\"source\":\"none\"},\"mac_vendor\":\"Schweitzer Engineering Laboratories\",\"properties\":{\"_type.passive\":\"controller\",\"_vendor.passive\":\"Rockwell Automation\\/Allen-Bradley\",\"ethernetip\\/vendor\""
+   ],
+   "rationale": "Nozomi node schema (bpf_filter per host, _is_licensed/_private_status, OT vendor fields)."
+  },
+  {
+   "id": "r00164",
+   "label": "nozomi_guardian",
+   "pattern": "\"is_from_public\"\\s*:\\s*(true|false)|\"direction_is_known\"\\s*:",
+   "flags": "",
+   "confidence": "medium",
+   "format": "session_json",
+   "priority": 2600,
+   "status": "active",
+   "origin": "subagent:packet-1",
+   "created": "2026-11-20T04:30:09+00:00",
+   "hits": 3,
+   "examples": [
+    "{\"id\":\"5514f626-10d8-476e-a9ad-d06eef56e5eb\",\"to\":\"2a02:cf41:abcd::1234\",\"key\":\"2a02:cf41:abcd::1234;5355;2a02:cf40::;49740;udp;56710\",\"from\":\"2a02:cf40::\",\"status\":\"ACTIVE\",\"to_port\":\"5355\",\"to_zone\":\"Undefined\",\"protocol\":\"llmnr\",\"from_port\":\"49740\",\"from_zone\":\"Undefined\",\"bpf_filter\":\"ip6 host 2a02:cf40:: and ip6 host 2a02:cf41:abcd::1234 and udp port 49740 and udp port 5355\",\"is_broadcast\":false,\"is_to_public\":false,\"is_from_public\":false,\"throughput_speed\":0,\"transferred.bytes\":\"90\",\"direction_is_known\":true,\"last_activity_time\":1745957044875,\"transport_protocol\":\"udp\",\"first_activity_time\":\"1745957044874\",\"transferred.packets\":\"1\",\"transferred.last_5m_bytes\":\"90\",\"transferred.last_15m",
+    "{\"id\":\"5514f626-98s8-123e-a9ad-d06aaf56e5bb\",\"to\":\"2a02:cf41:abcd::1\",\"key\":\"2a02:cf41:abcd::1;5355;2a02:cf40::;49740;udp;56710\",\"from\":\"2a02:cf40::\",\"status\":\"ACTIVE\",\"to_port\":\"5355\",\"to_zone\":\"Undefined\",\"protocol\":\"llmnr\",\"from_port\":\"49740\",\"from_zone\":\"Undefined\",\"bpf_filter\":\"ip6 host 2a02:cf40:: and ip6 host 2a02:cf41:abcd::1 and udp port 49740 and udp port 5355\",\"is_broadcast\":false,\"is_to_public\":false,\"is_from_public\":false,\"throughput_speed\":0,\"transferred.bytes\":\"90\",\"direction_is_known\":true,\"last_activity_time\":1745957044875,\"transport_protocol\":\"udp\",\"first_activity_time\":\"1745957044874\",\"transferred.packets\":\"1\",\"transferred.last_5m_bytes\":\"90\",\"transferred.last_15m_bytes\":\"",
+    "{\"id\":\"cmc-session-001\",\"from\":\"10.10.10.1\",\"to\":\"10.10.10.2\",\"from_uid\":\"uid-from-cmc\",\"to_uid\":\"uid-to-cmc\",\"status\":\"ACTIVE\",\"protocol\":\"modbus\",\"from_port\":\"502\",\"to_port\":\"5020\",\"from_zone\":\"Z1\",\"to_zone\":\"Z2\",\"transport_protocol\":\"tcp\",\"first_activity_time\":1745957044874,\"last_activity_time\":1745957044875,\"direction_is_known\":true,\"is_broadcast\":false,\"is_from_public\":false,\"is_to_public\":fa",
+    "{\"id\":\"5514f626-10d8-476e-a9ad-d06eef56e5eb\",\"to\":\"2a02:cf41:abcd::1234\",\"key\":\"2a02:cf41:abcd::1234;5355;2a02:cf40::;49740;udp;56710\",\"from\":\"2a02:cf40::\",\"status\":\"ACTIVE\",\"to_port\":\"5355\",\"to_zone\":\"Undefined\",\"protocol\":\"llmnr\",\"from_port\":\"49740\",\"from_zone\":\"Undefined\",\"bpf_filter\":\"ip6 host 2a02:cf40:: and ip6 host 2a02:cf41:abcd::1234 and udp port 49740 and udp port 5355\",\"is_broadcast\":fa",
+    "{\"id\":\"5514f626-98s8-123e-a9ad-d06aaf56e5bb\",\"to\":\"2a02:cf41:abcd::1\",\"key\":\"2a02:cf41:abcd::1;5355;2a02:cf40::;49740;udp;56710\",\"from\":\"2a02:cf40::\",\"status\":\"ACTIVE\",\"to_port\":\"5355\",\"to_zone\":\"Undefined\",\"protocol\":\"llmnr\",\"from_port\":\"49740\",\"from_zone\":\"Undefined\",\"bpf_filter\":\"ip6 host 2a02:cf40:: and ip6 host 2a02:cf41:abcd::1 and udp port 49740 and udp port 5355\",\"is_broadcast\":false,\"is_t"
+   ],
+   "rationale": "Nozomi session schema (is_from_public, direction_is_known, transferred.* counters)."
+  },
+  {
+   "id": "r00165",
+   "label": "nozomi_guardian",
+   "pattern": "\"id_dst\"\\s*:\\s*\"[^\"]*\"\\s*,\\s*\"id_src\"\\s*:\\s*\"[^\"]*\".*\"ti_source\"\\s*:",
+   "flags": "",
+   "confidence": "medium",
+   "format": "alert_json",
+   "priority": 2610,
+   "status": "active",
+   "origin": "subagent:packet-1",
+   "created": "2026-11-20T04:30:09+00:00",
+   "hits": 2,
+   "examples": [
+    "{\"id\":\"6dbf93f8-d8da-4ae3-bf1a-e91a82fc3041\",\"ack\":false,\"name\":\"Program change\",\"note\":\"User Defined Note\",\"synchronized\":true,\"time\":1747398906110,\"id_dst\":\"1.128.0.0\",\"id_src\":\"1.128.0.11\",\"ip_dst\":\"89.160.20.112\",\"ip_src\":\"81.2.69.192\",\"status\":\"open\",\"mac_dst\":\"f4:54:33:9f:22:3d\",\"mac_src\":\"00:0c:29:01:98:be\",\"parents\":[\"id1\"],\"port_dst\":44818,\"port_src\":58679,\"protocol\":\"ethernetip\",\"severity\":10,\"zone_dst\":\"Production_B\",\"zone_src\":\"Production_B\",\"dst_roles\":\"producer\",\"label_dst\":\"private.directinvesting.com1\",\"label_src\":\"private.directinvesting.com2\",\"src_roles\":\"consumer, engineering_station\",\"ti_source\":\"\",\"type_name\":\"Program change\",\"session_id\":\"12eszcd-223cds34\",\"replicated\":",
+    "{\"id\":\"6dbf93f8-d8da-4ae3-bf1a-e91a82fc3041\",\"ack\":false,\"name\":\"Program change\",\"note\":\"User Defined Note\",\"synchronized\":true,\"time\":1747398906110,\"id_dst\":\"ab_ethip-1/1.128.0.0\",\"id_src\":\"ab_ethip-1/1.128.0.11\",\"ip_dst\":\"89.160.20.112\",\"ip_src\":\"81.2.69.192\",\"status\":\"close\",\"mac_dst\":\"f4:54:33:9f:22:3d\",\"mac_src\":\"00:0c:29:01:98:be\",\"parents\":[\"id1\"],\"port_dst\":44818,\"port_src\":58679,\"protocol\":\"ethernetip\",\"severity\":10,\"zone_dst\":\"Production_B\",\"zone_src\":\"Production_B\",\"dst_roles\":\"producer\",\"label_dst\":\"private.directinvesting.com1\",\"label_src\":\"private.directinvesting.com2\",\"src_roles\":\"consumer, engineering_station\",\"ti_source\":\"\",\"type_name\":\"Program change\",\"session_id\":\"12eszcd-",
+    "{\"id\":\"6dbf93f8-d8da-4ae3-bf1a-e91a82fc3041\",\"ack\":false,\"name\":\"Program change\",\"note\":\"User Defined Note\",\"synchronized\":true,\"time\":1747398906110,\"id_dst\":\"1.128.0.0\",\"id_src\":\"1.128.0.11\",\"ip_dst\":\"89.160.20.112\",\"ip_src\":\"81.2.69.192\",\"status\":\"open\",\"mac_dst\":\"f4:54:33:9f:22:3d\",\"mac_src\":\"00:0c:29:01:98:be\",\"parents\":[\"id1\"],\"port_dst\":44818,\"port_src\":58679,\"protocol\":\"ethernetip\",\"severit",
+    "{\"id\":\"6dbf93f8-d8da-4ae3-bf1a-e91a82fc3041\",\"ack\":false,\"name\":\"Program change\",\"note\":\"User Defined Note\",\"synchronized\":true,\"time\":1747398906110,\"id_dst\":\"ab_ethip-1/1.128.0.0\",\"id_src\":\"ab_ethip-1/1.128.0.11\",\"ip_dst\":\"89.160.20.112\",\"ip_src\":\"81.2.69.192\",\"status\":\"close\",\"mac_dst\":\"f4:54:33:9f:22:3d\",\"mac_src\":\"00:0c:29:01:98:be\",\"parents\":[\"id1\"],\"port_dst\":44818,\"port_src\":58679,\"protocol"
+   ],
+   "rationale": "Nozomi alert schema (id_dst/id_src node ids, ti_source, type_name, ack)."
+  },
+  {
+   "id": "r00166",
+   "label": "nozomi_guardian",
+   "pattern": "\"var_key\"\\s*:\\s*\"[^\"]*\"|\"flow_anomaly_in_progress\"\\s*:",
+   "flags": "",
+   "confidence": "medium",
+   "format": "variable_json",
+   "priority": 2620,
+   "status": "active",
+   "origin": "subagent:packet-1",
+   "created": "2026-11-20T04:30:09+00:00",
+   "hits": 4,
+   "examples": [
+    "{\"id\":\"e77d717d-4306-49af-9bfe-d49f81aebcef\",\"host\":\"localhost\",\"name\":\"ioa-2-206\",\"type\":\"analog\",\"unit\":\"n/a\",\"label\":\"ioa-2-206 at 6913\",\"scale\":\"1.000000\",\"value\":\"\",\"offset\":\"0.000000\",\"var_key\":\"localhost/6913/ioa-2-206\",\"protocol\":\"iec104\",\"bit_value\":\"00111011011111000000000000000000\",\"max_value\":\"0.013184\",\"min_value\":\"0.013184\",\"namespace\":\"6913\",\"host_label\":\"plc095.ACME0.corporationnet.com\",\"is_numeric\":true,\"last_cause\":\"read:event\",\"last_value\":0.01318359375,\"flow_status\":\"CYCLIC\",\"last_client\":\"localhost:8080\",\"active_checks\":[],\"changes_count\":\"4\",\"request_count\":\"9032\",\"flow_anomalies\":\"0\",\"flow_stats.avg\":300005.2765957447,\"flow_stats.var\":224189.0462307355,\"history_status\"",
+    "{\"id\":\"bbbbbbbb-cccc-dddd-eeee-ffffffffffff\",\"host\":\"203.0.113.60\",\"name\":\"bacnet-string-var\",\"type\":\"string\",\"unit\":\"n/a\",\"label\":\"bacnet-string-var\",\"scale\":\"1.000000\",\"value\":\"Siemens BACnet Field Panel\",\"offset\":\"0.000000\",\"var_key\":\"203.0.113.60/1/bacnet-string-var\",\"protocol\":\"iec104\",\"bit_value\":\"00111011011111000000000000000000\",\"max_value\":\"0.013184\",\"min_value\":\"0.013184\",\"namespace\":\"6913\",\"host_label\":\"plc095.ACME0.corporationnet.com\",\"is_numeric\":false,\"last_cause\":\"read:event\",\"last_value\":\"Siemens BACnet Field Panel\",\"flow_status\":\"CYCLIC\",\"last_client\":\"89.160.20.112\",\"active_checks\":[],\"changes_count\":\"4\",\"request_count\":\"9032\",\"flow_anomalies\":\"0\",\"flow_stats.avg\":300005.27",
+    "{\"id\":\"e77d717d-4306-49af-9bfe-d49f81aebcef\",\"host\":\"1.128.0.0\",\"name\":\"ioa-2-206\",\"type\":\"analog\",\"unit\":\"n/a\",\"label\":\"ioa-2-206 at 6913\",\"scale\":\"1.000000\",\"value\":0.003814697265625,\"offset\":\"0.000000\",\"var_key\":\"1.128.0.0/6913/ioa-2-206\",\"protocol\":\"iec104\",\"bit_value\":\"00111011011111000000000000000000\",\"max_value\":\"0.013184\",\"min_value\":\"0.013184\",\"namespace\":\"6913\",\"host_label\":\"plc095.ACME0.corporationnet.com\",\"is_numeric\":true,\"last_cause\":\"read:event\",\"last_value\":0.01318359375,\"flow_status\":\"CYCLIC\",\"last_client\":\"89.160.20.112\",\"active_checks\":[],\"changes_count\":\"4\",\"request_count\":\"9032\",\"flow_anomalies\":\"0\",\"flow_stats.avg\":300005.2765957447,\"flow_stats.var\":224189.0462307355,\"h",
+    "{\"id\":\"cmc-var-001\",\"host\":\"10.10.10.5\",\"host_uid\":\"node-uuid-cmc-001\",\"name\":\"cmc-var\",\"type\":\"analog\",\"label\":\"CMC variable\",\"protocol\":\"modbus\",\"var_key\":\"10.10.10.5/1/cmc-var\",\"is_numeric\":true,\"value\":1.5,\"last_value\":1.5,\"last_activity_time\":1744585807741,\"first_activity_time\":1741870170944,\"flow_status\":\"CYCLIC\",\"scale\":\"1.0\",\"offset\":\"0.0\",\"unit\":\"n/a\",\"namespace\":\"1\",\"host_label\":\"plc-cmc",
+    "{\"id\":\"e77d717d-4306-49af-9bfe-d49f81aebcef\",\"host\":\"localhost\",\"name\":\"ioa-2-206\",\"type\":\"analog\",\"unit\":\"n/a\",\"label\":\"ioa-2-206 at 6913\",\"scale\":\"1.000000\",\"value\":\"\",\"offset\":\"0.000000\",\"var_key\":\"localhost/6913/ioa-2-206\",\"protocol\":\"iec104\",\"bit_value\":\"00111011011111000000000000000000\",\"max_value\":\"0.013184\",\"min_value\":\"0.013184\",\"namespace\":\"6913\",\"host_label\":\"plc095.ACME0.corporationnet"
+   ],
+   "rationale": "Nozomi process-variable schema (var_key, flow_anomalies, flow_stats.*) for OT protocols."
+  },
+  {
+   "id": "r00167",
+   "label": "nozomi_guardian",
+   "pattern": "^(?=.*\"controller\"\\s*:\\s*\"api/)(?=.*\"record_created_at\"\\s*:\\s*\\d+)",
+   "flags": "",
+   "confidence": "low",
+   "format": "audit_json",
+   "priority": 2630,
+   "status": "active",
+   "origin": "subagent:packet-1",
+   "created": "2026-11-20T04:30:09+00:00",
+   "hits": 3,
+   "examples": [
+    "{\"id\":\"cccccccc-dddd-eeee-ffff-000000000001\",\"name\":\"Multi-IP audit event\",\"event\":\"Multi-IP audit event\",\"action\":\"create\",\"browser\":\"python-requests/2.32.3\",\"details\":null,\"username\":\"audit-multi-ip@example.test\",\"controller\":\"api/api_key_sessions\",\"ip_address\":\"203.0.113.20, 198.51.100.10\",\"record_created_at\":1747028333580,\"time\":1747028333579}",
+    "{\"id\":\"e68f6c04-fe72-7931-abcf-6a2213249c3c\",\"name\":\"API key signed in\",\"event\":\"API key signed in with id 7a6534a6-ee49-4cb3-a0ae-1f3a6cac9f52\",\"action\":\"create\",\"browser\":\"python-requests/2.32.3\",\"details\":null,\"username\":\"john@gmail.com via APIkey AK6dsf5d\",\"controller\":\"api/api_key_sessions\",\"ip_address\":\"81.2.69.193\",\"record_created_at\":1747028333580,\"time\":1747028333579}",
+    "{\"id\":\"e68f6c04-fe98-4549-abcf-6a2213249c3c\",\"name\":\"API key signed in\",\"event\":\"API key signed in with id 7a6534a6-ee49-4cb3-a0ae-1f3a6cac9b26\",\"action\":\"create\",\"browser\":\"python-requests/2.32.3\",\"details\":null,\"username\":\"edward@gmail.com via APIkey AK6eef5d\",\"controller\":\"api/api_key_sessions\",\"ip_address\":\"81.2.69.192\",\"record_created_at\":1747028333580,\"time\":1747028333579}"
+   ],
+   "rationale": "Nozomi audit-log schema (controller, browser, record_created_at)."
+  },
+  {
+   "id": "r00168",
+   "label": "cisco_ftd",
+   "pattern": "%FTD-\\w+-\\d-\\d{6}",
+   "flags": "",
+   "confidence": "high",
+   "format": "syslog",
+   "priority": 2640,
+   "status": "active",
+   "origin": "subagent:packet-1",
+   "created": "2026-11-20T04:30:09+00:00",
+   "hits": 5,
+   "examples": [
+    "Apr 15 2014 09:34:34 EDT: %FTD-session-5-106100: access-list acl_in permitted tcp inside/10.1.2.16(2241) -> outside/192.168.0.89(2000) hit-cnt 1 first hit [0x71a87d94, 0x0]",
+    "Apr 15 2018 09:34:34 EDT: %FTD-session-5-106100: access-list acl_in permitted tcp inside/10.0.0.16(2241) -> outside/192.168.0.99(2000) hit-cnt 1 first hit [0x71a87d94, 0x0]",
+    "Nov 01 16:42:22 UTC: %FTD-session-6-302013: Built inbound TCP connection 1488052803 for intranet:192.168.22.10/59864 (192.168.22.10/59864) to internet:216.160.83.56/1433 (216.160.83.56/1433)",
+    "<190>:Oct 27 12:21:36 UTC: %FTD-session-6-302304: Teardown TCP state-bypass connection 21019986 from vpn:198.51.100.11/51664 to adm:192.0.2.17/5044 duration  0:03:18 bytes 10461 Failover primary closed",
+    "<166>: 2024 Aug 07 10:29:42 UTC ccafa9b4-b48a-4156-b3af-de2d35e5f432 : %FTD-auth-6-113039: Group <GroupPolicy_XXX> User <MacBook Pro belonging to bob.dylan.xyz.local> IP <10.10.4.100> AnyConnect parent session started."
+   ],
+   "rationale": "Cisco FTD message id with a facility infix (%FTD-session-5-106100)."
+  },
+  {
+   "id": "r00169",
+   "label": "cisco_ftd",
+   "pattern": "\\bftd\\[\\d+\\]: (HTTPResponse|Message|IngressZone|AccessControlRuleAction|Protocol|SrcIP): ",
+   "flags": "",
+   "confidence": "low",
+   "format": "syslog_kv",
+   "priority": 2650,
+   "status": "active",
+   "origin": "subagent:packet-1",
+   "created": "2026-11-20T04:30:09+00:00",
+   "hits": 2,
+   "examples": [
+    "Jan 11 2018 01:00:27 beats ftd[1234]: HTTPResponse: 404, Message: Some message here (1:36330:2), Empty: ,FileCount:, IngressZone:",
+    "Jan 11 2018 01:00:27 beats ftd[1234]: HTTPResponse: 404, Message: Some message here (1:36330:2)."
+   ],
+   "rationale": "Firepower 'ftd' process name followed by FTD event field names (HTTPResponse, IngressZone)."
+  },
+  {
+   "id": "r00170",
+   "label": "citrix_netscaler",
+   "pattern": "\"vslbhealth\"\\s*:|\"cltresponsetimeapdex\"\\s*:|\"curpersistencesessions\"\\s*:",
+   "flags": "",
+   "confidence": "high",
+   "format": "nitro_stats_json",
+   "priority": 2660,
+   "status": "active",
+   "origin": "subagent:packet-1",
+   "created": "2026-11-20T04:30:09+00:00",
+   "hits": 2,
+   "examples": [
+    "{\"name\":\"cpx_default_dns_tcp_vserver\",\"avgcltttlb\":\"0\",\"cltresponsetimeapdex\":1,\"vsvrsurgecount\":\"0\",\"establishedconn\":\"0\",\"inactsvcs\":\"1\",\"vslbhealth\":\"67\",\"primaryipaddress\":\"0.0.0.0\",\"primaryport\":0,\"type\":\"DNS_TCP\",\"state\":\"UP\",\"actsvcs\":\"2\",\"cpuusagepm\":\"0\",\"tothits\":\"0\",\"hitsrate\":0,\"totalrequests\":\"0\",\"requestsrate\":0,\"totalresponses\":\"0\",\"responsesrate\":0,\"totalrequestbytes\":\"0\",\"requestbytesrate\":0,\"totalresponsebytes\":\"0\",\"responsebytesrate\":0,\"totalh2requests\":\"0\",\"h2requestsrate\":0,\"totalh2responses\":\"0\",\"h2responsesrate\":0,\"totalpktsrecvd\":\"0\",\"pktsrecvdrate\":0,\"totalpktssent\":\"0\",\"pktssentrate\":0,\"curclntconnections\":\"0\",\"cursrvrconnections\":\"0\",\"curpersistencesessions\":\"0\",\"cu",
+    "{\"name\":\"cpx_default_dns_vserver\",\"avgcltttlb\":\"4\",\"cltresponsetimeapdex\":1,\"vsvrsurgecount\":\"4\",\"establishedconn\":\"4\",\"inactsvcs\":\"1\",\"vslbhealth\":\"67\",\"primaryipaddress\":\"0.0.0.0\",\"primaryport\":0,\"type\":\"DNS\",\"state\":\"UP\",\"actsvcs\":\"2\",\"cpuusagepm\":\"10\",\"tothits\":\"10\",\"hitsrate\":10,\"totalrequests\":\"10\",\"requestsrate\":10,\"totalresponses\":\"2\",\"responsesrate\":2,\"totalrequestbytes\":\"2\",\"requestbytesrate\":2,\"totalresponsebytes\":\"6\",\"responsebytesrate\":6,\"totalh2requests\":\"6\",\"h2requestsrate\":6,\"totalh2responses\":\"7\",\"h2responsesrate\":7,\"totalpktsrecvd\":\"7\",\"pktsrecvdrate\":7,\"totalpktssent\":\"8\",\"pktssentrate\":8,\"curclntconnections\":\"8\",\"cursrvrconnections\":\"8\",\"curpersistencesessions\":\"9\",\"curba",
+    "{\"name\":\"cpx_default_dns_tcp_vserver\",\"avgcltttlb\":\"0\",\"cltresponsetimeapdex\":1,\"vsvrsurgecount\":\"0\",\"establishedconn\":\"0\",\"inactsvcs\":\"1\",\"vslbhealth\":\"67\",\"primaryipaddress\":\"0.0.0.0\",\"primaryport\":0,\"type\":\"DNS_TCP\",\"state\":\"UP\",\"actsvcs\":\"2\",\"cpuusagepm\":\"0\",\"tothits\":\"0\",\"hitsrate\":0,\"totalrequests\":\"0\",\"requestsrate\":0,\"totalresponses\":\"0\",\"responsesrate\":0,\"totalrequestbytes\":\"0\",\"requestby",
+    "{\"name\":\"cpx_default_dns_vserver\",\"avgcltttlb\":\"4\",\"cltresponsetimeapdex\":1,\"vsvrsurgecount\":\"4\",\"establishedconn\":\"4\",\"inactsvcs\":\"1\",\"vslbhealth\":\"67\",\"primaryipaddress\":\"0.0.0.0\",\"primaryport\":0,\"type\":\"DNS\",\"state\":\"UP\",\"actsvcs\":\"2\",\"cpuusagepm\":\"10\",\"tothits\":\"10\",\"hitsrate\":10,\"totalrequests\":\"10\",\"requestsrate\":10,\"totalresponses\":\"2\",\"responsesrate\":2,\"totalrequestbytes\":\"2\",\"requestbytes"
+   ],
+   "rationale": "NetScaler NITRO lbvserver stats counters (vslbhealth, cltresponsetimeapdex)."
+  },
+  {
+   "id": "r00171",
+   "label": "cisco_duo",
+   "pattern": "\"telephony_credits_remaining\"\\s*:",
+   "flags": "",
+   "confidence": "high",
+   "format": "info_summary_json",
+   "priority": 2670,
+   "status": "active",
+   "origin": "subagent:packet-1",
+   "created": "2026-11-20T04:30:09+00:00",
+   "hits": 2,
+   "examples": [
+    "{\"response\":{\"admin_count\":3,\"integration_count\":9,\"telephony_credits_remaining\":960,\"user_count\":8},\"stat\":\"OK\"}",
+    "{\"response\":{\"admin_count\":6,\"integration_count\":5,\"telephony_credits_remaining\":473,\"user_count\":4},\"stat\":\"OK\"}"
+   ],
+   "rationale": "Duo Admin API info/summary response (telephony_credits_remaining, integration_count)."
   }
  ],
- "updated": "2026-11-20T04:24:02+00:00"
+ "updated": "2026-11-20T04:30:12+00:00"
 }
