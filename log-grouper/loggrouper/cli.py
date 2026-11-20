@@ -121,7 +121,8 @@ def cmd_tool(a):
     fn = {f.__name__: f for f in t.tool_functions()}.get(a.name)
     if fn is None:
         sys.exit(f"unknown tool {a.name}; tools: {[f.__name__ for f in t.tool_functions()]}")
-    print(fn(**json.loads(a.args or "{}")))
+    raw = sys.stdin.read() if a.args == "-" else (a.args or "{}")     # "-": JSON args on stdin (no shell quoting)
+    print(fn(**json.loads(raw)))
     eng.close()
 
 

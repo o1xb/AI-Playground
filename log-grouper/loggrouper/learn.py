@@ -56,8 +56,13 @@ def _regression(store, conf, obs, conf_before, obs_before):
     return None, oa
 
 
+def _suspect_clusters(packet):
+    return {g["suspect_id"]: {"cluster_id": g["suspect_id"], "shape": "suspect:" + g["suspect_id"],
+                              "examples": g["examples"]} for g in packet.get("suspects", [])}
+
+
 def apply_candidates(store, packet, residual, cand, origin):
-    clusters = {c["cluster_id"]: c for c in packet["clusters"]}
+    clusters = {c["cluster_id"]: c for c in packet["clusters"]} | _suspect_clusters(packet)
     owner = {}
     for r in cand.get("rules", []):
         for cid in r.get("explains_clusters", []):
@@ -125,7 +130,10 @@ def apply_candidates(store, packet, residual, cand, origin):
         conf_ok, obs_ok = _routes(store, conf), new_obs_ok
         if disputed:
             report["disputed"].append({"id": nr["id"], "label": nr["label"], "also_matches_observed_of": disputed})
-        report["accepted"].append({"id": nr["id"], "label": nr["label"], "pattern": nr["pattern"]})
+        pos = next((i for i, (_, x) in enumerate(store.compiled) if x is nr), None)
+        nxt = store.compiled[pos + 1][1]["id"] if pos is not None and pos + 1 < len(store.compiled) else None
+        report["accepted"].append({"id": nr["id"], "label": nr["label"], "pattern": nr["pattern"],
+                                   "status": nr["status"], "placed_before": nxt})
 
     report["updated"], report["rejected_updates"] = apply_updates(store, packet, cand.get("rule_updates", []), origin)
     store.save()
@@ -136,14 +144,19 @@ def apply_updates(store, packet, updates, origin):
     """Settle conflicts. An update is kept only if it moves conflict examples to the owner label the
     learner named, and passes the regression check."""
     conflicts = {c["conflict_id"]: c for c in packet.get("conflicts", [])}
+    suspects = {g["suspect_id"]: g for g in packet.get("suspects", [])}
     done, refused = [], []
     for u in updates:
         rule = store.by_id(u.get("id", ""))
         reason = None if rule else "unknown rule id"
         conf_ex = [(u.get("owner_label"), e) for cid in u.get("fixes_conflicts", []) if cid in conflicts
                    for g in conflicts[cid]["labels"].values() for e in g.get("full_examples", g["examples"])]
+        conf_ex += [(u.get("owner_label"), e) for sid in u.get("fixes_conflicts", []) if sid in suspects
+                    for e in suspects[sid]["examples"]]
+        # evidence: lines (from any tool output) the agent says belong to owner_label, not to this rule
+        conf_ex += [(u.get("owner_label"), e) for e in u.get("evidence", [])]
         if not reason and not conf_ex:
-            reason = "names no known conflict"
+            reason = "names no known conflict or suspect and gives no evidence lines"
         if not reason and "pattern" in u:
             try:
                 rx = compile_rule({"pattern": u["pattern"], "flags": u.get("flags", rule.get("flags", ""))})
@@ -172,6 +185,11 @@ def apply_updates(store, packet, updates, origin):
         store._compile()
         why, _ = _regression(store, conf, obs, conf_ok, obs_ok)
         fix_after = sum(_routes(store, conf_ex))
+        if not why and u.get("evidence") and not u.get("fixes_conflicts") and fix_after <= fix_before:
+            # pure narrowing with evidence: success = the rule stops claiming the evidence lines
+            still = sum(1 for _, e in conf_ex if (store.match(e) or {}).get("id") == rule["id"])
+            if still < len(conf_ex):
+                fix_after = fix_before + (len(conf_ex) - still)
         if why or fix_after <= fix_before:
             rule.update(saved); store._compile()
             why = why or "does not route the conflict examples to the owner label"

@@ -80,6 +80,10 @@ class RuleStore:
         self.rules = self._load("rules.json", {"version": 0, "rules": []})
         self.rejected = self._load("rejected.json", {"rejected": []})
         self.wrappers = self._load("wrappers.json", None)
+        # message shapes a learner judged unattributable; skipped in later packets to save tokens
+        self.unidentifiable = self._load("unidentifiable.json", {})
+        # rule id -> message shapes a learner reviewed as suspects and judged correctly routed
+        self.dismissed = self._load("dismissed_suspects.json", {})
         self._compile()
 
     def _load(self, name, default):
@@ -98,7 +102,9 @@ class RuleStore:
     def save(self):
         self.rules["version"] += 1
         self.rules["updated"] = now()
-        for name, obj in (("rules.json", self.rules), ("rejected.json", self.rejected)):
+        for name, obj in (("rules.json", self.rules), ("rejected.json", self.rejected),
+                          ("unidentifiable.json", self.unidentifiable),
+                          ("dismissed_suspects.json", self.dismissed)):
             tmp = os.path.join(self.path, name + ".tmp")
             with open(tmp, "w") as f:
                 json.dump(obj, f, indent=1)

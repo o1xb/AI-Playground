@@ -144,11 +144,60 @@ class Engine:
             c["conflict_id"] = f"k{i:03d}"
         return out[:max_conflicts]
 
+    def find_suspects(self, min_count=3, max_suspects=20):
+        """Lines a rule claims that look nothing like that rule's own stored examples: JSON claimed by a
+        rule whose examples are all text (or vice versa), or JSON whose keys barely overlap its examples.
+        Catches broad vendor-name rules swallowing a sibling product (no conflict shows, because the
+        sibling never reaches another group)."""
+        prof = {}
+        for _, r in self.store.compiled:
+            exs = r.get("confirmed_examples") or r.get("examples", [])
+            if len(exs) < 2:
+                continue
+            shapes = [shape(e) for e in exs]
+            prof[r["id"]] = (r, [_keyset(x) for x in shapes], any(x.startswith("JSON") for x in shapes))
+        found = {}
+        gdir = os.path.join(self.out_dir, "groups")
+        for fn in sorted(os.listdir(gdir)) if os.path.isdir(gdir) else []:
+            with open(os.path.join(gdir, fn)) as f:
+                for line in f:
+                    rec = json.loads(line)
+                    if rec["rule"] not in prof:
+                        continue
+                    r, keysets, has_json = prof[rec["rule"]]
+                    payload, _ = self.unwrap(rec["raw"])
+                    shp = shape(payload)
+                    ks = _keyset(shp)
+                    if shp.startswith("JSON"):
+                        best = max((len(ks & k) / len(ks | k) for k in keysets if k and ks), default=0.0)
+                        unlike = best < 0.15
+                    else:
+                        unlike = has_json and all(k for k in keysets)   # text line, rule only ever saw JSON
+                    if unlike and shp in self.store.dismissed.get(rec["rule"], ()):
+                        unlike = False
+                    if unlike:
+                        g = found.setdefault(rec["rule"], {"rule": r["id"], "label": r["label"], "pattern": r["pattern"],
+                                                           "count": 0, "examples": [], "rule_examples": [e[:400] for e in
+                                                           (r.get("confirmed_examples") or r.get("examples", []))[:2]]})
+                        g["count"] += 1
+                        g.setdefault("shapes", set()).add(shp)
+                        if len(g["examples"]) < 4:
+                            g["examples"].append(payload)
+        out = sorted((g for g in found.values() if g["count"] >= min_count), key=lambda g: -g["count"])[:max_suspects]
+        for i, g in enumerate(out):
+            g["suspect_id"] = f"s{i:03d}"
+        return out
+
     def build_packet(self, max_clusters=80, examples=4, max_chars=700, json_chars=1500):
         """Compress the residue to one entry per shape cluster: this is all the learner ever sees.
         JSON clusters whose key sets overlap strongly are merged, and carry their full key list."""
         groups = collections.defaultdict(list)
+        ignored = set(self.store.unidentifiable)
+        skipped = 0
         for item in self.load_residual():
+            if item["shape"] in ignored:
+                skipped += 1
+                continue
             groups[item["shape"]].append(item["payload"])
         ordered = sorted(groups.items(), key=lambda kv: -len(kv[1]))
         merged = []                       # [shape, member_shapes, payloads, keyset]
@@ -172,9 +221,11 @@ class Engine:
             clusters.append(c)
         return {
             "residual_lines": sum(len(v) for v in groups.values()),
+            "ignored_unidentifiable_lines": skipped,
             "clusters_total": len(merged),
             "clusters": clusters,
             "conflicts": self.find_conflicts(),
+            "suspects": self.find_suspects(),
             "existing_labels": self.store.labels(),
             "existing_rules": [{"id": r["id"], "label": r["label"], "pattern": r["pattern"],
                                 "priority": r["priority"], "format": r.get("format")}
