@@ -154,6 +154,36 @@ def cmd_parse_learn(a):
     print(out["summary"])
 
 
+def cmd_mtool(a):
+    """Shell bridge to the OCSF mapping agent's tools (or the reviewer's, with --reviewer)."""
+    from .ocsf.agent import MappingTools, ReviewTools
+    labels = a.labels.split(",") if a.labels else None
+    if a.reviewer:
+        t = ReviewTools(a.parsers, os.path.join(a.out, "groups"), labels=labels)
+    else:
+        t = MappingTools(a.parsers, os.path.join(a.out, "groups"), labels=labels, logstash_home=a.logstash_home,
+                         enable_code=a.code_tools != "off", sandbox_backend=a.code_tools if a.code_tools != "off" else "unshare",
+                         workspace=os.path.join(a.state, "mapping_workspace"),
+                         drafts_path=os.path.join(a.state, "mapping_drafts.json"))
+    fn = {f.__name__: f for f in t.tool_functions()}.get(a.name)
+    if fn is None:
+        sys.exit(f"unknown tool {a.name}; tools: {[f.__name__ for f in t.tool_functions()]}")
+    raw = sys.stdin.read() if a.args == "-" else (a.args or "{}")
+    print(fn(**json.loads(raw)))
+
+
+def cmd_map_learn(a):
+    from .ocsf.agent import run_mapping_agent, run_review_agent
+    labels = a.labels.split(",") if a.labels else None
+    g = os.path.join(a.out, "groups")
+    for rnd in range(a.rounds):
+        out = run_mapping_agent(a.parsers, g, labels=labels, logstash_home=a.logstash_home,
+                                enable_code=a.code_tools != "off", model=a.model, effort=a.effort)
+        print(f"[mapping round {rnd + 1}]", out["summary"])
+        rev = run_review_agent(a.parsers, g, labels=labels, model=a.model, effort=a.effort)
+        print(f"[review round {rnd + 1}]", rev["summary"])
+
+
 def cmd_review(a):
     store = RuleStore(a.store)
     if a.approve or a.discard:
@@ -255,6 +285,11 @@ def main(argv=None):
     pl = sp.add_parser("parse-learn")
     for x in (pt, pl):
         x.add_argument("--labels", default="")
+    mt = sp.add_parser("mtool"); mt.add_argument("name"); mt.add_argument("args", nargs="?")
+    mt.add_argument("--reviewer", action="store_true")
+    ml = sp.add_parser("map-learn"); ml.add_argument("--rounds", type=int, default=2)
+    for x in (mt, ml):
+        x.add_argument("--labels", default="")
     sp.add_parser("audit")
     pf = sp.add_parser("profile"); pf.add_argument("--top", type=int, default=15)
     sd = sp.add_parser("seed"); sd.add_argument("script"); sd.add_argument("--origin", default="seed")
@@ -271,7 +306,8 @@ def main(argv=None):
         p.error("run needs --input FILE or --kafka HOST:PORT")
     {"run": cmd_run, "packet": cmd_packet, "apply": cmd_apply, "learn": cmd_learn,
      "profile": cmd_profile, "seed": cmd_seed, "audit": cmd_audit,
-     "tool": cmd_tool, "review": cmd_review, "ptool": cmd_ptool, "parse-learn": cmd_parse_learn}[a.cmd](a)
+     "tool": cmd_tool, "review": cmd_review, "ptool": cmd_ptool, "parse-learn": cmd_parse_learn,
+     "mtool": cmd_mtool, "map-learn": cmd_map_learn}[a.cmd](a)
 
 
 if __name__ == "__main__":

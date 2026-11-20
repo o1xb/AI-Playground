@@ -108,7 +108,8 @@ def compile_step(op, a, ind):
         return [f"{pad}json {{ {' '.join(opts)} }}"]
     if op == "date":
         return [f'{pad}date {{ match => [{_q(logstash_ref(a["field"]))}, {", ".join(_q(f) for f in a["formats"])}] '
-                f'target => {_q(logstash_ref(a.get("target", "@timestamp")))} timezone => {_q(a.get("timezone", "UTC"))} }}']
+                f'target => {_q(logstash_ref(a.get("target", "@timestamp")))} timezone => {_q(a.get("timezone", "UTC"))} '
+                f'add_field => {{ "[@metadata][lg_ts]" => "1" }} }}']
     if op == "rename":
         return [f"{pad}mutate {{ rename => {_hash({logstash_ref(k): logstash_ref(v) for k, v in a.items()})} }}"]
     if op == "convert":
@@ -127,17 +128,23 @@ def compile_step(op, a, ind):
     raise ValueError(f"unknown parser op {op!r}")
 
 
-def compile_parser(spec, ind=6):
+def compile_parser(spec, ind=6, mapping=None, ruby_path=None):
     out = []
     for step in spec["steps"]:
         (op, a), = step.items()
         out += compile_step(op, a, ind)
     out.append(f'{" " * ind}mutate {{ add_field => {{ "[loggrouper][parser]" => {_q(spec["id"])} }} }}')
+    if mapping is not None:
+        from ..ocsf.mapping import ruby_params
+        out.append(f'{" " * ind}ruby {{ path => {_q(ruby_path)} script_params => {{ "spec" => {_q(ruby_params(mapping))} }} }}')
+        out.append(f'{" " * ind}mutate {{ add_field => {{ "[loggrouper][mapping]" => {_q(mapping["id"])} }} }}')
     return out
 
 
-def compile_filter(parsers):
-    """parsers: list of specs (any labels). -> Logstash `filter { ... }` text."""
+def compile_filter(parsers, mappings=None, ruby_path=None):
+    """parsers: list of specs (any labels); mappings: {parser_id: prepared mapping spec} (optional, adds the
+    OCSF step after each parser). -> Logstash `filter { ... }` text."""
+    mappings = mappings or {}
     by_label = {}
     for p in parsers:
         by_label.setdefault(p["label"], []).append(p)
@@ -154,7 +161,7 @@ def compile_filter(parsers):
                 lines.append(f"    if {cond} {{" if cond else "    if [message] {")
             else:
                 lines.append(f"    }} else if {cond} {{" if cond else "    } else {")
-            lines += compile_parser(p)
+            lines += compile_parser(p, mapping=mappings.get(p["id"]), ruby_path=ruby_path)
             if cond is None:              # a parser without `when` catches the rest; later ones are unreachable
                 catch_all = True
                 break

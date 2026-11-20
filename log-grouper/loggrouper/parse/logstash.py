@@ -41,12 +41,13 @@ def python_outputs(parsers, samples):
     return out
 
 
-def logstash_outputs(parsers, samples, logstash_home, workdir=None, timeout=600):
+def logstash_outputs(parsers, samples, logstash_home, workdir=None, timeout=600, mappings=None, raw=False):
     workdir = workdir or tempfile.mkdtemp(prefix="lg-logstash-")
     conf = os.path.join(workdir, "pipeline.conf")
     with open(conf, "w") as f:
         f.write('input { stdin { codec => json_lines } }\n')
-        f.write(compile_filter(parsers) + "\n")
+        from ..ocsf.mapping import RUBY_SCRIPT
+        f.write(compile_filter(parsers, mappings, RUBY_SCRIPT) + "\n")
         f.write('output { stdout { codec => json_lines } }\n')
     data = "".join(json.dumps({"message": m, "loggrouper": {"label": l}, "seq": i}) + "\n"
                    for i, (l, m) in enumerate(samples))
@@ -69,6 +70,8 @@ def logstash_outputs(parsers, samples, logstash_home, workdir=None, timeout=600)
     if len(events) != len(samples):
         err = (p.stderr or "")[-3000:]
         raise RuntimeError(f"logstash returned {len(events)}/{len(samples)} events (exit {p.returncode}). {err}")
+    if raw:
+        return [events[i] for i in range(len(samples))]
     by_label = {}
     for x in parsers:
         by_label.setdefault(x["label"], []).append(x)
@@ -91,3 +94,31 @@ def conformance(parsers, samples, logstash_home):
     diffs = [{"index": i, "label": samples[i][0], "message": samples[i][1][:300], "python": a, "logstash": b}
              for i, (a, b) in enumerate(zip(py, ls)) if a != b]
     return {"checked": len(samples), "identical": len(samples) - len(diffs), "diffs": diffs}
+
+
+LOGSTASH_INTERNAL = ("@timestamp", "@version", "event", "host", "seq", "loggrouper", "tags")
+
+
+def ocsf_conformance(parsers, mappings, samples, logstash_home):
+    """Full pipeline (parser + OCSF mapping) in real Logstash vs Python. mappings: {parser_id: prepared}."""
+    from ..ocsf.mapping import apply_mapping
+    by_label = {}
+    for p in parsers:
+        by_label.setdefault(p["label"], []).append(p)
+    py, pids = [], []
+    for label, msg in samples:
+        p = select_parser(by_label.get(label, []), msg)
+        m = mappings.get(p["id"]) if p else None
+        py.append(apply_mapping(m, run_parser(p, msg)) if m else None)
+        pids.append(p["id"] if p else None)
+    ls = logstash_outputs(parsers, samples, logstash_home, mappings=mappings, raw=True)
+    diffs = []
+    for i, (a, ev) in enumerate(zip(py, ls)):
+        if a is None:
+            continue
+        b = {k: v for k, v in ev.items() if k not in LOGSTASH_INTERNAL}
+        if json.dumps(a, sort_keys=True) != json.dumps(b, sort_keys=True):
+            diffs.append({"index": i, "label": samples[i][0], "parser_id": pids[i], "message": samples[i][1][:300],
+                          "python": a, "logstash": b})
+    checked = sum(1 for a in py if a is not None)
+    return {"checked": checked, "identical": checked - len(diffs), "diffs": diffs}

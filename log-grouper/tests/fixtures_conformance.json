@@ -373,5 +373,202 @@
    "linux_iptables",
    "Jan  5 20:17:01 firewall kernel: [4276041.728154] IN=eno1 OUT= MAC=0c:c4:7a:0f:51:0c:d4:66:24:80:d8:da:08:00 SRC=192.168.110.116 DST=192.168.2.25 LEN=120 TOS=0x00 PREC=0x00 TTL=55 ID=0 DF PROTO=ESP SPI=0xcb886522"
   ]
+ ],
+ "mappings": [
+  {
+   "id": "tm_panos",
+   "parser_id": "t_panos_traffic",
+   "class_uid": 4001,
+   "fields": [
+    {
+     "to": "activity_id",
+     "from": "vendor.subtype",
+     "map": {
+      "start": 1,
+      "end": 2,
+      "drop": 5,
+      "deny": 5
+     },
+     "default": 6
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": "vendor.src_ip"
+    },
+    {
+     "to": "src_endpoint.port",
+     "from": "vendor.src_port",
+     "type": "integer"
+    },
+    {
+     "to": "dst_endpoint.ip",
+     "from": "vendor.dst_ip"
+    },
+    {
+     "to": "dst_endpoint.port",
+     "from": "vendor.dst_port",
+     "type": "integer"
+    },
+    {
+     "to": "action_id",
+     "from": "vendor.action",
+     "map": {
+      "allow": 1,
+      "deny": 2,
+      "drop": 2
+     },
+     "default": 0
+    },
+    {
+     "to": "actor.user.name",
+     "from": [
+      "vendor.src_user",
+      "vendor.dst_user"
+     ]
+    },
+    {
+     "to": "connection_info.protocol_name",
+     "from": "vendor.proto",
+     "type": "lower"
+    },
+    {
+     "to": "traffic.bytes",
+     "from": "vendor.bytes",
+     "type": "integer"
+    },
+    {
+     "to": "device.hostname",
+     "from": "vendor.device"
+    },
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Palo Alto Networks"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "PAN-OS"
+    },
+    {
+     "to": "severity_id",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": "tm_forti",
+   "parser_id": "t_fortigate",
+   "class_uid": 4001,
+   "fields": [
+    {
+     "to": "src_endpoint.ip",
+     "from": "vendor.srcip"
+    },
+    {
+     "to": "dst_endpoint.ip",
+     "from": "vendor.dstip"
+    },
+    {
+     "to": "src_endpoint.port",
+     "from": "vendor.srcport",
+     "type": "integer"
+    },
+    {
+     "to": "dst_endpoint.port",
+     "from": "vendor.dstport",
+     "type": "integer"
+    },
+    {
+     "to": "action_id",
+     "from": "vendor.action",
+     "map": {
+      "accept": 1,
+      "close": 1,
+      "deny": 2,
+      "blocked": 2
+     }
+    },
+    {
+     "to": "time",
+     "from": [
+      "vendor.eventtime",
+      "@timestamp"
+     ],
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "message",
+     "from": "vendor.msg",
+     "type": "string"
+    },
+    {
+     "to": "is_alert",
+     "from": "vendor.level",
+     "map": {
+      "alert": true,
+      "critical": true
+     },
+     "default": false,
+     "type": "boolean"
+    },
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Fortinet"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "FortiGate"
+    }
+   ]
+  },
+  {
+   "id": "tm_suri",
+   "parser_id": "t_suricata",
+   "class_uid": 4001,
+   "fields": [
+    {
+     "to": "src_endpoint.ip",
+     "from": "vendor.src_ip"
+    },
+    {
+     "to": "src_endpoint.port",
+     "from": "vendor.src_port"
+    },
+    {
+     "to": "dst_endpoint.ip",
+     "from": "vendor.dest_ip"
+    },
+    {
+     "to": "dst_endpoint.port",
+     "from": "vendor.dest_port"
+    },
+    {
+     "to": "connection_info.protocol_name",
+     "from": "vendor.proto",
+     "type": "lower"
+    },
+    {
+     "to": "activity_id",
+     "from": "vendor.event_type",
+     "map": {
+      "flow": 6,
+      "alert": 6
+     },
+     "default": 99
+    },
+    {
+     "to": "traffic.packets_out",
+     "from": "vendor.flow.pkts_toserver",
+     "type": "integer"
+    },
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "OISF"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "Suricata"
+    }
+   ]
+  }
  ]
 }
