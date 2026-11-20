@@ -1,0 +1,6885 @@
+{
+ "p00025": {
+  "stage": "done",
+  "calls": 2,
+  "prompt_tokens": 21012,
+  "answer_tokens": 833,
+  "class": "network_activity",
+  "spec": {
+   "class_uid": 4001,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Check Point"
+    },
+    {
+     "to": "metadata.product.name",
+     "from": "product",
+     "default": "Check Point Security Gateway"
+    },
+    {
+     "to": "metadata.uid",
+     "from": "loguid"
+    },
+    {
+     "to": "metadata.sequence",
+     "from": "sequencenum",
+     "type": "integer"
+    },
+    {
+     "to": "activity_id",
+     "from": "action",
+     "map": {
+      "Accept": 6,
+      "Drop": 5,
+      "Reject": 5,
+      "Block": 5,
+      "Detect": 6
+     },
+     "default": 0
+    },
+    {
+     "to": "action",
+     "from": "action"
+    },
+    {
+     "to": "action_id",
+     "from": "action",
+     "map": {
+      "Accept": 1,
+      "Drop": 2,
+      "Reject": 2,
+      "Block": 2,
+      "Detect": 3
+     },
+     "default": 0
+    },
+    {
+     "to": "disposition_id",
+     "from": "action",
+     "map": {
+      "Accept": 1,
+      "Drop": 6,
+      "Reject": 2,
+      "Block": 2,
+      "Detect": 1
+     },
+     "default": 0
+    },
+    {
+     "to": "severity_id",
+     "from": "severity",
+     "map": {
+      "0": 1,
+      "1": 2,
+      "2": 3,
+      "3": 4,
+      "4": 5
+     },
+     "default": 1
+    },
+    {
+     "to": "status",
+     "from": [
+      "status",
+      "audit_status"
+     ]
+    },
+    {
+     "to": "status_id",
+     "from": [
+      "status",
+      "audit_status"
+     ],
+     "map": {
+      "Success": 1,
+      "Failure": 2,
+      "Started": 99
+     },
+     "default": 0
+    },
+    {
+     "to": "message",
+     "from": [
+      "additional_info",
+      "description",
+      "sys_message",
+      "reason",
+      "action_reason"
+     ]
+    },
+    {
+     "to": "connection_info.direction",
+     "from": "ifdir"
+    },
+    {
+     "to": "connection_info.direction_id",
+     "from": "ifdir",
+     "map": {
+      "inbound": 1,
+      "outbound": 2
+     },
+     "default": 0
+    },
+    {
+     "to": "connection_info.protocol_num",
+     "from": "proto",
+     "type": "integer",
+     "skip_values": [
+      "4294967295"
+     ]
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": [
+      "src",
+      "client_ip"
+     ]
+    },
+    {
+     "to": "src_endpoint.port",
+     "from": "s_port",
+     "type": "integer"
+    },
+    {
+     "to": "src_endpoint.zone",
+     "from": "inzone"
+    },
+    {
+     "to": "src_endpoint.hostname",
+     "from": "machine"
+    },
+    {
+     "to": "src_endpoint.owner.name",
+     "from": "src_user_name"
+    },
+    {
+     "to": "dst_endpoint.ip",
+     "from": "dst"
+    },
+    {
+     "to": "dst_endpoint.port",
+     "from": "service",
+     "type": "integer",
+     "skip_values": [
+      "4294967295"
+     ]
+    },
+    {
+     "to": "dst_endpoint.svc_name",
+     "from": "service_id"
+    },
+    {
+     "to": "dst_endpoint.zone",
+     "from": "outzone"
+    },
+    {
+     "to": "dst_endpoint.owner.name",
+     "from": "dst_user_name"
+    },
+    {
+     "to": "device.ip",
+     "from": "origin"
+    },
+    {
+     "to": "device.hostname",
+     "from": "syslog_host"
+    },
+    {
+     "to": "device.name",
+     "from": "originsicname"
+    },
+    {
+     "to": "device.interface_name",
+     "from": "ifname"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    },
+    {
+     "to": "actor.user.name",
+     "from": [
+      "administrator",
+      "user"
+     ]
+    },
+    {
+     "to": "actor.session.uid",
+     "from": "session_uid"
+    },
+    {
+     "to": "firewall_rule.uid",
+     "from": "rule_uid"
+    },
+    {
+     "to": "firewall_rule.name",
+     "from": "rule_name"
+    },
+    {
+     "to": "url.url_string",
+     "from": "resource"
+    },
+    {
+     "to": "traffic.bytes",
+     "from": "bytes",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.bytes_out",
+     "from": "sent_bytes",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.bytes_in",
+     "from": "received_bytes",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.packets",
+     "from": "packet_amount",
+     "type": "integer"
+    },
+    {
+     "to": "start_time",
+     "from": "start_time",
+     "type": "timestamp_ms"
+    }
+   ],
+   "unmapped": true,
+   "parser_id": "p00025",
+   "label": "checkpoint_firewall",
+   "format": "cp_syslog"
+  },
+  "metrics": {
+   "valid_rate": 1.0,
+   "mapped_field_share": 0.0
+  }
+ },
+ "p00026": {
+  "stage": "done",
+  "calls": 4,
+  "prompt_tokens": 7885,
+  "answer_tokens": 1222,
+  "class": "network_activity",
+  "repairs": 2,
+  "repair_prompt": "Your OCSF mapping spec failed validation on the parsed samples.\nSpec:\n{\"class_uid\": 4001, \"fields\": [{\"to\": \"metadata.product.vendor_name\", \"value\": \"Check Point\"}, {\"to\": \"metadata.product.name\", \"from\": \"ProductName\", \"default\": \"Check Point Security Gateway\"}, {\"to\": \"metadata.product.feature.name\", \"from\": \"ProductFamily\"}, {\"to\": \"time\", \"from\": [\"@timestamp\", \"syslog_timestamp\"], \"type\": \"timestamp_ms\", \"default\": 0}, {\"to\": \"activity_id\", \"value\": 6}, {\"to\": \"severity_id\", \"value\": 1}, {\"to\": \"connection_info.protocol_num\", \"from\": \"proto\", \"type\": \"integer\"}, {\"to\": \"connection_info.direction_id\", \"value\": 0}, {\"to\": \"src_endpoint.ip\", \"from\": \"src\"}, {\"to\": \"src_endpoint.port\", \"from\": \"sport_svc\", \"type\": \"integer\"}, {\"to\": \"src_endpoint.zone\", \"from\": \"inzone\"}, {\"to\": \"src_endpoint.hostname\", \"from\": \"src_machine_name\"}, {\"to\": \"src_endpoint.owner.name\", \"from\": \"src_user_name\"}, {\"to\": \"dst_endpoint.ip\", \"from\": \"dst\"}, {\"to\": \"dst_endpoint.port\", \"from\": \"svc\", \"type\": \"integer\"}, {\"to\": \"dst_endpoint.svc_name\", \"from\": \"service_id\"}, {\"to\": \"dst_endpoint.zone\", \"from\": \"outzone\"}, {\"to\": \"dst_endpoint.hostname\", \"from\": \"dst_machine_name\"}, {\"to\": \"dst_endpoint.owner.name\", \"from\": \"dst_user_name\"}, {\"to\": \"actor.user.name\", \"from\": \"user\"}, {\"to\": \"device.ip\", \"from\": \"syslog_host\"}, {\"to\": \"device.type_id\", \"value\": 9}, {\"to\": \"firewall_rule.uid\", \"from\": \"rule_uid\"}, {\"to\": \"firewall_rule.name\", \"from\": \"rule_name\"}], \"unmapped\": true, \"parser_id\": \"p00026\", \"label\": \"checkpoint_firewall\", \"format\": \"fields_sd\"}\nValidation: valid_rate=0.0 errors=[[\"time: timestamp_t is epoch milliseconds\", 1]]\nExamples: [{\"error\": \"time: timestamp_t is epoch milliseconds\", \"vendor\": {\"inzone\": \"DMZ\", \"outzone\": \"External\", \"service_id\": \"https\", \"src\": \"81.2.69.192\", \"dst\": \"172.28.11.213\", \"proto\": 6, \"xlatesrc\": \"81.2.69.144\", \"xlatedst\": \"81.2.69.142\", \"NAT_rulenum\": 1195, \"NAT_addtnl_rulenum\": \"0\", \"user\": \"alice\", \"src_user_name\": \"bob\", \"src_machine_name\": \"zen\", \"src_user_dn\": \"blake\", \"snid\": \"4748F525-85B7-448A-82DF-D4E4E8D55172\"}}]\nReturn the corrected full spec as JSON only (same rules as before).",
+  "spec": {
+   "class_uid": 4001,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Check Point"
+    },
+    {
+     "to": "metadata.product.name",
+     "from": "ProductName",
+     "default": "Check Point Security Gateway"
+    },
+    {
+     "to": "metadata.product.feature.name",
+     "from": "ProductFamily"
+    },
+    {
+     "to": "time",
+     "from": [
+      "@timestamp",
+      "syslog_timestamp"
+     ],
+     "type": "timestamp_ms",
+     "default": 1673629816000
+    },
+    {
+     "to": "activity_id",
+     "value": 6
+    },
+    {
+     "to": "severity_id",
+     "value": 1
+    },
+    {
+     "to": "connection_info.protocol_num",
+     "from": "proto",
+     "type": "integer"
+    },
+    {
+     "to": "connection_info.direction_id",
+     "value": 0
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": "src"
+    },
+    {
+     "to": "src_endpoint.port",
+     "from": "sport_svc",
+     "type": "integer"
+    },
+    {
+     "to": "src_endpoint.zone",
+     "from": "inzone"
+    },
+    {
+     "to": "src_endpoint.hostname",
+     "from": "src_machine_name"
+    },
+    {
+     "to": "src_endpoint.owner.name",
+     "from": "src_user_name"
+    },
+    {
+     "to": "dst_endpoint.ip",
+     "from": "dst"
+    },
+    {
+     "to": "dst_endpoint.port",
+     "from": "svc",
+     "type": "integer"
+    },
+    {
+     "to": "dst_endpoint.svc_name",
+     "from": "service_id"
+    },
+    {
+     "to": "dst_endpoint.zone",
+     "from": "outzone"
+    },
+    {
+     "to": "dst_endpoint.hostname",
+     "from": "dst_machine_name"
+    },
+    {
+     "to": "dst_endpoint.owner.name",
+     "from": "dst_user_name"
+    },
+    {
+     "to": "actor.user.name",
+     "from": "user"
+    },
+    {
+     "to": "device.ip",
+     "from": "syslog_host"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    },
+    {
+     "to": "firewall_rule.uid",
+     "from": "rule_uid"
+    },
+    {
+     "to": "firewall_rule.name",
+     "from": "rule_name"
+    }
+   ],
+   "unmapped": true,
+   "parser_id": "p00026",
+   "label": "checkpoint_firewall",
+   "format": "fields_sd"
+  },
+  "metrics": {
+   "valid_rate": 1.0,
+   "mapped_field_share": 0.0
+  }
+ },
+ "p00027": {
+  "stage": "done",
+  "calls": 3,
+  "prompt_tokens": 4508,
+  "answer_tokens": 341,
+  "class": "application_error",
+  "repairs": 1,
+  "repair_prompt": "Your OCSF mapping spec failed validation on the parsed samples.\nSpec:\n{\"class_uid\": 6008, \"fields\": [{\"to\": \"metadata.product.vendor_name\", \"value\": \"Check Point\"}, {\"to\": \"metadata.product.name\", \"value\": \"Gaia OS\"}, {\"to\": \"metadata.product.feature.name\", \"from\": \"syslog_program\"}, {\"to\": \"time\", \"from\": \"@timestamp\"}, {\"to\": \"activity_id\", \"value\": 99}, {\"to\": \"severity_id\", \"from\": \"syslog_pri\", \"map\": {\"15\": 1, \"31\": 1, \"39\": 1}, \"default\": 0}, {\"to\": \"message\", \"from\": \"msg\"}, {\"to\": \"count\", \"from\": \"repeat_count\", \"type\": \"integer\"}], \"unmapped\": true, \"parser_id\": \"p00027\", \"label\": \"checkpoint_firewall\", \"format\": \"gaia_syslog\"}\nValidation: valid_rate=0.0 errors=[[\"time: expected integer, got str \\u2026\", 10]]\nExamples: [{\"error\": \"time: expected integer, got str '2026-10-21T15:34:05.000Z'\", \"vendor\": {\"syslog_program\": \"cpviewd\", \"msg\": \"Sending request to System Interface\", \"syslog_pri\": 15, \"syslog_timestamp\": \"Oct 21 15:34:05\", \"syslog_host\": \"sm-01\", \"repeat_count\": 2}}]\nReturn the corrected full spec as JSON only (same rules as before).",
+  "spec": {
+   "class_uid": 6008,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Check Point"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "Gaia OS"
+    },
+    {
+     "to": "metadata.product.feature.name",
+     "from": "syslog_program"
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "activity_id",
+     "value": 99
+    },
+    {
+     "to": "severity_id",
+     "from": "syslog_pri",
+     "map": {
+      "15": 1,
+      "31": 1,
+      "39": 1
+     },
+     "default": 0
+    },
+    {
+     "to": "message",
+     "from": "msg"
+    },
+    {
+     "to": "count",
+     "from": "repeat_count",
+     "type": "integer"
+    }
+   ],
+   "unmapped": true,
+   "parser_id": "p00027",
+   "label": "checkpoint_firewall",
+   "format": "gaia_syslog"
+  },
+  "metrics": {
+   "valid_rate": 1.0,
+   "mapped_field_share": 0.0
+  }
+ },
+ "p00067": {
+  "stage": "done",
+  "calls": 2,
+  "prompt_tokens": 22952,
+  "answer_tokens": 901,
+  "class": "network_activity",
+  "spec": {
+   "class_uid": 4001,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Check Point"
+    },
+    {
+     "to": "metadata.product.name",
+     "from": [
+      "product",
+      "ProductName"
+     ],
+     "default": "Check Point Security Gateway"
+    },
+    {
+     "to": "metadata.uid",
+     "from": "loguid"
+    },
+    {
+     "to": "metadata.sequence",
+     "from": "sequencenum",
+     "type": "integer"
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "activity_id",
+     "from": "action",
+     "map": {
+      "Accept": 6,
+      "Drop": 5,
+      "Reject": 5,
+      "Block": 5,
+      "Detect": 6
+     },
+     "default": 0
+    },
+    {
+     "to": "action",
+     "from": "action"
+    },
+    {
+     "to": "action_id",
+     "from": "action",
+     "map": {
+      "Accept": 1,
+      "Drop": 2,
+      "Reject": 2,
+      "Block": 2,
+      "Detect": 3
+     },
+     "default": 0
+    },
+    {
+     "to": "disposition_id",
+     "from": "action",
+     "map": {
+      "Accept": 1,
+      "Drop": 6,
+      "Reject": 2,
+      "Block": 2,
+      "Detect": 1
+     },
+     "default": 0
+    },
+    {
+     "to": "severity_id",
+     "from": "severity",
+     "map": {
+      "0": 1,
+      "1": 2,
+      "2": 3,
+      "3": 4,
+      "4": 5
+     },
+     "default": 1
+    },
+    {
+     "to": "status",
+     "from": [
+      "status",
+      "audit_status"
+     ]
+    },
+    {
+     "to": "status_id",
+     "from": [
+      "status",
+      "audit_status"
+     ],
+     "map": {
+      "Success": 1,
+      "Failure": 2,
+      "Started": 99
+     },
+     "default": 0
+    },
+    {
+     "to": "message",
+     "from": [
+      "additional_info",
+      "description",
+      "sys_message",
+      "reason",
+      "action_reason",
+      "msg"
+     ]
+    },
+    {
+     "to": "count",
+     "from": "repeat_count",
+     "type": "integer"
+    },
+    {
+     "to": "connection_info.direction",
+     "from": "ifdir"
+    },
+    {
+     "to": "connection_info.direction_id",
+     "from": "ifdir",
+     "map": {
+      "inbound": 1,
+      "outbound": 2
+     },
+     "default": 0
+    },
+    {
+     "to": "connection_info.protocol_num",
+     "from": "proto",
+     "type": "integer",
+     "skip_values": [
+      "4294967295"
+     ]
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": [
+      "src",
+      "client_ip"
+     ]
+    },
+    {
+     "to": "src_endpoint.port",
+     "from": [
+      "s_port",
+      "sport_svc"
+     ],
+     "type": "integer"
+    },
+    {
+     "to": "src_endpoint.zone",
+     "from": "inzone"
+    },
+    {
+     "to": "src_endpoint.hostname",
+     "from": [
+      "machine",
+      "src_machine_name"
+     ]
+    },
+    {
+     "to": "src_endpoint.owner.name",
+     "from": "src_user_name"
+    },
+    {
+     "to": "dst_endpoint.ip",
+     "from": "dst"
+    },
+    {
+     "to": "dst_endpoint.port",
+     "from": [
+      "service",
+      "svc"
+     ],
+     "type": "integer",
+     "skip_values": [
+      "4294967295"
+     ]
+    },
+    {
+     "to": "dst_endpoint.svc_name",
+     "from": "service_id"
+    },
+    {
+     "to": "dst_endpoint.zone",
+     "from": "outzone"
+    },
+    {
+     "to": "dst_endpoint.hostname",
+     "from": "dst_machine_name"
+    },
+    {
+     "to": "dst_endpoint.owner.name",
+     "from": "dst_user_name"
+    },
+    {
+     "to": "device.ip",
+     "from": "origin"
+    },
+    {
+     "to": "device.hostname",
+     "from": "syslog_host"
+    },
+    {
+     "to": "device.name",
+     "from": "originsicname"
+    },
+    {
+     "to": "device.interface_name",
+     "from": "ifname"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    },
+    {
+     "to": "actor.user.name",
+     "from": [
+      "administrator",
+      "user"
+     ]
+    },
+    {
+     "to": "actor.session.uid",
+     "from": "session_uid"
+    },
+    {
+     "to": "firewall_rule.uid",
+     "from": "rule_uid"
+    },
+    {
+     "to": "firewall_rule.name",
+     "from": "rule_name"
+    },
+    {
+     "to": "url.url_string",
+     "from": "resource"
+    },
+    {
+     "to": "traffic.bytes",
+     "from": "bytes",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.bytes_out",
+     "from": "sent_bytes",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.bytes_in",
+     "from": "received_bytes",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.packets",
+     "from": "packet_amount",
+     "type": "integer"
+    },
+    {
+     "to": "start_time",
+     "from": "start_time",
+     "type": "timestamp_ms"
+    }
+   ],
+   "unmapped": true,
+   "parser_id": "p00067",
+   "label": "checkpoint_firewall",
+   "format": "cp_fallback"
+  },
+  "metrics": {
+   "valid_rate": 0.9828,
+   "mapped_field_share": 0.0
+  }
+ },
+ "p00001": {
+  "stage": "done",
+  "calls": 2,
+  "prompt_tokens": 14637,
+  "answer_tokens": 651,
+  "class": "network_activity",
+  "spec": {
+   "class_uid": 4001,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Cisco"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "Adaptive Security Appliance"
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "message_id",
+     "type": "string"
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "message",
+     "from": "message_text"
+    },
+    {
+     "to": "severity_id",
+     "from": "severity",
+     "map": {
+      "0": 6,
+      "1": 5,
+      "2": 5,
+      "3": 4,
+      "4": 3,
+      "5": 2,
+      "6": 1,
+      "7": 1
+     },
+     "default": 0
+    },
+    {
+     "to": "activity_id",
+     "from": "action",
+     "map": {
+      "Built": 1,
+      "Teardown": 2,
+      "deleted": 2,
+      "Deny": 5,
+      "denied": 5,
+      "permitted": 6
+     },
+     "default": 0
+    },
+    {
+     "to": "action",
+     "from": "action"
+    },
+    {
+     "to": "action_id",
+     "from": "action",
+     "map": {
+      "Built": 1,
+      "Teardown": 1,
+      "permitted": 1,
+      "Deny": 2,
+      "denied": 2
+     },
+     "default": 0
+    },
+    {
+     "to": "disposition_id",
+     "from": "action",
+     "map": {
+      "Built": 1,
+      "Teardown": 1,
+      "permitted": 1,
+      "Deny": 2,
+      "denied": 2
+     },
+     "default": 0
+    },
+    {
+     "to": "status_detail",
+     "from": [
+      "reason",
+      "event_description",
+      "error"
+     ]
+    },
+    {
+     "to": "connection_info.uid",
+     "from": "connection_id",
+     "type": "string"
+    },
+    {
+     "to": "connection_info.protocol_name",
+     "from": "protocol",
+     "type": "lower"
+    },
+    {
+     "to": "connection_info.direction",
+     "from": "direction"
+    },
+    {
+     "to": "connection_info.direction_id",
+     "from": "direction",
+     "map": {
+      "inbound": 1,
+      "outbound": 2
+     },
+     "default": 0
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": [
+      "src_ip",
+      "init_ip"
+     ]
+    },
+    {
+     "to": "src_endpoint.port",
+     "from": [
+      "src_port",
+      "init_port"
+     ],
+     "type": "integer"
+    },
+    {
+     "to": "src_endpoint.interface_name",
+     "from": [
+      "src_interface",
+      "init_interface"
+     ]
+    },
+    {
+     "to": "dst_endpoint.ip",
+     "from": [
+      "dst_ip",
+      "resp_ip"
+     ]
+    },
+    {
+     "to": "dst_endpoint.port",
+     "from": [
+      "dst_port",
+      "resp_port"
+     ],
+     "type": "integer"
+    },
+    {
+     "to": "dst_endpoint.interface_name",
+     "from": [
+      "dst_interface",
+      "resp_interface"
+     ]
+    },
+    {
+     "to": "traffic.bytes",
+     "from": "bytes",
+     "type": "integer"
+    },
+    {
+     "to": "actor.user.name",
+     "from": "user",
+     "skip_values": [
+      "Unknown",
+      "-",
+      "None"
+     ]
+    },
+    {
+     "to": "device.hostname",
+     "from": "syslog_host"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    },
+    {
+     "to": "firewall_rule.name",
+     "from": "acl_id"
+    },
+    {
+     "to": "url.url_string",
+     "from": "url"
+    },
+    {
+     "to": "count",
+     "from": "repeat_count",
+     "type": "integer"
+    }
+   ],
+   "unmapped": true,
+   "parser_id": "p00001",
+   "label": "cisco_asa",
+   "format": "asa_syslog"
+  },
+  "metrics": {
+   "valid_rate": 0.9632,
+   "mapped_field_share": 0.0
+  }
+ },
+ "p00068": {
+  "stage": "done",
+  "calls": 2,
+  "prompt_tokens": 4895,
+  "answer_tokens": 285,
+  "class": "network_activity",
+  "spec": {
+   "class_uid": 4001,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Cisco"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "Adaptive Security Appliance"
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "message_id",
+     "type": "string"
+    },
+    {
+     "to": "metadata.log_level",
+     "from": "syslog_level"
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "message",
+     "from": "msg"
+    },
+    {
+     "to": "severity_id",
+     "from": "severity",
+     "map": {
+      "0": 6,
+      "1": 5,
+      "2": 5,
+      "3": 4,
+      "4": 3,
+      "5": 2,
+      "6": 1,
+      "7": 1
+     },
+     "default": 0
+    },
+    {
+     "to": "activity_id",
+     "from": "message_id",
+     "map": {
+      "302013": 1,
+      "302015": 1,
+      "302020": 1,
+      "305011": 1,
+      "302014": 2,
+      "302016": 2,
+      "302021": 2,
+      "305012": 2,
+      "106001": 5,
+      "106006": 5,
+      "106007": 5,
+      "106015": 5,
+      "106023": 5,
+      "710003": 5
+     },
+     "default": 0
+    },
+    {
+     "to": "device.hostname",
+     "from": "syslog_host"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    }
+   ],
+   "unmapped": true,
+   "parser_id": "p00068",
+   "label": "cisco_asa",
+   "format": "asa_fallback"
+  },
+  "metrics": {
+   "valid_rate": 0.9632,
+   "mapped_field_share": 0.0
+  }
+ },
+ "p00002": {
+  "stage": "failed",
+  "calls": 4,
+  "prompt_tokens": 5870,
+  "answer_tokens": 853,
+  "class": "authentication",
+  "repairs": 2,
+  "repair_prompt": "Your OCSF mapping spec failed validation on the parsed samples.\nSpec:\n{\"class_uid\": 3002, \"fields\": [{\"to\": \"metadata.product.vendor_name\", \"value\": \"Cisco\"}, {\"to\": \"metadata.product.name\", \"value\": \"IOS\"}, {\"to\": \"metadata.event_code\", \"from\": \"mnemonic\"}, {\"to\": \"metadata.sequence\", \"from\": \"sequence_number\", \"type\": \"integer\"}, {\"to\": \"time\", \"from\": \"@timestamp\", \"type\": \"timestamp_ms\", \"default\": 0}, {\"to\": \"message\", \"from\": \"message_text\"}, {\"to\": \"severity_id\", \"from\": \"severity\", \"map\": {\"0\": 6, \"1\": 5, \"2\": 5, \"3\": 4, \"4\": 3, \"5\": 2, \"6\": 1, \"7\": 1}, \"default\": 0}, {\"to\": \"activity_id\", \"from\": \"mnemonic\", \"map\": {\"LOGOUT\": 2, \"LOGIN_SUCCESS\": 1, \"LOGIN_FAILED\": 1}, \"default\": 99}, {\"to\": \"user.name\", \"from\": \"user\", \"default\": \"unknown\"}, {\"to\": \"src_endpoint.ip\", \"from\": \"src_ip\"}, {\"to\": \"dst_endpoint.hostname\", \"from\": \"hostname\"}, {\"to\": \"service.name\", \"from\": \"facility\"}, {\"to\": \"session.terminal\", \"from\": \"line\"}, {\"to\": \"logon_type_id\", \"from\": \"mnemonic\", \"map\": {\"LOGOUT\": 10}, \"default\": 0}], \"unmapped\": true, \"parser_id\": \"p00002\", \"label\": \"cisco_ios\", \"format\": \"ios_uptime\"}\nValidation: valid_rate=0.0 errors=[[\"time: timestamp_t is epoch milliseconds\", 4], [\"at least one of [\\u2026, \\u2026] is required\", 4]]\nExamples: [{\"error\": \"time: timestamp_t is epoch milliseconds\", \"vendor\": {\"uptime\": \"2y10w\", \"facility\": \"FOO\", \"severity\": \"6\", \"mnemonic\": \"BAR\", \"message_text\": \"Test header format\", \"syslog_pri\": 190, \"syslog_sequence\": \"3132517\", \"hostname\": \"sw01\", \"sequence_number\": \"3132513\"}}, {\"error\": \"at least one of ['service', 'dst_endpoint'] is required\", \"vendor\": {\"uptime\": \"2y10w\", \"facility\": \"FOO\", \"severity\": \"6\", \"mnemonic\": \"BAR\", \"message_text\": \"Test header format\", \"syslog_pri\": 190, \"syslog_sequence\": \"3132517\", \"hostname\": \"sw01\", \"sequence_number\": \"3132513\"}}]\nReturn the corrected full spec as JSON only (same rules as before)."
+ },
+ "p00003": {
+  "stage": "failed",
+  "calls": 4,
+  "prompt_tokens": 4660,
+  "answer_tokens": 555,
+  "class": "application_error",
+  "repairs": 2,
+  "repair_prompt": "Your OCSF mapping spec failed validation on the parsed samples.\nSpec:\n{\"class_uid\": 6008, \"fields\": [{\"to\": \"metadata.product.vendor_name\", \"value\": \"Cisco\"}, {\"to\": \"metadata.product.name\", \"value\": \"IOS\"}, {\"to\": \"metadata.product.feature.name\", \"from\": \"facility\"}, {\"to\": \"metadata.event_code\", \"from\": \"mnemonic\"}, {\"to\": \"time\", \"from\": \"@timestamp\", \"type\": \"timestamp_ms\"}, {\"to\": \"activity_id\", \"value\": 1}, {\"to\": \"severity_id\", \"from\": \"syslog_pri\", \"map\": {\"185\": 5}, \"default\": 0}, {\"to\": \"message\", \"from\": \"message_text\"}, {\"to\": \"status_detail\", \"from\": \"poe_error\"}, {\"to\": \"status\", \"from\": \"poe_status\"}, {\"to\": \"status_id\", \"value\": 2}], \"unmapped\": true, \"parser_id\": \"p00003\", \"label\": \"cisco_ios\", \"format\": \"ios_no_timestamp\"}\nValidation: valid_rate=0.0 errors=[[\"missing required time\", 1]]\nExamples: [{\"error\": \"missing required time\", \"vendor\": {\"facility\": \"HAL_config_poe\", \"severity\": \"A\", \"mnemonic\": \"POEFailDetected\", \"message_text\": \"POE ERROR(i2c_read_mem failed addr 0x dev_num 0 val 0x0) was detected: POE is Disabled untill Reset\", \"syslog_pri\": 185, \"poe_error\": \"i2c_read_mem failed addr 0x dev_num 0 val 0x0\", \"poe_status\": \"POE is Disabled untill Reset\"}}]\nReturn the corrected full spec as JSON only (same rules as before)."
+ },
+ "p00004": {
+  "stage": "done",
+  "calls": 2,
+  "prompt_tokens": 8728,
+  "answer_tokens": 541,
+  "class": "network_activity",
+  "spec": {
+   "class_uid": 4001,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Cisco"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "IOS"
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "mnemonic"
+    },
+    {
+     "to": "metadata.sequence",
+     "from": "sequence_number",
+     "type": "integer"
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "message",
+     "from": "message_text"
+    },
+    {
+     "to": "severity_id",
+     "from": "severity",
+     "map": {
+      "0": 6,
+      "1": 5,
+      "2": 5,
+      "3": 4,
+      "4": 3,
+      "5": 2,
+      "6": 1,
+      "7": 1
+     },
+     "default": 0
+    },
+    {
+     "to": "activity_id",
+     "from": "action",
+     "map": {
+      "permitted": 6,
+      "denied": 5,
+      "Stop": 2
+     },
+     "default": 0
+    },
+    {
+     "to": "action",
+     "from": "action"
+    },
+    {
+     "to": "action_id",
+     "from": "action",
+     "map": {
+      "permitted": 1,
+      "denied": 2
+     },
+     "default": 0
+    },
+    {
+     "to": "disposition_id",
+     "from": "action",
+     "map": {
+      "permitted": 1,
+      "denied": 2
+     },
+     "default": 0
+    },
+    {
+     "to": "status_detail",
+     "from": [
+      "auth_error",
+      "reason"
+     ]
+    },
+    {
+     "to": "connection_info.protocol_name",
+     "from": "protocol",
+     "type": "lower"
+    },
+    {
+     "to": "connection_info.direction_id",
+     "value": 0
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": "src_ip"
+    },
+    {
+     "to": "src_endpoint.port",
+     "from": "src_port",
+     "type": "integer"
+    },
+    {
+     "to": "src_endpoint.mac",
+     "from": "mac_address"
+    },
+    {
+     "to": "dst_endpoint.ip",
+     "from": "dst_ip"
+    },
+    {
+     "to": "dst_endpoint.port",
+     "from": "dst_port",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.packets",
+     "from": "packets",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.bytes_out",
+     "from": "bytes_sent",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.bytes_in",
+     "from": "bytes_received",
+     "type": "integer"
+    },
+    {
+     "to": "firewall_rule.name",
+     "from": "acl_name"
+    },
+    {
+     "to": "device.hostname",
+     "from": [
+      "hostname",
+      "syslog_host"
+     ]
+    },
+    {
+     "to": "device.interface_name",
+     "from": "interface"
+    },
+    {
+     "to": "device.type_id",
+     "value": 0
+    },
+    {
+     "to": "actor.user.name",
+     "from": "user"
+    }
+   ],
+   "unmapped": true,
+   "parser_id": "p00004",
+   "label": "cisco_ios",
+   "format": "ios_syslog"
+  },
+  "metrics": {
+   "valid_rate": 1.0,
+   "mapped_field_share": 0.0
+  }
+ },
+ "p00069": {
+  "stage": "failed",
+  "calls": 4,
+  "prompt_tokens": 5314,
+  "answer_tokens": 518,
+  "class": "network_activity",
+  "repairs": 2,
+  "repair_prompt": "Your OCSF mapping spec failed validation on the parsed samples.\nSpec:\n{\"class_uid\": 4001, \"fields\": [{\"to\": \"metadata.product.vendor_name\", \"value\": \"Cisco\"}, {\"to\": \"metadata.product.name\", \"value\": \"IOS\"}, {\"to\": \"metadata.event_code\", \"from\": \"mnemonic\"}, {\"to\": \"time\", \"from\": \"@timestamp\", \"type\": \"timestamp_ms\"}, {\"to\": \"message\", \"from\": \"msg\"}, {\"to\": \"severity_id\", \"from\": \"severity\", \"map\": {\"0\": 6, \"1\": 5, \"2\": 5, \"3\": 4, \"4\": 3, \"5\": 2, \"6\": 1, \"7\": 1}, \"default\": 0}, {\"to\": \"activity_id\", \"value\": 0}, {\"to\": \"device.hostname\", \"from\": \"syslog_host\"}, {\"to\": \"device.type_id\", \"value\": 0}], \"unmapped\": true, \"parser_id\": \"p00069\", \"label\": \"cisco_ios\", \"format\": \"ios_fallback\"}\nValidation: valid_rate=0.9153 errors=[[\"missing required time\", 5]]\nExamples: [{\"error\": \"missing required time\", \"vendor\": {\"header\": \"3132517: sw01: 3132513: 2y10w: \", \"facility\": \"FOO\", \"severity\": \"6\", \"mnemonic\": \"BAR\", \"msg\": \"Test header format\", \"syslog_pri\": 190}}]\nReturn the corrected full spec as JSON only (same rules as before)."
+ },
+ "p00005": {
+  "stage": "done",
+  "calls": 2,
+  "prompt_tokens": 4667,
+  "answer_tokens": 369,
+  "class": "network_activity",
+  "spec": {
+   "class_uid": 4001,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Cisco"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "Meraki"
+    },
+    {
+     "to": "metadata.log_name",
+     "from": "category"
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "severity_id",
+     "value": 1
+    },
+    {
+     "to": "activity_id",
+     "value": 6
+    },
+    {
+     "to": "action",
+     "from": [
+      "action",
+      "pattern"
+     ]
+    },
+    {
+     "to": "action_id",
+     "from": [
+      "action",
+      "pattern"
+     ],
+     "map": {
+      "allow": 1,
+      "allow all": 1,
+      "Group Policy Allow": 1,
+      "deny all": 2
+     },
+     "default": 0
+    },
+    {
+     "to": "disposition_id",
+     "from": [
+      "action",
+      "pattern"
+     ],
+     "map": {
+      "allow": 1,
+      "allow all": 1,
+      "Group Policy Allow": 1,
+      "deny all": 2
+     },
+     "default": 0
+    },
+    {
+     "to": "firewall_rule.name",
+     "from": "pattern"
+    },
+    {
+     "to": "connection_info.protocol_name",
+     "from": "protocol",
+     "type": "lower"
+    },
+    {
+     "to": "connection_info.direction_id",
+     "value": 0
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": "src"
+    },
+    {
+     "to": "src_endpoint.port",
+     "from": "sport",
+     "type": "integer"
+    },
+    {
+     "to": "src_endpoint.mac",
+     "from": "mac"
+    },
+    {
+     "to": "dst_endpoint.ip",
+     "from": "dst"
+    },
+    {
+     "to": "dst_endpoint.port",
+     "from": "dport",
+     "type": "integer"
+    },
+    {
+     "to": "device.name",
+     "from": "device_name"
+    },
+    {
+     "to": "device.type_id",
+     "value": 0
+    }
+   ],
+   "unmapped": true,
+   "parser_id": "p00005",
+   "label": "cisco_meraki",
+   "format": "flows"
+  },
+  "metrics": {
+   "valid_rate": 1.0,
+   "mapped_field_share": 0.0
+  }
+ },
+ "p00006": {
+  "stage": "done",
+  "calls": 2,
+  "prompt_tokens": 4581,
+  "answer_tokens": 266,
+  "class": "network_activity",
+  "spec": {
+   "class_uid": 4001,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Cisco"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "Meraki"
+    },
+    {
+     "to": "metadata.log_name",
+     "from": "category"
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "severity_id",
+     "value": 1
+    },
+    {
+     "to": "activity_id",
+     "from": "category",
+     "map": {
+      "ip_flow_start": 1,
+      "ip_flow_end": 2
+     },
+     "default": 0
+    },
+    {
+     "to": "connection_info.protocol_name",
+     "from": "protocol",
+     "type": "lower"
+    },
+    {
+     "to": "connection_info.direction_id",
+     "value": 0
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": "src"
+    },
+    {
+     "to": "src_endpoint.port",
+     "from": "sport",
+     "type": "integer"
+    },
+    {
+     "to": "dst_endpoint.ip",
+     "from": "dst"
+    },
+    {
+     "to": "dst_endpoint.port",
+     "from": "dport",
+     "type": "integer"
+    },
+    {
+     "to": "device.name",
+     "from": "device_name"
+    },
+    {
+     "to": "device.type_id",
+     "value": 0
+    }
+   ],
+   "unmapped": true,
+   "parser_id": "p00006",
+   "label": "cisco_meraki",
+   "format": "ip_flow"
+  },
+  "metrics": {
+   "valid_rate": 1.0,
+   "mapped_field_share": 0.0
+  }
+ },
+ "p00007": {
+  "stage": "failed",
+  "calls": 4,
+  "prompt_tokens": 5192,
+  "answer_tokens": 864,
+  "class": "http_activity",
+  "repairs": 2,
+  "repair_prompt": "Your OCSF mapping spec failed validation on the parsed samples.\nSpec:\n{\"class_uid\": 4002, \"fields\": [{\"to\": \"metadata.product.vendor_name\", \"value\": \"Cisco\"}, {\"to\": \"metadata.product.name\", \"value\": \"Meraki\"}, {\"to\": \"metadata.log_name\", \"from\": \"category\"}, {\"to\": \"time\", \"from\": \"@timestamp\", \"type\": \"timestamp_ms\"}, {\"to\": \"severity_id\", \"value\": 1}, {\"to\": \"activity_id\", \"from\": \"request_method\", \"map\": {\"CONNECT\": 1, \"DELETE\": 2, \"GET\": 3, \"HEAD\": 4, \"OPTIONS\": 5, \"POST\": 6, \"PUT\": 7, \"TRACE\": 8, \"UNKNOWN\": 0}, \"default\": 99}, {\"to\": \"http_request.http_method\", \"from\": \"request_method\", \"skip_values\": []}, {\"to\": \"http_request.url.url_string\", \"from\": \"url\"}, {\"to\": \"src_endpoint.ip\", \"from\": \"src_ip\"}, {\"to\": \"src_endpoint.port\", \"from\": \"src_port\", \"type\": \"integer\"}, {\"to\": \"src_endpoint.mac\", \"from\": \"mac\"}, {\"to\": \"dst_endpoint.ip\", \"from\": \"dst_ip\"}, {\"to\": \"dst_endpoint.port\", \"from\": \"dst_port\", \"type\": \"integer\"}, {\"to\": \"device.name\", \"from\": \"device_name\"}, {\"to\": \"device.type_id\", \"value\": 0}], \"unmapped\": true, \"parser_id\": \"p00007\", \"label\": \"cisco_meraki\", \"format\": \"urls\"}\nValidation: valid_rate=0.0 errors=[[\"at least one of [\\u2026, \\u2026] is required\", 1]]\nExamples: [{\"error\": \"at least one of ['http_request', 'http_response'] is required\", \"vendor\": {\"syslog_pri\": 134, \"epoch_time\": \"1647479503.348215340\", \"device_name\": \"MX84\", \"category\": \"urls\", \"src_ip\": \"10.0.1.29\", \"src_port\": \"60336\", \"dst_ip\": \"89.160.20.156\", \"dst_port\": \"80\", \"mac\": \"78:7B:8A:CC:05:18\", \"request_method\": \"UNKNOWN\", \"url\": \"https://bitbucket.org/...\"}}]\nReturn the corrected full spec as JSON only (same rules as before)."
+ },
+ "p00008": {
+  "stage": "failed",
+  "calls": 4,
+  "prompt_tokens": 6422,
+  "answer_tokens": 1140,
+  "class": "detection_finding",
+  "repairs": 2,
+  "repair_prompt": "Your OCSF mapping spec failed validation on the parsed samples.\nSpec:\n{\"class_uid\": 2004, \"fields\": [{\"to\": \"metadata.product.vendor_name\", \"value\": \"Cisco\"}, {\"to\": \"metadata.product.name\", \"value\": \"Meraki\"}, {\"to\": \"metadata.log_name\", \"from\": \"category\"}, {\"to\": \"time\", \"from\": \"@timestamp\", \"type\": \"timestamp_ms\"}, {\"to\": \"activity_id\", \"value\": 1}, {\"to\": \"severity_id\", \"from\": \"priority\", \"map\": {\"1\": 4, \"2\": 3, \"3\": 2, \"4\": 1}, \"default\": 0}, {\"to\": \"is_alert\", \"value\": true}, {\"to\": \"message\", \"from\": \"message\"}, {\"to\": \"finding_info.uid\", \"from\": \"signature\", \"type\": \"string\"}, {\"to\": \"finding_info.title\", \"from\": [\"message\", \"signature\"], \"type\": \"string\"}, {\"to\": \"action\", \"from\": \"decision\"}, {\"to\": \"action_id\", \"from\": \"decision\", \"map\": {\"allowed\": 1, \"blocked\": 2}, \"default\": 0}, {\"to\": \"disposition_id\", \"from\": \"decision\", \"map\": {\"allowed\": 1, \"blocked\": 2}, \"default\": 0}, {\"to\": \"evidences[0].src_endpoint.ip\", \"from\": \"src_ip\"}, {\"to\": \"evidences[0].src_endpoint.port\", \"from\": \"src_port\", \"type\": \"integer\"}, {\"to\": \"evidences[0].dst_endpoint.ip\", \"from\": \"dst_ip\"}, {\"to\": \"evidences[0].dst_endpoint.port\", \"from\": \"dst_port\", \"type\": \"integer\"}, {\"to\": \"evidences[0].dst_endpoint.mac\", \"from\": \"dhost\"}, {\"to\": \"evidences[0].connection_info.protocol_name\", \"from\": \"protocol\"}, {\"to\": \"evidences[0].connection_info.direction_id\", \"from\": \"direction\", \"map\": {\"ingress\": 1, \"egress\": 2}, \"default\": 0}, {\"to\": \"device.name\", \"from\": \"device_name\"}, {\"to\": \"device.type_id\", \"value\": 0}], \"unmapped\": true, \"parser_id\": \"p00008\", \"label\": \"cisco_meraki\", \"format\": \"ids_alerts\"}\nValidation: valid_rate=0.0 errors=[[\"missing required finding_info.uid\", 3]]\nExamples: [{\"error\": \"missing required finding_info.uid\", \"vendor\": {\"signature\": \"1:29708:4\", \"priority\": \"1\", \"timestamp\": \"1637691198.330873\", \"dhost\": \"D0:AB:D5:7B:43:73\", \"direction\": \"ingress\", \"protocol\": \"tcp/ip\", \"decision\": \"allowed\", \"src_ip\": \"67.43.156.12\", \"src_port\": \"80\", \"dst_ip\": \"10.0.3.162\", \"dst_port\": \"56391\", \"syslog_pri\": 134, \"epoch_time\": \"1637691198.348361125\", \"device_name\": \"MX84\", \"category\": \"security_event\"}}]\nReturn the corrected full spec as JSON only (same rules as before)."
+ },
+ "p00009": {
+  "stage": "done",
+  "calls": 3,
+  "prompt_tokens": 5715,
+  "answer_tokens": 942,
+  "class": "detection_finding",
+  "repairs": 1,
+  "repair_prompt": "Your OCSF mapping spec failed validation on the parsed samples.\nSpec:\n{\"class_uid\": 2004, \"fields\": [{\"to\": \"metadata.product.vendor_name\", \"value\": \"Cisco\"}, {\"to\": \"metadata.product.name\", \"value\": \"Meraki\"}, {\"to\": \"metadata.log_name\", \"from\": \"category\"}, {\"to\": \"metadata.event_code\", \"from\": \"event_type\"}, {\"to\": \"time\", \"from\": \"@timestamp\", \"type\": \"timestamp_ms\"}, {\"to\": \"activity_id\", \"value\": 1}, {\"to\": \"severity_id\", \"from\": \"disposition\", \"map\": {\"malicious\": 4, \"clean\": 1}, \"default\": 0}, {\"to\": \"is_alert\", \"value\": true}, {\"to\": \"finding_info.uid\", \"from\": \"sha256\"}, {\"to\": \"finding_info.title\", \"from\": \"name\"}, {\"to\": \"action\", \"from\": \"action\"}, {\"to\": \"action_id\", \"from\": \"action\", \"map\": {\"block\": 2, \"allow\": 1}, \"default\": 0}, {\"to\": \"disposition\", \"from\": \"disposition\"}, {\"to\": \"disposition_id\", \"from\": \"action\", \"map\": {\"block\": 2, \"allow\": 1}, \"default\": 0}, {\"to\": \"evidences[0].src_endpoint.ip\", \"from\": \"src_ip\"}, {\"to\": \"evidences[0].src_endpoint.port\", \"from\": \"src_port\", \"type\": \"integer\"}, {\"to\": \"evidences[0].src_endpoint.mac\", \"from\": \"mac\"}, {\"to\": \"evidences[0].dst_endpoint.ip\", \"from\": \"dst_ip\"}, {\"to\": \"evidences[0].dst_endpoint.port\", \"from\": \"dst_port\", \"type\": \"integer\"}, {\"to\": \"evidences[0].url.url_string\", \"from\": \"url\"}, {\"to\": \"evidences[0].file.name\", \"from\": \"file_name\"}, {\"to\": \"evidences[0].file.type_id\", \"value\": 1}, {\"to\": \"evidences[0].file.hashes[0].algorithm_id\", \"value\": 3}, {\"to\": \"evidences[0].file.hashes[0].value\", \"from\": \"sha256\"}, {\"to\": \"device.name\", \"from\": \"device_name\"}, {\"to\": \"device.type_id\", \"value\": 0}], \"unmapped\": true, \"parser_id\": \"p00009\", \"label\": \"cisco_meraki\", \"format\": \"security_event\"}\nValidation: valid_rate=0.0 errors=[[\"missing required finding_info\", 1], [\"missing required evidences.file.name\", 1], [\"missing required evidences.file.hashes.value\", 1]]\nExamples: [{\"error\": \"missing required finding_info\", \"vendor\": {\"url\": \"http://www.eicar.org/download/eicar.com.txt\", \"mac\": \"98:5A:EB:E1:81:2F\", \"name\": \"EICAR:EICAR_Test_file_not_a_virus-tpd\", \"sha256\": \"275a021bbfb6489e54d471899f7db9d1663fc695ec2fe2a2c4538aabf651fd0f\", \"disposition\": \"malicious\", \"action\": \"block\", \"src_ip\": \"192.168.128.2\", \"src_port\": \"53150\", \"dst_ip\": \"67.43.156.15\", \"dst_port\": \"80\", \"syslog_pri\": 134, \"epoch_time\": \"1637691298.984398273\", \"device_name\": \"MX84\", \"category\": \"security_event\", \"event_type\": \"security_filtering_file_scanned\"}}, {\"error\": \"missing required evidences.file.name\", \"vendor\": {\"url\": \"http://www.eicar.org/download/eicar.com.txt\", \"mac\": \"98:5A:EB:E1:81:2F\", \"name\": \"EICAR:EICAR_Test_file_not_a_virus-tpd\", \"sha256\": \"275a021bbfb6489e54d471899f7db9d1663fc695ec2fe2a2c4538aabf651fd0f\", \"disposition\": \"malicious\", \"action\": \"block\", \"src_ip\": \"192.168.128.2\", \"src_port\": \"53150\", \"dst_ip\": \"67.43.156.15\", \"dst_port\": \"80\", \"syslog_pri\": 134, \"epoch_time\": \"1637691298.984398273\", \"device_name\": \"MX84\", \"category\": \"security_event\", \"event_type\": \"security_filtering_file_scanned\"}}]\nReturn the corrected full spec as JSON only (same rules as before).",
+  "spec": {
+   "class_uid": 2004,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Cisco"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "Meraki"
+    },
+    {
+     "to": "metadata.log_name",
+     "from": "vendor.category"
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "vendor.event_type"
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "activity_id",
+     "value": 1
+    },
+    {
+     "to": "severity_id",
+     "from": "vendor.disposition",
+     "map": {
+      "malicious": 4,
+      "clean": 1
+     },
+     "default": 0
+    },
+    {
+     "to": "is_alert",
+     "value": true
+    },
+    {
+     "to": "finding_info.uid",
+     "from": "vendor.sha256"
+    },
+    {
+     "to": "finding_info.title",
+     "from": "vendor.name"
+    },
+    {
+     "to": "action",
+     "from": "vendor.action"
+    },
+    {
+     "to": "action_id",
+     "from": "vendor.action",
+     "map": {
+      "block": 2,
+      "allow": 1
+     },
+     "default": 0
+    },
+    {
+     "to": "disposition",
+     "from": "vendor.disposition"
+    },
+    {
+     "to": "disposition_id",
+     "from": "vendor.action",
+     "map": {
+      "block": 2,
+      "allow": 1
+     },
+     "default": 0
+    },
+    {
+     "to": "evidences[0].src_endpoint.ip",
+     "from": "vendor.src_ip"
+    },
+    {
+     "to": "evidences[0].src_endpoint.port",
+     "from": "vendor.src_port",
+     "type": "integer"
+    },
+    {
+     "to": "evidences[0].src_endpoint.mac",
+     "from": "vendor.mac"
+    },
+    {
+     "to": "evidences[0].dst_endpoint.ip",
+     "from": "vendor.dst_ip"
+    },
+    {
+     "to": "evidences[0].dst_endpoint.port",
+     "from": "vendor.dst_port",
+     "type": "integer"
+    },
+    {
+     "to": "evidences[0].url.url_string",
+     "from": "vendor.url"
+    },
+    {
+     "to": "evidences[0].file.name",
+     "from": "vendor.file_name"
+    },
+    {
+     "to": "evidences[0].file.type_id",
+     "value": 1
+    },
+    {
+     "to": "evidences[0].file.hashes[0].algorithm_id",
+     "value": 3
+    },
+    {
+     "to": "evidences[0].file.hashes[0].value",
+     "from": "vendor.sha256"
+    },
+    {
+     "to": "device.name",
+     "from": "vendor.device_name"
+    },
+    {
+     "to": "device.type_id",
+     "value": 0
+    }
+   ],
+   "unmapped": true,
+   "parser_id": "p00009",
+   "label": "cisco_meraki",
+   "format": "security_event"
+  },
+  "metrics": {
+   "valid_rate": 1.0,
+   "mapped_field_share": 0.875
+  }
+ },
+ "p00010": {
+  "stage": "mapping",
+  "calls": 1,
+  "prompt_tokens": 2859,
+  "answer_tokens": 32,
+  "class": "detection_finding",
+  "pending_prompt_tokens": 2338
+ },
+ "p00035": {
+  "stage": "done",
+  "calls": 4,
+  "prompt_tokens": 5959,
+  "answer_tokens": 997,
+  "class": "dhcp_activity",
+  "repairs": 2,
+  "repair_prompt": "Your OCSF mapping spec failed validation on the parsed samples.\nSpec:\n{\"class_uid\": 4004, \"fields\": [{\"to\": \"metadata.product.vendor_name\", \"value\": \"Netgate\"}, {\"to\": \"metadata.product.name\", \"value\": \"pfSense\"}, {\"to\": \"time\", \"from\": \"@timestamp\"}, {\"to\": \"activity_id\", \"from\": [\"vendor.dhcp_message_type\", \"vendor.dhcp_event\"], \"map\": {\"DHCPDISCOVER\": 1, \"DHCPOFFER\": 2, \"DHCPREQUEST\": 3, \"DHCPDECLINE\": 4, \"DHCPACK\": 5, \"DHCPNAK\": 6, \"DHCPRELEASE\": 7, \"DHCPINFORM\": 8, \"Request message\": 3, \"Sending Reply\": 5, \"Picking pool address\": 2, \"Reusing lease\": 5, \"Listening\": 99, \"Sending\": 99}, \"default\": 0}, {\"to\": \"severity_id\", \"value\": 1}, {\"to\": \"message\", \"from\": \"vendor.dhcp_event\"}, {\"to\": \"src_endpoint.ip\", \"from\": [\"vendor.client_ip\", \"vendor.assigned_ip\"]}, {\"to\": \"src_endpoint.port\", \"from\": \"vendor.client_port\", \"type\": \"integer\"}, {\"to\": \"src_endpoint.mac\", \"from\": \"vendor.client_mac\"}, {\"to\": \"src_endpoint.hostname\", \"from\": \"vendor.client_hostname\"}, {\"to\": \"dst_endpoint.interface_name\", \"from\": \"vendor.interface\"}, {\"to\": \"transaction_uid\", \"from\": \"vendor.transaction_id\"}, {\"to\": \"lease_dur\", \"from\": \"vendor.valid_lifetime\", \"type\": \"integer\"}], \"unmapped\": true, \"parser_id\": \"p00035\", \"label\": \"netgate_pfsense\", \"format\": \"dhcpd\"}\nValidation: valid_rate=0.0 errors=[[\"time: expected integer, got str \\u2026\", 8]]\nExamples: [{\"error\": \"time: expected integer, got str '2026-07-23T18:11:58.000Z'\", \"vendor\": {\"syslog_pri\": 190, \"timestamp\": \"Jul 23 18:11:58\", \"process\": \"dhcpd\", \"pid\": 6555, \"dhcp_event\": \"Sending Reply\", \"client_ip\": \"fe80::e6c9:2b22:f9db:bfad\", \"client_port\": 546}}]\nReturn the corrected full spec as JSON only (same rules as before).",
+  "spec": {
+   "class_uid": 4004,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Netgate"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "pfSense"
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "activity_id",
+     "from": [
+      "vendor.dhcp_message_type",
+      "vendor.dhcp_event"
+     ],
+     "map": {
+      "DHCPDISCOVER": 1,
+      "DHCPOFFER": 2,
+      "DHCPREQUEST": 3,
+      "DHCPDECLINE": 4,
+      "DHCPACK": 5,
+      "DHCPNAK": 6,
+      "DHCPRELEASE": 7,
+      "DHCPINFORM": 8,
+      "Request message": 3,
+      "Sending Reply": 5,
+      "Picking pool address": 2,
+      "Reusing lease": 5,
+      "Listening": 99,
+      "Sending": 99
+     },
+     "default": 0
+    },
+    {
+     "to": "severity_id",
+     "value": 1
+    },
+    {
+     "to": "message",
+     "from": "vendor.dhcp_event"
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": [
+      "vendor.client_ip",
+      "vendor.assigned_ip"
+     ]
+    },
+    {
+     "to": "src_endpoint.port",
+     "from": "vendor.client_port",
+     "type": "integer"
+    },
+    {
+     "to": "src_endpoint.mac",
+     "from": "vendor.client_mac"
+    },
+    {
+     "to": "src_endpoint.hostname",
+     "from": "vendor.client_hostname"
+    },
+    {
+     "to": "dst_endpoint.interface_name",
+     "from": "vendor.interface"
+    },
+    {
+     "to": "transaction_uid",
+     "from": "vendor.transaction_id"
+    },
+    {
+     "to": "lease_dur",
+     "from": "vendor.valid_lifetime",
+     "type": "integer"
+    }
+   ],
+   "unmapped": true,
+   "parser_id": "p00035",
+   "label": "netgate_pfsense",
+   "format": "dhcpd"
+  },
+  "metrics": {
+   "valid_rate": 1.0,
+   "mapped_field_share": 0.342
+  }
+ },
+ "p00036": {
+  "stage": "done",
+  "calls": 2,
+  "prompt_tokens": 4558,
+  "answer_tokens": 240,
+  "class": "tunnel_activity",
+  "spec": {
+   "class_uid": 4014,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Netgate"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "pfSense"
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "activity_id",
+     "from": "vendor.event",
+     "map": {
+      "Peer Connection Initiated": 1
+     },
+     "default": 99
+    },
+    {
+     "to": "severity_id",
+     "value": 1
+    },
+    {
+     "to": "message",
+     "from": "vendor.event"
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": [
+      "vendor.src_ip",
+      "vendor.peer_ip"
+     ]
+    },
+    {
+     "to": "src_endpoint.port",
+     "from": [
+      "vendor.src_port",
+      "vendor.peer_port"
+     ],
+     "type": "integer"
+    },
+    {
+     "to": "user.name",
+     "from": "vendor.user"
+    },
+    {
+     "to": "actor.process.pid",
+     "from": "vendor.pid",
+     "type": "integer"
+    },
+    {
+     "to": "actor.process.name",
+     "from": "vendor.process"
+    }
+   ],
+   "unmapped": true,
+   "parser_id": "p00036",
+   "label": "netgate_pfsense",
+   "format": "openvpn"
+  },
+  "metrics": {
+   "valid_rate": 1.0,
+   "mapped_field_share": 0.511
+  }
+ },
+ "p00037": {
+  "stage": "done",
+  "calls": 2,
+  "prompt_tokens": 4376,
+  "answer_tokens": 293,
+  "class": "authentication",
+  "spec": {
+   "class_uid": 3002,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Netgate"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "pfSense"
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "activity_id",
+     "value": 1
+    },
+    {
+     "to": "severity_id",
+     "from": "vendor.event",
+     "map": {
+      "Successful login": 1,
+      "webConfigurator authentication error": 3
+     },
+     "default": 1
+    },
+    {
+     "to": "status_id",
+     "from": "vendor.event",
+     "map": {
+      "Successful login": 1,
+      "webConfigurator authentication error": 2
+     },
+     "default": 0
+    },
+    {
+     "to": "status_detail",
+     "from": "vendor.event"
+    },
+    {
+     "to": "message",
+     "from": "vendor.event"
+    },
+    {
+     "to": "user.name",
+     "from": "vendor.user"
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": "vendor.src_ip"
+    },
+    {
+     "to": "service.name",
+     "value": "webConfigurator"
+    },
+    {
+     "to": "http_request.url.path",
+     "from": "vendor.script"
+    },
+    {
+     "to": "actor.process.name",
+     "from": "vendor.process"
+    },
+    {
+     "to": "actor.process.pid",
+     "from": "vendor.pid",
+     "type": "integer"
+    }
+   ],
+   "unmapped": true,
+   "parser_id": "p00037",
+   "label": "netgate_pfsense",
+   "format": "webconfigurator_auth"
+  },
+  "metrics": {
+   "valid_rate": 1.0,
+   "mapped_field_share": 0.708
+  }
+ },
+ "p00038": {
+  "stage": "done",
+  "calls": 2,
+  "prompt_tokens": 4215,
+  "answer_tokens": 302,
+  "class": "dhcp_activity",
+  "spec": {
+   "class_uid": 4004,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Netgate"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "pfSense"
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "activity_id",
+     "from": [
+      "vendor.msg",
+      "vendor.event"
+     ],
+     "map": {
+      "Sending Release": 7,
+      "Sending Request": 3,
+      "Sending Solicit": 1,
+      "Sending Renew": 3,
+      "Sending Rebind": 3,
+      "Sending Decline": 4,
+      "Sending Information Request": 8,
+      "add an address": 5
+     },
+     "default": 99
+    },
+    {
+     "to": "severity_id",
+     "value": 1
+    },
+    {
+     "to": "message",
+     "from": [
+      "vendor.msg",
+      "vendor.event"
+     ]
+    },
+    {
+     "to": "status_code",
+     "from": "vendor.status_code"
+    },
+    {
+     "to": "status_id",
+     "from": "vendor.status_code",
+     "map": {
+      "success": 1
+     },
+     "default": 0
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": "vendor.address"
+    },
+    {
+     "to": "src_endpoint.interface_name",
+     "from": "vendor.interface"
+    },
+    {
+     "to": "actor.process.name",
+     "from": "vendor.process"
+    },
+    {
+     "to": "actor.process.pid",
+     "from": "vendor.pid",
+     "type": "integer"
+    }
+   ],
+   "unmapped": true,
+   "parser_id": "p00038",
+   "label": "netgate_pfsense",
+   "format": "dhcp6c"
+  },
+  "metrics": {
+   "valid_rate": 1.0,
+   "mapped_field_share": 0.608
+  }
+ },
+ "p00039": {
+  "stage": "done",
+  "calls": 2,
+  "prompt_tokens": 4269,
+  "answer_tokens": 227,
+  "class": "dns_activity",
+  "spec": {
+   "class_uid": 4003,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "NLnet Labs"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "Unbound"
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "activity_id",
+     "value": 1
+    },
+    {
+     "to": "severity_id",
+     "from": "vendor.level",
+     "map": {
+      "info": 1,
+      "notice": 1,
+      "warning": 3,
+      "error": 4
+     },
+     "default": 1
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": "vendor.client_ip"
+    },
+    {
+     "to": "query.hostname",
+     "from": "vendor.query"
+    },
+    {
+     "to": "query.type",
+     "from": "vendor.query_type"
+    },
+    {
+     "to": "query.class",
+     "from": "vendor.query_class"
+    },
+    {
+     "to": "actor.process.name",
+     "from": "vendor.process"
+    },
+    {
+     "to": "actor.process.pid",
+     "from": "vendor.pid",
+     "type": "integer"
+    }
+   ],
+   "unmapped": true,
+   "parser_id": "p00039",
+   "label": "netgate_pfsense",
+   "format": "unbound"
+  },
+  "metrics": {
+   "valid_rate": 1.0,
+   "mapped_field_share": 0.636
+  }
+ },
+ "p00040": {
+  "stage": "done",
+  "calls": 4,
+  "prompt_tokens": 7684,
+  "answer_tokens": 1308,
+  "class": "http_activity",
+  "repairs": 2,
+  "repair_prompt": "Your OCSF mapping spec failed validation on the parsed samples.\nSpec:\n{\"class_uid\": 4002, \"fields\": [{\"to\": \"metadata.product.vendor_name\", \"value\": \"Netgate\"}, {\"to\": \"metadata.product.name\", \"value\": \"pfSense\"}, {\"to\": \"time\", \"from\": \"@timestamp\", \"type\": \"timestamp_ms\"}, {\"to\": \"activity_id\", \"from\": \"vendor.http_method\", \"map\": {\"CONNECT\": 1, \"DELETE\": 2, \"GET\": 3, \"HEAD\": 4, \"OPTIONS\": 5, \"POST\": 6, \"PUT\": 7, \"TRACE\": 8}, \"default\": 0}, {\"to\": \"severity_id\", \"value\": 1}, {\"to\": \"device.hostname\", \"from\": \"vendor.syslog_host\"}, {\"to\": \"device.type_id\", \"value\": 9}, {\"to\": \"src_endpoint.ip\", \"from\": \"vendor.client_ip\"}, {\"to\": \"src_endpoint.port\", \"from\": \"vendor.client_port\", \"type\": \"integer\"}, {\"to\": \"dst_endpoint.name\", \"from\": \"vendor.server_name\"}, {\"to\": \"proxy.name\", \"from\": \"vendor.frontend_name\"}, {\"to\": \"connection_info.direction_id\", \"value\": 1}, {\"to\": \"http_request.http_method\", \"from\": \"vendor.http_method\"}, {\"to\": \"http_request.url.path\", \"from\": \"vendor.http_path\"}, {\"to\": \"http_request.version\", \"from\": \"vendor.http_version\"}, {\"to\": \"http_response.code\", \"from\": \"vendor.http_status_code\", \"type\": \"integer\"}, {\"to\": \"http_response.length\", \"from\": \"vendor.bytes_read\", \"type\": \"integer\"}, {\"to\": \"http_status\", \"from\": \"vendor.http_status_code\", \"type\": \"integer\"}, {\"to\": \"traffic.bytes_out\", \"from\": \"vendor.bytes_read\", \"type\": \"integer\"}, {\"to\": \"duration\", \"from\": \"vendor.time_duration\", \"type\": \"integer\"}, {\"to\": \"actor.process.name\", \"from\": \"vendor.process\"}, {\"to\": \"actor.process.pid\", \"from\": \"vendor.pid\", \"type\": \"integer\"}], \"unmapped\": true, \"parser_id\": \"p00040\", \"label\": \"netgate_pfsense\", \"format\": \"haproxy\"}\nValidation: valid_rate=0.5 errors=[[\"missing required http_response.code\", 1]]\nExamples: [{\"error\": \"missing required http_response.code\", \"vendor\": {\"syslog_pri\": 134, \"timestamp\": \"Jun 13 20:56:55\", \"syslog_host\": \"pfSense\", \"process\": \"haproxy\", \"pid\": 31709, \"client_ip\": \"10.0.200.110\", \"client_port\": 50611, \"accept_date\": \"13/Jun/2022:20:56:55.187\", \"frontend_name\": \"TestFrontend-copy\", \"backend_name\": \"TestBackend_ipvANY\", \"server_name\": \"TestServer\", \"time_queue\": 0, \"time_backend_connect\": 0, \"time_duration\": \"204\", \"bytes_read\": \"366\"}}]\nReturn the corrected full spec as JSON only (same rules as before).",
+  "spec": {
+   "class_uid": 4002,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Netgate"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "pfSense"
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "activity_id",
+     "from": "vendor.http_method",
+     "map": {
+      "CONNECT": 1,
+      "DELETE": 2,
+      "GET": 3,
+      "HEAD": 4,
+      "OPTIONS": 5,
+      "POST": 6,
+      "PUT": 7,
+      "TRACE": 8
+     },
+     "default": 0
+    },
+    {
+     "to": "severity_id",
+     "value": 1
+    },
+    {
+     "to": "device.hostname",
+     "from": "vendor.syslog_host"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": "vendor.client_ip"
+    },
+    {
+     "to": "src_endpoint.port",
+     "from": "vendor.client_port",
+     "type": "integer"
+    },
+    {
+     "to": "dst_endpoint.name",
+     "from": "vendor.server_name"
+    },
+    {
+     "to": "proxy.name",
+     "from": "vendor.frontend_name"
+    },
+    {
+     "to": "connection_info.direction_id",
+     "value": 1
+    },
+    {
+     "to": "http_request.http_method",
+     "from": "vendor.http_method"
+    },
+    {
+     "to": "http_request.url.path",
+     "from": "vendor.http_path"
+    },
+    {
+     "to": "http_request.version",
+     "from": "vendor.http_version"
+    },
+    {
+     "to": "http_response.code",
+     "from": "vendor.http_status_code",
+     "type": "integer",
+     "default": 0
+    },
+    {
+     "to": "http_response.length",
+     "from": "vendor.bytes_read",
+     "type": "integer"
+    },
+    {
+     "to": "http_status",
+     "from": "vendor.http_status_code",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.bytes_out",
+     "from": "vendor.bytes_read",
+     "type": "integer"
+    },
+    {
+     "to": "duration",
+     "from": "vendor.time_duration",
+     "type": "integer"
+    },
+    {
+     "to": "actor.process.name",
+     "from": "vendor.process"
+    },
+    {
+     "to": "actor.process.pid",
+     "from": "vendor.pid",
+     "type": "integer"
+    }
+   ],
+   "unmapped": true,
+   "parser_id": "p00040",
+   "label": "netgate_pfsense",
+   "format": "haproxy"
+  },
+  "metrics": {
+   "valid_rate": 1.0,
+   "mapped_field_share": 0.399
+  }
+ },
+ "p00041": {
+  "stage": "done",
+  "calls": 3,
+  "prompt_tokens": 4245,
+  "answer_tokens": 424,
+  "class": "application_error",
+  "repairs": 1,
+  "repair_prompt": "Your OCSF mapping spec failed validation on the parsed samples.\nSpec:\n{\"class_uid\": 6008, \"fields\": [{\"to\": \"metadata.product.vendor_name\", \"value\": \"Netgate\"}, {\"to\": \"metadata.product.name\", \"value\": \"pfSense\"}, {\"to\": \"metadata.product.feature.name\", \"from\": [\"vendor.inner_process\", \"vendor.process\"]}, {\"to\": \"time\", \"from\": \"@timestamp\", \"type\": \"timestamp_ms\"}, {\"to\": \"activity_id\", \"value\": 1}, {\"to\": \"severity_id\", \"from\": \"vendor.syslog_pri\", \"type\": \"string\", \"map\": {\"43\": 3, \"42\": 4, \"41\": 5, \"40\": 6, \"44\": 2, \"45\": 1, \"46\": 1, \"47\": 1, \"3\": 3, \"11\": 3, \"19\": 3, \"27\": 3, \"35\": 3, \"131\": 3, \"139\": 3}, \"default\": 0}, {\"to\": \"message\", \"from\": \"vendor.msg\"}, {\"to\": \"status_id\", \"value\": 2}, {\"to\": \"status_detail\", \"from\": \"vendor.msg\"}], \"unmapped\": true, \"parser_id\": \"p00041\", \"label\": \"netgate_pfsense\", \"format\": \"syslog_generic\"}\nValidation: valid_rate=0.0 errors=[[\"severity_id: expected integer, got str \\u2026\", 1]]\nExamples: [{\"error\": \"severity_id: expected integer, got str '3'\", \"vendor\": {\"syslog_pri\": 43, \"timestamp\": \"2026-06-26T09:58:50.439-04:00\", \"syslog_host\": \"host-1.example.local\", \"process\": \"kernel\", \"inner_host\": \"host-1.example.local\", \"inner_process\": \"kernel\", \"msg\": \"Can't assign requested address\"}}]\nReturn the corrected full spec as JSON only (same rules as before).",
+  "spec": {
+   "class_uid": 6008,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Netgate"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "pfSense"
+    },
+    {
+     "to": "metadata.product.feature.name",
+     "from": [
+      "vendor.inner_process",
+      "vendor.process"
+     ]
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "activity_id",
+     "value": 1
+    },
+    {
+     "to": "severity_id",
+     "from": "vendor.syslog_pri",
+     "type": "integer",
+     "map": {
+      "43": 3,
+      "42": 4,
+      "41": 5,
+      "40": 6,
+      "44": 2,
+      "45": 1,
+      "46": 1,
+      "47": 1,
+      "3": 3,
+      "11": 3,
+      "19": 3,
+      "27": 3,
+      "35": 3,
+      "131": 3,
+      "139": 3
+     },
+     "default": 0
+    },
+    {
+     "to": "message",
+     "from": "vendor.msg"
+    },
+    {
+     "to": "status_id",
+     "value": 2
+    },
+    {
+     "to": "status_detail",
+     "from": "vendor.msg"
+    }
+   ],
+   "unmapped": true,
+   "parser_id": "p00041",
+   "label": "netgate_pfsense",
+   "format": "syslog_generic"
+  },
+  "metrics": {
+   "valid_rate": 1.0,
+   "mapped_field_share": 0.429
+  }
+ },
+ "p00081": {
+  "stage": "done",
+  "calls": 2,
+  "prompt_tokens": 4170,
+  "answer_tokens": 219,
+  "class": "network_activity",
+  "spec": {
+   "class_uid": 4001,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Netgate"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "pfSense"
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "activity_id",
+     "value": 0
+    },
+    {
+     "to": "severity_id",
+     "from": "vendor.syslog_pri",
+     "type": "integer",
+     "map": {
+      "134": 1,
+      "30": 1,
+      "190": 1,
+      "29": 1,
+      "43": 3
+     },
+     "default": 0
+    },
+    {
+     "to": "message",
+     "from": "vendor.msg"
+    },
+    {
+     "to": "device.hostname",
+     "from": "vendor.syslog_host"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    },
+    {
+     "to": "actor.process.name",
+     "from": "vendor.process"
+    },
+    {
+     "to": "actor.process.pid",
+     "from": "vendor.pid",
+     "type": "integer"
+    }
+   ],
+   "unmapped": true,
+   "parser_id": "p00081",
+   "label": "netgate_pfsense",
+   "format": "pfsense_fallback"
+  },
+  "metrics": {
+   "valid_rate": 1.0,
+   "mapped_field_share": 0.813
+  }
+ },
+ "p00042": {
+  "stage": "done",
+  "calls": 2,
+  "prompt_tokens": 13046,
+  "answer_tokens": 682,
+  "class": "network_activity",
+  "spec": {
+   "class_uid": 4001,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "OISF"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "Suricata"
+    },
+    {
+     "to": "metadata.correlation_uid",
+     "from": "vendor.flow_id",
+     "type": "string"
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "vendor.event_type"
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "activity_id",
+     "value": 6
+    },
+    {
+     "to": "severity_id",
+     "from": "vendor.alert.severity",
+     "type": "integer",
+     "map": {
+      "1": 4,
+      "2": 3,
+      "3": 2
+     },
+     "default": 1
+    },
+    {
+     "to": "message",
+     "from": "vendor.alert.signature"
+    },
+    {
+     "to": "action_id",
+     "from": "vendor.alert.action",
+     "map": {
+      "allowed": 1,
+      "blocked": 2
+     },
+     "default": 0
+    },
+    {
+     "to": "disposition_id",
+     "from": "vendor.alert.action",
+     "map": {
+      "allowed": 1,
+      "blocked": 2
+     },
+     "default": 0
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": "vendor.src_ip"
+    },
+    {
+     "to": "src_endpoint.port",
+     "from": "vendor.src_port",
+     "type": "integer"
+    },
+    {
+     "to": "src_endpoint.mac",
+     "from": "vendor.ether.src_mac"
+    },
+    {
+     "to": "dst_endpoint.ip",
+     "from": "vendor.dest_ip"
+    },
+    {
+     "to": "dst_endpoint.port",
+     "from": "vendor.dest_port",
+     "type": "integer"
+    },
+    {
+     "to": "dst_endpoint.mac",
+     "from": "vendor.ether.dest_mac"
+    },
+    {
+     "to": "connection_info.uid",
+     "from": "vendor.flow_id",
+     "type": "string"
+    },
+    {
+     "to": "connection_info.protocol_name",
+     "from": "vendor.proto",
+     "type": "lower"
+    },
+    {
+     "to": "connection_info.protocol_num",
+     "from": "vendor.proto",
+     "map": {
+      "TCP": 6,
+      "UDP": 17,
+      "ICMP": 1
+     },
+     "default": -1
+    },
+    {
+     "to": "connection_info.direction_id",
+     "value": 0
+    },
+    {
+     "to": "app_name",
+     "from": "vendor.app_proto"
+    },
+    {
+     "to": "traffic.bytes_out",
+     "from": "vendor.flow.bytes_toserver",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.bytes_in",
+     "from": "vendor.flow.bytes_toclient",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.packets_out",
+     "from": "vendor.flow.pkts_toserver",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.packets_in",
+     "from": "vendor.flow.pkts_toclient",
+     "type": "integer"
+    },
+    {
+     "to": "start_time",
+     "from": "vendor.flow.start",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "end_time",
+     "from": "vendor.flow.end",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "url.hostname",
+     "from": "vendor.http.hostname"
+    },
+    {
+     "to": "url.path",
+     "from": "vendor.http.url"
+    },
+    {
+     "to": "url.port",
+     "from": "vendor.http.http_port",
+     "type": "integer"
+    },
+    {
+     "to": "tls.version",
+     "from": "vendor.tls.version"
+    },
+    {
+     "to": "tls.sni",
+     "from": "vendor.tls.sni"
+    }
+   ],
+   "unmapped": true,
+   "parser_id": "p00042",
+   "label": "oisf_suricata",
+   "format": "eve_json"
+  },
+  "metrics": {
+   "valid_rate": 1.0,
+   "mapped_field_share": 0.519
+  }
+ },
+ "p00075": {
+  "stage": "done",
+  "calls": 2,
+  "prompt_tokens": 13048,
+  "answer_tokens": 682,
+  "class": "network_activity",
+  "spec": {
+   "class_uid": 4001,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "OISF"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "Suricata"
+    },
+    {
+     "to": "metadata.correlation_uid",
+     "from": "vendor.flow_id",
+     "type": "string"
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "vendor.event_type"
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "activity_id",
+     "value": 6
+    },
+    {
+     "to": "severity_id",
+     "from": "vendor.alert.severity",
+     "type": "integer",
+     "map": {
+      "1": 4,
+      "2": 3,
+      "3": 2
+     },
+     "default": 1
+    },
+    {
+     "to": "message",
+     "from": "vendor.alert.signature"
+    },
+    {
+     "to": "action_id",
+     "from": "vendor.alert.action",
+     "map": {
+      "allowed": 1,
+      "blocked": 2
+     },
+     "default": 0
+    },
+    {
+     "to": "disposition_id",
+     "from": "vendor.alert.action",
+     "map": {
+      "allowed": 1,
+      "blocked": 2
+     },
+     "default": 0
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": "vendor.src_ip"
+    },
+    {
+     "to": "src_endpoint.port",
+     "from": "vendor.src_port",
+     "type": "integer"
+    },
+    {
+     "to": "src_endpoint.mac",
+     "from": "vendor.ether.src_mac"
+    },
+    {
+     "to": "dst_endpoint.ip",
+     "from": "vendor.dest_ip"
+    },
+    {
+     "to": "dst_endpoint.port",
+     "from": "vendor.dest_port",
+     "type": "integer"
+    },
+    {
+     "to": "dst_endpoint.mac",
+     "from": "vendor.ether.dest_mac"
+    },
+    {
+     "to": "connection_info.uid",
+     "from": "vendor.flow_id",
+     "type": "string"
+    },
+    {
+     "to": "connection_info.protocol_name",
+     "from": "vendor.proto",
+     "type": "lower"
+    },
+    {
+     "to": "connection_info.protocol_num",
+     "from": "vendor.proto",
+     "map": {
+      "TCP": 6,
+      "UDP": 17,
+      "ICMP": 1
+     },
+     "default": -1
+    },
+    {
+     "to": "connection_info.direction_id",
+     "value": 0
+    },
+    {
+     "to": "app_name",
+     "from": "vendor.app_proto"
+    },
+    {
+     "to": "traffic.bytes_out",
+     "from": "vendor.flow.bytes_toserver",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.bytes_in",
+     "from": "vendor.flow.bytes_toclient",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.packets_out",
+     "from": "vendor.flow.pkts_toserver",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.packets_in",
+     "from": "vendor.flow.pkts_toclient",
+     "type": "integer"
+    },
+    {
+     "to": "start_time",
+     "from": "vendor.flow.start",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "end_time",
+     "from": "vendor.flow.end",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "url.hostname",
+     "from": "vendor.http.hostname"
+    },
+    {
+     "to": "url.path",
+     "from": "vendor.http.url"
+    },
+    {
+     "to": "url.port",
+     "from": "vendor.http.http_port",
+     "type": "integer"
+    },
+    {
+     "to": "tls.version",
+     "from": "vendor.tls.version"
+    },
+    {
+     "to": "tls.sni",
+     "from": "vendor.tls.sni"
+    }
+   ],
+   "unmapped": true,
+   "parser_id": "p00075",
+   "label": "oisf_suricata",
+   "format": "eve_fallback"
+  },
+  "metrics": {
+   "valid_rate": 1.0,
+   "mapped_field_share": 0.519
+  }
+ },
+ "p00014": {
+  "stage": "done",
+  "calls": 2,
+  "prompt_tokens": 9008,
+  "answer_tokens": 783,
+  "class": "network_activity",
+  "spec": {
+   "class_uid": 4001,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Palo Alto Networks"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "PAN-OS"
+    },
+    {
+     "to": "metadata.uid",
+     "from": "vendor.sequence_number",
+     "type": "string"
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "vendor.subtype"
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "activity_id",
+     "from": "vendor.subtype",
+     "map": {
+      "start": 1,
+      "end": 2,
+      "drop": 5,
+      "deny": 5
+     },
+     "default": 0
+    },
+    {
+     "to": "severity_id",
+     "value": 1
+    },
+    {
+     "to": "action_id",
+     "from": "vendor.action",
+     "map": {
+      "allow": 1,
+      "drop": 2,
+      "deny": 2,
+      "reset-client": 2,
+      "reset-server": 2,
+      "reset-both": 2,
+      "drop-icmp": 2
+     },
+     "default": 0
+    },
+    {
+     "to": "disposition_id",
+     "from": "vendor.action",
+     "map": {
+      "allow": 1,
+      "drop": 6,
+      "deny": 2,
+      "reset-client": 2,
+      "reset-server": 2,
+      "reset-both": 2,
+      "drop-icmp": 6
+     },
+     "default": 0
+    },
+    {
+     "to": "status_detail",
+     "from": "vendor.session_end_reason",
+     "skip_values": [
+      "n/a",
+      "null",
+      "-"
+     ]
+    },
+    {
+     "to": "device.hostname",
+     "from": "vendor.device_name"
+    },
+    {
+     "to": "device.uid",
+     "from": "vendor.serial_number",
+     "skip_values": [
+      "null",
+      "-"
+     ]
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": "vendor.src_ip"
+    },
+    {
+     "to": "src_endpoint.port",
+     "from": "vendor.src_port",
+     "type": "integer"
+    },
+    {
+     "to": "src_endpoint.zone",
+     "from": "vendor.src_zone"
+    },
+    {
+     "to": "src_endpoint.interface_name",
+     "from": "vendor.inbound_interface",
+     "skip_values": [
+      "null",
+      "-"
+     ]
+    },
+    {
+     "to": "dst_endpoint.ip",
+     "from": "vendor.dst_ip"
+    },
+    {
+     "to": "dst_endpoint.port",
+     "from": "vendor.dst_port",
+     "type": "integer"
+    },
+    {
+     "to": "dst_endpoint.zone",
+     "from": "vendor.dst_zone"
+    },
+    {
+     "to": "dst_endpoint.interface_name",
+     "from": "vendor.outbound_interface",
+     "skip_values": [
+      "null",
+      "-"
+     ]
+    },
+    {
+     "to": "connection_info.uid",
+     "from": "vendor.session_id",
+     "type": "string"
+    },
+    {
+     "to": "connection_info.protocol_name",
+     "from": "vendor.protocol",
+     "type": "lower"
+    },
+    {
+     "to": "connection_info.protocol_num",
+     "from": "vendor.protocol",
+     "map": {
+      "tcp": 6,
+      "udp": 17,
+      "icmp": 1
+     },
+     "default": -1
+    },
+    {
+     "to": "connection_info.direction_id",
+     "value": 0
+    },
+    {
+     "to": "app_name",
+     "from": "vendor.app"
+    },
+    {
+     "to": "traffic.bytes",
+     "from": "vendor.bytes",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.bytes_out",
+     "from": "vendor.bytes_sent",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.bytes_in",
+     "from": "vendor.bytes_received",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.packets",
+     "from": "vendor.packets",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.packets_out",
+     "from": "vendor.packets_sent",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.packets_in",
+     "from": "vendor.packets_received",
+     "type": "integer"
+    },
+    {
+     "to": "start_time",
+     "from": "vendor.start_time_utc",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "duration",
+     "from": "vendor.elapsed_ms",
+     "type": "integer"
+    }
+   ],
+   "unmapped": true,
+   "parser_id": "p00014",
+   "label": "paloalto_panos",
+   "format": "traffic_csv_hrts"
+  },
+  "metrics": {
+   "valid_rate": 1.0,
+   "mapped_field_share": 0.425
+  }
+ },
+ "p00015": {
+  "stage": "done",
+  "calls": 2,
+  "prompt_tokens": 15081,
+  "answer_tokens": 870,
+  "class": "network_activity",
+  "spec": {
+   "class_uid": 4001,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Palo Alto Networks"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "PAN-OS"
+    },
+    {
+     "to": "metadata.uid",
+     "from": "vendor.sequence_number",
+     "type": "string"
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "vendor.subtype"
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "activity_id",
+     "from": "vendor.subtype",
+     "map": {
+      "start": 1,
+      "end": 2,
+      "drop": 5,
+      "deny": 5
+     },
+     "default": 0
+    },
+    {
+     "to": "severity_id",
+     "value": 1
+    },
+    {
+     "to": "action_id",
+     "from": "vendor.action",
+     "map": {
+      "allow": 1,
+      "drop": 2,
+      "deny": 2,
+      "reset-client": 2,
+      "reset-server": 2,
+      "reset-both": 2,
+      "drop-icmp": 2
+     },
+     "default": 0
+    },
+    {
+     "to": "disposition_id",
+     "from": "vendor.action",
+     "map": {
+      "allow": 1,
+      "drop": 6,
+      "deny": 2,
+      "reset-client": 2,
+      "reset-server": 2,
+      "reset-both": 2,
+      "drop-icmp": 6
+     },
+     "default": 0
+    },
+    {
+     "to": "status_detail",
+     "from": "vendor.session_end_reason",
+     "skip_values": [
+      "n/a",
+      "null",
+      "-"
+     ]
+    },
+    {
+     "to": "device.hostname",
+     "from": [
+      "vendor.device_name",
+      "vendor.syslog_host"
+     ]
+    },
+    {
+     "to": "device.uid",
+     "from": "vendor.serial_number",
+     "type": "string",
+     "skip_values": [
+      "null",
+      "-"
+     ]
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    },
+    {
+     "to": "actor.user.name",
+     "from": "vendor.src_user",
+     "skip_values": [
+      "null",
+      "-",
+      ""
+     ]
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": "vendor.src_ip"
+    },
+    {
+     "to": "src_endpoint.port",
+     "from": "vendor.src_port",
+     "type": "integer"
+    },
+    {
+     "to": "src_endpoint.zone",
+     "from": "vendor.src_zone"
+    },
+    {
+     "to": "src_endpoint.interface_name",
+     "from": "vendor.inbound_interface",
+     "skip_values": [
+      "null",
+      "-"
+     ]
+    },
+    {
+     "to": "src_endpoint.hostname",
+     "from": "vendor.src_hostname",
+     "skip_values": [
+      "null",
+      "-"
+     ]
+    },
+    {
+     "to": "dst_endpoint.ip",
+     "from": "vendor.dst_ip"
+    },
+    {
+     "to": "dst_endpoint.port",
+     "from": "vendor.dst_port",
+     "type": "integer"
+    },
+    {
+     "to": "dst_endpoint.zone",
+     "from": "vendor.dst_zone"
+    },
+    {
+     "to": "dst_endpoint.interface_name",
+     "from": "vendor.outbound_interface",
+     "skip_values": [
+      "null",
+      "-"
+     ]
+    },
+    {
+     "to": "dst_endpoint.hostname",
+     "from": "vendor.dst_hostname",
+     "skip_values": [
+      "null",
+      "-"
+     ]
+    },
+    {
+     "to": "connection_info.uid",
+     "from": "vendor.session_id",
+     "type": "string"
+    },
+    {
+     "to": "connection_info.protocol_name",
+     "from": "vendor.protocol",
+     "type": "lower"
+    },
+    {
+     "to": "connection_info.protocol_num",
+     "from": "vendor.protocol",
+     "map": {
+      "tcp": 6,
+      "udp": 17,
+      "icmp": 1
+     },
+     "default": -1
+    },
+    {
+     "to": "connection_info.direction_id",
+     "value": 0
+    },
+    {
+     "to": "app_name",
+     "from": "vendor.app"
+    },
+    {
+     "to": "traffic.bytes",
+     "from": "vendor.bytes",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.bytes_out",
+     "from": "vendor.bytes_sent",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.bytes_in",
+     "from": "vendor.bytes_received",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.packets",
+     "from": "vendor.packets",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.packets_out",
+     "from": "vendor.packets_sent",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.packets_in",
+     "from": "vendor.packets_received",
+     "type": "integer"
+    },
+    {
+     "to": "start_time",
+     "from": "vendor.start_time_utc",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "duration",
+     "from": "vendor.elapsed_ms",
+     "type": "integer"
+    }
+   ],
+   "unmapped": true,
+   "parser_id": "p00015",
+   "label": "paloalto_panos",
+   "format": "traffic_csv"
+  },
+  "metrics": {
+   "valid_rate": 1.0,
+   "mapped_field_share": 0.441
+  }
+ },
+ "p00016": {
+  "stage": "done",
+  "calls": 2,
+  "prompt_tokens": 15298,
+  "answer_tokens": 656,
+  "class": "detection_finding",
+  "spec": {
+   "class_uid": 2004,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Palo Alto Networks"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "PAN-OS"
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "vendor.subtype"
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "activity_id",
+     "value": 1
+    },
+    {
+     "to": "is_alert",
+     "value": true
+    },
+    {
+     "to": "severity_id",
+     "from": "vendor.severity",
+     "map": {
+      "informational": 1,
+      "Informational": 1,
+      "low": 2,
+      "Low": 2,
+      "medium": 3,
+      "Medium": 3,
+      "high": 4,
+      "High": 4,
+      "critical": 5,
+      "Critical": 5
+     },
+     "default": 0
+    },
+    {
+     "to": "action_id",
+     "from": "vendor.action",
+     "map": {
+      "alert": 1,
+      "allow": 1,
+      "block-url": 2,
+      "drop": 2,
+      "deny": 2,
+      "reset-both": 2,
+      "reset-client": 2,
+      "reset-server": 2,
+      "drop-packet": 2,
+      "block-ip": 2,
+      "sinkhole": 2
+     },
+     "default": 0
+    },
+    {
+     "to": "disposition_id",
+     "from": "vendor.action",
+     "map": {
+      "alert": 1,
+      "allow": 1,
+      "block-url": 2,
+      "drop": 6,
+      "deny": 2,
+      "reset-both": 2,
+      "reset-client": 2,
+      "reset-server": 2,
+      "drop-packet": 6,
+      "block-ip": 2,
+      "sinkhole": 2
+     },
+     "default": 0
+    },
+    {
+     "to": "finding_info.uid",
+     "from": [
+      "vendor.sequence_number",
+      "vendor.session_id"
+     ],
+     "type": "string",
+     "skip_values": [
+      "0",
+      "null",
+      "-"
+     ]
+    },
+    {
+     "to": "finding_info.title",
+     "from": "vendor.threat_id"
+    },
+    {
+     "to": "finding_info.types[0]",
+     "from": "vendor.subtype"
+    },
+    {
+     "to": "message",
+     "from": "vendor.threat_id"
+    },
+    {
+     "to": "device.hostname",
+     "from": [
+      "vendor.device_name",
+      "vendor.syslog_host"
+     ]
+    },
+    {
+     "to": "device.uid",
+     "from": "vendor.serial_number",
+     "type": "string",
+     "skip_values": [
+      "null",
+      "-"
+     ]
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    },
+    {
+     "to": "evidences[0].src_endpoint.ip",
+     "from": "vendor.src_ip"
+    },
+    {
+     "to": "evidences[0].src_endpoint.port",
+     "from": "vendor.src_port",
+     "type": "integer"
+    },
+    {
+     "to": "evidences[0].src_endpoint.zone",
+     "from": "vendor.src_zone"
+    },
+    {
+     "to": "evidences[0].dst_endpoint.ip",
+     "from": "vendor.dst_ip"
+    },
+    {
+     "to": "evidences[0].dst_endpoint.port",
+     "from": "vendor.dst_port",
+     "type": "integer"
+    },
+    {
+     "to": "evidences[0].dst_endpoint.zone",
+     "from": "vendor.dst_zone"
+    },
+    {
+     "to": "evidences[0].actor.user.name",
+     "from": "vendor.src_user",
+     "skip_values": [
+      "null",
+      "-",
+      ""
+     ]
+    },
+    {
+     "to": "evidences[0].url.url_string",
+     "from": [
+      "vendor.threat_url",
+      "vendor.url_filename"
+     ],
+     "skip_values": [
+      "null",
+      "-",
+      ""
+     ]
+    }
+   ],
+   "unmapped": true,
+   "parser_id": "p00016",
+   "label": "paloalto_panos",
+   "format": "threat_csv"
+  },
+  "metrics": {
+   "valid_rate": 1.0,
+   "mapped_field_share": 0.204
+  }
+ },
+ "p00017": {
+  "stage": "done",
+  "calls": 2,
+  "prompt_tokens": 4910,
+  "answer_tokens": 288,
+  "class": "device_config_state_change",
+  "spec": {
+   "class_uid": 5019,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Palo Alto Networks"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "PAN-OS"
+    },
+    {
+     "to": "metadata.uid",
+     "from": "vendor.sequence_number",
+     "type": "string",
+     "skip_values": [
+      "0"
+     ]
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "vendor.event_id"
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "activity_id",
+     "value": 1
+    },
+    {
+     "to": "severity_id",
+     "from": "vendor.severity",
+     "map": {
+      "informational": 1,
+      "low": 2,
+      "medium": 3,
+      "high": 4,
+      "critical": 5
+     },
+     "default": 0
+    },
+    {
+     "to": "message",
+     "from": "vendor.description"
+    },
+    {
+     "to": "status_id",
+     "from": "vendor.event_id",
+     "map": {
+      "ike-config-p1-success": 1,
+      "ike-config-p2-success": 1,
+      "routed-config-p1-success": 1,
+      "routed-config-p2-success": 1
+     },
+     "default": 0
+    },
+    {
+     "to": "device.uid",
+     "from": "vendor.serial_number",
+     "type": "string"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    }
+   ],
+   "unmapped": true,
+   "parser_id": "p00017",
+   "label": "paloalto_panos",
+   "format": "system_csv"
+  },
+  "metrics": {
+   "valid_rate": 1.0,
+   "mapped_field_share": 0.267
+  }
+ },
+ "p00018": {
+  "stage": "done",
+  "calls": 2,
+  "prompt_tokens": 4743,
+  "answer_tokens": 330,
+  "class": "entity_management",
+  "spec": {
+   "class_uid": 3004,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Palo Alto Networks"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "PAN-OS"
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "vendor.command"
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "activity_id",
+     "from": "vendor.command",
+     "map": {
+      "set": 3,
+      "edit": 3,
+      "rename": 3,
+      "override": 3,
+      "delete": 4,
+      "move": 5,
+      "clone": 1,
+      "multi-clone": 1,
+      "add": 1,
+      "create": 1
+     },
+     "default": 99
+    },
+    {
+     "to": "severity_id",
+     "value": 1
+    },
+    {
+     "to": "status_id",
+     "from": "vendor.result",
+     "map": {
+      "Succeeded": 1,
+      "Failed": 2,
+      "Unauthorized": 2
+     },
+     "default": 0
+    },
+    {
+     "to": "status",
+     "from": "vendor.result"
+    },
+    {
+     "to": "entity.name",
+     "from": "vendor.configuration_path"
+    },
+    {
+     "to": "entity.type",
+     "value": "Configuration"
+    },
+    {
+     "to": "actor.user.name",
+     "from": "vendor.admin"
+    },
+    {
+     "to": "actor.app_name",
+     "from": "vendor.client"
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": "vendor.host"
+    },
+    {
+     "to": "device.uid",
+     "from": "vendor.serial_number",
+     "type": "string"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    }
+   ],
+   "unmapped": true,
+   "parser_id": "p00018",
+   "label": "paloalto_panos",
+   "format": "config_csv_legacy"
+  },
+  "metrics": {
+   "valid_rate": 1.0,
+   "mapped_field_share": 0.438
+  }
+ },
+ "p00019": {
+  "stage": "done",
+  "calls": 2,
+  "prompt_tokens": 5507,
+  "answer_tokens": 449,
+  "class": "entity_management",
+  "spec": {
+   "class_uid": 3004,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Palo Alto Networks"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "PAN-OS"
+    },
+    {
+     "to": "metadata.uid",
+     "from": "vendor.sequence_number",
+     "type": "string",
+     "skip_values": [
+      "0"
+     ]
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "vendor.command"
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "activity_id",
+     "from": "vendor.command",
+     "map": {
+      "set": 3,
+      "edit": 3,
+      "rename": 3,
+      "override": 3,
+      "delete": 4,
+      "move": 5,
+      "clone": 1,
+      "multi-clone": 1,
+      "add": 1,
+      "create": 1
+     },
+     "default": 99
+    },
+    {
+     "to": "severity_id",
+     "value": 1
+    },
+    {
+     "to": "status_id",
+     "from": "vendor.result",
+     "map": {
+      "Succeeded": 1,
+      "Failed": 2,
+      "Unauthorized": 2
+     },
+     "default": 0
+    },
+    {
+     "to": "status",
+     "from": "vendor.result"
+    },
+    {
+     "to": "entity.name",
+     "from": "vendor.configuration_path"
+    },
+    {
+     "to": "entity.type",
+     "value": "Configuration"
+    },
+    {
+     "to": "entity.data.before",
+     "from": "vendor.before_change_detail",
+     "skip_values": [
+      "null",
+      "-",
+      ""
+     ]
+    },
+    {
+     "to": "entity_result.data.after",
+     "from": "vendor.after_change_detail",
+     "skip_values": [
+      "null",
+      "-",
+      ""
+     ]
+    },
+    {
+     "to": "comment",
+     "from": "vendor.comment",
+     "skip_values": [
+      "null",
+      "-",
+      ""
+     ]
+    },
+    {
+     "to": "actor.user.name",
+     "from": "vendor.admin"
+    },
+    {
+     "to": "actor.app_name",
+     "from": "vendor.client"
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": "vendor.host"
+    },
+    {
+     "to": "device.hostname",
+     "from": "vendor.device_name"
+    },
+    {
+     "to": "device.uid",
+     "from": "vendor.serial_number",
+     "type": "string"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    }
+   ],
+   "unmapped": true,
+   "parser_id": "p00019",
+   "label": "paloalto_panos",
+   "format": "config_csv"
+  },
+  "metrics": {
+   "valid_rate": 1.0,
+   "mapped_field_share": 0.36
+  }
+ },
+ "p00020": {
+  "stage": "done",
+  "calls": 3,
+  "prompt_tokens": 7135,
+  "answer_tokens": 490,
+  "class": "authentication",
+  "repairs": 1,
+  "repair_prompt": "Your OCSF mapping spec failed validation on the parsed samples.\nSpec:\n{\"class_uid\": 3002, \"fields\": [{\"to\": \"metadata.product.vendor_name\", \"value\": \"Palo Alto Networks\"}, {\"to\": \"metadata.product.name\", \"value\": \"PAN-OS\"}, {\"to\": \"metadata.uid\", \"from\": \"vendor.sequence_number\", \"type\": \"string\"}, {\"to\": \"metadata.event_code\", \"from\": \"vendor.subtype\"}, {\"to\": \"time\", \"from\": \"@timestamp\", \"type\": \"timestamp_ms\"}, {\"to\": \"activity_id\", \"from\": \"vendor.subtype\", \"map\": {\"login\": 1, \"logout\": 2}, \"default\": 0}, {\"to\": \"severity_id\", \"value\": 1}, {\"to\": \"user.name\", \"from\": \"vendor.src_user\"}, {\"to\": \"src_endpoint.ip\", \"from\": \"vendor.src_ip\"}, {\"to\": \"service.name\", \"from\": \"vendor.data_source\"}, {\"to\": \"session.expiration_time\", \"from\": \"vendor.timeout_threshold\", \"skip_values\": [\"0\"], \"type\": \"integer\", \"to_ignore\": true}], \"unmapped\": true, \"parser_id\": \"p00020\", \"label\": \"paloalto_panos\", \"format\": \"userid_csv\"}\nValidation: valid_rate=0.0 errors=[[\"session.expiration_time: timestamp_t is epoch milliseconds\", 3]]\nExamples: [{\"error\": \"session.expiration_time: timestamp_t is epoch milliseconds\", \"vendor\": {\"syslog_timestamp\": \"Nov 30 16:09:08\", \"receive_time\": \"2021-04-05T14:53:10.000Z\", \"serial_number\": \"<serial-number>\", \"type\": \"USERID\", \"subtype\": \"login\", \"config_version\": \"2305\", \"time_generated\": \"2021-04-05T14:53:10.000Z\", \"vsys\": \"vsys1\", \"src_ip\": \"10.68.2.9\", \"src_user\": \"subdomain\\\\admin\", \"data_source_name\": null, \"event_id\": \"0\", \"repeat_count\": \"1\", \"timeout_threshold\": \"10800\", \"begin_port\": \"0\"}}]\nReturn the corrected full spec as JSON only (same rules as before).",
+  "spec": {
+   "class_uid": 3002,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Palo Alto Networks"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "PAN-OS"
+    },
+    {
+     "to": "metadata.uid",
+     "from": "vendor.sequence_number",
+     "type": "string"
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "vendor.subtype"
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "activity_id",
+     "from": "vendor.subtype",
+     "map": {
+      "login": 1,
+      "logout": 2
+     },
+     "default": 0
+    },
+    {
+     "to": "severity_id",
+     "value": 1
+    },
+    {
+     "to": "user.name",
+     "from": "vendor.src_user"
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": "vendor.src_ip"
+    },
+    {
+     "to": "service.name",
+     "from": "vendor.data_source"
+    },
+    {
+     "to": "device.hostname",
+     "from": "vendor.device_name"
+    },
+    {
+     "to": "device.uid",
+     "from": "vendor.serial_number",
+     "skip_values": [
+      "<serial-number>",
+      "null",
+      "-"
+     ]
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    }
+   ],
+   "unmapped": true,
+   "parser_id": "p00020",
+   "label": "paloalto_panos",
+   "format": "userid_csv"
+  },
+  "metrics": {
+   "valid_rate": 1.0,
+   "mapped_field_share": 0.225
+  }
+ },
+ "p00021": {
+  "stage": "done",
+  "calls": 2,
+  "prompt_tokens": 7533,
+  "answer_tokens": 474,
+  "class": "tunnel_activity",
+  "spec": {
+   "class_uid": 4014,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Palo Alto Networks"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "PAN-OS"
+    },
+    {
+     "to": "metadata.uid",
+     "from": "vendor.sequence_number",
+     "type": "string"
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "vendor.event_id"
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "activity_id",
+     "from": "vendor.event_id",
+     "map": {
+      "gateway-setup-ipsec": 1,
+      "gateway-setup-ssl": 1,
+      "gateway-connected": 1,
+      "gateway-tunnel-latency": 99,
+      "gateway-logout": 2,
+      "gateway-disconnect": 2,
+      "gateway-config-release": 2,
+      "gateway-hip-report": 99,
+      "portal-getconfig": 99,
+      "portal-auth": 99,
+      "gateway-auth": 99,
+      "portal-prelogin": 99,
+      "gateway-prelogin": 99,
+      "gateway-register": 99,
+      "gateway-getconfig": 99
+     },
+     "default": 0
+    },
+    {
+     "to": "severity_id",
+     "value": 1
+    },
+    {
+     "to": "status_id",
+     "from": "vendor.status",
+     "map": {
+      "success": 1,
+      "failure": 2
+     },
+     "default": 0
+    },
+    {
+     "to": "status",
+     "from": "vendor.status"
+    },
+    {
+     "to": "status_code",
+     "from": "vendor.error_code",
+     "type": "string"
+    },
+    {
+     "to": "message",
+     "from": "vendor.description"
+    },
+    {
+     "to": "user.name",
+     "from": "vendor.src_user"
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": "vendor.public_ip",
+     "skip_values": [
+      "0.0.0.0",
+      "null"
+     ]
+    },
+    {
+     "to": "src_endpoint.hostname",
+     "from": "vendor.machine_name",
+     "skip_values": [
+      "null",
+      "-"
+     ]
+    },
+    {
+     "to": "src_endpoint.uid",
+     "from": "vendor.host_id",
+     "skip_values": [
+      "null",
+      "-"
+     ]
+    },
+    {
+     "to": "tunnel_type",
+     "from": "vendor.tunnel_type"
+    },
+    {
+     "to": "device.uid",
+     "from": "vendor.serial_number",
+     "type": "string"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    }
+   ],
+   "unmapped": true,
+   "parser_id": "p00021",
+   "label": "paloalto_panos",
+   "format": "globalprotect_csv"
+  },
+  "metrics": {
+   "valid_rate": 1.0,
+   "mapped_field_share": 0.233
+  }
+ },
+ "p00022": {
+  "stage": "done",
+  "calls": 2,
+  "prompt_tokens": 7979,
+  "answer_tokens": 580,
+  "class": "network_activity",
+  "spec": {
+   "class_uid": 4001,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Palo Alto Networks"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "PAN-OS"
+    },
+    {
+     "to": "metadata.uid",
+     "from": "vendor.sequence_number",
+     "type": "string"
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "vendor.type"
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "activity_id",
+     "value": 6
+    },
+    {
+     "to": "severity_id",
+     "from": "vendor.severity",
+     "type": "integer",
+     "map": {
+      "1": 1,
+      "2": 2,
+      "3": 3,
+      "4": 4,
+      "5": 5
+     },
+     "default": 0
+    },
+    {
+     "to": "device.hostname",
+     "from": "vendor.device_name"
+    },
+    {
+     "to": "device.uid",
+     "from": "vendor.serial_number",
+     "type": "string"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": "vendor.src_ip"
+    },
+    {
+     "to": "src_endpoint.port",
+     "from": "vendor.src_port",
+     "type": "integer"
+    },
+    {
+     "to": "src_endpoint.zone",
+     "from": "vendor.src_zone"
+    },
+    {
+     "to": "src_endpoint.interface_name",
+     "from": "vendor.inbound_interface"
+    },
+    {
+     "to": "dst_endpoint.ip",
+     "from": "vendor.dst_ip"
+    },
+    {
+     "to": "dst_endpoint.port",
+     "from": "vendor.dst_port",
+     "type": "integer"
+    },
+    {
+     "to": "dst_endpoint.zone",
+     "from": "vendor.dst_zone"
+    },
+    {
+     "to": "dst_endpoint.interface_name",
+     "from": "vendor.outbound_interface"
+    },
+    {
+     "to": "connection_info.uid",
+     "from": "vendor.session_id",
+     "type": "string"
+    },
+    {
+     "to": "connection_info.protocol_name",
+     "from": "vendor.protocol",
+     "type": "lower"
+    },
+    {
+     "to": "connection_info.direction_id",
+     "value": 0
+    },
+    {
+     "to": "traffic.packets",
+     "from": "vendor.packets",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.packets_out",
+     "from": "vendor.packets_sent",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.packets_in",
+     "from": "vendor.packets_received",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.chunks",
+     "from": "vendor.sctp_chunks",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.chunks_out",
+     "from": "vendor.sctp_chunks_sent",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.chunks_in",
+     "from": "vendor.sctp_chunks_received",
+     "type": "integer"
+    },
+    {
+     "to": "status_detail",
+     "from": "vendor.sctp_assoc_end_reason"
+    }
+   ],
+   "unmapped": true,
+   "parser_id": "p00022",
+   "label": "paloalto_panos",
+   "format": "sctp_csv"
+  },
+  "metrics": {
+   "valid_rate": 1.0,
+   "mapped_field_share": 0.415
+  }
+ },
+ "p00023": {
+  "stage": "mapping",
+  "calls": 1,
+  "prompt_tokens": 3148,
+  "answer_tokens": 40,
+  "class": "network_activity"
+ },
+ "p00045": {
+  "stage": "done",
+  "calls": 2,
+  "prompt_tokens": 11752,
+  "answer_tokens": 938,
+  "class": "network_activity",
+  "spec": {
+   "class_uid": 4001,
+   "unmapped": true,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Sophos"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "Sophos XG Firewall"
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "activity_id",
+     "from": [
+      "con_event",
+      "connevent"
+     ],
+     "map": {
+      "Start": 1,
+      "Stop": 2,
+      "Interim": 6
+     },
+     "default": 6,
+     "type": "integer"
+    },
+    {
+     "to": "action_id",
+     "from": [
+      "log_subtype",
+      "status"
+     ],
+     "map": {
+      "Allowed": 1,
+      "Allow": 1,
+      "Denied": 2,
+      "Deny": 2
+     },
+     "default": 0,
+     "type": "integer"
+    },
+    {
+     "to": "disposition_id",
+     "from": [
+      "log_subtype",
+      "status"
+     ],
+     "map": {
+      "Allowed": 1,
+      "Allow": 1,
+      "Denied": 2,
+      "Deny": 2
+     },
+     "default": 0,
+     "type": "integer"
+    },
+    {
+     "to": "severity_id",
+     "from": [
+      "severity",
+      "priority"
+     ],
+     "map": {
+      "Information": 1,
+      "Notice": 1,
+      "Warning": 3
+     },
+     "default": 0,
+     "type": "integer"
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "log_id",
+     "type": "string"
+    },
+    {
+     "to": "metadata.log_version",
+     "from": "log_version",
+     "type": "string"
+    },
+    {
+     "to": "device.name",
+     "from": "device_name"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    },
+    {
+     "to": "device.model",
+     "from": "device_model"
+    },
+    {
+     "to": "device.hw_info.serial_number",
+     "from": "device_serial_id"
+    },
+    {
+     "to": "device.uid",
+     "from": "device_id"
+    },
+    {
+     "to": "firewall_rule.uid",
+     "from": "fw_rule_id",
+     "type": "string"
+    },
+    {
+     "to": "firewall_rule.type",
+     "from": "fw_rule_type"
+    },
+    {
+     "to": "connection_info.protocol_name",
+     "from": "protocol",
+     "type": "lower",
+     "skip_values": [
+      "0"
+     ]
+    },
+    {
+     "to": "connection_info.protocol_num",
+     "from": "protocol",
+     "map": {
+      "ICMP": 1,
+      "TCP": 6,
+      "UDP": 17
+     },
+     "type": "integer"
+    },
+    {
+     "to": "connection_info.direction_id",
+     "value": 0
+    },
+    {
+     "to": "connection_info.uid",
+     "from": [
+      "con_id",
+      "connid"
+     ],
+     "type": "string"
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": "src_ip"
+    },
+    {
+     "to": "src_endpoint.port",
+     "from": "src_port",
+     "type": "integer"
+    },
+    {
+     "to": "src_endpoint.mac",
+     "from": "src_mac"
+    },
+    {
+     "to": "src_endpoint.zone",
+     "from": [
+      "src_zone",
+      "srczone"
+     ]
+    },
+    {
+     "to": "src_endpoint.location.country",
+     "from": [
+      "src_country_code",
+      "src_country"
+     ]
+    },
+    {
+     "to": "src_endpoint.interface_name",
+     "from": [
+      "in_display_interface",
+      "in_interface"
+     ]
+    },
+    {
+     "to": "src_endpoint.intermediate_ips[0]",
+     "from": [
+      "src_trans_ip",
+      "tran_src_ip"
+     ]
+    },
+    {
+     "to": "dst_endpoint.ip",
+     "from": "dst_ip"
+    },
+    {
+     "to": "dst_endpoint.port",
+     "from": "dst_port",
+     "type": "integer"
+    },
+    {
+     "to": "dst_endpoint.mac",
+     "from": "dst_mac"
+    },
+    {
+     "to": "dst_endpoint.zone",
+     "from": [
+      "dst_zone",
+      "dstzone"
+     ]
+    },
+    {
+     "to": "dst_endpoint.location.country",
+     "from": [
+      "dst_country_code",
+      "dst_country"
+     ]
+    },
+    {
+     "to": "dst_endpoint.interface_name",
+     "from": [
+      "out_display_interface",
+      "out_interface"
+     ]
+    },
+    {
+     "to": "dst_endpoint.intermediate_ips[0]",
+     "from": "tran_dst_ip"
+    },
+    {
+     "to": "traffic.bytes_out",
+     "from": [
+      "sent_bytes",
+      "bytes_sent"
+     ],
+     "type": "integer"
+    },
+    {
+     "to": "traffic.bytes_in",
+     "from": [
+      "recv_bytes",
+      "bytes_received"
+     ],
+     "type": "integer"
+    },
+    {
+     "to": "traffic.packets_out",
+     "from": [
+      "sent_pkts",
+      "packets_sent"
+     ],
+     "type": "integer"
+    },
+    {
+     "to": "traffic.packets_in",
+     "from": [
+      "recv_pkts",
+      "packets_received"
+     ],
+     "type": "integer"
+    },
+    {
+     "to": "actor.user.name",
+     "from": "user_name"
+    },
+    {
+     "to": "actor.user.groups[0].name",
+     "from": "user_gp"
+    },
+    {
+     "to": "app_name",
+     "from": [
+      "application",
+      "app_name"
+     ]
+    },
+    {
+     "to": "message",
+     "from": "log_component"
+    }
+   ],
+   "parser_id": "p00045",
+   "label": "sophos_xg",
+   "format": "firewall_kv"
+  },
+  "metrics": {
+   "valid_rate": 1.0,
+   "mapped_field_share": 0.0
+  }
+ },
+ "p00046": {
+  "stage": "failed",
+  "calls": 4,
+  "prompt_tokens": 13874,
+  "answer_tokens": 2798,
+  "class": "http_activity",
+  "repairs": 2,
+  "repair_prompt": "Your OCSF mapping spec failed validation on the parsed samples.\nSpec:\n{\"class_uid\": 4002, \"unmapped\": true, \"fields\": [{\"to\": \"metadata.product.vendor_name\", \"value\": \"Sophos\"}, {\"to\": \"metadata.product.name\", \"value\": \"Sophos XG Firewall\"}, {\"to\": \"time\", \"from\": \"@timestamp\", \"type\": \"timestamp_ms\"}, {\"to\": \"activity_id\", \"value\": 0}, {\"to\": \"action_id\", \"from\": [\"log_subtype\", \"status\", \"action\"], \"map\": {\"Allowed\": 1, \"Denied\": 2, \"Deny\": 2, \"Warned\": 99, \"Alert\": 3}, \"default\": 0, \"type\": \"integer\"}, {\"to\": \"disposition_id\", \"from\": [\"log_subtype\", \"status\", \"action\"], \"map\": {\"Allowed\": 1, \"Denied\": 2, \"Deny\": 2}, \"default\": 0, \"type\": \"integer\"}, {\"to\": \"severity_id\", \"from\": [\"severity\", \"priority\"], \"map\": {\"Information\": 1, \"Notice\": 1, \"Warning\": 3}, \"default\": 0, \"type\": \"integer\"}, {\"to\": \"metadata.event_code\", \"from\": \"log_id\", \"type\": \"string\"}, {\"to\": \"metadata.log_version\", \"from\": \"log_version\", \"type\": \"string\"}, {\"to\": \"metadata.uid\", \"from\": \"transaction_id\"}, {\"to\": \"device.name\", \"from\": \"device_name\"}, {\"to\": \"device.type_id\", \"value\": 9}, {\"to\": \"device.model\", \"from\": \"device_model\"}, {\"to\": \"device.hw_info.serial_number\", \"from\": \"device_serial_id\"}, {\"to\": \"device.uid\", \"from\": \"device_id\"}, {\"to\": \"firewall_rule.uid\", \"from\": \"fw_rule_id\", \"type\": \"string\"}, {\"to\": \"firewall_rule.name\", \"from\": \"fw_rule_name\"}, {\"to\": \"http_request.url.url_string\", \"from\": [\"url\", \"domain\", \"website\"]}, {\"to\": \"http_request.url.hostname\", \"from\": [\"domain\", \"website\"]}, {\"to\": \"http_request.user_agent\", \"from\": \"http_user_agent\"}, {\"to\": \"http_request.referrer\", \"from\": \"http_referer\"}, {\"to\": \"http_response.code\", \"from\": [\"http_status\", \"status_code\"], \"type\": \"integer\", \"skip_values\": [\"0\"]}, {\"to\": \"http_status\", \"from\": [\"http_status\", \"status_code\"], \"type\": \"integer\", \"skip_values\": [\"0\"]}, {\"to\": \"http_response.content_type\", \"from\": [\"content_type\", \"contenttype\"]}, {\"to\": \"connection_info.protocol_name\", \"from\": \"protocol\", \"type\": \"lower\"}, {\"to\": \"connection_info.protocol_num\", \"from\": \"protocol\", \"map\": {\"ICMP\": 1, \"TCP\": 6, \"UDP\": 17}, \"type\": \"integer\"}, {\"to\": \"connection_info.direction_id\", \"from\": \"direction\", \"map\": {\"in\": 1, \"out\": 2}, \"default\": 0, \"type\": \"integer\"}, {\"to\": \"connection_info.uid\", \"from\": \"con_id\", \"type\": \"string\"}, {\"to\": \"src_endpoint.ip\", \"from\": \"src_ip\"}, {\"to\": \"src_endpoint.port\", \"from\": \"src_port\", \"type\": \"integer\"}, {\"to\": \"src_endpoint.zone\", \"from\": \"src_zone\"}, {\"to\": \"src_endpoint.location.country\", \"from\": [\"src_country_code\", \"src_country\"]}, {\"to\": \"dst_endpoint.ip\", \"from\": \"dst_ip\"}, {\"to\": \"dst_endpoint.port\", \"from\": \"dst_port\", \"type\": \"integer\"}, {\"to\": \"dst_endpoint.zone\", \"from\": \"dst_zone\"}, {\"to\": \"dst_endpoint.location.country\", \"from\": [\"dst_country_code\", \"dst_country\"]}, {\"to\": \"traffic.bytes_out\", \"from\": [\"bytes_sent\", \"sent_bytes\"], \"type\": \"integer\"}, {\"to\": \"traffic.bytes_in\", \"from\": [\"bytes_received\", \"recv_bytes\"], \"type\": \"integer\"}, {\"to\": \"actor.user.name\", \"from\": [\"user_name\", \"user\"]}, {\"to\": \"app_name\", \"from\": [\"application_name\", \"app_name\"]}, {\"to\": \"message\", \"from\": \"log_component\"}], \"parser_id\": \"p00046\", \"label\": \"sophos_xg\", \"format\": \"content_filtering_kv\"}\nValidation: valid_rate=0.0 errors=[[\"at least one of [\\u2026, \\u2026] is required\", 35]]\nExamples: [{\"error\": \"at least one of ['http_request', 'http_response'] is required\", \"vendor\": {\"device_name\": \"SFW\", \"timestamp\": \"2021-11-15T18:30:36-0600\", \"device_model\": \"SFVH\", \"device_serial_id\": \"C01001BQC8TFFFF\", \"log_id\": \"050901616001\", \"log_type\": \"Content Filtering\", \"log_component\": \"HTTP\", \"log_subtype\": \"Allowed\", \"log_version\": \"1\", \"severity\": \"Information\", \"fw_rule_id\": \"12\", \"web_policy_id\": \"12\", \"http_category\": \"General Business\", \"http_category_type\": \"Acceptable\", \"url\": \"http://info.cspserver.net/api/v1/connect-test\"}}]\nReturn the corrected full spec as JSON only (same rules as before)."
+ },
+ "p00047": {
+  "stage": "done",
+  "calls": 2,
+  "prompt_tokens": 6358,
+  "answer_tokens": 642,
+  "class": "http_activity",
+  "spec": {
+   "class_uid": 4002,
+   "unmapped": true,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Sophos"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "Sophos XG Firewall"
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "activity_id",
+     "from": "vendor.method",
+     "map": {
+      "CONNECT": 1,
+      "DELETE": 2,
+      "GET": 3,
+      "HEAD": 4,
+      "OPTIONS": 5,
+      "POST": 6,
+      "PUT": 7,
+      "TRACE": 8
+     },
+     "default": 99,
+     "type": "integer"
+    },
+    {
+     "to": "severity_id",
+     "from": "vendor.priority",
+     "map": {
+      "Information": 1,
+      "Notice": 1,
+      "Warning": 3
+     },
+     "default": 0,
+     "type": "integer"
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "vendor.log_id",
+     "type": "string"
+    },
+    {
+     "to": "device.name",
+     "from": "vendor.device_name"
+    },
+    {
+     "to": "device.uid",
+     "from": "vendor.device_id",
+     "type": "string"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    },
+    {
+     "to": "firewall_rule.uid",
+     "from": "vendor.fw_rule_id",
+     "type": "string"
+    },
+    {
+     "to": "actor.user.name",
+     "from": "vendor.user_name"
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": "vendor.sourceip"
+    },
+    {
+     "to": "dst_endpoint.ip",
+     "from": "vendor.localip"
+    },
+    {
+     "to": "http_request.http_method",
+     "from": "vendor.method",
+     "type": "upper"
+    },
+    {
+     "to": "http_request.version",
+     "from": "vendor.ws_protocol"
+    },
+    {
+     "to": "http_request.url.path",
+     "from": "vendor.url"
+    },
+    {
+     "to": "http_request.url.hostname",
+     "from": "vendor.server"
+    },
+    {
+     "to": "http_request.referrer",
+     "from": "vendor.referer"
+    },
+    {
+     "to": "http_request.user_agent",
+     "from": "vendor.useragent"
+    },
+    {
+     "to": "http_response.code",
+     "from": "vendor.httpstatus",
+     "type": "integer"
+    },
+    {
+     "to": "http_status",
+     "from": "vendor.httpstatus",
+     "type": "integer"
+    },
+    {
+     "to": "http_response.content_type",
+     "from": "vendor.contenttype"
+    },
+    {
+     "to": "http_response.latency",
+     "from": "vendor.responsetime",
+     "type": "integer"
+    },
+    {
+     "to": "action_id",
+     "from": "vendor.httpstatus",
+     "map": {
+      "403": 2
+     },
+     "default": 1,
+     "type": "integer"
+    },
+    {
+     "to": "disposition_id",
+     "from": "vendor.httpstatus",
+     "map": {
+      "403": 2
+     },
+     "default": 1,
+     "type": "integer"
+    },
+    {
+     "to": "status_detail",
+     "from": "vendor.reason"
+    },
+    {
+     "to": "message",
+     "from": "vendor.extra"
+    },
+    {
+     "to": "traffic.bytes_out",
+     "from": "vendor.bytessent",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.bytes_in",
+     "from": "vendor.bytesrcv",
+     "type": "integer"
+    }
+   ],
+   "parser_id": "p00047",
+   "label": "sophos_xg",
+   "format": "waf_kv"
+  },
+  "metrics": {
+   "valid_rate": 1.0,
+   "mapped_field_share": 0.633
+  }
+ },
+ "p00048": {
+  "stage": "done",
+  "calls": 2,
+  "prompt_tokens": 5689,
+  "answer_tokens": 529,
+  "class": "detection_finding",
+  "spec": {
+   "class_uid": 2004,
+   "unmapped": true,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Sophos"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "Sophos XG Firewall"
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "activity_id",
+     "value": 1
+    },
+    {
+     "to": "severity_id",
+     "from": "vendor.priority",
+     "map": {
+      "Information": 1,
+      "Notice": 2,
+      "Warning": 3,
+      "Alert": 4,
+      "Critical": 5
+     },
+     "default": 0,
+     "type": "integer"
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "vendor.log_id",
+     "type": "string"
+    },
+    {
+     "to": "finding_info.uid",
+     "from": "vendor.eventid"
+    },
+    {
+     "to": "finding_info.title",
+     "from": "vendor.threatname"
+    },
+    {
+     "to": "action_id",
+     "from": "vendor.log_subtype",
+     "map": {
+      "Drop": 2,
+      "Alert": 3
+     },
+     "default": 0,
+     "type": "integer"
+    },
+    {
+     "to": "disposition_id",
+     "from": "vendor.log_subtype",
+     "map": {
+      "Drop": 6,
+      "Alert": 3
+     },
+     "default": 0,
+     "type": "integer"
+    },
+    {
+     "to": "device.name",
+     "from": "vendor.device_name"
+    },
+    {
+     "to": "device.uid",
+     "from": "vendor.device_id",
+     "type": "string"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    },
+    {
+     "to": "evidences[0].src_endpoint.ip",
+     "from": "vendor.sourceip"
+    },
+    {
+     "to": "evidences[0].src_endpoint.port",
+     "from": "vendor.src_port",
+     "type": "integer"
+    },
+    {
+     "to": "evidences[0].dst_endpoint.ip",
+     "from": "vendor.destinationip"
+    },
+    {
+     "to": "evidences[0].dst_endpoint.port",
+     "from": "vendor.dst_port",
+     "type": "integer"
+    },
+    {
+     "to": "evidences[0].connection_info.protocol_name",
+     "from": "vendor.protocol",
+     "type": "lower"
+    },
+    {
+     "to": "evidences[0].connection_info.protocol_num",
+     "from": "vendor.protocol",
+     "map": {
+      "ICMP": 1,
+      "TCP": 6,
+      "UDP": 17
+     },
+     "type": "integer"
+    },
+    {
+     "to": "evidences[0].connection_info.direction_id",
+     "value": 0
+    },
+    {
+     "to": "evidences[0].url.url_string",
+     "from": "vendor.url"
+    },
+    {
+     "to": "actor.user.name",
+     "from": "vendor.user_name"
+    }
+   ],
+   "parser_id": "p00048",
+   "label": "sophos_xg",
+   "format": "atp_kv"
+  },
+  "metrics": {
+   "valid_rate": 1.0,
+   "mapped_field_share": 0.635
+  }
+ },
+ "p00049": {
+  "stage": "done",
+  "calls": 2,
+  "prompt_tokens": 7034,
+  "answer_tokens": 612,
+  "class": "email_activity",
+  "spec": {
+   "class_uid": 4009,
+   "unmapped": true,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Sophos"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "Sophos XG Firewall"
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "activity_id",
+     "value": 3
+    },
+    {
+     "to": "severity_id",
+     "from": "vendor.priority",
+     "map": {
+      "Information": 1,
+      "Notice": 2,
+      "Warning": 3
+     },
+     "default": 0,
+     "type": "integer"
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "vendor.log_id",
+     "type": "string"
+    },
+    {
+     "to": "direction_id",
+     "from": "vendor.log_subtype",
+     "map": {
+      "Outbound Spam": 2,
+      "Outbound Probable Spam": 2,
+      "Outbound Clean": 2,
+      "Inbound Spam": 1,
+      "Inbound Probable Spam": 1
+     },
+     "default": 0,
+     "type": "integer"
+    },
+    {
+     "to": "protocol_name",
+     "from": "vendor.log_component",
+     "type": "lower"
+    },
+    {
+     "to": "email.from",
+     "from": "vendor.from_email_address"
+    },
+    {
+     "to": "email.to[0]",
+     "from": "vendor.to_email_address"
+    },
+    {
+     "to": "email.subject",
+     "from": "vendor.email_subject"
+    },
+    {
+     "to": "email.message_uid",
+     "from": "vendor.mailid"
+    },
+    {
+     "to": "email.size",
+     "from": "vendor.mailsize",
+     "type": "integer"
+    },
+    {
+     "to": "action_id",
+     "from": "vendor.spamaction",
+     "map": {
+      "Accept": 1,
+      "DELIVERED": 1,
+      "Drop": 2,
+      "DROP": 2,
+      "REJECT": 2,
+      "TMPREJECT": 2
+     },
+     "default": 0,
+     "type": "integer"
+    },
+    {
+     "to": "disposition_id",
+     "from": "vendor.spamaction",
+     "map": {
+      "Accept": 1,
+      "DELIVERED": 1,
+      "Drop": 6,
+      "DROP": 6,
+      "REJECT": 2,
+      "TMPREJECT": 2
+     },
+     "default": 0,
+     "type": "integer"
+    },
+    {
+     "to": "status_detail",
+     "from": "vendor.reason"
+    },
+    {
+     "to": "device.name",
+     "from": "vendor.device_name"
+    },
+    {
+     "to": "device.uid",
+     "from": "vendor.device_id"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    },
+    {
+     "to": "actor.user.name",
+     "from": "vendor.user_name"
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": "vendor.src_ip"
+    },
+    {
+     "to": "src_endpoint.port",
+     "from": "vendor.src_port",
+     "type": "integer"
+    },
+    {
+     "to": "src_endpoint.domain",
+     "from": "vendor.src_domainname"
+    },
+    {
+     "to": "dst_endpoint.ip",
+     "from": "vendor.dst_ip"
+    },
+    {
+     "to": "dst_endpoint.port",
+     "from": "vendor.dst_port",
+     "type": "integer"
+    },
+    {
+     "to": "dst_endpoint.domain",
+     "from": "vendor.dst_domainname"
+    }
+   ],
+   "parser_id": "p00049",
+   "label": "sophos_xg",
+   "format": "anti_spam_kv"
+  },
+  "metrics": {
+   "valid_rate": 1.0,
+   "mapped_field_share": 0.583
+  }
+ },
+ "p00050": {
+  "stage": "done",
+  "calls": 2,
+  "prompt_tokens": 5701,
+  "answer_tokens": 376,
+  "class": "detection_finding",
+  "spec": {
+   "class_uid": 2004,
+   "unmapped": true,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Sophos"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "Sophos XG Firewall"
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "activity_id",
+     "value": 1
+    },
+    {
+     "to": "severity_id",
+     "from": "vendor.priority",
+     "map": {
+      "Information": 1,
+      "Notice": 2,
+      "Warning": 3,
+      "Alert": 4,
+      "Critical": 5
+     },
+     "default": 0,
+     "type": "integer"
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "vendor.log_id",
+     "type": "string"
+    },
+    {
+     "to": "finding_info.uid",
+     "from": "vendor.log_id",
+     "type": "string"
+    },
+    {
+     "to": "finding_info.title",
+     "from": "vendor.reason"
+    },
+    {
+     "to": "action_id",
+     "from": "vendor.log_subtype",
+     "map": {
+      "Allowed": 1,
+      "Denied": 2,
+      "Pending": 99
+     },
+     "default": 0,
+     "type": "integer"
+    },
+    {
+     "to": "disposition_id",
+     "from": "vendor.log_subtype",
+     "map": {
+      "Allowed": 1,
+      "Denied": 2
+     },
+     "default": 0,
+     "type": "integer"
+    },
+    {
+     "to": "status_detail",
+     "from": "vendor.reason"
+    },
+    {
+     "to": "device.name",
+     "from": "vendor.device_name"
+    },
+    {
+     "to": "device.uid",
+     "from": "vendor.device_id"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    },
+    {
+     "to": "actor.user.name",
+     "from": "vendor.user_name"
+    },
+    {
+     "to": "evidences[0].src_endpoint.ip",
+     "from": "vendor.src_ip"
+    }
+   ],
+   "parser_id": "p00050",
+   "label": "sophos_xg",
+   "format": "sandbox_kv"
+  },
+  "metrics": {
+   "valid_rate": 1.0,
+   "mapped_field_share": 0.421
+  }
+ },
+ "p00051": {
+  "stage": "done",
+  "calls": 2,
+  "prompt_tokens": 6368,
+  "answer_tokens": 581,
+  "class": "detection_finding",
+  "spec": {
+   "class_uid": 2004,
+   "unmapped": true,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Sophos"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "Sophos XG Firewall"
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "activity_id",
+     "value": 1
+    },
+    {
+     "to": "severity_id",
+     "from": "vendor.priority",
+     "map": {
+      "Information": 1,
+      "Notice": 2,
+      "Warning": 3,
+      "Alert": 4,
+      "Critical": 5
+     },
+     "default": 0,
+     "type": "integer"
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "vendor.log_id",
+     "type": "string"
+    },
+    {
+     "to": "finding_info.uid",
+     "from": "vendor.signature_id",
+     "type": "string"
+    },
+    {
+     "to": "finding_info.title",
+     "from": "vendor.signature_msg"
+    },
+    {
+     "to": "finding_info.desc",
+     "from": "vendor.classification"
+    },
+    {
+     "to": "finding_info.types[0]",
+     "from": "vendor.category"
+    },
+    {
+     "to": "action_id",
+     "from": "vendor.log_subtype",
+     "map": {
+      "Drop": 2,
+      "Detect": 3
+     },
+     "default": 0,
+     "type": "integer"
+    },
+    {
+     "to": "disposition_id",
+     "from": "vendor.log_subtype",
+     "map": {
+      "Drop": 6,
+      "Detect": 1
+     },
+     "default": 0,
+     "type": "integer"
+    },
+    {
+     "to": "device.name",
+     "from": "vendor.device_name"
+    },
+    {
+     "to": "device.uid",
+     "from": "vendor.device_id"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    },
+    {
+     "to": "evidences[0].src_endpoint.ip",
+     "from": "vendor.src_ip"
+    },
+    {
+     "to": "evidences[0].src_endpoint.port",
+     "from": "vendor.src_port",
+     "type": "integer"
+    },
+    {
+     "to": "evidences[0].src_endpoint.location.country",
+     "from": "vendor.src_country_code"
+    },
+    {
+     "to": "evidences[0].dst_endpoint.ip",
+     "from": "vendor.dst_ip"
+    },
+    {
+     "to": "evidences[0].dst_endpoint.port",
+     "from": "vendor.dst_port",
+     "type": "integer"
+    },
+    {
+     "to": "evidences[0].dst_endpoint.location.country",
+     "from": "vendor.dst_country_code"
+    },
+    {
+     "to": "evidences[0].connection_info.protocol_name",
+     "from": "vendor.protocol",
+     "type": "lower"
+    },
+    {
+     "to": "evidences[0].connection_info.protocol_num",
+     "from": "vendor.protocol",
+     "map": {
+      "ICMP": 1,
+      "TCP": 6,
+      "UDP": 17
+     },
+     "type": "integer"
+    },
+    {
+     "to": "evidences[0].connection_info.direction_id",
+     "value": 0
+    }
+   ],
+   "parser_id": "p00051",
+   "label": "sophos_xg",
+   "format": "idp_kv"
+  },
+  "metrics": {
+   "valid_rate": 1.0,
+   "mapped_field_share": 0.576
+  }
+ },
+ "p00052": {
+  "stage": "done",
+  "calls": 2,
+  "prompt_tokens": 8029,
+  "answer_tokens": 599,
+  "class": "detection_finding",
+  "spec": {
+   "class_uid": 2004,
+   "unmapped": true,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Sophos"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "Sophos XG Firewall"
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "activity_id",
+     "value": 1
+    },
+    {
+     "to": "severity_id",
+     "from": "vendor.priority",
+     "map": {
+      "Information": 1,
+      "Notice": 2,
+      "Warning": 3,
+      "Alert": 4,
+      "Critical": 5
+     },
+     "default": 0,
+     "type": "integer"
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "vendor.log_id",
+     "type": "string"
+    },
+    {
+     "to": "finding_info.uid",
+     "from": "vendor.log_id",
+     "type": "string"
+    },
+    {
+     "to": "finding_info.title",
+     "from": [
+      "vendor.virus",
+      "vendor.log_subtype"
+     ]
+    },
+    {
+     "to": "action_id",
+     "from": "vendor.log_subtype",
+     "map": {
+      "Virus": 2,
+      "Allowed": 1
+     },
+     "default": 0,
+     "type": "integer"
+    },
+    {
+     "to": "disposition_id",
+     "from": "vendor.log_subtype",
+     "map": {
+      "Virus": 2,
+      "Allowed": 1
+     },
+     "default": 0,
+     "type": "integer"
+    },
+    {
+     "to": "device.name",
+     "from": "vendor.device_name"
+    },
+    {
+     "to": "device.uid",
+     "from": "vendor.device_id"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    },
+    {
+     "to": "actor.user.name",
+     "from": "vendor.user_name"
+    },
+    {
+     "to": "evidences[0].src_endpoint.ip",
+     "from": "vendor.src_ip"
+    },
+    {
+     "to": "evidences[0].src_endpoint.port",
+     "from": "vendor.src_port",
+     "type": "integer"
+    },
+    {
+     "to": "evidences[0].src_endpoint.location.country",
+     "from": "vendor.src_country_code"
+    },
+    {
+     "to": "evidences[0].dst_endpoint.ip",
+     "from": "vendor.dst_ip"
+    },
+    {
+     "to": "evidences[0].dst_endpoint.port",
+     "from": "vendor.dst_port",
+     "type": "integer"
+    },
+    {
+     "to": "evidences[0].dst_endpoint.location.country",
+     "from": "vendor.dst_country_code"
+    },
+    {
+     "to": "evidences[0].dst_endpoint.domain",
+     "from": "vendor.domainname"
+    },
+    {
+     "to": "evidences[0].connection_info.protocol_name",
+     "from": "vendor.protocol",
+     "type": "lower"
+    },
+    {
+     "to": "evidences[0].connection_info.protocol_num",
+     "from": "vendor.protocol",
+     "map": {
+      "ICMP": 1,
+      "TCP": 6,
+      "UDP": 17
+     },
+     "type": "integer"
+    },
+    {
+     "to": "evidences[0].connection_info.direction_id",
+     "value": 0
+    },
+    {
+     "to": "evidences[0].url.url_string",
+     "from": "vendor.url"
+    }
+   ],
+   "parser_id": "p00052",
+   "label": "sophos_xg",
+   "format": "anti_virus_kv"
+  },
+  "metrics": {
+   "valid_rate": 1.0,
+   "mapped_field_share": 0.482
+  }
+ },
+ "p00053": {
+  "stage": "done",
+  "calls": 2,
+  "prompt_tokens": 7701,
+  "answer_tokens": 420,
+  "class": "authentication",
+  "spec": {
+   "class_uid": 3002,
+   "unmapped": true,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Sophos"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "Sophos XG Firewall"
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "activity_id",
+     "from": "vendor.log_subtype",
+     "map": {
+      "Authentication": 1,
+      "Admin": 1
+     },
+     "default": 99,
+     "type": "integer"
+    },
+    {
+     "to": "severity_id",
+     "from": "vendor.priority",
+     "map": {
+      "Information": 1,
+      "Notice": 2,
+      "Warning": 3,
+      "Alert": 4,
+      "Critical": 5
+     },
+     "default": 0,
+     "type": "integer"
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "vendor.log_id",
+     "type": "string"
+    },
+    {
+     "to": "status_id",
+     "from": "vendor.status",
+     "map": {
+      "Successful": 1,
+      "Connected": 1,
+      "Failed": 2
+     },
+     "default": 99,
+     "type": "integer"
+    },
+    {
+     "to": "status",
+     "from": "vendor.status"
+    },
+    {
+     "to": "status_detail",
+     "from": "vendor.reason"
+    },
+    {
+     "to": "message",
+     "from": "vendor.message"
+    },
+    {
+     "to": "service.name",
+     "from": "vendor.log_component"
+    },
+    {
+     "to": "user.type_id",
+     "value": 0
+    },
+    {
+     "to": "user.name",
+     "from": [
+      "vendor.user_name",
+      "vendor.name"
+     ]
+    },
+    {
+     "to": "user.groups[0].name",
+     "from": "vendor.usergroupname"
+    },
+    {
+     "to": "auth_protocol",
+     "from": "vendor.auth_mechanism"
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": "vendor.src_ip"
+    },
+    {
+     "to": "device.name",
+     "from": "vendor.device_name"
+    },
+    {
+     "to": "device.uid",
+     "from": "vendor.device_id"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    }
+   ],
+   "parser_id": "p00053",
+   "label": "sophos_xg",
+   "format": "event_kv"
+  },
+  "metrics": {
+   "valid_rate": 1.0,
+   "mapped_field_share": 0.523
+  }
+ },
+ "p00054": {
+  "stage": "done",
+  "calls": 2,
+  "prompt_tokens": 5559,
+  "answer_tokens": 246,
+  "class": "inventory_info",
+  "spec": {
+   "class_uid": 5001,
+   "unmapped": true,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Sophos"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "Sophos XG Firewall"
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "activity_id",
+     "value": 1
+    },
+    {
+     "to": "severity_id",
+     "from": "vendor.priority",
+     "map": {
+      "Information": 1,
+      "Notice": 2,
+      "Warning": 3
+     },
+     "default": 0,
+     "type": "integer"
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "vendor.log_id",
+     "type": "string"
+    },
+    {
+     "to": "message",
+     "from": "vendor.log_component"
+    },
+    {
+     "to": "device.name",
+     "from": "vendor.device_name"
+    },
+    {
+     "to": "device.uid",
+     "from": "vendor.device_id"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    },
+    {
+     "to": "device.interface_name",
+     "from": "vendor.interface"
+    }
+   ],
+   "parser_id": "p00054",
+   "label": "sophos_xg",
+   "format": "system_health_kv"
+  },
+  "metrics": {
+   "valid_rate": 1.0,
+   "mapped_field_share": 0.355
+  }
+ },
+ "p00055": {
+  "stage": "done",
+  "calls": 2,
+  "prompt_tokens": 4804,
+  "answer_tokens": 255,
+  "class": "inventory_info",
+  "spec": {
+   "class_uid": 5001,
+   "unmapped": true,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Sophos"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "Sophos XG Firewall"
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "activity_id",
+     "value": 1
+    },
+    {
+     "to": "severity_id",
+     "from": "vendor.priority",
+     "map": {
+      "Information": 1,
+      "Notice": 2,
+      "Warning": 3
+     },
+     "default": 0,
+     "type": "integer"
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "vendor.log_id",
+     "type": "string"
+    },
+    {
+     "to": "device.uid",
+     "from": "vendor.ap"
+    },
+    {
+     "to": "device.type_id",
+     "value": 99
+    },
+    {
+     "to": "metadata.loggers[0].device.name",
+     "from": "vendor.device_name"
+    },
+    {
+     "to": "metadata.loggers[0].device.uid",
+     "from": "vendor.device_id"
+    },
+    {
+     "to": "metadata.loggers[0].device.type_id",
+     "value": 9
+    }
+   ],
+   "parser_id": "p00055",
+   "label": "sophos_xg",
+   "format": "wireless_protection_kv"
+  },
+  "metrics": {
+   "valid_rate": 1.0,
+   "mapped_field_share": 0.333
+  }
+ },
+ "p00079": {
+  "stage": "done",
+  "calls": 2,
+  "prompt_tokens": 21831,
+  "answer_tokens": 1174,
+  "class": "network_activity",
+  "spec": {
+   "class_uid": 4001,
+   "unmapped": true,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Sophos"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "Sophos XG Firewall"
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "activity_id",
+     "from": [
+      "vendor.con_event",
+      "vendor.connevent"
+     ],
+     "map": {
+      "Start": 1,
+      "Stop": 2,
+      "Interim": 6
+     },
+     "default": 6,
+     "type": "integer"
+    },
+    {
+     "to": "action_id",
+     "from": [
+      "vendor.log_subtype",
+      "vendor.status",
+      "vendor.action"
+     ],
+     "map": {
+      "Allowed": 1,
+      "Allow": 1,
+      "Denied": 2,
+      "Deny": 2,
+      "Drop": 2,
+      "Detect": 3,
+      "Alert": 3
+     },
+     "default": 0,
+     "type": "integer"
+    },
+    {
+     "to": "disposition_id",
+     "from": [
+      "vendor.log_subtype",
+      "vendor.status",
+      "vendor.action"
+     ],
+     "map": {
+      "Allowed": 1,
+      "Allow": 1,
+      "Denied": 2,
+      "Deny": 2,
+      "Drop": 6
+     },
+     "default": 0,
+     "type": "integer"
+    },
+    {
+     "to": "severity_id",
+     "from": [
+      "vendor.severity",
+      "vendor.priority"
+     ],
+     "map": {
+      "Information": 1,
+      "Notice": 2,
+      "Warning": 3,
+      "Alert": 4,
+      "Critical": 5
+     },
+     "default": 0,
+     "type": "integer"
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "vendor.log_id",
+     "type": "string"
+    },
+    {
+     "to": "metadata.log_name",
+     "from": "vendor.log_type"
+    },
+    {
+     "to": "metadata.log_version",
+     "from": "vendor.log_version",
+     "type": "string"
+    },
+    {
+     "to": "message",
+     "from": [
+      "vendor.message",
+      "vendor.log_component"
+     ]
+    },
+    {
+     "to": "device.name",
+     "from": "vendor.device_name"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    },
+    {
+     "to": "device.model",
+     "from": "vendor.device_model"
+    },
+    {
+     "to": "device.hw_info.serial_number",
+     "from": "vendor.device_serial_id"
+    },
+    {
+     "to": "device.uid",
+     "from": "vendor.device_id"
+    },
+    {
+     "to": "firewall_rule.uid",
+     "from": "vendor.fw_rule_id",
+     "type": "string"
+    },
+    {
+     "to": "firewall_rule.name",
+     "from": "vendor.fw_rule_name"
+    },
+    {
+     "to": "firewall_rule.type",
+     "from": "vendor.fw_rule_type"
+    },
+    {
+     "to": "connection_info.protocol_name",
+     "from": "vendor.protocol",
+     "type": "lower",
+     "skip_values": [
+      "0"
+     ]
+    },
+    {
+     "to": "connection_info.protocol_num",
+     "from": "vendor.protocol",
+     "map": {
+      "ICMP": 1,
+      "TCP": 6,
+      "UDP": 17
+     },
+     "type": "integer"
+    },
+    {
+     "to": "connection_info.direction_id",
+     "from": "vendor.direction",
+     "map": {
+      "in": 1,
+      "out": 2
+     },
+     "default": 0,
+     "type": "integer"
+    },
+    {
+     "to": "connection_info.uid",
+     "from": [
+      "vendor.con_id",
+      "vendor.connid"
+     ],
+     "type": "string"
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": [
+      "vendor.src_ip",
+      "vendor.sourceip"
+     ]
+    },
+    {
+     "to": "src_endpoint.port",
+     "from": "vendor.src_port",
+     "type": "integer"
+    },
+    {
+     "to": "src_endpoint.mac",
+     "from": "vendor.src_mac"
+    },
+    {
+     "to": "src_endpoint.zone",
+     "from": [
+      "vendor.src_zone",
+      "vendor.srczone"
+     ]
+    },
+    {
+     "to": "src_endpoint.location.country",
+     "from": [
+      "vendor.src_country_code",
+      "vendor.src_country"
+     ]
+    },
+    {
+     "to": "src_endpoint.interface_name",
+     "from": [
+      "vendor.in_display_interface",
+      "vendor.in_interface"
+     ]
+    },
+    {
+     "to": "src_endpoint.domain",
+     "from": "vendor.src_domainname"
+    },
+    {
+     "to": "dst_endpoint.ip",
+     "from": [
+      "vendor.dst_ip",
+      "vendor.destinationip"
+     ]
+    },
+    {
+     "to": "dst_endpoint.port",
+     "from": "vendor.dst_port",
+     "type": "integer"
+    },
+    {
+     "to": "dst_endpoint.mac",
+     "from": "vendor.dst_mac"
+    },
+    {
+     "to": "dst_endpoint.zone",
+     "from": [
+      "vendor.dst_zone",
+      "vendor.dstzone"
+     ]
+    },
+    {
+     "to": "dst_endpoint.location.country",
+     "from": [
+      "vendor.dst_country_code",
+      "vendor.dst_country"
+     ]
+    },
+    {
+     "to": "dst_endpoint.interface_name",
+     "from": [
+      "vendor.out_display_interface",
+      "vendor.out_interface"
+     ]
+    },
+    {
+     "to": "dst_endpoint.domain",
+     "from": [
+      "vendor.domain",
+      "vendor.domainname",
+      "vendor.dst_domainname"
+     ]
+    },
+    {
+     "to": "traffic.bytes_out",
+     "from": [
+      "vendor.sent_bytes",
+      "vendor.bytes_sent",
+      "vendor.bytessent"
+     ],
+     "type": "integer"
+    },
+    {
+     "to": "traffic.bytes_in",
+     "from": [
+      "vendor.recv_bytes",
+      "vendor.bytes_received",
+      "vendor.bytesrcv"
+     ],
+     "type": "integer"
+    },
+    {
+     "to": "traffic.packets_out",
+     "from": [
+      "vendor.sent_pkts",
+      "vendor.packets_sent"
+     ],
+     "type": "integer"
+    },
+    {
+     "to": "traffic.packets_in",
+     "from": [
+      "vendor.recv_pkts",
+      "vendor.packets_received"
+     ],
+     "type": "integer"
+    },
+    {
+     "to": "url.url_string",
+     "from": "vendor.url"
+    },
+    {
+     "to": "actor.user.name",
+     "from": [
+      "vendor.user_name",
+      "vendor.user"
+     ]
+    },
+    {
+     "to": "app_name",
+     "from": [
+      "vendor.application",
+      "vendor.application_name",
+      "vendor.app_name"
+     ]
+    },
+    {
+     "to": "status_detail",
+     "from": "vendor.reason"
+    }
+   ],
+   "parser_id": "p00079",
+   "label": "sophos_xg",
+   "format": "xg_fallback"
+  },
+  "metrics": {
+   "valid_rate": 1.0,
+   "mapped_field_share": 0.583
+  }
+ },
+ "p00031": {
+  "stage": "done",
+  "calls": 2,
+  "prompt_tokens": 12010,
+  "answer_tokens": 626,
+  "class": "network_activity",
+  "spec": {
+   "class_uid": 4001,
+   "unmapped": true,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "WatchGuard"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "Firebox"
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "activity_id",
+     "value": 6
+    },
+    {
+     "to": "action_id",
+     "from": "vendor.disposition",
+     "map": {
+      "Allow": 1,
+      "Deny": 2
+     },
+     "default": 0,
+     "type": "integer"
+    },
+    {
+     "to": "disposition_id",
+     "from": "vendor.disposition",
+     "map": {
+      "Allow": 1,
+      "Deny": 2
+     },
+     "default": 0,
+     "type": "integer"
+    },
+    {
+     "to": "severity_id",
+     "value": 1
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "vendor.msg_id"
+    },
+    {
+     "to": "message",
+     "from": "vendor.msg"
+    },
+    {
+     "to": "status_detail",
+     "from": [
+      "vendor.error",
+      "vendor.reason"
+     ]
+    },
+    {
+     "to": "device.uid",
+     "from": "vendor.serial_number"
+    },
+    {
+     "to": "device.hostname",
+     "from": "vendor.syslog_host"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    },
+    {
+     "to": "firewall_rule.name",
+     "from": "vendor.policy"
+    },
+    {
+     "to": "firewall_rule.desc",
+     "from": "vendor.proxy_act"
+    },
+    {
+     "to": "connection_info.protocol_name",
+     "from": "vendor.protocol",
+     "type": "lower"
+    },
+    {
+     "to": "connection_info.protocol_num",
+     "from": "vendor.protocol",
+     "map": {
+      "icmp": 1,
+      "tcp": 6,
+      "udp": 17
+     },
+     "type": "integer"
+    },
+    {
+     "to": "connection_info.direction_id",
+     "value": 0
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": "vendor.src_ip"
+    },
+    {
+     "to": "src_endpoint.port",
+     "from": "vendor.src_port",
+     "type": "integer"
+    },
+    {
+     "to": "src_endpoint.interface_name",
+     "from": "vendor.src_intf"
+    },
+    {
+     "to": "dst_endpoint.ip",
+     "from": "vendor.dst_ip"
+    },
+    {
+     "to": "dst_endpoint.port",
+     "from": "vendor.dst_port",
+     "type": "integer"
+    },
+    {
+     "to": "dst_endpoint.interface_name",
+     "from": "vendor.dst_intf"
+    },
+    {
+     "to": "dst_endpoint.hostname",
+     "from": [
+      "vendor.dstname",
+      "vendor.sni",
+      "vendor.host"
+     ]
+    },
+    {
+     "to": "traffic.bytes_out",
+     "from": "vendor.sent_bytes",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.bytes_in",
+     "from": "vendor.rcvd_bytes",
+     "type": "integer"
+    },
+    {
+     "to": "actor.user.name",
+     "from": [
+      "vendor.src_user",
+      "vendor.user",
+      "vendor.authenticated_user"
+     ]
+    },
+    {
+     "to": "app_name",
+     "from": "vendor.app_name"
+    },
+    {
+     "to": "url.path",
+     "from": [
+      "vendor.path",
+      "vendor.arg"
+     ]
+    }
+   ],
+   "parser_id": "p00031",
+   "label": "watchguard_firebox",
+   "format": "traffic_proxy"
+  },
+  "metrics": {
+   "valid_rate": 1.0,
+   "mapped_field_share": 0.695
+  }
+ },
+ "p00032": {
+  "stage": "done",
+  "calls": 3,
+  "prompt_tokens": 6792,
+  "answer_tokens": 701,
+  "class": "tunnel_activity",
+  "repairs": 1,
+  "repair_prompt": "Your OCSF mapping spec failed validation on the parsed samples.\nSpec:\n{\"class_uid\": 4014, \"unmapped\": true, \"fields\": [{\"to\": \"metadata.product.vendor_name\", \"value\": \"WatchGuard\"}, {\"to\": \"metadata.product.name\", \"value\": \"Firebox\"}, {\"to\": \"time\", \"from\": \"@timestamp\", \"type\": \"timestamp_ms\"}, {\"to\": \"activity_id\", \"value\": 99}, {\"to\": \"severity_id\", \"value\": 1}, {\"to\": \"metadata.event_code\", \"from\": \"vendor.msg_id\"}, {\"to\": \"message\", \"from\": \"vendor.msg\"}, {\"to\": \"status_detail\", \"from\": \"vendor.reason\"}, {\"to\": \"device.uid\", \"from\": \"vendor.serial_number\"}, {\"to\": \"device.hostname\", \"from\": \"vendor.syslog_host\"}, {\"to\": \"device.type_id\", \"value\": 9}, {\"to\": \"connection_info.direction_id\", \"value\": 0}, {\"to\": \"src_endpoint.ip\", \"from\": \"vendor.src_ip\"}, {\"to\": \"src_endpoint.port\", \"from\": \"vendor.src_port\", \"type\": \"integer\"}, {\"to\": \"src_endpoint.mac\", \"from\": \"vendor.src_mac\"}, {\"to\": \"dst_endpoint.ip\", \"from\": \"vendor.dst_ip\"}, {\"to\": \"dst_endpoint.port\", \"from\": \"vendor.dst_port\", \"type\": \"integer\"}, {\"to\": \"tunnel_interface.name\", \"from\": [\"vendor.tunnel\", \"vendor.interface\"]}, {\"to\": \"user.name\", \"from\": \"vendor.user\"}], \"parser_id\": \"p00032\", \"label\": \"watchguard_firebox\", \"format\": \"event\"}\nValidation: valid_rate=0.8913 errors=[[\"missing required tunnel_interface.type_id\", 10]]\nExamples: [{\"error\": \"missing required tunnel_interface.type_id\", \"vendor\": {\"serial_number\": \"FVE6035FD3AE3\", \"process\": \"firewall\", \"msg_id\": \"3100-0069\", \"msg\": \"[eth0 (External)] IPv6 interface is activated.\", \"interface\": \"eth0\", \"interface_alias\": \"External\", \"syslog_pri\": 142, \"syslog_timestamp\": \"May 10 15:19:05\", \"syslog_host\": \"WatchGuard-Firebox\", \"log_timestamp\": \"2024-05-10T09:49:05\", \"pid\": 10}}]\nReturn the corrected full spec as JSON only (same rules as before).",
+  "spec": {
+   "class_uid": 4014,
+   "unmapped": true,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "WatchGuard"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "Firebox"
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "activity_id",
+     "value": 99
+    },
+    {
+     "to": "severity_id",
+     "value": 1
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "vendor.msg_id"
+    },
+    {
+     "to": "message",
+     "from": "vendor.msg"
+    },
+    {
+     "to": "status_detail",
+     "from": "vendor.reason"
+    },
+    {
+     "to": "device.uid",
+     "from": "vendor.serial_number"
+    },
+    {
+     "to": "device.hostname",
+     "from": "vendor.syslog_host"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    },
+    {
+     "to": "connection_info.direction_id",
+     "value": 0
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": "vendor.src_ip"
+    },
+    {
+     "to": "src_endpoint.port",
+     "from": "vendor.src_port",
+     "type": "integer"
+    },
+    {
+     "to": "src_endpoint.mac",
+     "from": "vendor.src_mac"
+    },
+    {
+     "to": "dst_endpoint.ip",
+     "from": "vendor.dst_ip"
+    },
+    {
+     "to": "dst_endpoint.port",
+     "from": "vendor.dst_port",
+     "type": "integer"
+    },
+    {
+     "to": "tunnel_interface.name",
+     "from": [
+      "vendor.tunnel",
+      "vendor.interface"
+     ]
+    },
+    {
+     "to": "tunnel_interface.type_id",
+     "from": [
+      "vendor.tunnel",
+      "vendor.interface"
+     ],
+     "map": {
+      "tunnel.1": 4,
+      "tunnel.2": 4,
+      "eth0": 1,
+      "eth1": 1
+     },
+     "default": 0,
+     "type": "integer"
+    },
+    {
+     "to": "user.name",
+     "from": "vendor.user"
+    }
+   ],
+   "parser_id": "p00032",
+   "label": "watchguard_firebox",
+   "format": "event"
+  },
+  "metrics": {
+   "valid_rate": 1.0,
+   "mapped_field_share": 0.475
+  }
+ },
+ "p00084": {
+  "stage": "done",
+  "calls": 2,
+  "prompt_tokens": 4657,
+  "answer_tokens": 197,
+  "class": "network_activity",
+  "spec": {
+   "class_uid": 4001,
+   "unmapped": true,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "WatchGuard"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "Firebox"
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "activity_id",
+     "value": 99
+    },
+    {
+     "to": "severity_id",
+     "value": 1
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "vendor.msg_id"
+    },
+    {
+     "to": "message",
+     "from": "vendor.msg"
+    },
+    {
+     "to": "device.uid",
+     "from": "vendor.serial_number"
+    },
+    {
+     "to": "device.hostname",
+     "from": "vendor.syslog_host"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    }
+   ],
+   "parser_id": "p00084",
+   "label": "watchguard_firebox",
+   "format": "firebox_fallback"
+  },
+  "metrics": {
+   "valid_rate": 1.0,
+   "mapped_field_share": 0.459
+  }
+ },
+ "p00056": {
+  "stage": "done",
+  "calls": 2,
+  "prompt_tokens": 4352,
+  "answer_tokens": 297,
+  "class": "network_activity",
+  "spec": {
+   "class_uid": 4001,
+   "unmapped": true,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Zscaler"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "Zscaler Internet Access"
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "activity_id",
+     "from": "vendor.status",
+     "map": {
+      "lost and unavailable": 4
+     },
+     "default": 99,
+     "type": "integer"
+    },
+    {
+     "to": "status_id",
+     "from": "vendor.status",
+     "map": {
+      "lost and unavailable": 2
+     },
+     "default": 0,
+     "type": "integer"
+    },
+    {
+     "to": "status",
+     "from": "vendor.status"
+    },
+    {
+     "to": "severity_id",
+     "from": "vendor.syslog_pri",
+     "map": {
+      "114": 3
+     },
+     "default": 0,
+     "type": "integer"
+    },
+    {
+     "to": "message",
+     "from": "vendor.msg"
+    },
+    {
+     "to": "device.ip",
+     "from": "vendor.syslog_host"
+    },
+    {
+     "to": "device.type_id",
+     "value": 99
+    },
+    {
+     "to": "dst_endpoint.ip",
+     "from": "vendor.dst_ip"
+    },
+    {
+     "to": "dst_endpoint.port",
+     "from": "vendor.dst_port",
+     "type": "integer"
+    },
+    {
+     "to": "dst_endpoint.name",
+     "from": "vendor.feed_name"
+    }
+   ],
+   "parser_id": "p00056",
+   "label": "zscaler_zia",
+   "format": "nss_syslog_status"
+  },
+  "metrics": {
+   "valid_rate": 1.0,
+   "mapped_field_share": 0.681
+  }
+ },
+ "p00057": {
+  "stage": "done",
+  "calls": 3,
+  "prompt_tokens": 12486,
+  "answer_tokens": 1522,
+  "class": "network_activity",
+  "repairs": 1,
+  "repair_prompt": "Your OCSF mapping spec failed validation on the parsed samples.\nSpec:\n{\"class_uid\": 4001, \"unmapped\": true, \"fields\": [{\"to\": \"metadata.product.vendor_name\", \"value\": \"Zscaler\"}, {\"to\": \"metadata.product.name\", \"value\": \"Zscaler Internet Access\"}, {\"to\": \"metadata.log_name\", \"from\": \"vendor.sourcetype\"}, {\"to\": \"metadata.uid\", \"from\": \"vendor.event.recordid\", \"type\": \"string\"}, {\"to\": \"time\", \"from\": \"@timestamp\", \"type\": \"timestamp_ms\"}, {\"to\": \"activity_id\", \"value\": 6}, {\"to\": \"severity_id\", \"value\": 1}, {\"to\": \"action_id\", \"from\": \"vendor.event.action\", \"map\": {\"Blocked\": 2, \"Allowed\": 1, \"Allow\": 1, \"Block\": 2}, \"default\": 0, \"type\": \"integer\"}, {\"to\": \"disposition_id\", \"from\": \"vendor.event.action\", \"map\": {\"Blocked\": 2, \"Allowed\": 1, \"Allow\": 1, \"Block\": 2}, \"default\": 0, \"type\": \"integer\"}, {\"to\": \"connection_info.protocol_name\", \"from\": \"vendor.event.proto\", \"type\": \"lower\"}, {\"to\": \"connection_info.protocol_num\", \"from\": \"vendor.event.proto\", \"map\": {\"ICMP\": 1, \"TCP\": 6, \"UDP\": 17}, \"type\": \"integer\"}, {\"to\": \"connection_info.direction_id\", \"value\": 2}, {\"to\": \"duration\", \"from\": \"vendor.event.durationms\", \"type\": \"integer\"}, {\"to\": \"src_endpoint.ip\", \"from\": \"vendor.event.csip\"}, {\"to\": \"src_endpoint.port\", \"from\": \"vendor.event.csport\", \"type\": \"integer\"}, {\"to\": \"src_endpoint.hostname\", \"from\": \"vendor.event.devicehostname\", \"skip_values\": [\"NA\", \"\"]}, {\"to\": \"src_endpoint.location.desc\", \"from\": \"vendor.event.locationname\", \"skip_values\": [\"Unknown\", \"\"]}, {\"to\": \"dst_endpoint.ip\", \"from\": \"vendor.event.cdip\"}, {\"to\": \"dst_endpoint.port\", \"from\": \"vendor.event.cdport\", \"type\": \"integer\"}, {\"to\": \"dst_endpoint.domain\", \"from\": \"vendor.event.cltdomain\"}, {\"to\": \"dst_endpoint.location.country\", \"from\": \"vendor.event.destcountry\", \"skip_values\": [\"NA\", \"\"]}, {\"to\": \"traffic.bytes_out\", \"from\": \"vendor.event.outbytes\", \"type\": \"integer\"}, {\"to\": \"traffic.bytes_in\", \"from\": \"vendor.event.inbytes\", \"type\": \"integer\"}, {\"to\": \"actor.user.name\", \"from\": \"vendor.event.user\", \"skip_values\": [\"Unknown\", \"\"]}, {\"to\": \"actor.user.groups[0].name\", \"from\": \"vendor.event.department\", \"skip_values\": [\"Unknown\", \"\"]}, {\"to\": \"firewall_rule.name\", \"from\": [\"vendor.event.rulelabel\", \"vendor.event.rule\"], \"skip_values\": [\"None\", \"\"]}, {\"to\": \"app_name\", \"from\": \"vendor.event.nwapp\", \"skip_values\": [\"NotAvailable\", \"None\", \"\"]}, {\"to\": \"device.hostname\", \"from\": \"vendor.event.devicehostname\", \"skip_values\": [\"NA\", \"\"]}, {\"to\": \"device.model\", \"from\": \"vendor.event.devicemodel\"}, {\"to\": \"device.os.name\", \"from\": \"vendor.event.deviceostype\"}, {\"to\": \"device.os.type_id\", \"from\": \"vendor.event.deviceostype\", \"map\": {\"iOS\": 300, \"Windows\": 100, \"Linux\": 200, \"Android\": 201, \"macOS\": 300}, \"default\": 0, \"type\": \"integer\"}, {\"to\": \"device.os.version\", \"from\": \"vendor.event.deviceosversion\"}, {\"to\": \"device.type_id\", \"value\": 0}], \"parser_id\": \"p00057\", \"label\": \"zscaler_zia\", \"format\": \"nss_fw_json\"}\nValidation: valid_rate=0.8333 errors=[[\"missing required device.os.name\", 1]]\nExamples: [{\"error\": \"missing required device.os.name\", \"vendor\": {\"sourcetype\": \"zscalernss-fw\", \"event.durationms\": \"1234\", \"event.avgduration\": \"1234\", \"event.sdip\": \"0.0.0.0\", \"event.aggregate\": \"No\", \"event.department\": \"Unknown\", \"event.nwapp\": \"NotAvailable\", \"event.proto\": \"IP\", \"event.datetime\": \"Tue Dec  31 02:22:22 2022\", \"event.nwsvc\": \"None\", \"event.dnat\": \"No\", \"event.threatcat\": \"None\", \"event.cdport\": \"120\", \"event.duration\": \"1\", \"event.ipcat\": \"Other\"}}]\nReturn the corrected full spec as JSON only (same rules as before).",
+  "spec": {
+   "class_uid": 4001,
+   "unmapped": true,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Zscaler"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "Zscaler Internet Access"
+    },
+    {
+     "to": "metadata.log_name",
+     "from": "vendor.sourcetype"
+    },
+    {
+     "to": "metadata.uid",
+     "from": "vendor.event.recordid",
+     "type": "string"
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "activity_id",
+     "value": 6
+    },
+    {
+     "to": "severity_id",
+     "value": 1
+    },
+    {
+     "to": "action_id",
+     "from": "vendor.event.action",
+     "map": {
+      "Blocked": 2,
+      "Allowed": 1,
+      "Allow": 1,
+      "Block": 2
+     },
+     "default": 0,
+     "type": "integer"
+    },
+    {
+     "to": "disposition_id",
+     "from": "vendor.event.action",
+     "map": {
+      "Blocked": 2,
+      "Allowed": 1,
+      "Allow": 1,
+      "Block": 2
+     },
+     "default": 0,
+     "type": "integer"
+    },
+    {
+     "to": "connection_info.protocol_name",
+     "from": "vendor.event.proto",
+     "type": "lower"
+    },
+    {
+     "to": "connection_info.protocol_num",
+     "from": "vendor.event.proto",
+     "map": {
+      "ICMP": 1,
+      "TCP": 6,
+      "UDP": 17
+     },
+     "type": "integer"
+    },
+    {
+     "to": "connection_info.direction_id",
+     "value": 2
+    },
+    {
+     "to": "duration",
+     "from": "vendor.event.durationms",
+     "type": "integer"
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": "vendor.event.csip"
+    },
+    {
+     "to": "src_endpoint.port",
+     "from": "vendor.event.csport",
+     "type": "integer"
+    },
+    {
+     "to": "src_endpoint.hostname",
+     "from": "vendor.event.devicehostname",
+     "skip_values": [
+      "NA",
+      ""
+     ]
+    },
+    {
+     "to": "src_endpoint.location.desc",
+     "from": "vendor.event.locationname",
+     "skip_values": [
+      "Unknown",
+      ""
+     ]
+    },
+    {
+     "to": "dst_endpoint.ip",
+     "from": "vendor.event.cdip"
+    },
+    {
+     "to": "dst_endpoint.port",
+     "from": "vendor.event.cdport",
+     "type": "integer"
+    },
+    {
+     "to": "dst_endpoint.domain",
+     "from": "vendor.event.cltdomain"
+    },
+    {
+     "to": "dst_endpoint.location.country",
+     "from": "vendor.event.destcountry",
+     "skip_values": [
+      "NA",
+      ""
+     ]
+    },
+    {
+     "to": "traffic.bytes_out",
+     "from": "vendor.event.outbytes",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.bytes_in",
+     "from": "vendor.event.inbytes",
+     "type": "integer"
+    },
+    {
+     "to": "actor.user.name",
+     "from": "vendor.event.user",
+     "skip_values": [
+      "Unknown",
+      ""
+     ]
+    },
+    {
+     "to": "actor.user.groups[0].name",
+     "from": "vendor.event.department",
+     "skip_values": [
+      "Unknown",
+      ""
+     ]
+    },
+    {
+     "to": "firewall_rule.name",
+     "from": [
+      "vendor.event.rulelabel",
+      "vendor.event.rule"
+     ],
+     "skip_values": [
+      "None",
+      ""
+     ]
+    },
+    {
+     "to": "app_name",
+     "from": "vendor.event.nwapp",
+     "skip_values": [
+      "NotAvailable",
+      "None",
+      ""
+     ]
+    },
+    {
+     "to": "device.hostname",
+     "from": "vendor.event.devicehostname",
+     "skip_values": [
+      "NA",
+      ""
+     ]
+    },
+    {
+     "to": "device.model",
+     "from": "vendor.event.devicemodel"
+    },
+    {
+     "to": "device.type_id",
+     "value": 0
+    }
+   ],
+   "parser_id": "p00057",
+   "label": "zscaler_zia",
+   "format": "nss_fw_json"
+  },
+  "metrics": {
+   "valid_rate": 1.0,
+   "mapped_field_share": 0.217
+  }
+ },
+ "p00058": {
+  "stage": "done",
+  "calls": 2,
+  "prompt_tokens": 19200,
+  "answer_tokens": 876,
+  "class": "http_activity",
+  "spec": {
+   "class_uid": 4002,
+   "unmapped": true,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Zscaler"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "Zscaler Internet Access"
+    },
+    {
+     "to": "metadata.product.version",
+     "from": "vendor.version"
+    },
+    {
+     "to": "metadata.log_name",
+     "from": "vendor.sourcetype"
+    },
+    {
+     "to": "metadata.uid",
+     "from": "vendor.event.recordid",
+     "type": "string"
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "activity_id",
+     "from": "vendor.event.reqmethod",
+     "map": {
+      "CONNECT": 1,
+      "DELETE": 2,
+      "GET": 3,
+      "HEAD": 4,
+      "OPTIONS": 5,
+      "POST": 6,
+      "PUT": 7,
+      "TRACE": 8
+     },
+     "default": 0,
+     "type": "integer"
+    },
+    {
+     "to": "severity_id",
+     "from": "vendor.event.threatseverity",
+     "map": {
+      "None (0)": 1,
+      "Low (1\u201339)": 2,
+      "Medium (40\u201369)": 3,
+      "High (70\u201389)": 4,
+      "Critical (90\u2013100)": 5
+     },
+     "default": 1,
+     "type": "integer"
+    },
+    {
+     "to": "action_id",
+     "from": "vendor.event.action",
+     "map": {
+      "Allowed": 1,
+      "Blocked": 2,
+      "Cautioned": 1
+     },
+     "default": 0,
+     "type": "integer"
+    },
+    {
+     "to": "disposition_id",
+     "from": "vendor.event.action",
+     "map": {
+      "Allowed": 1,
+      "Blocked": 2,
+      "Cautioned": 7
+     },
+     "default": 0,
+     "type": "integer"
+    },
+    {
+     "to": "status_detail",
+     "from": "vendor.event.reason"
+    },
+    {
+     "to": "http_request.url.hostname",
+     "from": "vendor.event.host"
+    },
+    {
+     "to": "http_request.url.categories[0]",
+     "from": "vendor.event.urlsubcat"
+    },
+    {
+     "to": "http_request.http_method",
+     "from": "vendor.event.reqmethod",
+     "type": "upper"
+    },
+    {
+     "to": "http_request.user_agent",
+     "from": "vendor.event.useragent"
+    },
+    {
+     "to": "http_request.version",
+     "from": "vendor.event.reqversion"
+    },
+    {
+     "to": "http_request.length",
+     "from": "vendor.event.reqsize",
+     "type": "integer"
+    },
+    {
+     "to": "http_response.code",
+     "from": "vendor.event.respcode",
+     "type": "integer"
+    },
+    {
+     "to": "http_status",
+     "from": "vendor.event.respcode",
+     "type": "integer"
+    },
+    {
+     "to": "http_response.content_type",
+     "from": "vendor.event.contenttype"
+    },
+    {
+     "to": "http_response.length",
+     "from": "vendor.event.respsize",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.bytes_out",
+     "from": "vendor.event.reqsize",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.bytes_in",
+     "from": "vendor.event.respsize",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.bytes",
+     "from": "vendor.event.totalsize",
+     "type": "integer"
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": "vendor.event.cltip"
+    },
+    {
+     "to": "src_endpoint.port",
+     "from": "vendor.event.cltsourceport",
+     "type": "integer"
+    },
+    {
+     "to": "src_endpoint.intermediate_ips[0]",
+     "from": "vendor.event.cltpubip"
+    },
+    {
+     "to": "src_endpoint.hostname",
+     "from": "vendor.event.devicehostname"
+    },
+    {
+     "to": "dst_endpoint.ip",
+     "from": "vendor.event.serverip"
+    },
+    {
+     "to": "dst_endpoint.hostname",
+     "from": "vendor.event.host"
+    },
+    {
+     "to": "actor.user.email_addr",
+     "from": "vendor.event.login"
+    },
+    {
+     "to": "actor.user.name",
+     "from": "vendor.event.login"
+    },
+    {
+     "to": "firewall_rule.name",
+     "from": [
+      "vendor.event.rulelabel",
+      "vendor.event.urlfilterrulelabel"
+     ]
+    },
+    {
+     "to": "app_name",
+     "from": "vendor.event.appname"
+    },
+    {
+     "to": "tls.version",
+     "from": "vendor.event.clttlsversion"
+    },
+    {
+     "to": "tls.cipher",
+     "from": "vendor.event.cltsslcipher"
+    }
+   ],
+   "parser_id": "p00058",
+   "label": "zscaler_zia",
+   "format": "nss_web_json"
+  },
+  "metrics": {
+   "valid_rate": 1.0,
+   "mapped_field_share": 0.321
+  }
+ },
+ "p00059": {
+  "stage": "done",
+  "calls": 2,
+  "prompt_tokens": 9559,
+  "answer_tokens": 647,
+  "class": "dns_activity",
+  "spec": {
+   "class_uid": 4003,
+   "unmapped": true,
+   "fields": [
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Zscaler"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "Zscaler Internet Access"
+    },
+    {
+     "to": "metadata.product.version",
+     "from": "vendor.version"
+    },
+    {
+     "to": "metadata.log_name",
+     "from": "vendor.sourcetype"
+    },
+    {
+     "to": "metadata.uid",
+     "from": "vendor.event.recordid",
+     "type": "string"
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "activity_id",
+     "value": 6
+    },
+    {
+     "to": "severity_id",
+     "value": 1
+    },
+    {
+     "to": "action_id",
+     "from": "vendor.event.reqaction",
+     "map": {
+      "REQ_ALLOW": 1,
+      "REQ_BLOCK": 2
+     },
+     "default": 0,
+     "type": "integer"
+    },
+    {
+     "to": "disposition_id",
+     "from": "vendor.event.reqaction",
+     "map": {
+      "REQ_ALLOW": 1,
+      "REQ_BLOCK": 2
+     },
+     "default": 0,
+     "type": "integer"
+    },
+    {
+     "to": "status_detail",
+     "from": "vendor.event.error"
+    },
+    {
+     "to": "query.hostname",
+     "from": "vendor.event.dns_req"
+    },
+    {
+     "to": "query.type",
+     "from": "vendor.event.dns_reqtype",
+     "map": {
+      "A record": "A",
+      "AAAA record": "AAAA",
+      "CNAME record": "CNAME",
+      "MX record": "MX",
+      "TXT record": "TXT",
+      "PTR record": "PTR",
+      "NS record": "NS",
+      "SOA record": "SOA",
+      "SRV record": "SRV"
+     }
+    },
+    {
+     "to": "answers[0].rdata",
+     "from": "vendor.event.dns_resp"
+    },
+    {
+     "to": "duration",
+     "from": "vendor.event.durationms",
+     "type": "integer"
+    },
+    {
+     "to": "connection_info.protocol_name",
+     "from": "vendor.event.protocol",
+     "type": "lower"
+    },
+    {
+     "to": "connection_info.protocol_num",
+     "from": "vendor.event.protocol",
+     "map": {
+      "TCP": 6,
+      "UDP": 17
+     },
+     "type": "integer"
+    },
+    {
+     "to": "connection_info.direction_id",
+     "value": 2
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": "vendor.event.clt_sip"
+    },
+    {
+     "to": "src_endpoint.hostname",
+     "from": "vendor.event.devicehostname"
+    },
+    {
+     "to": "dst_endpoint.ip",
+     "from": "vendor.event.srv_dip"
+    },
+    {
+     "to": "dst_endpoint.port",
+     "from": "vendor.event.srv_dport",
+     "type": "integer"
+    },
+    {
+     "to": "actor.user.name",
+     "from": [
+      "vendor.event.login",
+      "vendor.event.user"
+     ]
+    },
+    {
+     "to": "actor.user.groups[0].name",
+     "from": "vendor.event.dept"
+    },
+    {
+     "to": "device.hostname",
+     "from": "vendor.event.devicehostname"
+    },
+    {
+     "to": "device.model",
+     "from": "vendor.event.devicemodel"
+    },
+    {
+     "to": "device.type_id",
+     "value": 0
+    },
+    {
+     "to": "firewall_rule.name",
+     "from": "vendor.event.reqrulelabel"
+    }
+   ],
+   "parser_id": "p00059",
+   "label": "zscaler_zia",
+   "format": "nss_dns_json"
+  },
+  "metrics": {
+   "valid_rate": 1.0,
+   "mapped_field_share": 0.269
+  }
+ },
+ "p00060": {
+  "stage": "mapping",
+  "calls": 1,
+  "prompt_tokens": 3126,
+  "answer_tokens": 26,
+  "class": "tunnel_activity"
+ }
+}

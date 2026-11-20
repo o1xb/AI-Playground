@@ -63,3 +63,22 @@ Elastic's own pipeline extracted (ECS), matched to the corresponding OCSF attrib
 | Agent parsers (66) | 93.1% | - | - | - | - |
 | + agent fallback parsers (81) | 95.7% | - | - | - | - |
 | + agent OCSF mappings, round 1 (55 mappings) | 95.7% | 82.6% | 99.3% | 73.4% | 86.9% |
+
+## RAG mapper vs mapping agent (partial run, 47 of 81 formats, bge-small embedder)
+
+Same parsers, same held-out lines (752 lines of those 47 formats). RAG = class-choice call + one
+retrieval-backed mapping call + validator repairs; "LLM" played by sub-agents allowed to answer only from
+the prompt (one answer = one call). State: `bench/rag_partial/state_bge_small.json`.
+
+| | RAG one-shot | Mapping agent |
+|---|---|---|
+| LLM calls per format | 2.26 (class + mapping + ~0.3 repairs) | ~10-15 tool turns |
+| Tokens per format (prompt + answer) | ~8.6k + ~0.6k ≈ **9k** | ~21k (agent session totals / formats) |
+| OCSF schema-valid | 98.7% | 99.0% |
+| Field precision | 85.4% | 86.5% |
+| Field recall | **42.3%** | 68.7% |
+| 6 formats failed after 2 repairs | yes | - |
+
+Read: about 2.3x cheaper with similar precision and validity, but it maps far fewer fields (recall).
+Next: a coverage pass (show the fields left unmapped with their retrieved candidates, ask for additions)
+and EmbeddingGemma 2 for retrieval, then re-measure.

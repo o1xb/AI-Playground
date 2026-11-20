@@ -91,7 +91,14 @@ Key lessons recorded along the way:
 - Onboarding a new vendor with the current agents: ~280k tokens (~$1.5–2); mapping is the largest share,
   which the RAG mapper targets.
 
-## 5. In progress at the time of writing
+## 5. RAG mapper: first measurement (partial, 47 formats)
+
+~2.3x cheaper than the mapping agent (~9k tokens and 2.3 calls per format) with similar precision (85% vs
+87%) and validity (99%), but much lower recall (42% vs 69%): one-shot mappings leave many fields unmapped.
+Planned fix: a coverage call on the leftover fields, plus EmbeddingGemma 2 retrieval. Details in
+`bench/RESULTS.md`.
+
+## 5b. Stopped when moving to another machine
 
 - **RAG mapper run**: three stand-in "LLMs" (sub-agents restricted to answer only from the prompt; one
   answer = one LLM call) were mapping all 81 formats via `bench/rag_bench.py next/answer`, state in the
