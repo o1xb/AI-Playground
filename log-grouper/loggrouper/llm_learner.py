@@ -17,9 +17,20 @@ SCHEMA = {
                 "rationale": {"type": "string"}},
             "required": ["label", "pattern", "flags", "confidence", "format", "explains_clusters", "rationale"],
             "additionalProperties": False}},
+        "rule_updates": {"type": "array", "items": {
+            "type": "object",
+            "properties": {
+                "id": {"type": "string"}, "priority_before": {"type": "string"},
+                "status": {"type": "string", "enum": ["active", "disabled"]},
+                "owner_label": {"type": "string"},
+                "fixes_conflicts": {"type": "array", "items": {"type": "string"}},
+                "rationale": {"type": "string"}},
+            "required": ["id", "owner_label", "fixes_conflicts", "rationale"],
+            "additionalProperties": False}},
         "unidentifiable": {"type": "array", "items": {"type": "string"}},
+        "conflict_notes": {"type": "object", "additionalProperties": {"type": "string"}},
     },
-    "required": ["rules", "unidentifiable"],
+    "required": ["rules", "rule_updates", "unidentifiable", "conflict_notes"],
     "additionalProperties": False,
 }
 

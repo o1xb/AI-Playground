@@ -19,6 +19,56 @@ def compile_rule(r):
     return re.compile(r["pattern"], f)
 
 
+try:
+    import re._parser as _sre_parse   # CPython 3.11+
+except ImportError:                   # pragma: no cover
+    import sre_parse as _sre_parse
+
+
+def _alts(seq):
+    """Literal strings of which at least one must occur in any match of `seq`, or None if unknown."""
+    items = list(seq)
+    cands, run = [], ""
+    for op, av in items + [(None, None)]:
+        if op == _sre_parse.LITERAL:
+            run += chr(av)
+            continue
+        if run:
+            cands.append([run])
+        run = ""
+        if op == _sre_parse.BRANCH:              # every branch must contribute a literal
+            out = []
+            for br in av[1]:
+                a = _alts(br)
+                if a is None:
+                    out = None
+                    break
+                out += a
+            if out:
+                cands.append(out)
+        elif op == _sre_parse.SUBPATTERN:        # a required group, e.g. (?:foo|bar)
+            a = _alts(av[-1])
+            if a:
+                cands.append(a)
+    cands = [c for c in cands if min(map(len, c)) >= 3]
+    if not cands:
+        return None
+    return max(cands, key=lambda c: (min(map(len, c)), -len(c)))
+
+
+def prefilter(rule):
+    """(literals, case_insensitive) such that the regex can only match if one literal is present."""
+    try:
+        parsed = _sre_parse.parse(rule["pattern"], compile_rule(rule).flags)
+        lits = _alts(parsed.data)
+        ci = bool(parsed.state.flags & re.I)
+    except Exception:
+        return None
+    if not lits or any(len(l) < 3 for l in lits):
+        return None
+    return (tuple(l.lower() for l in lits) if ci else tuple(lits)), ci
+
+
 class RuleStore:
     """rules.json      – active + candidate rules, ordered by priority (first match wins)
        rejected.json   – proposals that failed validation (fed back to the learner so it doesn't repeat them)
@@ -43,6 +93,7 @@ class RuleStore:
         act = [r for r in self.rules["rules"] if r.get("status", "active") == "active"]
         act.sort(key=lambda r: (r["priority"], r["id"]))
         self.compiled = [(compile_rule(r), r) for r in act]
+        self._pf = [prefilter(r) for _, r in self.compiled]
 
     def save(self):
         self.rules["version"] += 1
@@ -56,10 +107,32 @@ class RuleStore:
 
     # -- matching -----------------------------------------------------------
     def match(self, payload):
-        for rx, r in self.compiled:
+        low = None
+        for (rx, r), pf in zip(self.compiled, self._pf):
+            if pf is not None:
+                lits, ci = pf
+                if ci:
+                    if low is None:
+                        low = payload.lower()
+                    hay = low
+                else:
+                    hay = payload
+                if not any(l in hay for l in lits):
+                    continue
             if rx.search(payload):
                 return r
         return None
+
+    def match_views(self, views):
+        """Try the innermost payload first, then fallbacks (header-stripped, outer envelopes)."""
+        for i, v in enumerate(views):
+            r = self.match(v)
+            if r is not None:
+                return r, i
+        return None, None
+
+    def by_id(self, rid):
+        return next((r for r in self.rules["rules"] if r["id"] == rid), None)
 
     # -- mutation -----------------------------------------------------------
     def next_id(self):

@@ -13,9 +13,10 @@ g2t=defaultdict(Counter)
 for l,t in T.items(): g2t[P.get(l,"MISSING")][t["vendor"]]+=1
 gmap={g:c.most_common(1)[0][0] for g,c in g2t.items()}
 for name,sel in (("held-out lines, known vendors",True),("new vendors",False)):
-    ls=[l for l,t in T.items() if t["seen_vendor"]==sel]
+    ls=[l for l,t in T.items() if t.get("seen_vendor",True)==sel]
+    if not ls: continue
     res=sum(P[l]=="__residual__" for l in ls); cl=[l for l in ls if P[l]!="__residual__"]
     ok=sum(gmap[P[l]]==T[l]["vendor"] for l in cl)
-    print(f"{name:32s} lines={len(ls):5d} fast-path={len(cl):5d} ({len(cl)/len(ls):.1%}) residual={res:5d} | correct among classified={ok}/{len(cl)} ({ok/max(1,len(cl)):.1%})")
+    print(f"{name:32s} lines={len(ls):5d} fast-path={len(cl):5d} ({len(cl)/max(1,len(ls)):.1%}) residual={res:5d} | correct among classified={ok}/{len(cl)} ({ok/max(1,len(cl)):.1%})")
 bad=Counter((T[l]["vendor"],P[l]) for l in T if P[l]!="__residual__" and gmap[P[l]]!=T[l]["vendor"])
 if bad: print("misroutes (truth, predicted):",bad.most_common(12))

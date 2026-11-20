@@ -2,6 +2,7 @@
 import collections
 import json
 import os
+import re
 import time
 
 from .templates import shape
@@ -41,13 +42,15 @@ class Engine:
             json.dump(ck, f)
 
     def classify(self, offset, raw):
-        payload, layers = self.unwrap(raw)
-        r = self.store.match(payload)
+        payload, layers, views = self.unwrap.views(raw)
+        r, vi = self.store.match_views(views)
         rec = {"offset": offset, "layers": layers, "raw": raw}
         if r is None:
             return None, payload, rec
-        self.store.record_hit(r, payload)
+        self.store.record_hit(r, views[vi])
         rec.update(label=r["label"], rule=r["id"], format=r.get("format"), confidence=r["confidence"])
+        if vi:
+            rec["matched_view"] = vi      # 1 = header-stripped, 2+ = an outer envelope
         return r, payload, rec
 
     def process_batch(self, base_offset, lines):
@@ -95,23 +98,107 @@ class Engine:
         self.store.save()
         return moved, len(left)
 
-    def build_packet(self, max_clusters=80, examples=4, max_chars=700):
-        """Compress the residue to one entry per shape cluster: this is all the learner ever sees."""
+    def find_conflicts(self, min_count=2, max_conflicts=20):
+        """Structured message shapes (JSON key sets, key=value, CSV) that ended up in more than one
+        group. One shape normally means one producer, so this usually exposes a rule that over-reaches."""
+        by_shape = collections.defaultdict(lambda: collections.defaultdict(lambda: {"count": 0, "rules": collections.Counter(), "examples": []}))
+        gdir = os.path.join(self.out_dir, "groups")
+        for fn in sorted(os.listdir(gdir)) if os.path.isdir(gdir) else []:
+            with open(os.path.join(gdir, fn)) as f:
+                for line in f:
+                    rec = json.loads(line)
+                    payload, _ = self.unwrap(rec["raw"])
+                    shp = shape(payload)
+                    if not shp.startswith(("JSON{", "KV{", "CSV:")):
+                        continue
+                    g = by_shape[shp][rec["label"]]
+                    g["count"] += 1; g["rules"][rec["rule"]] += 1
+                    if len(g["examples"]) < 2:
+                        g["examples"].append(payload[:900])
+        # merge structurally similar shapes (key-set Jaccard >= 0.5), then look for multi-label clusters
+        merged = []                                  # [rep_shape, keyset, {label: agg}]
+        for shp, labels in sorted(by_shape.items(), key=lambda kv: -sum(g["count"] for g in kv[1].values())):
+            ks = _keyset(shp)
+            target = None
+            for m in merged:
+                if (ks and m[1] and len(ks & m[1]) / len(ks | m[1]) >= 0.5) or (not ks and m[0] == shp):
+                    target = m; break
+            if target is None:
+                target = [shp, set(ks) if ks else None, {}]; merged.append(target)
+            elif ks:
+                target[1] |= ks
+            for l, g in labels.items():
+                agg = target[2].setdefault(l, {"count": 0, "rules": collections.Counter(), "examples": []})
+                agg["count"] += g["count"]; agg["rules"].update(g["rules"])
+                agg["examples"] += g["examples"][:2 - len(agg["examples"])]
+        out = []
+        for shp, ks, labels in merged:
+            big = {l: g for l, g in labels.items() if g["count"] >= min_count}
+            if len(big) >= 2:
+                out.append({"shape": shp, "labels": {l: {"count": g["count"], "rules": dict(g["rules"]),
+                                                        "examples": g["examples"]} for l, g in big.items()}})
+        out.sort(key=lambda c: -sum(g["count"] for g in c["labels"].values()))
+        for i, c in enumerate(out[:max_conflicts]):
+            c["conflict_id"] = f"k{i:03d}"
+        return out[:max_conflicts]
+
+    def build_packet(self, max_clusters=80, examples=4, max_chars=700, json_chars=1500):
+        """Compress the residue to one entry per shape cluster: this is all the learner ever sees.
+        JSON clusters whose key sets overlap strongly are merged, and carry their full key list."""
         groups = collections.defaultdict(list)
         for item in self.load_residual():
             groups[item["shape"]].append(item["payload"])
+        ordered = sorted(groups.items(), key=lambda kv: -len(kv[1]))
+        merged = []                       # [shape, member_shapes, payloads, keyset]
+        for shp, payloads in ordered:
+            ks = _keyset(shp)
+            for m in merged:
+                if ks and m[3] and len(ks & m[3]) / len(ks | m[3]) >= 0.6:
+                    m[1].append(shp); m[2].extend(payloads); m[3] |= ks
+                    break
+            else:
+                merged.append([shp, [shp], list(payloads), set(ks) if ks else None])
         clusters = []
-        for i, (shp, payloads) in enumerate(sorted(groups.items(), key=lambda kv: -len(kv[1]))[:max_clusters]):
+        for i, (shp, members, payloads, ks) in enumerate(merged[:max_clusters]):
             uniq = list(dict.fromkeys(payloads))
             step = max(1, len(uniq) // examples)
-            clusters.append({"cluster_id": f"c{i:03d}", "shape": shp, "count": len(payloads),
-                             "examples": [p[:max_chars] for p in uniq[::step][:examples]]})
+            lim = json_chars if shp.startswith("JSON") else max_chars
+            c = {"cluster_id": f"c{i:03d}", "shape": shp, "member_shapes": members, "count": len(payloads),
+                 "examples": [p[:lim] for p in uniq[::step][:examples]]}
+            if shp.startswith("JSON"):
+                c["all_keys"] = sorted(_json_keys(uniq[:20]))[:120]
+            clusters.append(c)
         return {
             "residual_lines": sum(len(v) for v in groups.values()),
-            "clusters_total": len(groups),
+            "clusters_total": len(merged),
             "clusters": clusters,
+            "conflicts": self.find_conflicts(),
             "existing_labels": self.store.labels(),
-            "existing_rules": [{"label": r["label"], "pattern": r["pattern"], "format": r.get("format")}
+            "existing_rules": [{"id": r["id"], "label": r["label"], "pattern": r["pattern"],
+                                "priority": r["priority"], "format": r.get("format")}
                                for _, r in self.store.compiled],
             "previously_rejected": self.store.rejected["rejected"][-50:],
         }
+
+
+def _keyset(shp):
+    if shp.startswith(("JSON{", "JSON~{", "KV{")):
+        inner = shp[shp.index("{") + 1:-1]
+        return {k for k in inner.split(",") if k}
+    return None
+
+
+def _json_keys(payloads, depth=2):
+    keys = set()
+
+    def walk(d, prefix, lvl):
+        if isinstance(d, dict) and lvl < depth:
+            for k, v in d.items():
+                keys.add(prefix + k)
+                walk(v, prefix + k + ".", lvl + 1)
+    for p in payloads:
+        try:
+            walk(json.loads(p), "", 0)
+        except ValueError:
+            keys.update(re.findall(r'"([A-Za-z_@][\w.@-]{0,40})"\s*:', p))
+    return keys

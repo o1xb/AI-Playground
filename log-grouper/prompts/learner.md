@@ -17,7 +17,8 @@ For each cluster you can identify, write a rule:
   `kv_event`, `eve_json`, `cef`. Parsers are written per format, so split formats that need
   different parsers (different delimiters, field order, JSON schema).
 - `confidence`: high | medium | low.
-- `explains_clusters`: cluster_ids this rule is meant to cover.
+- `explains_clusters`: cluster_ids this rule is meant to cover. JSON clusters also list
+  `all_keys` (every key seen, two levels deep), since examples are cut at a length limit.
 - `rationale`: one sentence: which token(s) prove the vendor.
 
 Put clusters you cannot attribute to any vendor in `unidentifiable`. Do not guess: a wrong rule
@@ -38,5 +39,22 @@ is worse than an unclassified line, because it is reused on every future batch.
   (2) stored examples of every other label (must match none), (3) the residue clusters you
   attributed to other labels (must match none).
 
+## Conflicts (fixing existing rules)
+`conflicts` lists message shapes (similar JSON key sets, key=value or CSV layouts) that the
+current rules routed to MORE THAN ONE label, with the rule ids and examples for each label.
+One shape usually means one producer, so a conflict usually means an existing rule over-reaches.
+For each conflict decide which label really produced it, then either:
+- propose an update: `{"id": "<rule id>", "priority_before": "<rule id>", "owner_label": "<label>",
+  "fixes_conflicts": ["k000"], "rationale": "..."}` to move the correct rule above the greedy one, or
+  `{"id": "<rule id>", "status": "disabled", ...}` to retire a rule that is plainly wrong; or
+- propose a new, more specific rule for the owner label (it will be appended after existing rules,
+  so it only helps if paired with an update that moves it up: use its future position by proposing
+  the rule first, then a `priority_before` update in a later round); or
+- leave it, if the two labels are genuinely different products that share a format (say so in
+  `conflict_notes`).
+Updates are refused if they re-route any stored example of any label, or if they do not move the
+conflict examples to `owner_label`.
+
 ## Output
-JSON only: `{"rules": [...], "unidentifiable": ["c012", ...]}`
+JSON only:
+`{"rules": [...], "rule_updates": [...], "unidentifiable": ["c012", ...], "conflict_notes": {"k001": "..."}}`

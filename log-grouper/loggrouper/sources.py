@@ -1,13 +1,34 @@
 """Batch sources. A batch is committed (checkpoint/offset) only after it is fully classified."""
 
 
-def file_batches(path, batch_size, start_offset=0):
+def _records(f, first_line_pattern=None):
+    """Lines -> records. With first_line_pattern (Filebeat/elastic-package multiline semantics), a line
+    that matches starts a new record and any other line is appended to the current one."""
+    import re
+    rx = re.compile(first_line_pattern) if first_line_pattern else None
+    cur = None
+    for raw in f:
+        line = raw.decode("utf-8", "replace").rstrip("\r\n")
+        if rx is None:
+            yield line
+            continue
+        if rx.search(line) or cur is None:
+            if cur is not None:
+                yield cur
+            cur = line
+        else:
+            cur += "\n" + line
+    if cur is not None:
+        yield cur
+
+
+def file_batches(path, batch_size, start_offset=0, first_line_pattern=None):
     batch, base = [], start_offset
     with open(path, "rb") as f:
-        for i, raw in enumerate(f):
+        for i, rec in enumerate(_records(f, first_line_pattern)):
             if i < start_offset:
                 continue
-            batch.append(raw.decode("utf-8", "replace").rstrip("\r\n"))
+            batch.append(rec)
             if len(batch) == batch_size:
                 yield base, batch
                 base += len(batch); batch = []

@@ -9,19 +9,52 @@
 Writes out_dir/stream.dump (feed this to the grouper) and out_dir/answer_key/labels.jsonl (keep it away from agents).
 Wrapping: ~40% raw, 25% syslog relay header, 30% Filebeat JSON envelope, 5% truncated.
 """
-import argparse, datetime, glob, json, os, random
+import argparse, datetime, glob, json, os, random, re
 from collections import Counter
 
 HEAVY = {"cisco_asa", "cisco_ftd", "fortinet_fortigate", "panw", "checkpoint", "juniper_srx", "sonicwall_firewall",
          "pfsense", "sophos", "watchguard_firebox", "f5_bigip", "zscaler_zia", "system", "iptables", "cisco_ios", "suricata"}
 
 
+def first_line_pattern(logfile):
+    """elastic-package multiline config: test-X.log-config.yml, else test-common-config.yml."""
+    d = os.path.dirname(logfile)
+    for cfg in (logfile + "-config.yml", os.path.join(d, "test-common-config.yml")):
+        if os.path.exists(cfg):
+            txt = open(cfg).read()
+            if "multiline" in txt:
+                m = re.search(r"first_line_pattern:\s*(['\"])(.*?)\1\s*$", txt, re.M)
+                if m:
+                    pat = m.group(2)
+                    return pat.encode().decode("unicode_escape") if m.group(1) == '"' else pat
+    return None
+
+
+def records(logfile):
+    """Whole records, as a shipper would deliver them (multiline assembled), not raw file lines."""
+    pat = first_line_pattern(logfile)
+    rx = re.compile(pat) if pat else None
+    out, cur = [], None
+    for l in open(logfile, errors="replace"):
+        l = l.rstrip("\r\n")
+        if rx is None:
+            out.append(l); continue
+        if rx.search(l) or cur is None:
+            if cur is not None:
+                out.append(cur)
+            cur = l
+        else:
+            cur += "\n" + l
+    if cur is not None:
+        out.append(cur)
+    return out
+
+
 def lines(pkgdir, pkg):
     out = []
     for f in sorted(glob.glob(f"{pkgdir}/{pkg}/data_stream/*/_dev/test/pipeline/test-*.log")):
         ds = f.split("/data_stream/")[1].split("/")[0]
-        for l in open(f, errors="replace"):
-            l = l.rstrip("\r\n")
+        for l in records(f):
             if len(l.strip()) >= 15:
                 out.append((ds, l))
     return out
@@ -32,12 +65,14 @@ def main():
     ap.add_argument("pkgdir"); ap.add_argument("out")
     ap.add_argument("--seed", type=int, default=7)
     ap.add_argument("--cap-heavy", type=int, default=150); ap.add_argument("--cap", type=int, default=40)
-    ap.add_argument("--exclude-payloads", help="file with one payload per line to leave out (held-out test)")
+    ap.add_argument("--exclude-payloads", help="payloads.txt from an earlier build: leave those records out")
+    ap.add_argument("--packages", help="comma-separated package subset (default: all in pkgdir)")
     a = ap.parse_args()
     R = random.Random(a.seed)
-    skip = set(open(a.exclude_payloads).read().split("\n")) if a.exclude_payloads else set()
+    skip = {json.loads(l) for l in open(a.exclude_payloads)} if a.exclude_payloads else set()
     rows = []
-    for pkg in sorted(os.listdir(a.pkgdir)):
+    pkgs = a.packages.split(",") if a.packages else sorted(os.listdir(a.pkgdir))
+    for pkg in pkgs:
         L = [(ds, l) for ds, l in lines(a.pkgdir, pkg) if l not in skip]
         R.shuffle(L)
         rows += [(pkg, ds, l) for ds, l in L[:a.cap_heavy if pkg in HEAVY else a.cap]]
@@ -48,13 +83,21 @@ def main():
     with open(a.out + "/stream.dump", "w") as out, open(a.out + "/answer_key/labels.jsonl", "w") as key, \
             open(a.out + "/answer_key/payloads.txt", "w") as pay:
         for i, (pkg, ds, l) in enumerate(rows, 1):
-            pay.write(l + "\n")
+            pay.write(json.dumps(l) + "\n")
             r = R.random(); ts = t0 + datetime.timedelta(milliseconds=i * 137)
+            multiline = "\n" in l
+            if multiline:
+                try:                      # pretty-printed JSON: ship compact, like a JSON codec would
+                    l = json.dumps(json.loads(l)); multiline = False
+                except ValueError:
+                    pass
+            if multiline:                 # other multiline records only survive inside an envelope
+                r = 0.99
             if r < 0.05 and len(l) > 80:
                 l = l[:int(len(l) * R.uniform(.4, .9))]; tr = "truncated"
-            elif r < 0.45:
+            elif r < 0.45 and not multiline:
                 tr = "raw"
-            elif r < 0.70:
+            elif r < 0.70 and not multiline:
                 tr = "relay"; l = f"<{R.choice([13, 14, 134, 189])}>{ts.strftime('%b %d %H:%M:%S')} collector-0{R.randint(1, 4)} {l}"
             else:
                 tr = "filebeat"
