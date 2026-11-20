@@ -126,3 +126,16 @@ the agent's mapping for 2 of those (fallback).
 Engine changes in this round: target-type inference in `prepare()` (casts follow the OCSF attribute type),
 Ruby CSV strictness mirrored in the executor, ISO-only timestamp casting in the Ruby mapper, Logstash heap
 configurable (`LG_LS_HEAP`, default 2g; the full 81-parser + 78-mapping pipeline needs more than 768m).
+
+## Opus 5.5 vs Sonnet 5.5 (sub-agents on each model, same prompts/tools)
+
+| | Opus 5.5 | Sonnet 5.5 |
+|---|---|---|
+| M1 mapper, 20 formats / 1,074 held-out lines: valid / precision / recall | 99.5% / 89.6% / 73.9% | 99.6% / 89.5% / 72.6% |
+| M1 calls per format | 1.25 | 1.25 |
+| Same OCSF class chosen | — | 19 of 20 (differs on Sophos content filtering: 4002 vs 4001) |
+| Parser agent, SonicWall from scratch: held-out parsed / fields per event | 121/121 / 30.8 | 121/121 / 28.0 (11 tool calls, ~100k tokens, 2.6 min) |
+| Logstash conformance | identical | identical (75/75) |
+
+Sonnet is within ~1 point of Opus (user-name recall 77% vs 85% is the main gap) at half the list price.
+States: `bench/llm_mapper_runs/state_full_sonnet.json`.

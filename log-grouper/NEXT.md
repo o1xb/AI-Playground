@@ -60,6 +60,10 @@ python3 bench/live_api_check.py $W/live $W/pbench/train/groups --steps parser --
 # 1e. grouping learner on a residue (run `cli run` on a stream into $W/grp first, see JOURNEY.md)
 python3 bench/live_api_check.py $W/live $W/pbench/train/groups --steps grouper --grouping-state $W/grp
 ```
+To run the whole pipeline on Sonnet 5.5 (measured within ~1 point of Opus at half the price): add
+`--model claude-sonnet-5-5` to every `bench/live_api_check.py` call and every `cli` agent command
+(`map-learn`, `parse-learn`, `learn --agent`, `run --learner agent`). Run 1a once with each model and compare.
+
 Check and record in `bench/RESULTS.md`:
 - `$W/live/live_report.json`: calls, tokens (input / cache read / cache write / output), seconds and $ per
   step and per format. Confirm `cache_read_input_tokens` is large on the 2nd+ mapper call (schema cached);

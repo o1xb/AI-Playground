@@ -22,8 +22,11 @@ import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, ".."))
-PRICE = {"input_tokens": 4.0, "output_tokens": 20.0, "cache_read_input_tokens": 0.20,
-         "cache_creation_input_tokens": 8.0}       # Opus 5.5, $/1M (cache write priced at the 1h rate)
+PRICES = {   # $/1M tokens; cache write priced at the 1h rate (2x input)
+    "claude-opus-5-5": {"input_tokens": 4.0, "output_tokens": 20.0, "cache_read_input_tokens": 0.20, "cache_creation_input_tokens": 8.0},
+    "claude-sonnet-5-5": {"input_tokens": 2.0, "output_tokens": 10.0, "cache_read_input_tokens": 0.10, "cache_creation_input_tokens": 4.0},
+}
+PRICE = dict(PRICES["claude-opus-5-5"])
 
 
 def cost(u):
@@ -40,6 +43,7 @@ def main():
     ap.add_argument("--grouping-state")
     ap.add_argument("--model", default="claude-opus-5-5")
     a = ap.parse_args()
+    PRICE.clear(); PRICE.update(PRICES.get(a.model, PRICES["claude-opus-5-5"]))
     steps = a.steps.split(",")
     store = os.path.join(a.work, "store")
     shutil.rmtree(store, ignore_errors=True)
