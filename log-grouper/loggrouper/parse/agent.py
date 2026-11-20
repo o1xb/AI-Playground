@@ -75,7 +75,8 @@ class ParserTools(CodeTools):
         with open(os.path.join(ws, "parsers.json"), "w") as f:
             json.dump(self.store.active(), f, indent=1)
         with open(os.path.join(ws, "README.txt"), "w") as f:
-            f.write("samples/<label>.jsonl  one JSON string per line: the unwrapped message\n"
+            f.write("This directory is the cwd and persists between calls; /tmp inside the sandbox does not.\n"
+                    "samples/<label>.jsonl  one JSON string per line: the unwrapped message\n"
                     "parsers.json           active parser specs\n"
                     "lib/loggrouper         from loggrouper.parse.executor import run_parser; "
                     "from loggrouper.parse.validate import metrics\n")
@@ -202,7 +203,8 @@ class ParserTools(CodeTools):
         spec.pop("id", None)
         self.drafts.append({"spec": spec, "rationale": rationale, "kind": "new"})
         self._persist()
-        return f"drafted #{len(self.drafts) - 1}: claims {m['samples']} samples, parse_rate {m['parse_rate']}"
+        return (f"drafted #{len(self.drafts) - 1}: claims {m['samples']} samples, parse_rate {m['parse_rate']} "
+                f"(counted with the active parsers and earlier drafts; later drafts placed before it can take some)")
 
     def propose_parser_update(self, parser_id: str, spec_json: str, rationale: str) -> str:
         """Replace an active parser's spec (e.g. to fix failures). Golden examples must still pass, unless
@@ -227,11 +229,13 @@ class ParserTools(CodeTools):
         self.submits += 1
         origin = f"parser-agent:{time.strftime('%Y%m%dT%H%M%S')}"
         accepted, rejected = [], []
+        next_n = int(self.store.next_id("p")[1:])
         for d in self.drafts:
             spec = d["spec"]
             label = spec["label"]
             if d["kind"] == "new":
-                spec["id"] = self.store.next_id("p")
+                spec["id"] = f"p{next_n:05d}"       # unique within the batch too
+                next_n += 1
             old = self.store.by_id(spec["id"]) if d["kind"] == "update" else None
             ps = [p for p in self.store.ordered(label) if p["id"] != spec["id"]]
             ps += [a[1] for a in accepted if a[1]["label"] == label and a[1]["id"] != spec["id"]] + [spec]
@@ -281,8 +285,14 @@ class ParserTools(CodeTools):
         done = []
         for d, spec, old, msgs, m in accepted:
             if spec["id"] in bad_ids:
-                why = conf.get("error") or "Logstash output differs from the Python executor: " + json.dumps(
-                    next((x for x in conf["diffs"] if x["python"].get("loggrouper", {}).get("parser") == spec["id"]), {}))[:600]
+                dd = next((x for x in conf["diffs"] if x["python"].get("loggrouper", {}).get("parser") == spec["id"]), None)
+                if conf.get("error") or dd is None:
+                    why = conf.get("error") or "Logstash check failed"
+                else:
+                    fa, fb = flatten(dd["python"]), flatten(dd["logstash"])
+                    keys = sorted(k for k in set(fa) | set(fb) if fa.get(k) != fb.get(k))
+                    why = ("Logstash output differs from the Python executor on " + dd["message"][:160] + " | " +
+                           "; ".join(f"{k}: python={json.dumps(fa.get(k))[:60]} logstash={json.dumps(fb.get(k))[:60]}" for k in keys[:8]))
                 self.store.reject(spec, why, origin)
                 rejected.append({"label": spec["label"], "format": spec.get("format"), "reason": why})
                 continue

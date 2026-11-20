@@ -153,7 +153,7 @@ class Grok:
         out = {}
         for g, (field, typ) in self.fields.items():
             v = m.group(g)
-            if v is None:
+            if v is None or v == "":          # Logstash grok drops empty captures (keep_empty_captures false)
                 continue
             if typ == "int":
                 try:
@@ -268,7 +268,7 @@ def kv(s, field_split=" ", value_split="=", field_split_pattern=None, value_spli
             v = m.group("plain")
         if trim_value:
             v = v.strip(trim_value)
-        if not k:
+        if not k or (v == "" and not allow_empty_values):   # Logstash kv drops empty (quoted) values
             continue
         if k in out:                       # Logstash collects repeated keys into an array
             out[k] = (out[k] if isinstance(out[k], list) else [out[k]]) + [v]

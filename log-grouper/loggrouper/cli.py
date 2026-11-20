@@ -142,7 +142,21 @@ def cmd_ptool(a):
     if fn is None:
         sys.exit(f"unknown tool {a.name}; tools: {[f.__name__ for f in t.tool_functions()]}")
     raw = sys.stdin.read() if a.args == "-" else (a.args or "{}")
-    print(fn(**json.loads(raw)))
+    print(_call(fn, raw))
+
+
+def _call(fn, raw):
+    """Call a tool with JSON args; argument errors come back as tool errors, as the API would report them."""
+    import inspect
+    try:
+        args = json.loads(raw)
+    except ValueError as e:
+        return f"ERROR: arguments are not valid JSON: {e}"
+    try:
+        inspect.signature(fn).bind(**args)
+    except TypeError as e:
+        return f"ERROR: {e}. Signature: {fn.__name__}{inspect.signature(fn)}"
+    return fn(**args)
 
 
 def cmd_parse_learn(a):
@@ -169,7 +183,7 @@ def cmd_mtool(a):
     if fn is None:
         sys.exit(f"unknown tool {a.name}; tools: {[f.__name__ for f in t.tool_functions()]}")
     raw = sys.stdin.read() if a.args == "-" else (a.args or "{}")
-    print(fn(**json.loads(raw)))
+    print(_call(fn, raw))
 
 
 def cmd_map_learn(a):
