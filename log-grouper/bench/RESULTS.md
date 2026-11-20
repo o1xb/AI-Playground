@@ -14,6 +14,14 @@ Answer keys were never shown to any agent.
 | C | 7,228 records, all 80 vendors, multiline records kept whole (new builder) | none, old code | 97.4% | 95.2% |
 | C + learn | residue 186 lines + 5 conflicts | sub-agent learner (~6 min, ~170k tokens): 42 rules + 1 priority fix | 99.4% | — |
 | D | 7,228 fresh records (different sample + wrappers) | none, rules after C | 99.2% (was 97.3% with the earlier rules) | 95.5% (≈98.5% excluding the answer-key quirks below) |
+| E | 2,311 records: 30 known vendors + 12 vendors new to the store | none | 98.4% known / 5.9% new | 99.8% / 0% (21 new-vendor lines swallowed by broad rules) |
+| E + agent round 1 | residue 369 lines | production tools via shell bridge (~9 min, ~190k tokens): 35 rules, 9 new labels | 99.4% new | 94.1% new |
+| E + agent round 2 | 15 suspects | same (~4 min, ~140k tokens): 3 fixes placed above greedy rules, 12 dismissed | — | — |
+| F | fresh re-run of E's stream, rules after round 2 | none | 98.7% known / 99.4% new | 99.8% / **100%** |
+| F' | fresh re-run of run D's stream (regression check) | none | 99.2% | 95.7% (was 95.5%) |
+
+Rounds E were driven by a Claude Code sub-agent playing the production agent, restricted to the
+same `LearnerTools` methods the Claude API agent calls (via `cli tool`), with no file access.
 
 Known answer-key quirks: Elastic's `cisco_ftd` samples contain literal `%ASA-` lines; the `system` samples are
 mostly macOS; FireEye samples are Suricata EVE inside `rawmsg`; pfSense samples include haproxy/squid/snort lines.
@@ -30,8 +38,9 @@ Fixed since the first runs:
 
 Still open:
 - Cisco IOS vs NX-OS vs WLC splits (~38 lines in run D).
-- Symantec: the old rule r00110 (bare `Symantec`) still catches ~15 cloud SES events; the learner's
-  conflict fix moved the SES rule above it, but that rule doesn't match every SES event type. Needs a
-  pattern-tightening update in the next learning round.
+- Broad vendor-name alternatives still exist (r00006 `crowdstrike`, r00110 `Symantec`, r00044
+  `Check Point`); specific rules now sit above them for the cases found, but they should be narrowed.
+- r00022 (modsecurity `"transaction":{`) appears to hold a Google Cloud Spanner audit line as an
+  observed example: review.
 - Ivanti rule r00043 (`PCS\d`, case-insensitive) matches random IDs; flagged as a dispute, not yet tightened.
 - Fortinet FortiAnalyzer lines go to FortiGate via the broad `devname=` rule.

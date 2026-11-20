@@ -41,7 +41,7 @@ class Script:
         if self.step == 1:
             return self._tool("overview", {})
         if self.step == 2:
-            self.cluster = re.search(r"^(c\d{3}) \|", text, re.M).group(1)
+            self.cluster = re.search(r"^(c[0-9a-f]{6}) \|", text, re.M).group(1)
             return self._tool("get_cluster", {"cluster_id": self.cluster})
         if self.step == 3:
             return self._tool("test_pattern", {"pattern": r"ACMEWALL\[\d+\]: action=", "label": "acme_wall"})

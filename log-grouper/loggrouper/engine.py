@@ -1,5 +1,6 @@
 """Batch engine: unwrap -> rule fast-path -> grouped output; unmatched lines go to a residue buffer."""
 import collections
+import hashlib
 import json
 import os
 import re
@@ -7,6 +8,14 @@ import time
 
 from .templates import shape
 from .unwrap import Unwrapper
+
+
+def stable_id(prefix, key):
+    """Ids derived from content, so they survive refreshes within a session and across sessions."""
+    return prefix + hashlib.sha1(key.encode()).hexdigest()[:6]
+
+
+SCAN_PER_GROUP = 3000      # records per group file scanned for conflicts/suspects
 
 
 class Engine:
@@ -98,25 +107,36 @@ class Engine:
         self.store.save()
         return moved, len(left)
 
+    def _current_routes(self):
+        """Yield (rule, payload) for stored grouped records, routed with the CURRENT rules, so fixes made
+        in this session immediately clear the conflicts/suspects they resolve."""
+        gdir = os.path.join(self.out_dir, "groups")
+        for fn in sorted(os.listdir(gdir)) if os.path.isdir(gdir) else []:
+            with open(os.path.join(gdir, fn)) as f:
+                for n, line in enumerate(f):
+                    if n >= SCAN_PER_GROUP:
+                        break
+                    rec = json.loads(line)
+                    payload, _, views = self.unwrap.views(rec["raw"])
+                    r, _ = self.store.match_views(views)
+                    if r is not None:
+                        yield r, payload
+
     def find_conflicts(self, min_count=2, max_conflicts=20):
         """Structured message shapes (JSON key sets, key=value, CSV) that ended up in more than one
         group. One shape normally means one producer, so this usually exposes a rule that over-reaches."""
         by_shape = collections.defaultdict(lambda: collections.defaultdict(lambda: {"count": 0, "rules": collections.Counter(), "examples": []}))
-        gdir = os.path.join(self.out_dir, "groups")
-        for fn in sorted(os.listdir(gdir)) if os.path.isdir(gdir) else []:
-            with open(os.path.join(gdir, fn)) as f:
-                for line in f:
-                    rec = json.loads(line)
-                    payload, _ = self.unwrap(rec["raw"])
-                    shp = shape(payload)
-                    if not shp.startswith(("JSON{", "KV{", "CSV:")):
-                        continue
-                    g = by_shape[shp][rec["label"]]
-                    g["count"] += 1; g["rules"][rec["rule"]] += 1
-                    if len(g["examples"]) < 2:
-                        g["examples"].append(payload)
+        dismissed = set(self.store.dismissed.get("__conflicts__", ()))
+        for r, payload in self._current_routes():
+            shp = shape(payload)
+            if not shp.startswith(("JSON{", "KV{", "CSV:")) or shp in dismissed:
+                continue
+            g = by_shape[shp][r["label"]]
+            g["count"] += 1; g["rules"][r["id"]] += 1
+            if len(g["examples"]) < 2:
+                g["examples"].append(payload)
         # merge structurally similar shapes (key-set Jaccard >= 0.5), then look for multi-label clusters
-        merged = []                                  # [rep_shape, keyset, {label: agg}]
+        merged = []                                  # [rep_shape, keyset, {label: agg}, member shapes]
         for shp, labels in sorted(by_shape.items(), key=lambda kv: -sum(g["count"] for g in kv[1].values())):
             ks = _keyset(shp)
             target = None
@@ -124,24 +144,25 @@ class Engine:
                 if (ks and m[1] and len(ks & m[1]) / len(ks | m[1]) >= 0.5) or (not ks and m[0] == shp):
                     target = m; break
             if target is None:
-                target = [shp, set(ks) if ks else None, {}]; merged.append(target)
+                target = [shp, set(ks) if ks else None, {}, set()]; merged.append(target)
             elif ks:
                 target[1] |= ks
+            target[3].add(shp)
             for l, g in labels.items():
                 agg = target[2].setdefault(l, {"count": 0, "rules": collections.Counter(), "examples": []})
                 agg["count"] += g["count"]; agg["rules"].update(g["rules"])
                 agg["examples"] += g["examples"][:2 - len(agg["examples"])]
         out = []
-        for shp, ks, labels in merged:
+        for shp, ks, labels, members in merged:
             big = {l: g for l, g in labels.items() if g["count"] >= min_count}
             if len(big) >= 2:
-                out.append({"shape": shp, "labels": {l: {"count": g["count"], "rules": dict(g["rules"]),
+                out.append({"shape": shp, "member_shapes": sorted(members), "labels": {l: {"count": g["count"], "rules": dict(g["rules"]),
                                                         "examples": [e[:1500] for e in g["examples"]],
                                                         "full_examples": g["examples"]}
                                                     for l, g in big.items()}})
         out.sort(key=lambda c: -sum(g["count"] for g in c["labels"].values()))
-        for i, c in enumerate(out[:max_conflicts]):
-            c["conflict_id"] = f"k{i:03d}"
+        for c in out[:max_conflicts]:
+            c["conflict_id"] = stable_id("k", c["shape"])
         return out[:max_conflicts]
 
     def find_suspects(self, min_count=3, max_suspects=20):
@@ -157,35 +178,32 @@ class Engine:
             shapes = [shape(e) for e in exs]
             prof[r["id"]] = (r, [_keyset(x) for x in shapes], any(x.startswith("JSON") for x in shapes))
         found = {}
-        gdir = os.path.join(self.out_dir, "groups")
-        for fn in sorted(os.listdir(gdir)) if os.path.isdir(gdir) else []:
-            with open(os.path.join(gdir, fn)) as f:
-                for line in f:
-                    rec = json.loads(line)
-                    if rec["rule"] not in prof:
-                        continue
-                    r, keysets, has_json = prof[rec["rule"]]
-                    payload, _ = self.unwrap(rec["raw"])
-                    shp = shape(payload)
-                    ks = _keyset(shp)
-                    if shp.startswith("JSON"):
-                        best = max((len(ks & k) / len(ks | k) for k in keysets if k and ks), default=0.0)
-                        unlike = best < 0.15
-                    else:
-                        unlike = has_json and all(k for k in keysets)   # text line, rule only ever saw JSON
-                    if unlike and shp in self.store.dismissed.get(rec["rule"], ()):
-                        unlike = False
-                    if unlike:
-                        g = found.setdefault(rec["rule"], {"rule": r["id"], "label": r["label"], "pattern": r["pattern"],
-                                                           "count": 0, "examples": [], "rule_examples": [e[:400] for e in
-                                                           (r.get("confirmed_examples") or r.get("examples", []))[:2]]})
-                        g["count"] += 1
-                        g.setdefault("shapes", set()).add(shp)
-                        if len(g["examples"]) < 4:
-                            g["examples"].append(payload)
+        for cur, payload in self._current_routes():
+            if cur["id"] not in prof:
+                continue
+            r, keysets, has_json = prof[cur["id"]]
+            shp = shape(payload)
+            ks = _keyset(shp)
+            if shp.startswith("JSON"):
+                best = max((len(ks & k) / len(ks | k) for k in keysets if k and ks), default=0.0)
+                unlike = best < 0.15
+            else:
+                unlike = has_json and all(k for k in keysets)   # text line, rule only ever saw JSON
+            if unlike and shp in self.store.dismissed.get(r["id"], ()):
+                unlike = False
+            if unlike:
+                g = found.setdefault(r["id"], {"rule": r["id"], "label": r["label"], "pattern": r["pattern"],
+                                               "count": 0, "examples": [], "shapes": set(),
+                                               "rule_examples": [e[:400] for e in
+                                                                 (r.get("confirmed_examples") or r.get("examples", []))[:2]]})
+                g["count"] += 1
+                g["shapes"].add(shp)
+                if len(g["examples"]) < 12:
+                    g["examples"].append(payload)
         out = sorted((g for g in found.values() if g["count"] >= min_count), key=lambda g: -g["count"])[:max_suspects]
-        for i, g in enumerate(out):
-            g["suspect_id"] = f"s{i:03d}"
+        for g in out:
+            g["suspect_id"] = stable_id("s", g["rule"])
+            g["shapes"] = sorted(g["shapes"])
         return out
 
     def build_packet(self, max_clusters=80, examples=4, max_chars=700, json_chars=1500):
@@ -214,7 +232,7 @@ class Engine:
             uniq = list(dict.fromkeys(payloads))
             step = max(1, len(uniq) // examples)
             lim = json_chars if shp.startswith("JSON") else max_chars
-            c = {"cluster_id": f"c{i:03d}", "shape": shp, "member_shapes": members, "count": len(payloads),
+            c = {"cluster_id": stable_id("c", shp), "shape": shp, "member_shapes": members, "count": len(payloads),
                  "examples": [p[:lim] for p in uniq[::step][:examples]]}
             if shp.startswith("JSON"):
                 c["all_keys"] = sorted(_json_keys(uniq[:20]))[:120]

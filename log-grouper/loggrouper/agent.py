@@ -69,7 +69,7 @@ class LearnerTools:
         p = self.packet
         cl = p["clusters"][offset:offset + limit]
         lines = [f"residual_lines={p['residual_lines']} clusters={len(p['clusters'])} "
-                 f"(showing {offset}-{offset + len(cl) - 1}; ignored as previously unidentifiable: "
+                 f"(showing {offset}-{max(offset, offset + len(cl) - 1)}; ignored as previously unidentifiable: "
                  f"{p.get('ignored_unidentifiable_lines', 0)} lines)",
                  "", "CLUSTERS (id | lines | shape | first example):"]
         for c in cl:
@@ -143,7 +143,8 @@ class LearnerTools:
         """Dry-run a regex (Python re.search) before proposing it. Reports: residue lines matched per
         cluster; for `cluster_ids` (clusters/suspects you intend to claim) the lines it MISSES; stored
         examples of `label` it matches (needed before narrowing a rule); collisions with stored examples
-        of other labels, with snippets; and speed."""
+        of other labels, with snippets (kind=confirmed blocks a rule; kind=observed is reported as a
+        dispute and is often a line an over-reaching rule mis-stored - check it); and speed."""
         texts = [i["payload"] for i in self.residual]
         claimed = self._examples_of(cluster_ids)
         bank = [(l, e, "confirmed") for l, exs in self.store.label_examples(confirmed_only=True).items() for e in exs]
@@ -216,9 +217,11 @@ class LearnerTools:
 
     def propose_update(self, rule_id: str, owner_label: str, rationale: str, fixes_conflicts: list[str] = [],
                        evidence: list[str] = [], priority_before: str = "", pattern: str = "", status: str = "") -> str:
-        """Change an existing rule: move it (priority_before), narrow it (pattern) or retire it
-        (status="disabled"). Justify with conflict/suspect ids (fixes_conflicts) and/or evidence: lines the
-        rule wrongly claims, which really belong to owner_label (e.g. a collision from test_pattern)."""
+        """Change an existing rule: move it (priority_before), narrow or widen it (pattern) or retire it
+        (status="disabled"). Every update must be justified with conflict/suspect ids (fixes_conflicts)
+        and/or evidence: lines that should end up in owner_label after the change (e.g. lines the rule
+        wrongly claims, a collision from test_pattern, or residue lines a widened pattern should catch).
+        Accepted only if those lines route better afterwards and no confirmed example is re-routed."""
         if not (priority_before or pattern or status):
             return "ERROR: give priority_before, pattern or status"
         if not (fixes_conflicts or evidence):
@@ -245,21 +248,28 @@ class LearnerTools:
                 n += 1
         self.store.save()
         self._refresh()
-        return f"recorded {n} shapes from {len(cluster_ids)} clusters as unidentifiable; cluster ids renumbered, call overview"
+        return f"recorded {n} shapes from {len(cluster_ids)} clusters as unidentifiable"
 
-    def dismiss_suspects(self, suspect_ids: list[str], reason: str) -> str:
-        """Record suspects you reviewed and judged correctly routed (e.g. another event type of the same
-        product), so they are not raised again in later sessions."""
+    def dismiss(self, ids: list[str], reason: str) -> str:
+        """Record suspects (sXXX) or conflicts (kXXX) you reviewed and judged correctly routed (e.g. another
+        event type of the same product, or two products sharing a format), so later sessions skip them.
+        The reason is kept as a note."""
         n = 0
-        for sid in suspect_ids:
-            g = self.suspects.get(sid)
-            if g:
+        for i in ids:
+            if i in self.suspects:
+                g = self.suspects[i]
                 lst = self.store.dismissed.setdefault(g["rule"], [])
-                lst += [x for x in g.get("shapes", ()) if x not in lst]
-                n += 1
+            elif i in self.conflicts:
+                g = self.conflicts[i]
+                lst = self.store.dismissed.setdefault("__conflicts__", [])
+            else:
+                continue
+            lst += [x for x in g.get("shapes", g.get("member_shapes", [])) if x not in lst]
+            self.store.dismissed.setdefault("__notes__", {})[i] = reason
+            n += 1
         self.store.save()
         self._refresh()
-        return f"dismissed {n} suspects; ids renumbered, call overview"
+        return f"dismissed {n} of {len(ids)} ids"
 
     def submit(self) -> str:
         """Validate all drafted rules/updates and merge the accepted ones into the rule store. Returns
@@ -284,12 +294,12 @@ class LearnerTools:
                            "updates_applied": rep["updated"], "updates_refused": rep["rejected_updates"],
                            "disputed": rep["disputed"], "held_for_human_review": sorted(new_labels),
                            "residue_drained": moved, "residue_left": left,
-                           "note": "cluster ids are renumbered; call overview"}, indent=1)
+                           "note": "ids are stable; resolved clusters/suspects/conflicts drop out of overview"}, indent=1)
 
     def tool_functions(self):
         return [self.overview, self.get_cluster, self.get_conflict, self.list_rules, self.get_label_examples,
                 self.route, self.test_pattern, self.propose_rule, self.propose_update,
-                self.mark_unidentifiable, self.dismiss_suspects, self.submit]
+                self.mark_unidentifiable, self.dismiss, self.submit]
 
 
 def system_prompt():
