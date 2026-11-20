@@ -1,5 +1,5 @@
 {
- "version": 3,
+ "version": 5,
  "mappings": [
   {
    "parser_id": "p00001",
@@ -1422,20 +1422,188 @@
      "to": "metadata.logged_time",
      "from": "vendor.epoch_time",
      "type": "timestamp_ms"
+    },
+    {
+     "to": "evidences[0].src_endpoint.ip",
+     "from": "vendor.src_ip"
+    },
+    {
+     "to": "evidences[0].src_endpoint.port",
+     "from": "vendor.src_port",
+     "type": "integer"
+    },
+    {
+     "to": "evidences[0].dst_endpoint.ip",
+     "from": "vendor.dst_ip"
+    },
+    {
+     "to": "evidences[0].dst_endpoint.port",
+     "from": "vendor.dst_port",
+     "type": "integer"
+    },
+    {
+     "to": "evidences[0].dst_endpoint.mac",
+     "from": "vendor.dhost"
+    },
+    {
+     "to": "evidences[0].connection_info.protocol_name",
+     "from": "vendor.protocol",
+     "map": {
+      "tcp": "tcp",
+      "udp": "udp",
+      "icmp": "icmp",
+      "tcp/ip": "tcp",
+      "udp/ip": "udp",
+      "sctp": "sctp"
+     },
+     "type": "lower"
+    },
+    {
+     "to": "evidences[0].connection_info.protocol_num",
+     "from": "vendor.protocol",
+     "map": {
+      "tcp": 6,
+      "udp": 17,
+      "icmp": 1,
+      "tcp/ip": 6,
+      "udp/ip": 17,
+      "sctp": 132
+     },
+     "type": "integer"
+    },
+    {
+     "to": "evidences[0].connection_info.direction_id",
+     "from": "vendor.direction",
+     "map": {
+      "ingress": 1,
+      "egress": 2
+     },
+     "default": 0
     }
    ],
    "unmapped": true,
-   "id": "m00008",
    "label": "cisco_meraki",
    "format": "ids_alerts",
    "status": "active",
-   "origin": "mapping-agent:20261120T081841",
-   "rationale": "Meraki IDS alerts -> Detection Finding; signature as finding uid/analytic uid, message as title, Snort priority 1-4 -> High..Info, decision -> action/disposition. Network tuple has no top-level slot in 2004 (only evidences[] arrays which the spec cannot build), so stays in unmapped.",
+   "origin": "mapping-agent:20261120T084800",
+   "rationale": "Meraki IDS alerts -> Detection Finding; signature as finding uid/analytic uid, message as title, Snort priority 1-4 -> High..Info, decision -> action/disposition. Network context now in evidences[0]: src/dst ip+port, dhost MAC, protocol and ingress/egress direction.",
    "metrics": {
     "events": 3,
     "valid_rate": 1.0,
-    "mapped_field_share": 0.54
-   }
+    "mapped_field_share": 0.92
+   },
+   "id": "m00008",
+   "history": [
+    {
+     "origin": "mapping-agent:20261120T084800",
+     "previous": {
+      "class_uid": 2004,
+      "fields": [
+       {
+        "to": "activity_id",
+        "value": 1
+       },
+       {
+        "to": "severity_id",
+        "from": "vendor.priority",
+        "map": {
+         "1": 4,
+         "2": 3,
+         "3": 2,
+         "4": 1
+        },
+        "default": 0
+       },
+       {
+        "to": "action_id",
+        "from": "vendor.decision",
+        "map": {
+         "allowed": 1,
+         "blocked": 2
+        }
+       },
+       {
+        "to": "disposition_id",
+        "from": "vendor.decision",
+        "map": {
+         "allowed": 1,
+         "blocked": 2
+        }
+       },
+       {
+        "to": "is_alert",
+        "value": true
+       },
+       {
+        "to": "device.type_id",
+        "value": 9
+       },
+       {
+        "to": "metadata.product.vendor_name",
+        "value": "Cisco"
+       },
+       {
+        "to": "metadata.product.name",
+        "value": "Meraki"
+       },
+       {
+        "to": "time",
+        "from": [
+         "vendor.timestamp",
+         "vendor.epoch_time",
+         "@timestamp"
+        ],
+        "type": "timestamp_ms"
+       },
+       {
+        "to": "device.hostname",
+        "from": "vendor.device_name"
+       },
+       {
+        "to": "metadata.log_name",
+        "from": "vendor.category"
+       },
+       {
+        "to": "metadata.event_code",
+        "from": "vendor.event_type"
+       },
+       {
+        "to": "finding_info.uid",
+        "from": "vendor.signature"
+       },
+       {
+        "to": "finding_info.title",
+        "from": [
+         "vendor.message",
+         "vendor.signature"
+        ]
+       },
+       {
+        "to": "finding_info.analytic.uid",
+        "from": "vendor.signature"
+       },
+       {
+        "to": "finding_info.analytic.type_id",
+        "value": 1
+       },
+       {
+        "to": "finding_info.analytic.name",
+        "from": "vendor.message"
+       },
+       {
+        "to": "message",
+        "from": "vendor.message"
+       },
+       {
+        "to": "metadata.logged_time",
+        "from": "vendor.epoch_time",
+        "type": "timestamp_ms"
+       }
+      ]
+     },
+     "previous_review": null
+    }
+   ]
   },
   {
    "parser_id": "p00009",
@@ -1530,20 +1698,147 @@
     {
      "to": "status_detail",
      "from": "vendor.disposition"
+    },
+    {
+     "to": "evidences[0].src_endpoint.ip",
+     "from": "vendor.src_ip"
+    },
+    {
+     "to": "evidences[0].src_endpoint.port",
+     "from": "vendor.src_port",
+     "type": "integer"
+    },
+    {
+     "to": "evidences[0].src_endpoint.mac",
+     "from": "vendor.mac"
+    },
+    {
+     "to": "evidences[0].dst_endpoint.ip",
+     "from": "vendor.dst_ip"
+    },
+    {
+     "to": "evidences[0].dst_endpoint.port",
+     "from": "vendor.dst_port",
+     "type": "integer"
+    },
+    {
+     "to": "evidences[0].url.url_string",
+     "from": "vendor.url"
     }
    ],
    "unmapped": true,
-   "id": "m00009",
    "label": "cisco_meraki",
    "format": "security_event",
    "status": "active",
-   "origin": "mapping-agent:20261120T081841",
-   "rationale": "Meraki AMP security_filtering_file_scanned -> Detection Finding; sha256 as uid, threat name as title, url as desc, action block -> Denied/Blocked, malicious -> High.",
+   "origin": "mapping-agent:20261120T084800",
+   "rationale": "Meraki AMP security_filtering_file_scanned -> Detection Finding; sha256 as uid, threat name as title, url as desc, action block -> Denied/Blocked, malicious -> High. Network context now in evidences[0]: client ip/port/MAC as src, server ip/port as dst, scanned URL.",
    "metrics": {
     "events": 1,
     "valid_rate": 1.0,
-    "mapped_field_share": 0.6
-   }
+    "mapped_field_share": 0.933
+   },
+   "id": "m00009",
+   "history": [
+    {
+     "origin": "mapping-agent:20261120T084800",
+     "previous": {
+      "class_uid": 2004,
+      "fields": [
+       {
+        "to": "activity_id",
+        "value": 1
+       },
+       {
+        "to": "severity_id",
+        "from": "vendor.disposition",
+        "map": {
+         "malicious": 4,
+         "clean": 1,
+         "unknown": 2
+        },
+        "default": 3
+       },
+       {
+        "to": "action_id",
+        "from": "vendor.action",
+        "map": {
+         "allow": 1,
+         "block": 2
+        }
+       },
+       {
+        "to": "disposition_id",
+        "from": "vendor.action",
+        "map": {
+         "allow": 1,
+         "block": 2
+        }
+       },
+       {
+        "to": "is_alert",
+        "value": true
+       },
+       {
+        "to": "device.type_id",
+        "value": 9
+       },
+       {
+        "to": "metadata.product.vendor_name",
+        "value": "Cisco"
+       },
+       {
+        "to": "metadata.product.name",
+        "value": "Meraki"
+       },
+       {
+        "to": "time",
+        "from": [
+         "vendor.epoch_time",
+         "@timestamp"
+        ],
+        "type": "timestamp_ms"
+       },
+       {
+        "to": "device.hostname",
+        "from": "vendor.device_name"
+       },
+       {
+        "to": "metadata.log_name",
+        "from": "vendor.category"
+       },
+       {
+        "to": "metadata.event_code",
+        "from": "vendor.event_type"
+       },
+       {
+        "to": "finding_info.uid",
+        "from": "vendor.sha256"
+       },
+       {
+        "to": "finding_info.title",
+        "from": "vendor.name"
+       },
+       {
+        "to": "finding_info.desc",
+        "from": "vendor.url"
+       },
+       {
+        "to": "finding_info.analytic.type_id",
+        "value": 99
+       },
+       {
+        "to": "finding_info.analytic.name",
+        "value": "AMP file scan"
+       },
+       {
+        "to": "status_detail",
+        "from": "vendor.disposition"
+       }
+      ]
+     },
+     "previous_review": null
+    }
+   ]
   },
   {
    "parser_id": "p00010",
@@ -1626,20 +1921,117 @@
     {
      "to": "finding_info.analytic.name",
      "value": "Air Marshal"
+    },
+    {
+     "to": "evidences[0].src_endpoint.mac",
+     "from": "vendor.src"
+    },
+    {
+     "to": "evidences[0].dst_endpoint.mac",
+     "from": "vendor.dst"
     }
    ],
    "unmapped": true,
-   "id": "m00010",
    "label": "cisco_meraki",
    "format": "airmarshal_events",
    "status": "active",
-   "origin": "mapping-agent:20261120T081841",
-   "rationale": "Meraki Air Marshal (rogue SSID / SSID spoofing) -> Detection Finding (WIDS alert); BSSID as finding uid, type as title, disposition Detected, action Observed; radio details unmapped.",
+   "origin": "mapping-agent:20261120T084800",
+   "rationale": "Meraki Air Marshal (rogue SSID / SSID spoofing) -> Detection Finding (WIDS alert); BSSID as finding uid, type as title, disposition Detected, action Observed; radio details unmapped. Network context now in evidences[0]: 802.11 transmitter/receiver MACs as src/dst endpoint.",
    "metrics": {
     "events": 84,
     "valid_rate": 1.0,
-    "mapped_field_share": 0.374
-   }
+    "mapped_field_share": 0.514
+   },
+   "id": "m00010",
+   "history": [
+    {
+     "origin": "mapping-agent:20261120T084800",
+     "previous": {
+      "class_uid": 2004,
+      "fields": [
+       {
+        "to": "activity_id",
+        "value": 1
+       },
+       {
+        "to": "severity_id",
+        "from": "vendor.type",
+        "map": {
+         "rogue_ssid_detected": 3,
+         "ssid_spoofing_detected": 4,
+         "malicious_ssid_detected": 4
+        },
+        "default": 3
+       },
+       {
+        "to": "action_id",
+        "value": 3
+       },
+       {
+        "to": "disposition_id",
+        "value": 15
+       },
+       {
+        "to": "is_alert",
+        "value": true
+       },
+       {
+        "to": "device.type_id",
+        "value": 0
+       },
+       {
+        "to": "metadata.product.vendor_name",
+        "value": "Cisco"
+       },
+       {
+        "to": "metadata.product.name",
+        "value": "Meraki"
+       },
+       {
+        "to": "time",
+        "from": [
+         "vendor.epoch_time",
+         "@timestamp"
+        ],
+        "type": "timestamp_ms"
+       },
+       {
+        "to": "device.hostname",
+        "from": "vendor.device_name"
+       },
+       {
+        "to": "metadata.log_name",
+        "from": "vendor.category"
+       },
+       {
+        "to": "metadata.event_code",
+        "from": "vendor.type"
+       },
+       {
+        "to": "finding_info.uid",
+        "from": "vendor.bssid"
+       },
+       {
+        "to": "finding_info.title",
+        "from": "vendor.type"
+       },
+       {
+        "to": "finding_info.desc",
+        "from": "vendor.ssid"
+       },
+       {
+        "to": "finding_info.analytic.type_id",
+        "value": 1
+       },
+       {
+        "to": "finding_info.analytic.name",
+        "value": "Air Marshal"
+       }
+      ]
+     },
+     "previous_review": null
+    }
+   ]
   },
   {
    "parser_id": "p00011",
@@ -8348,12 +8740,8 @@
    ]
   },
   {
-   "id": "m00037",
    "parser_id": "p00048",
-   "label": "sophos_xg",
-   "format": "atp_kv",
    "class_uid": 2004,
-   "unmapped": true,
    "fields": [
     {
      "to": "time",
@@ -8497,16 +8885,232 @@
     {
      "to": "actor.user.name",
      "from": "vendor.user_name"
+    },
+    {
+     "to": "evidences[0].src_endpoint.ip",
+     "from": [
+      "vendor.sourceip",
+      "vendor.src_ip"
+     ]
+    },
+    {
+     "to": "evidences[0].src_endpoint.port",
+     "from": "vendor.src_port",
+     "type": "integer"
+    },
+    {
+     "to": "evidences[0].dst_endpoint.ip",
+     "from": [
+      "vendor.destinationip",
+      "vendor.dst_ip"
+     ]
+    },
+    {
+     "to": "evidences[0].dst_endpoint.port",
+     "from": "vendor.dst_port",
+     "type": "integer"
+    },
+    {
+     "to": "evidences[0].connection_info.protocol_name",
+     "from": "vendor.protocol",
+     "map": {
+      "tcp": "tcp",
+      "udp": "udp",
+      "icmp": "icmp",
+      "tcp/ip": "tcp",
+      "udp/ip": "udp",
+      "sctp": "sctp"
+     },
+     "type": "lower"
+    },
+    {
+     "to": "evidences[0].connection_info.protocol_num",
+     "from": "vendor.protocol",
+     "map": {
+      "tcp": 6,
+      "udp": 17,
+      "icmp": 1,
+      "tcp/ip": 6,
+      "udp/ip": 17,
+      "sctp": 132
+     },
+     "type": "integer"
+    },
+    {
+     "to": "evidences[0].connection_info.direction_id",
+     "value": 0
+    },
+    {
+     "to": "evidences[0].url.url_string",
+     "from": "vendor.url"
     }
    ],
+   "unmapped": true,
+   "label": "sophos_xg",
+   "format": "atp_kv",
    "status": "active",
-   "origin": "mapping-agent:20261120T082234",
-   "rationale": "XG ATP (C2/malware callback) -> Detection Finding/Create; eventid = finding uid, threatname = title/analytic; Drop -> Denied/Dropped. Network endpoints cannot be placed (evidences is an array, spec cannot build arrays) so stay in unmapped.",
+   "origin": "mapping-agent:20261120T084800",
+   "rationale": "XG ATP (C2/malware callback) -> Detection Finding/Create; eventid = finding uid, threatname = title/analytic; Drop -> Denied/Dropped. Network context now in evidences[0]: src/dst ip+port, protocol (direction unknown), URL.",
    "metrics": {
     "events": 4,
     "valid_rate": 1.0,
-    "mapped_field_share": 0.588
-   }
+    "mapped_field_share": 0.824
+   },
+   "id": "m00037",
+   "history": [
+    {
+     "origin": "mapping-agent:20261120T084800",
+     "previous": {
+      "class_uid": 2004,
+      "fields": [
+       {
+        "to": "time",
+        "from": "@timestamp",
+        "type": "timestamp_ms"
+       },
+       {
+        "to": "metadata.original_time",
+        "from": "vendor.timestamp"
+       },
+       {
+        "to": "metadata.product.vendor_name",
+        "value": "Sophos"
+       },
+       {
+        "to": "metadata.product.name",
+        "value": "Sophos Firewall"
+       },
+       {
+        "to": "metadata.product.uid",
+        "from": "vendor.device"
+       },
+       {
+        "to": "metadata.event_code",
+        "from": "vendor.log_id",
+        "type": "string"
+       },
+       {
+        "to": "metadata.log_name",
+        "from": "vendor.log_type"
+       },
+       {
+        "to": "metadata.log_provider",
+        "from": "vendor.log_component"
+       },
+       {
+        "to": "metadata.log_version",
+        "from": "vendor.log_version",
+        "type": "string"
+       },
+       {
+        "to": "metadata.log_level",
+        "from": [
+         "vendor.severity",
+         "vendor.priority"
+        ]
+       },
+       {
+        "to": "severity_id",
+        "from": [
+         "vendor.severity",
+         "vendor.priority"
+        ],
+        "map": {
+         "Emergency": 6,
+         "Alert": 5,
+         "Critical": 5,
+         "Error": 4,
+         "Warning": 3,
+         "Notice": 2,
+         "Information": 1,
+         "Informational": 1,
+         "Debug": 1
+        },
+        "default": 0
+       },
+       {
+        "to": "device.name",
+        "from": "vendor.device_name"
+       },
+       {
+        "to": "device.uid",
+        "from": [
+         "vendor.device_serial_id",
+         "vendor.device_id"
+        ],
+        "type": "string"
+       },
+       {
+        "to": "device.model",
+        "from": "vendor.device_model"
+       },
+       {
+        "to": "device.hostname",
+        "from": "vendor.syslog_host"
+       },
+       {
+        "to": "device.type_id",
+        "value": 9
+       },
+       {
+        "to": "activity_id",
+        "value": 1
+       },
+       {
+        "to": "is_alert",
+        "value": true
+       },
+       {
+        "to": "action_id",
+        "from": "vendor.log_subtype",
+        "map": {
+         "Drop": 2,
+         "Alert": 3,
+         "Allow": 1
+        }
+       },
+       {
+        "to": "disposition_id",
+        "from": "vendor.log_subtype",
+        "map": {
+         "Drop": 6,
+         "Alert": 19,
+         "Allow": 1
+        }
+       },
+       {
+        "to": "finding_info.uid",
+        "from": "vendor.eventid"
+       },
+       {
+        "to": "finding_info.title",
+        "from": "vendor.threatname"
+       },
+       {
+        "to": "finding_info.desc",
+        "from": "vendor.url"
+       },
+       {
+        "to": "finding_info.analytic.name",
+        "from": "vendor.threatname"
+       },
+       {
+        "to": "finding_info.analytic.type_id",
+        "value": 1
+       },
+       {
+        "to": "finding_info.analytic.category",
+        "from": "vendor.eventtype"
+       },
+       {
+        "to": "actor.user.name",
+        "from": "vendor.user_name"
+       }
+      ]
+     },
+     "previous_review": null
+    }
+   ]
   },
   {
    "id": "m00038",
@@ -8737,12 +9341,8 @@
    }
   },
   {
-   "id": "m00039",
    "parser_id": "p00050",
-   "label": "sophos_xg",
-   "format": "sandbox_kv",
    "class_uid": 2004,
-   "unmapped": true,
    "fields": [
     {
      "to": "time",
@@ -8895,24 +9495,195 @@
     {
      "to": "actor.user.name",
      "from": "vendor.user_name"
+    },
+    {
+     "to": "evidences[0].src_endpoint.ip",
+     "from": "vendor.src_ip"
+    },
+    {
+     "to": "evidences[0].dst_endpoint.ip",
+     "from": "vendor.dst_ip"
     }
    ],
+   "unmapped": true,
+   "label": "sophos_xg",
+   "format": "sandbox_kv",
    "status": "active",
-   "origin": "mapping-agent:20261120T082234",
-   "rationale": "XG Sandstorm verdicts -> Detection Finding/Create; sha1 = finding uid (log_id fallback for an empty record), filename = title, reason -> verdict (cached malicious = True Positive) + desc; Denied/Allowed/Pending -> Blocked/Allowed/Delayed.",
+   "origin": "mapping-agent:20261120T084800",
+   "rationale": "XG Sandstorm verdicts -> Detection Finding/Create; sha1 = finding uid (log_id fallback for an empty record), filename = title, reason -> verdict (cached malicious = True Positive) + desc; Denied/Allowed/Pending -> Blocked/Allowed/Delayed. Network context now in evidences[0]: src/dst ip.",
    "metrics": {
     "events": 5,
     "valid_rate": 1.0,
-    "mapped_field_share": 0.631
-   }
+    "mapped_field_share": 0.672
+   },
+   "id": "m00039",
+   "history": [
+    {
+     "origin": "mapping-agent:20261120T084800",
+     "previous": {
+      "class_uid": 2004,
+      "fields": [
+       {
+        "to": "time",
+        "from": "@timestamp",
+        "type": "timestamp_ms"
+       },
+       {
+        "to": "metadata.original_time",
+        "from": "vendor.timestamp"
+       },
+       {
+        "to": "metadata.product.vendor_name",
+        "value": "Sophos"
+       },
+       {
+        "to": "metadata.product.name",
+        "value": "Sophos Firewall"
+       },
+       {
+        "to": "metadata.product.uid",
+        "from": "vendor.device"
+       },
+       {
+        "to": "metadata.event_code",
+        "from": "vendor.log_id",
+        "type": "string"
+       },
+       {
+        "to": "metadata.log_name",
+        "from": "vendor.log_type"
+       },
+       {
+        "to": "metadata.log_provider",
+        "from": "vendor.log_component"
+       },
+       {
+        "to": "metadata.log_version",
+        "from": "vendor.log_version",
+        "type": "string"
+       },
+       {
+        "to": "metadata.log_level",
+        "from": [
+         "vendor.severity",
+         "vendor.priority"
+        ]
+       },
+       {
+        "to": "severity_id",
+        "from": [
+         "vendor.severity",
+         "vendor.priority"
+        ],
+        "map": {
+         "Emergency": 6,
+         "Alert": 5,
+         "Critical": 5,
+         "Error": 4,
+         "Warning": 3,
+         "Notice": 2,
+         "Information": 1,
+         "Informational": 1,
+         "Debug": 1
+        },
+        "default": 0
+       },
+       {
+        "to": "device.name",
+        "from": "vendor.device_name"
+       },
+       {
+        "to": "device.uid",
+        "from": [
+         "vendor.device_serial_id",
+         "vendor.device_id"
+        ],
+        "type": "string"
+       },
+       {
+        "to": "device.model",
+        "from": "vendor.device_model"
+       },
+       {
+        "to": "device.hostname",
+        "from": "vendor.syslog_host"
+       },
+       {
+        "to": "device.type_id",
+        "value": 9
+       },
+       {
+        "to": "activity_id",
+        "value": 1
+       },
+       {
+        "to": "is_alert",
+        "from": "vendor.reason",
+        "map": {
+         "cached malicious": true,
+         "malicious": true
+        }
+       },
+       {
+        "to": "action_id",
+        "from": "vendor.log_subtype",
+        "map": {
+         "Denied": 2,
+         "Allowed": 1,
+         "Pending": 2
+        }
+       },
+       {
+        "to": "disposition_id",
+        "from": "vendor.log_subtype",
+        "map": {
+         "Denied": 2,
+         "Allowed": 1,
+         "Pending": 14
+        }
+       },
+       {
+        "to": "verdict_id",
+        "from": "vendor.reason",
+        "map": {
+         "cached malicious": 2,
+         "malicious": 2,
+         "cached clean": 5,
+         "clean": 5,
+         "pending": 0,
+         "eligible": 0
+        },
+        "default": 0
+       },
+       {
+        "to": "finding_info.uid",
+        "from": [
+         "vendor.sha1sum",
+         "vendor.filename",
+         "vendor.log_id"
+        ]
+       },
+       {
+        "to": "finding_info.title",
+        "from": "vendor.filename"
+       },
+       {
+        "to": "finding_info.desc",
+        "from": "vendor.reason"
+       },
+       {
+        "to": "actor.user.name",
+        "from": "vendor.user_name"
+       }
+      ]
+     },
+     "previous_review": null
+    }
+   ]
   },
   {
-   "id": "m00040",
    "parser_id": "p00051",
-   "label": "sophos_xg",
-   "format": "idp_kv",
    "class_uid": 2004,
-   "unmapped": true,
    "fields": [
     {
      "to": "time",
@@ -9095,24 +9866,261 @@
     {
      "to": "actor.user.name",
      "from": "vendor.user_name"
+    },
+    {
+     "to": "evidences[0].src_endpoint.ip",
+     "from": "vendor.src_ip"
+    },
+    {
+     "to": "evidences[0].src_endpoint.port",
+     "from": "vendor.src_port",
+     "type": "integer"
+    },
+    {
+     "to": "evidences[0].dst_endpoint.ip",
+     "from": "vendor.dst_ip"
+    },
+    {
+     "to": "evidences[0].dst_endpoint.port",
+     "from": "vendor.dst_port",
+     "type": "integer"
+    },
+    {
+     "to": "evidences[0].connection_info.protocol_name",
+     "from": "vendor.protocol",
+     "map": {
+      "tcp": "tcp",
+      "udp": "udp",
+      "icmp": "icmp",
+      "sctp": "sctp"
+     },
+     "type": "lower"
+    },
+    {
+     "to": "evidences[0].connection_info.protocol_num",
+     "from": "vendor.protocol",
+     "map": {
+      "tcp": 6,
+      "udp": 17,
+      "icmp": 1,
+      "sctp": 132
+     },
+     "type": "integer"
+    },
+    {
+     "to": "evidences[0].connection_info.direction_id",
+     "value": 0
     }
    ],
+   "unmapped": true,
+   "label": "sophos_xg",
+   "format": "idp_kv",
    "status": "active",
-   "origin": "mapping-agent:20261120T082234",
-   "rationale": "XG IPS -> Detection Finding/Create; signature -> finding uid/title/analytic (Rule), classification -> desc; Drop/Detect -> Dropped/Detected; severity from rule_priority (1=High). Endpoints stay unmapped (evidences array not buildable).",
+   "origin": "mapping-agent:20261120T084800",
+   "rationale": "XG IPS -> Detection Finding/Create; signature -> finding uid/title/analytic (Rule), classification -> desc; Drop/Detect -> Dropped/Detected; severity from rule_priority (1=High). Network context now in evidences[0]: src/dst ip+port, protocol (direction unknown).",
    "metrics": {
     "events": 5,
     "valid_rate": 1.0,
-    "mapped_field_share": 0.54
-   }
+    "mapped_field_share": 0.72
+   },
+   "id": "m00040",
+   "history": [
+    {
+     "origin": "mapping-agent:20261120T084800",
+     "previous": {
+      "class_uid": 2004,
+      "fields": [
+       {
+        "to": "time",
+        "from": "@timestamp",
+        "type": "timestamp_ms"
+       },
+       {
+        "to": "metadata.original_time",
+        "from": "vendor.timestamp"
+       },
+       {
+        "to": "metadata.product.vendor_name",
+        "value": "Sophos"
+       },
+       {
+        "to": "metadata.product.name",
+        "value": "Sophos Firewall"
+       },
+       {
+        "to": "metadata.product.uid",
+        "from": "vendor.device"
+       },
+       {
+        "to": "metadata.event_code",
+        "from": "vendor.log_id",
+        "type": "string"
+       },
+       {
+        "to": "metadata.log_name",
+        "from": "vendor.log_type"
+       },
+       {
+        "to": "metadata.log_provider",
+        "from": "vendor.log_component"
+       },
+       {
+        "to": "metadata.log_version",
+        "from": "vendor.log_version",
+        "type": "string"
+       },
+       {
+        "to": "metadata.log_level",
+        "from": [
+         "vendor.severity",
+         "vendor.priority"
+        ]
+       },
+       {
+        "to": "severity_id",
+        "from": [
+         "vendor.severity",
+         "vendor.priority"
+        ],
+        "map": {
+         "Emergency": 6,
+         "Alert": 5,
+         "Critical": 5,
+         "Error": 4,
+         "Warning": 3,
+         "Notice": 2,
+         "Information": 1,
+         "Informational": 1,
+         "Debug": 1
+        },
+        "default": 0
+       },
+       {
+        "to": "device.name",
+        "from": "vendor.device_name"
+       },
+       {
+        "to": "device.uid",
+        "from": [
+         "vendor.device_serial_id",
+         "vendor.device_id"
+        ],
+        "type": "string"
+       },
+       {
+        "to": "device.model",
+        "from": "vendor.device_model"
+       },
+       {
+        "to": "device.hostname",
+        "from": "vendor.syslog_host"
+       },
+       {
+        "to": "device.type_id",
+        "value": 9
+       },
+       {
+        "to": "activity_id",
+        "value": 1
+       },
+       {
+        "to": "is_alert",
+        "value": true
+       },
+       {
+        "to": "action_id",
+        "from": "vendor.log_subtype",
+        "map": {
+         "Drop": 2,
+         "Detect": 3,
+         "Reset": 2
+        }
+       },
+       {
+        "to": "disposition_id",
+        "from": "vendor.log_subtype",
+        "map": {
+         "Drop": 6,
+         "Detect": 15,
+         "Reset": 21
+        }
+       },
+       {
+        "to": "severity_id",
+        "from": [
+         "vendor.rule_priority",
+         "vendor.priority"
+        ],
+        "map": {
+         "1": 4,
+         "2": 3,
+         "3": 2,
+         "4": 1,
+         "Emergency": 6,
+         "Alert": 5,
+         "Critical": 5,
+         "Error": 4,
+         "Warning": 3,
+         "Notice": 2,
+         "Information": 1,
+         "Informational": 1,
+         "Debug": 1
+        },
+        "default": 0
+       },
+       {
+        "to": "finding_info.uid",
+        "from": "vendor.signature_id",
+        "type": "string"
+       },
+       {
+        "to": "finding_info.title",
+        "from": "vendor.signature_msg"
+       },
+       {
+        "to": "finding_info.desc",
+        "from": "vendor.classification"
+       },
+       {
+        "to": "finding_info.analytic.uid",
+        "from": "vendor.signature_id",
+        "type": "string"
+       },
+       {
+        "to": "finding_info.analytic.name",
+        "from": "vendor.signature_msg"
+       },
+       {
+        "to": "finding_info.analytic.category",
+        "from": "vendor.category"
+       },
+       {
+        "to": "finding_info.analytic.type_id",
+        "value": 1
+       },
+       {
+        "to": "policy.uid",
+        "from": "vendor.idp_policy_id",
+        "type": "string"
+       },
+       {
+        "to": "firewall_rule.uid",
+        "from": "vendor.fw_rule_id",
+        "type": "string"
+       },
+       {
+        "to": "actor.user.name",
+        "from": "vendor.user_name"
+       }
+      ]
+     },
+     "previous_review": null
+    }
+   ]
   },
   {
-   "id": "m00041",
    "parser_id": "p00052",
-   "label": "sophos_xg",
-   "format": "anti_virus_kv",
    "class_uid": 2004,
-   "unmapped": true,
    "fields": [
     {
      "to": "time",
@@ -9266,16 +10274,244 @@
      "to": "firewall_rule.uid",
      "from": "vendor.fw_rule_id",
      "type": "string"
+    },
+    {
+     "to": "evidences[0].src_endpoint.ip",
+     "from": "vendor.src_ip"
+    },
+    {
+     "to": "evidences[0].src_endpoint.port",
+     "from": "vendor.src_port",
+     "type": "integer"
+    },
+    {
+     "to": "evidences[0].dst_endpoint.ip",
+     "from": "vendor.dst_ip"
+    },
+    {
+     "to": "evidences[0].dst_endpoint.port",
+     "from": "vendor.dst_port",
+     "type": "integer"
+    },
+    {
+     "to": "evidences[0].connection_info.protocol_name",
+     "from": "vendor.protocol",
+     "map": {
+      "tcp": "tcp",
+      "udp": "udp",
+      "icmp": "icmp",
+      "tcp/ip": "tcp",
+      "udp/ip": "udp",
+      "sctp": "sctp"
+     },
+     "type": "lower"
+    },
+    {
+     "to": "evidences[0].connection_info.protocol_num",
+     "from": "vendor.protocol",
+     "map": {
+      "tcp": 6,
+      "udp": 17,
+      "icmp": 1,
+      "tcp/ip": 6,
+      "udp/ip": 17,
+      "sctp": 132
+     },
+     "type": "integer"
+    },
+    {
+     "to": "evidences[0].connection_info.direction_id",
+     "value": 0
+    },
+    {
+     "to": "evidences[0].url.url_string",
+     "from": "vendor.url"
+    },
+    {
+     "to": "evidences[0].url.hostname",
+     "from": "vendor.domainname"
+    },
+    {
+     "to": "evidences[0].http_request.user_agent",
+     "from": "vendor.user_agent"
     }
    ],
+   "unmapped": true,
+   "label": "sophos_xg",
+   "format": "anti_virus_kv",
    "status": "active",
-   "origin": "mapping-agent:20261120T082234",
-   "rationale": "XG Anti-Virus -> Detection Finding/Create; virus = title/analytic, mailid/file/url = finding uid, Virus -> Detected (no explicit action field), Allowed -> Allowed; severity from priority.",
+   "origin": "mapping-agent:20261120T084800",
+   "rationale": "XG Anti-Virus -> Detection Finding/Create; virus = title/analytic, mailid/file/url = finding uid, Virus -> Detected (no explicit action field), Allowed -> Allowed; severity from priority. Network context now in evidences[0]: src/dst ip+port, protocol (direction unknown), URL/domain, user agent.",
    "metrics": {
     "events": 11,
     "valid_rate": 1.0,
-    "mapped_field_share": 0.422
-   }
+    "mapped_field_share": 0.618
+   },
+   "id": "m00041",
+   "history": [
+    {
+     "origin": "mapping-agent:20261120T084800",
+     "previous": {
+      "class_uid": 2004,
+      "fields": [
+       {
+        "to": "time",
+        "from": "@timestamp",
+        "type": "timestamp_ms"
+       },
+       {
+        "to": "metadata.original_time",
+        "from": "vendor.timestamp"
+       },
+       {
+        "to": "metadata.product.vendor_name",
+        "value": "Sophos"
+       },
+       {
+        "to": "metadata.product.name",
+        "value": "Sophos Firewall"
+       },
+       {
+        "to": "metadata.product.uid",
+        "from": "vendor.device"
+       },
+       {
+        "to": "metadata.event_code",
+        "from": "vendor.log_id",
+        "type": "string"
+       },
+       {
+        "to": "metadata.log_name",
+        "from": "vendor.log_type"
+       },
+       {
+        "to": "metadata.log_provider",
+        "from": "vendor.log_component"
+       },
+       {
+        "to": "metadata.log_version",
+        "from": "vendor.log_version",
+        "type": "string"
+       },
+       {
+        "to": "metadata.log_level",
+        "from": [
+         "vendor.severity",
+         "vendor.priority"
+        ]
+       },
+       {
+        "to": "severity_id",
+        "from": [
+         "vendor.severity",
+         "vendor.priority"
+        ],
+        "map": {
+         "Emergency": 6,
+         "Alert": 5,
+         "Critical": 5,
+         "Error": 4,
+         "Warning": 3,
+         "Notice": 2,
+         "Information": 1,
+         "Informational": 1,
+         "Debug": 1
+        },
+        "default": 0
+       },
+       {
+        "to": "device.name",
+        "from": "vendor.device_name"
+       },
+       {
+        "to": "device.uid",
+        "from": [
+         "vendor.device_serial_id",
+         "vendor.device_id"
+        ],
+        "type": "string"
+       },
+       {
+        "to": "device.model",
+        "from": "vendor.device_model"
+       },
+       {
+        "to": "device.hostname",
+        "from": "vendor.syslog_host"
+       },
+       {
+        "to": "device.type_id",
+        "value": 9
+       },
+       {
+        "to": "activity_id",
+        "value": 1
+       },
+       {
+        "to": "is_alert",
+        "from": "vendor.log_subtype",
+        "map": {
+         "Virus": true
+        }
+       },
+       {
+        "to": "disposition_id",
+        "from": "vendor.log_subtype",
+        "map": {
+         "Virus": 15,
+         "Allowed": 1
+        }
+       },
+       {
+        "to": "finding_info.uid",
+        "from": [
+         "vendor.mailid",
+         "vendor.file_path",
+         "vendor.url"
+        ]
+       },
+       {
+        "to": "finding_info.title",
+        "from": "vendor.virus"
+       },
+       {
+        "to": "finding_info.desc",
+        "from": "vendor.quarantine_reason"
+       },
+       {
+        "to": "finding_info.analytic.name",
+        "from": "vendor.virus"
+       },
+       {
+        "to": "finding_info.analytic.type_id",
+        "value": 5
+       },
+       {
+        "to": "finding_info.src_url",
+        "from": "vendor.url"
+       },
+       {
+        "to": "actor.user.name",
+        "from": "vendor.user_name"
+       },
+       {
+        "to": "status_code",
+        "from": "vendor.status_code"
+       },
+       {
+        "to": "policy.name",
+        "from": "vendor.av_policy_name"
+       },
+       {
+        "to": "firewall_rule.uid",
+        "from": "vendor.fw_rule_id",
+        "type": "string"
+       }
+      ]
+     },
+     "previous_review": null
+    }
+   ]
   },
   {
    "id": "m00042",
@@ -12631,20 +13867,274 @@
     {
      "to": "device.type_id",
      "value": 9
+    },
+    {
+     "to": "evidences[0].src_endpoint.ip",
+     "from": "vendor.src_ip"
+    },
+    {
+     "to": "evidences[0].src_endpoint.port",
+     "from": "vendor.src_port",
+     "type": "integer"
+    },
+    {
+     "to": "evidences[0].dst_endpoint.ip",
+     "from": "vendor.dst_ip"
+    },
+    {
+     "to": "evidences[0].dst_endpoint.port",
+     "from": "vendor.dst_port",
+     "type": "integer"
+    },
+    {
+     "to": "evidences[0].src_endpoint.zone",
+     "from": "vendor.src_zone"
+    },
+    {
+     "to": "evidences[0].dst_endpoint.zone",
+     "from": "vendor.dst_zone"
+    },
+    {
+     "to": "evidences[0].src_endpoint.interface_name",
+     "from": "vendor.inbound_interface"
+    },
+    {
+     "to": "evidences[0].dst_endpoint.interface_name",
+     "from": "vendor.outbound_interface"
+    },
+    {
+     "to": "evidences[0].connection_info.protocol_name",
+     "from": "vendor.protocol",
+     "map": {
+      "tcp": "tcp",
+      "udp": "udp",
+      "icmp": "icmp",
+      "tcp/ip": "tcp",
+      "udp/ip": "udp",
+      "sctp": "sctp"
+     },
+     "type": "lower"
+    },
+    {
+     "to": "evidences[0].connection_info.protocol_num",
+     "from": "vendor.protocol",
+     "map": {
+      "tcp": 6,
+      "udp": 17,
+      "icmp": 1,
+      "tcp/ip": 6,
+      "udp/ip": 17,
+      "sctp": 132
+     },
+     "type": "integer"
+    },
+    {
+     "to": "evidences[0].connection_info.direction_id",
+     "value": 0
+    },
+    {
+     "to": "evidences[0].connection_info.uid",
+     "from": "vendor.session_id",
+     "type": "string"
     }
    ],
    "unmapped": true,
    "label": "paloalto_panos",
    "format": "threat_csv",
    "status": "active",
-   "origin": "mapping-agent:20261120T083640",
-   "rationale": "PAN-OS THREAT -> Detection Finding (create); PAN severity -> severity_id, action -> action/disposition (alert=Alert, reset=Reset, drop=Dropped); threat_id as title/analytic; finding uid = log sequence number. Endpoints stay in unmapped (evidences[] is an array, not expressible in the spec).",
+   "origin": "mapping-agent:20261120T084800",
+   "rationale": "PAN-OS THREAT -> Detection Finding (create); PAN severity -> severity_id, action -> action/disposition (alert=Alert, reset=Reset, drop=Dropped); threat_id as title/analytic; finding uid = log sequence number. Network context now in evidences[0]: src/dst ip+port, zones, interfaces, protocol, session id (direction unknown; url_filename not mapped as it holds a filename for file/data subtypes).",
    "metrics": {
     "events": 58,
     "valid_rate": 1.0,
-    "mapped_field_share": 0.205
+    "mapped_field_share": 0.358
    },
-   "id": "m00058"
+   "id": "m00058",
+   "history": [
+    {
+     "origin": "mapping-agent:20261120T084800",
+     "previous": {
+      "class_uid": 2004,
+      "fields": [
+       {
+        "to": "activity_id",
+        "value": 1
+       },
+       {
+        "to": "severity_id",
+        "from": "vendor.severity",
+        "map": {
+         "informational": 1,
+         "low": 2,
+         "medium": 3,
+         "high": 4,
+         "critical": 5
+        },
+        "default": 0
+       },
+       {
+        "to": "action_id",
+        "from": "vendor.action",
+        "map": {
+         "allow": 1,
+         "deny": 2,
+         "drop": 2,
+         "drop-icmp": 2,
+         "drop-all": 2,
+         "reset-client": 2,
+         "reset-server": 2,
+         "reset-both": 2,
+         "block-url": 2,
+         "drop-packet": 2,
+         "sinkhole": 2,
+         "block-continue": 2,
+         "block-override": 2,
+         "alert": 1,
+         "continue": 1,
+         "override": 1
+        },
+        "default": 0
+       },
+       {
+        "to": "disposition_id",
+        "from": "vendor.action",
+        "map": {
+         "allow": 1,
+         "deny": 2,
+         "drop": 6,
+         "drop-icmp": 6,
+         "drop-all": 6,
+         "drop-packet": 6,
+         "reset-client": 21,
+         "reset-server": 21,
+         "reset-both": 21,
+         "block-url": 2,
+         "sinkhole": 2,
+         "block-continue": 2,
+         "block-override": 2,
+         "alert": 19,
+         "continue": 1,
+         "override": 1
+        },
+        "default": 0
+       },
+       {
+        "to": "is_alert",
+        "from": "vendor.subtype",
+        "map": {
+         "virus": true,
+         "wildfire-virus": true,
+         "wildfire": true,
+         "spyware": true,
+         "vulnerability": true,
+         "flood": true,
+         "scan": true,
+         "packet": true,
+         "url": false,
+         "file": false,
+         "data": false
+        },
+        "type": "boolean"
+       },
+       {
+        "to": "finding_info.uid",
+        "from": "vendor.sequence_number",
+        "type": "string"
+       },
+       {
+        "to": "finding_info.title",
+        "from": "vendor.threat_id"
+       },
+       {
+        "to": "finding_info.analytic.name",
+        "from": "vendor.threat_id"
+       },
+       {
+        "to": "finding_info.analytic.type_id",
+        "value": 1
+       },
+       {
+        "to": "finding_info.analytic.category",
+        "from": "vendor.threat_category"
+       },
+       {
+        "to": "firewall_rule.name",
+        "from": "vendor.rule"
+       },
+       {
+        "to": "firewall_rule.uid",
+        "from": "vendor.rule_uuid",
+        "type": "string"
+       },
+       {
+        "to": "count",
+        "from": "vendor.repeat_count",
+        "type": "integer"
+       },
+       {
+        "to": "metadata.event_code",
+        "from": "vendor.subtype"
+       },
+       {
+        "to": "actor.user.name",
+        "from": "vendor.src_user"
+       },
+       {
+        "to": "metadata.product.vendor_name",
+        "value": "Palo Alto Networks"
+       },
+       {
+        "to": "metadata.product.name",
+        "value": "PAN-OS"
+       },
+       {
+        "to": "time",
+        "from": [
+         "vendor.time_generated",
+         "@timestamp"
+        ],
+        "type": "timestamp_ms"
+       },
+       {
+        "to": "metadata.logged_time",
+        "from": "vendor.receive_time",
+        "type": "timestamp_ms"
+       },
+       {
+        "to": "metadata.uid",
+        "from": "vendor.sequence_number",
+        "type": "string"
+       },
+       {
+        "to": "metadata.log_name",
+        "from": "vendor.type"
+       },
+       {
+        "to": "metadata.log_version",
+        "from": "vendor.config_version",
+        "type": "string"
+       },
+       {
+        "to": "device.hostname",
+        "from": [
+         "vendor.device_name",
+         "vendor.syslog_host"
+        ]
+       },
+       {
+        "to": "device.uid",
+        "from": "vendor.serial_number",
+        "type": "string"
+       },
+       {
+        "to": "device.type_id",
+        "value": 9
+       }
+      ]
+     },
+     "previous_review": null
+    }
+   ]
   },
   {
    "parser_id": "p00018",
@@ -13822,6 +15312,3729 @@
     "mapped_field_share": 0.366
    },
    "id": "m00065"
+  },
+  {
+   "parser_id": "p00067",
+   "class_uid": 1008,
+   "fields": [
+    {
+     "to": "activity_id",
+     "value": 99
+    },
+    {
+     "to": "log_type_id",
+     "value": 99
+    },
+    {
+     "to": "log_type",
+     "value": "Syslog"
+    },
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Check Point"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "Check Point Quantum Security Gateway"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    },
+    {
+     "to": "device.vendor_name",
+     "value": "Check Point"
+    },
+    {
+     "to": "severity_id",
+     "from": [
+      "vendor.syslog_pri"
+     ],
+     "map": {
+      "0": 6,
+      "1": 5,
+      "2": 5,
+      "3": 4,
+      "4": 3,
+      "5": 2,
+      "6": 1,
+      "7": 1,
+      "8": 6,
+      "9": 5,
+      "10": 5,
+      "11": 4,
+      "12": 3,
+      "13": 2,
+      "14": 1,
+      "15": 1,
+      "16": 6,
+      "17": 5,
+      "18": 5,
+      "19": 4,
+      "20": 3,
+      "21": 2,
+      "22": 1,
+      "23": 1,
+      "24": 6,
+      "25": 5,
+      "26": 5,
+      "27": 4,
+      "28": 3,
+      "29": 2,
+      "30": 1,
+      "31": 1,
+      "32": 6,
+      "33": 5,
+      "34": 5,
+      "35": 4,
+      "36": 3,
+      "37": 2,
+      "38": 1,
+      "39": 1,
+      "40": 6,
+      "41": 5,
+      "42": 5,
+      "43": 4,
+      "44": 3,
+      "45": 2,
+      "46": 1,
+      "47": 1,
+      "48": 6,
+      "49": 5,
+      "50": 5,
+      "51": 4,
+      "52": 3,
+      "53": 2,
+      "54": 1,
+      "55": 1,
+      "56": 6,
+      "57": 5,
+      "58": 5,
+      "59": 4,
+      "60": 3,
+      "61": 2,
+      "62": 1,
+      "63": 1,
+      "64": 6,
+      "65": 5,
+      "66": 5,
+      "67": 4,
+      "68": 3,
+      "69": 2,
+      "70": 1,
+      "71": 1,
+      "72": 6,
+      "73": 5,
+      "74": 5,
+      "75": 4,
+      "76": 3,
+      "77": 2,
+      "78": 1,
+      "79": 1,
+      "80": 6,
+      "81": 5,
+      "82": 5,
+      "83": 4,
+      "84": 3,
+      "85": 2,
+      "86": 1,
+      "87": 1,
+      "88": 6,
+      "89": 5,
+      "90": 5,
+      "91": 4,
+      "92": 3,
+      "93": 2,
+      "94": 1,
+      "95": 1,
+      "96": 6,
+      "97": 5,
+      "98": 5,
+      "99": 4,
+      "100": 3,
+      "101": 2,
+      "102": 1,
+      "103": 1,
+      "104": 6,
+      "105": 5,
+      "106": 5,
+      "107": 4,
+      "108": 3,
+      "109": 2,
+      "110": 1,
+      "111": 1,
+      "112": 6,
+      "113": 5,
+      "114": 5,
+      "115": 4,
+      "116": 3,
+      "117": 2,
+      "118": 1,
+      "119": 1,
+      "120": 6,
+      "121": 5,
+      "122": 5,
+      "123": 4,
+      "124": 3,
+      "125": 2,
+      "126": 1,
+      "127": 1,
+      "128": 6,
+      "129": 5,
+      "130": 5,
+      "131": 4,
+      "132": 3,
+      "133": 2,
+      "134": 1,
+      "135": 1,
+      "136": 6,
+      "137": 5,
+      "138": 5,
+      "139": 4,
+      "140": 3,
+      "141": 2,
+      "142": 1,
+      "143": 1,
+      "144": 6,
+      "145": 5,
+      "146": 5,
+      "147": 4,
+      "148": 3,
+      "149": 2,
+      "150": 1,
+      "151": 1,
+      "152": 6,
+      "153": 5,
+      "154": 5,
+      "155": 4,
+      "156": 3,
+      "157": 2,
+      "158": 1,
+      "159": 1,
+      "160": 6,
+      "161": 5,
+      "162": 5,
+      "163": 4,
+      "164": 3,
+      "165": 2,
+      "166": 1,
+      "167": 1,
+      "168": 6,
+      "169": 5,
+      "170": 5,
+      "171": 4,
+      "172": 3,
+      "173": 2,
+      "174": 1,
+      "175": 1,
+      "176": 6,
+      "177": 5,
+      "178": 5,
+      "179": 4,
+      "180": 3,
+      "181": 2,
+      "182": 1,
+      "183": 1,
+      "184": 6,
+      "185": 5,
+      "186": 5,
+      "187": 4,
+      "188": 3,
+      "189": 2,
+      "190": 1,
+      "191": 1
+     },
+     "default": 0
+    },
+    {
+     "to": "message",
+     "from": [
+      "vendor.msg",
+      "vendor.additional_info",
+      "message"
+     ]
+    },
+    {
+     "to": "time",
+     "from": [
+      "vendor.time",
+      "@timestamp"
+     ],
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "metadata.original_time",
+     "from": "vendor.syslog_timestamp"
+    },
+    {
+     "to": "metadata.product.feature.name",
+     "from": "vendor.product"
+    },
+    {
+     "to": "metadata.log_provider",
+     "from": [
+      "vendor.syslog_app",
+      "vendor.syslog_program"
+     ]
+    },
+    {
+     "to": "metadata.uid",
+     "from": "vendor.loguid"
+    },
+    {
+     "to": "metadata.log_version",
+     "from": "vendor.syslog_version"
+    },
+    {
+     "to": "device.ip",
+     "from": "vendor.origin"
+    },
+    {
+     "to": "device.hostname",
+     "from": "vendor.syslog_host"
+    },
+    {
+     "to": "device.uid_alt",
+     "from": "vendor.originsicname"
+    },
+    {
+     "to": "device.interface_name",
+     "from": "vendor.ifname"
+    },
+    {
+     "to": "actor.user.name",
+     "from": "vendor.administrator"
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": "vendor.src"
+    },
+    {
+     "to": "src_endpoint.port",
+     "from": "vendor.s_port",
+     "type": "integer"
+    },
+    {
+     "to": "dst_endpoint.ip",
+     "from": "vendor.dst"
+    },
+    {
+     "to": "dst_endpoint.port",
+     "from": "vendor.service",
+     "type": "integer"
+    }
+   ],
+   "unmapped": true,
+   "label": "checkpoint_firewall",
+   "format": "cp_fallback",
+   "status": "active",
+   "origin": "mapping-agent:20261120T084355",
+   "rationale": "Fallback envelope mapping: Event Log Activity (1008) with activity Other, log_type Syslog (99); message, severity from syslog PRI%8 / vendor severity, device hostname/ip/uid, event time, metadata log name/provider/event_code, plus src/dst endpoints where the fallback extracts them. Unknown message types keep remaining vendor fields in unmapped.",
+   "metrics": {
+    "events": 58,
+    "valid_rate": 0.9655,
+    "mapped_field_share": 0.49
+   },
+   "id": "m00066"
+  },
+  {
+   "parser_id": "p00068",
+   "class_uid": 1008,
+   "fields": [
+    {
+     "to": "activity_id",
+     "value": 99
+    },
+    {
+     "to": "log_type_id",
+     "value": 99
+    },
+    {
+     "to": "log_type",
+     "value": "Syslog"
+    },
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Cisco"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "Adaptive Security Appliance"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    },
+    {
+     "to": "device.vendor_name",
+     "value": "Cisco"
+    },
+    {
+     "to": "severity_id",
+     "from": "vendor.severity",
+     "map": {
+      "0": 6,
+      "1": 5,
+      "2": 5,
+      "3": 4,
+      "4": 3,
+      "5": 2,
+      "6": 1,
+      "7": 1,
+      "8": 6,
+      "9": 5,
+      "10": 5,
+      "11": 4,
+      "12": 3,
+      "13": 2,
+      "14": 1,
+      "15": 1,
+      "16": 6,
+      "17": 5,
+      "18": 5,
+      "19": 4,
+      "20": 3,
+      "21": 2,
+      "22": 1,
+      "23": 1,
+      "24": 6,
+      "25": 5,
+      "26": 5,
+      "27": 4,
+      "28": 3,
+      "29": 2,
+      "30": 1,
+      "31": 1,
+      "32": 6,
+      "33": 5,
+      "34": 5,
+      "35": 4,
+      "36": 3,
+      "37": 2,
+      "38": 1,
+      "39": 1,
+      "40": 6,
+      "41": 5,
+      "42": 5,
+      "43": 4,
+      "44": 3,
+      "45": 2,
+      "46": 1,
+      "47": 1,
+      "48": 6,
+      "49": 5,
+      "50": 5,
+      "51": 4,
+      "52": 3,
+      "53": 2,
+      "54": 1,
+      "55": 1,
+      "56": 6,
+      "57": 5,
+      "58": 5,
+      "59": 4,
+      "60": 3,
+      "61": 2,
+      "62": 1,
+      "63": 1,
+      "64": 6,
+      "65": 5,
+      "66": 5,
+      "67": 4,
+      "68": 3,
+      "69": 2,
+      "70": 1,
+      "71": 1,
+      "72": 6,
+      "73": 5,
+      "74": 5,
+      "75": 4,
+      "76": 3,
+      "77": 2,
+      "78": 1,
+      "79": 1,
+      "80": 6,
+      "81": 5,
+      "82": 5,
+      "83": 4,
+      "84": 3,
+      "85": 2,
+      "86": 1,
+      "87": 1,
+      "88": 6,
+      "89": 5,
+      "90": 5,
+      "91": 4,
+      "92": 3,
+      "93": 2,
+      "94": 1,
+      "95": 1,
+      "96": 6,
+      "97": 5,
+      "98": 5,
+      "99": 4,
+      "100": 3,
+      "101": 2,
+      "102": 1,
+      "103": 1,
+      "104": 6,
+      "105": 5,
+      "106": 5,
+      "107": 4,
+      "108": 3,
+      "109": 2,
+      "110": 1,
+      "111": 1,
+      "112": 6,
+      "113": 5,
+      "114": 5,
+      "115": 4,
+      "116": 3,
+      "117": 2,
+      "118": 1,
+      "119": 1,
+      "120": 6,
+      "121": 5,
+      "122": 5,
+      "123": 4,
+      "124": 3,
+      "125": 2,
+      "126": 1,
+      "127": 1,
+      "128": 6,
+      "129": 5,
+      "130": 5,
+      "131": 4,
+      "132": 3,
+      "133": 2,
+      "134": 1,
+      "135": 1,
+      "136": 6,
+      "137": 5,
+      "138": 5,
+      "139": 4,
+      "140": 3,
+      "141": 2,
+      "142": 1,
+      "143": 1,
+      "144": 6,
+      "145": 5,
+      "146": 5,
+      "147": 4,
+      "148": 3,
+      "149": 2,
+      "150": 1,
+      "151": 1,
+      "152": 6,
+      "153": 5,
+      "154": 5,
+      "155": 4,
+      "156": 3,
+      "157": 2,
+      "158": 1,
+      "159": 1,
+      "160": 6,
+      "161": 5,
+      "162": 5,
+      "163": 4,
+      "164": 3,
+      "165": 2,
+      "166": 1,
+      "167": 1,
+      "168": 6,
+      "169": 5,
+      "170": 5,
+      "171": 4,
+      "172": 3,
+      "173": 2,
+      "174": 1,
+      "175": 1,
+      "176": 6,
+      "177": 5,
+      "178": 5,
+      "179": 4,
+      "180": 3,
+      "181": 2,
+      "182": 1,
+      "183": 1,
+      "184": 6,
+      "185": 5,
+      "186": 5,
+      "187": 4,
+      "188": 3,
+      "189": 2,
+      "190": 1,
+      "191": 1
+     },
+     "default": 0
+    },
+    {
+     "to": "message",
+     "from": [
+      "vendor.msg",
+      "message"
+     ]
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "metadata.original_time",
+     "from": "vendor.syslog_timestamp"
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "vendor.message_id"
+    },
+    {
+     "to": "metadata.product.name",
+     "from": "vendor.product",
+     "map": {
+      "ASA": "Adaptive Security Appliance",
+      "FTD": "Firepower Threat Defense"
+     },
+     "default": "Adaptive Security Appliance"
+    },
+    {
+     "to": "device.hostname",
+     "from": "vendor.syslog_host"
+    }
+   ],
+   "unmapped": true,
+   "label": "cisco_asa",
+   "format": "asa_fallback",
+   "status": "active",
+   "origin": "mapping-agent:20261120T084355",
+   "rationale": "Fallback envelope mapping: Event Log Activity (1008) with activity Other, log_type Syslog (99); message, severity from syslog PRI%8 / vendor severity, device hostname/ip/uid, event time, metadata log name/provider/event_code, plus src/dst endpoints where the fallback extracts them. Unknown message types keep remaining vendor fields in unmapped.",
+   "metrics": {
+    "events": 136,
+    "valid_rate": 0.9632,
+    "mapped_field_share": 0.876
+   },
+   "id": "m00067"
+  },
+  {
+   "parser_id": "p00080",
+   "class_uid": 1008,
+   "fields": [
+    {
+     "to": "activity_id",
+     "value": 99
+    },
+    {
+     "to": "log_type_id",
+     "value": 99
+    },
+    {
+     "to": "log_type",
+     "value": "Syslog"
+    },
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Cisco"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "Meraki"
+    },
+    {
+     "to": "device.type_id",
+     "value": 0
+    },
+    {
+     "to": "device.vendor_name",
+     "value": "Cisco"
+    },
+    {
+     "to": "severity_id",
+     "from": "vendor.syslog_pri",
+     "map": {
+      "0": 6,
+      "1": 5,
+      "2": 5,
+      "3": 4,
+      "4": 3,
+      "5": 2,
+      "6": 1,
+      "7": 1,
+      "8": 6,
+      "9": 5,
+      "10": 5,
+      "11": 4,
+      "12": 3,
+      "13": 2,
+      "14": 1,
+      "15": 1,
+      "16": 6,
+      "17": 5,
+      "18": 5,
+      "19": 4,
+      "20": 3,
+      "21": 2,
+      "22": 1,
+      "23": 1,
+      "24": 6,
+      "25": 5,
+      "26": 5,
+      "27": 4,
+      "28": 3,
+      "29": 2,
+      "30": 1,
+      "31": 1,
+      "32": 6,
+      "33": 5,
+      "34": 5,
+      "35": 4,
+      "36": 3,
+      "37": 2,
+      "38": 1,
+      "39": 1,
+      "40": 6,
+      "41": 5,
+      "42": 5,
+      "43": 4,
+      "44": 3,
+      "45": 2,
+      "46": 1,
+      "47": 1,
+      "48": 6,
+      "49": 5,
+      "50": 5,
+      "51": 4,
+      "52": 3,
+      "53": 2,
+      "54": 1,
+      "55": 1,
+      "56": 6,
+      "57": 5,
+      "58": 5,
+      "59": 4,
+      "60": 3,
+      "61": 2,
+      "62": 1,
+      "63": 1,
+      "64": 6,
+      "65": 5,
+      "66": 5,
+      "67": 4,
+      "68": 3,
+      "69": 2,
+      "70": 1,
+      "71": 1,
+      "72": 6,
+      "73": 5,
+      "74": 5,
+      "75": 4,
+      "76": 3,
+      "77": 2,
+      "78": 1,
+      "79": 1,
+      "80": 6,
+      "81": 5,
+      "82": 5,
+      "83": 4,
+      "84": 3,
+      "85": 2,
+      "86": 1,
+      "87": 1,
+      "88": 6,
+      "89": 5,
+      "90": 5,
+      "91": 4,
+      "92": 3,
+      "93": 2,
+      "94": 1,
+      "95": 1,
+      "96": 6,
+      "97": 5,
+      "98": 5,
+      "99": 4,
+      "100": 3,
+      "101": 2,
+      "102": 1,
+      "103": 1,
+      "104": 6,
+      "105": 5,
+      "106": 5,
+      "107": 4,
+      "108": 3,
+      "109": 2,
+      "110": 1,
+      "111": 1,
+      "112": 6,
+      "113": 5,
+      "114": 5,
+      "115": 4,
+      "116": 3,
+      "117": 2,
+      "118": 1,
+      "119": 1,
+      "120": 6,
+      "121": 5,
+      "122": 5,
+      "123": 4,
+      "124": 3,
+      "125": 2,
+      "126": 1,
+      "127": 1,
+      "128": 6,
+      "129": 5,
+      "130": 5,
+      "131": 4,
+      "132": 3,
+      "133": 2,
+      "134": 1,
+      "135": 1,
+      "136": 6,
+      "137": 5,
+      "138": 5,
+      "139": 4,
+      "140": 3,
+      "141": 2,
+      "142": 1,
+      "143": 1,
+      "144": 6,
+      "145": 5,
+      "146": 5,
+      "147": 4,
+      "148": 3,
+      "149": 2,
+      "150": 1,
+      "151": 1,
+      "152": 6,
+      "153": 5,
+      "154": 5,
+      "155": 4,
+      "156": 3,
+      "157": 2,
+      "158": 1,
+      "159": 1,
+      "160": 6,
+      "161": 5,
+      "162": 5,
+      "163": 4,
+      "164": 3,
+      "165": 2,
+      "166": 1,
+      "167": 1,
+      "168": 6,
+      "169": 5,
+      "170": 5,
+      "171": 4,
+      "172": 3,
+      "173": 2,
+      "174": 1,
+      "175": 1,
+      "176": 6,
+      "177": 5,
+      "178": 5,
+      "179": 4,
+      "180": 3,
+      "181": 2,
+      "182": 1,
+      "183": 1,
+      "184": 6,
+      "185": 5,
+      "186": 5,
+      "187": 4,
+      "188": 3,
+      "189": 2,
+      "190": 1,
+      "191": 1
+     },
+     "default": 0
+    },
+    {
+     "to": "message",
+     "from": [
+      "vendor.msg",
+      "message"
+     ]
+    },
+    {
+     "to": "time",
+     "from": [
+      "vendor.epoch_time",
+      "@timestamp"
+     ],
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "metadata.log_name",
+     "from": "vendor.category"
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "vendor.type"
+    },
+    {
+     "to": "metadata.log_version",
+     "from": "vendor.syslog_version"
+    },
+    {
+     "to": "device.hostname",
+     "from": "vendor.device_name"
+    }
+   ],
+   "unmapped": true,
+   "label": "cisco_meraki",
+   "format": "meraki_fallback",
+   "status": "active",
+   "origin": "mapping-agent:20261120T084355",
+   "rationale": "Fallback envelope mapping: Event Log Activity (1008) with activity Other, log_type Syslog (99); message, severity from syslog PRI%8 / vendor severity, device hostname/ip/uid, event time, metadata log name/provider/event_code, plus src/dst endpoints where the fallback extracts them. Unknown message types keep remaining vendor fields in unmapped.",
+   "metrics": {
+    "events": 141,
+    "valid_rate": 1.0,
+    "mapped_field_share": 1.0
+   },
+   "id": "m00068"
+  },
+  {
+   "parser_id": "p00071",
+   "class_uid": 1008,
+   "fields": [
+    {
+     "to": "activity_id",
+     "value": 99
+    },
+    {
+     "to": "log_type_id",
+     "value": 99
+    },
+    {
+     "to": "log_type",
+     "value": "Syslog"
+    },
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Fortinet"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "FortiOS"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    },
+    {
+     "to": "device.vendor_name",
+     "value": "Fortinet"
+    },
+    {
+     "to": "severity_id",
+     "from": [
+      "vendor.level",
+      "vendor.pri",
+      "vendor.syslog_pri"
+     ],
+     "map": {
+      "emergency": 6,
+      "alert": 5,
+      "critical": 5,
+      "error": 4,
+      "warning": 3,
+      "notice": 2,
+      "notification": 2,
+      "information": 1,
+      "debug": 1,
+      "0": 6,
+      "1": 5,
+      "2": 5,
+      "3": 4,
+      "4": 3,
+      "5": 2,
+      "6": 1,
+      "7": 1,
+      "8": 6,
+      "9": 5,
+      "10": 5,
+      "11": 4,
+      "12": 3,
+      "13": 2,
+      "14": 1,
+      "15": 1,
+      "16": 6,
+      "17": 5,
+      "18": 5,
+      "19": 4,
+      "20": 3,
+      "21": 2,
+      "22": 1,
+      "23": 1,
+      "24": 6,
+      "25": 5,
+      "26": 5,
+      "27": 4,
+      "28": 3,
+      "29": 2,
+      "30": 1,
+      "31": 1,
+      "32": 6,
+      "33": 5,
+      "34": 5,
+      "35": 4,
+      "36": 3,
+      "37": 2,
+      "38": 1,
+      "39": 1,
+      "40": 6,
+      "41": 5,
+      "42": 5,
+      "43": 4,
+      "44": 3,
+      "45": 2,
+      "46": 1,
+      "47": 1,
+      "48": 6,
+      "49": 5,
+      "50": 5,
+      "51": 4,
+      "52": 3,
+      "53": 2,
+      "54": 1,
+      "55": 1,
+      "56": 6,
+      "57": 5,
+      "58": 5,
+      "59": 4,
+      "60": 3,
+      "61": 2,
+      "62": 1,
+      "63": 1,
+      "64": 6,
+      "65": 5,
+      "66": 5,
+      "67": 4,
+      "68": 3,
+      "69": 2,
+      "70": 1,
+      "71": 1,
+      "72": 6,
+      "73": 5,
+      "74": 5,
+      "75": 4,
+      "76": 3,
+      "77": 2,
+      "78": 1,
+      "79": 1,
+      "80": 6,
+      "81": 5,
+      "82": 5,
+      "83": 4,
+      "84": 3,
+      "85": 2,
+      "86": 1,
+      "87": 1,
+      "88": 6,
+      "89": 5,
+      "90": 5,
+      "91": 4,
+      "92": 3,
+      "93": 2,
+      "94": 1,
+      "95": 1,
+      "96": 6,
+      "97": 5,
+      "98": 5,
+      "99": 4,
+      "100": 3,
+      "101": 2,
+      "102": 1,
+      "103": 1,
+      "104": 6,
+      "105": 5,
+      "106": 5,
+      "107": 4,
+      "108": 3,
+      "109": 2,
+      "110": 1,
+      "111": 1,
+      "112": 6,
+      "113": 5,
+      "114": 5,
+      "115": 4,
+      "116": 3,
+      "117": 2,
+      "118": 1,
+      "119": 1,
+      "120": 6,
+      "121": 5,
+      "122": 5,
+      "123": 4,
+      "124": 3,
+      "125": 2,
+      "126": 1,
+      "127": 1,
+      "128": 6,
+      "129": 5,
+      "130": 5,
+      "131": 4,
+      "132": 3,
+      "133": 2,
+      "134": 1,
+      "135": 1,
+      "136": 6,
+      "137": 5,
+      "138": 5,
+      "139": 4,
+      "140": 3,
+      "141": 2,
+      "142": 1,
+      "143": 1,
+      "144": 6,
+      "145": 5,
+      "146": 5,
+      "147": 4,
+      "148": 3,
+      "149": 2,
+      "150": 1,
+      "151": 1,
+      "152": 6,
+      "153": 5,
+      "154": 5,
+      "155": 4,
+      "156": 3,
+      "157": 2,
+      "158": 1,
+      "159": 1,
+      "160": 6,
+      "161": 5,
+      "162": 5,
+      "163": 4,
+      "164": 3,
+      "165": 2,
+      "166": 1,
+      "167": 1,
+      "168": 6,
+      "169": 5,
+      "170": 5,
+      "171": 4,
+      "172": 3,
+      "173": 2,
+      "174": 1,
+      "175": 1,
+      "176": 6,
+      "177": 5,
+      "178": 5,
+      "179": 4,
+      "180": 3,
+      "181": 2,
+      "182": 1,
+      "183": 1,
+      "184": 6,
+      "185": 5,
+      "186": 5,
+      "187": 4,
+      "188": 3,
+      "189": 2,
+      "190": 1,
+      "191": 1
+     },
+     "default": 0
+    },
+    {
+     "to": "message",
+     "from": [
+      "vendor.msg",
+      "vendor.logdesc",
+      "message"
+     ]
+    },
+    {
+     "to": "time",
+     "from": [
+      "vendor.eventtime",
+      "@timestamp"
+     ],
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "metadata.log_name",
+     "from": "vendor.type"
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "vendor.logid"
+    },
+    {
+     "to": "metadata.log_provider",
+     "from": "vendor.subtype"
+    },
+    {
+     "to": "device.hostname",
+     "from": [
+      "vendor.devname",
+      "vendor.syslog_host"
+     ]
+    },
+    {
+     "to": "device.uid",
+     "from": [
+      "vendor.devid",
+      "vendor.device_id"
+     ],
+     "type": "string"
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": "vendor.srcip"
+    },
+    {
+     "to": "src_endpoint.port",
+     "from": "vendor.srcport",
+     "type": "integer"
+    },
+    {
+     "to": "dst_endpoint.ip",
+     "from": "vendor.dstip"
+    },
+    {
+     "to": "dst_endpoint.port",
+     "from": "vendor.dstport",
+     "type": "integer"
+    },
+    {
+     "to": "src_endpoint.interface_name",
+     "from": "vendor.srcintf"
+    },
+    {
+     "to": "dst_endpoint.interface_name",
+     "from": "vendor.dstintf"
+    }
+   ],
+   "unmapped": true,
+   "label": "fortinet_fortigate",
+   "format": "fortios_fallback",
+   "status": "active",
+   "origin": "mapping-agent:20261120T084355",
+   "rationale": "Fallback envelope mapping: Event Log Activity (1008) with activity Other, log_type Syslog (99); message, severity from syslog PRI%8 / vendor severity, device hostname/ip/uid, event time, metadata log name/provider/event_code, plus src/dst endpoints where the fallback extracts them. Unknown message types keep remaining vendor fields in unmapped.",
+   "metrics": {
+    "events": 107,
+    "valid_rate": 1.0,
+    "mapped_field_share": 0.356
+   },
+   "id": "m00069"
+  },
+  {
+   "parser_id": "p00072",
+   "class_uid": 1008,
+   "fields": [
+    {
+     "to": "activity_id",
+     "value": 99
+    },
+    {
+     "to": "log_type_id",
+     "value": 99
+    },
+    {
+     "to": "log_type",
+     "value": "Syslog"
+    },
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Juniper Networks"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "Junos OS (SRX)"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    },
+    {
+     "to": "device.vendor_name",
+     "value": "Juniper Networks"
+    },
+    {
+     "to": "severity_id",
+     "from": "vendor.syslog_pri",
+     "map": {
+      "0": 6,
+      "1": 5,
+      "2": 5,
+      "3": 4,
+      "4": 3,
+      "5": 2,
+      "6": 1,
+      "7": 1,
+      "8": 6,
+      "9": 5,
+      "10": 5,
+      "11": 4,
+      "12": 3,
+      "13": 2,
+      "14": 1,
+      "15": 1,
+      "16": 6,
+      "17": 5,
+      "18": 5,
+      "19": 4,
+      "20": 3,
+      "21": 2,
+      "22": 1,
+      "23": 1,
+      "24": 6,
+      "25": 5,
+      "26": 5,
+      "27": 4,
+      "28": 3,
+      "29": 2,
+      "30": 1,
+      "31": 1,
+      "32": 6,
+      "33": 5,
+      "34": 5,
+      "35": 4,
+      "36": 3,
+      "37": 2,
+      "38": 1,
+      "39": 1,
+      "40": 6,
+      "41": 5,
+      "42": 5,
+      "43": 4,
+      "44": 3,
+      "45": 2,
+      "46": 1,
+      "47": 1,
+      "48": 6,
+      "49": 5,
+      "50": 5,
+      "51": 4,
+      "52": 3,
+      "53": 2,
+      "54": 1,
+      "55": 1,
+      "56": 6,
+      "57": 5,
+      "58": 5,
+      "59": 4,
+      "60": 3,
+      "61": 2,
+      "62": 1,
+      "63": 1,
+      "64": 6,
+      "65": 5,
+      "66": 5,
+      "67": 4,
+      "68": 3,
+      "69": 2,
+      "70": 1,
+      "71": 1,
+      "72": 6,
+      "73": 5,
+      "74": 5,
+      "75": 4,
+      "76": 3,
+      "77": 2,
+      "78": 1,
+      "79": 1,
+      "80": 6,
+      "81": 5,
+      "82": 5,
+      "83": 4,
+      "84": 3,
+      "85": 2,
+      "86": 1,
+      "87": 1,
+      "88": 6,
+      "89": 5,
+      "90": 5,
+      "91": 4,
+      "92": 3,
+      "93": 2,
+      "94": 1,
+      "95": 1,
+      "96": 6,
+      "97": 5,
+      "98": 5,
+      "99": 4,
+      "100": 3,
+      "101": 2,
+      "102": 1,
+      "103": 1,
+      "104": 6,
+      "105": 5,
+      "106": 5,
+      "107": 4,
+      "108": 3,
+      "109": 2,
+      "110": 1,
+      "111": 1,
+      "112": 6,
+      "113": 5,
+      "114": 5,
+      "115": 4,
+      "116": 3,
+      "117": 2,
+      "118": 1,
+      "119": 1,
+      "120": 6,
+      "121": 5,
+      "122": 5,
+      "123": 4,
+      "124": 3,
+      "125": 2,
+      "126": 1,
+      "127": 1,
+      "128": 6,
+      "129": 5,
+      "130": 5,
+      "131": 4,
+      "132": 3,
+      "133": 2,
+      "134": 1,
+      "135": 1,
+      "136": 6,
+      "137": 5,
+      "138": 5,
+      "139": 4,
+      "140": 3,
+      "141": 2,
+      "142": 1,
+      "143": 1,
+      "144": 6,
+      "145": 5,
+      "146": 5,
+      "147": 4,
+      "148": 3,
+      "149": 2,
+      "150": 1,
+      "151": 1,
+      "152": 6,
+      "153": 5,
+      "154": 5,
+      "155": 4,
+      "156": 3,
+      "157": 2,
+      "158": 1,
+      "159": 1,
+      "160": 6,
+      "161": 5,
+      "162": 5,
+      "163": 4,
+      "164": 3,
+      "165": 2,
+      "166": 1,
+      "167": 1,
+      "168": 6,
+      "169": 5,
+      "170": 5,
+      "171": 4,
+      "172": 3,
+      "173": 2,
+      "174": 1,
+      "175": 1,
+      "176": 6,
+      "177": 5,
+      "178": 5,
+      "179": 4,
+      "180": 3,
+      "181": 2,
+      "182": 1,
+      "183": 1,
+      "184": 6,
+      "185": 5,
+      "186": 5,
+      "187": 4,
+      "188": 3,
+      "189": 2,
+      "190": 1,
+      "191": 1
+     },
+     "default": 0
+    },
+    {
+     "to": "message",
+     "from": [
+      "vendor.msg",
+      "message"
+     ]
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "metadata.original_time",
+     "from": "vendor.syslog_timestamp"
+    },
+    {
+     "to": "metadata.log_provider",
+     "from": "vendor.app_name"
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "vendor.event_type"
+    },
+    {
+     "to": "metadata.log_version",
+     "from": "vendor.syslog_version"
+    },
+    {
+     "to": "device.hostname",
+     "from": "vendor.syslog_host"
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": "vendor.source-address"
+    },
+    {
+     "to": "src_endpoint.port",
+     "from": "vendor.source-port",
+     "type": "integer"
+    },
+    {
+     "to": "dst_endpoint.ip",
+     "from": "vendor.destination-address"
+    },
+    {
+     "to": "dst_endpoint.port",
+     "from": "vendor.destination-port",
+     "type": "integer"
+    },
+    {
+     "to": "src_endpoint.zone",
+     "from": "vendor.source-zone-name"
+    },
+    {
+     "to": "dst_endpoint.zone",
+     "from": "vendor.destination-zone-name"
+    }
+   ],
+   "unmapped": true,
+   "label": "juniper_srx",
+   "format": "junos_fallback",
+   "status": "active",
+   "origin": "mapping-agent:20261120T084355",
+   "rationale": "Fallback envelope mapping: Event Log Activity (1008) with activity Other, log_type Syslog (99); message, severity from syslog PRI%8 / vendor severity, device hostname/ip/uid, event time, metadata log name/provider/event_code, plus src/dst endpoints where the fallback extracts them. Unknown message types keep remaining vendor fields in unmapped.",
+   "metrics": {
+    "events": 46,
+    "valid_rate": 1.0,
+    "mapped_field_share": 0.532
+   },
+   "id": "m00070"
+  },
+  {
+   "parser_id": "p00073",
+   "class_uid": 1008,
+   "fields": [
+    {
+     "to": "activity_id",
+     "value": 99
+    },
+    {
+     "to": "log_type_id",
+     "value": 99
+    },
+    {
+     "to": "log_type",
+     "value": "Syslog"
+    },
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Netfilter"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "iptables"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    },
+    {
+     "to": "device.vendor_name",
+     "value": "Netfilter"
+    },
+    {
+     "to": "severity_id",
+     "from": [
+      "vendor.syslog_pri",
+      "vendor.syslog_severity"
+     ],
+     "map": {
+      "0": 6,
+      "1": 5,
+      "2": 5,
+      "3": 4,
+      "4": 3,
+      "5": 2,
+      "6": 1,
+      "7": 1,
+      "8": 6,
+      "9": 5,
+      "10": 5,
+      "11": 4,
+      "12": 3,
+      "13": 2,
+      "14": 1,
+      "15": 1,
+      "16": 6,
+      "17": 5,
+      "18": 5,
+      "19": 4,
+      "20": 3,
+      "21": 2,
+      "22": 1,
+      "23": 1,
+      "24": 6,
+      "25": 5,
+      "26": 5,
+      "27": 4,
+      "28": 3,
+      "29": 2,
+      "30": 1,
+      "31": 1,
+      "32": 6,
+      "33": 5,
+      "34": 5,
+      "35": 4,
+      "36": 3,
+      "37": 2,
+      "38": 1,
+      "39": 1,
+      "40": 6,
+      "41": 5,
+      "42": 5,
+      "43": 4,
+      "44": 3,
+      "45": 2,
+      "46": 1,
+      "47": 1,
+      "48": 6,
+      "49": 5,
+      "50": 5,
+      "51": 4,
+      "52": 3,
+      "53": 2,
+      "54": 1,
+      "55": 1,
+      "56": 6,
+      "57": 5,
+      "58": 5,
+      "59": 4,
+      "60": 3,
+      "61": 2,
+      "62": 1,
+      "63": 1,
+      "64": 6,
+      "65": 5,
+      "66": 5,
+      "67": 4,
+      "68": 3,
+      "69": 2,
+      "70": 1,
+      "71": 1,
+      "72": 6,
+      "73": 5,
+      "74": 5,
+      "75": 4,
+      "76": 3,
+      "77": 2,
+      "78": 1,
+      "79": 1,
+      "80": 6,
+      "81": 5,
+      "82": 5,
+      "83": 4,
+      "84": 3,
+      "85": 2,
+      "86": 1,
+      "87": 1,
+      "88": 6,
+      "89": 5,
+      "90": 5,
+      "91": 4,
+      "92": 3,
+      "93": 2,
+      "94": 1,
+      "95": 1,
+      "96": 6,
+      "97": 5,
+      "98": 5,
+      "99": 4,
+      "100": 3,
+      "101": 2,
+      "102": 1,
+      "103": 1,
+      "104": 6,
+      "105": 5,
+      "106": 5,
+      "107": 4,
+      "108": 3,
+      "109": 2,
+      "110": 1,
+      "111": 1,
+      "112": 6,
+      "113": 5,
+      "114": 5,
+      "115": 4,
+      "116": 3,
+      "117": 2,
+      "118": 1,
+      "119": 1,
+      "120": 6,
+      "121": 5,
+      "122": 5,
+      "123": 4,
+      "124": 3,
+      "125": 2,
+      "126": 1,
+      "127": 1,
+      "128": 6,
+      "129": 5,
+      "130": 5,
+      "131": 4,
+      "132": 3,
+      "133": 2,
+      "134": 1,
+      "135": 1,
+      "136": 6,
+      "137": 5,
+      "138": 5,
+      "139": 4,
+      "140": 3,
+      "141": 2,
+      "142": 1,
+      "143": 1,
+      "144": 6,
+      "145": 5,
+      "146": 5,
+      "147": 4,
+      "148": 3,
+      "149": 2,
+      "150": 1,
+      "151": 1,
+      "152": 6,
+      "153": 5,
+      "154": 5,
+      "155": 4,
+      "156": 3,
+      "157": 2,
+      "158": 1,
+      "159": 1,
+      "160": 6,
+      "161": 5,
+      "162": 5,
+      "163": 4,
+      "164": 3,
+      "165": 2,
+      "166": 1,
+      "167": 1,
+      "168": 6,
+      "169": 5,
+      "170": 5,
+      "171": 4,
+      "172": 3,
+      "173": 2,
+      "174": 1,
+      "175": 1,
+      "176": 6,
+      "177": 5,
+      "178": 5,
+      "179": 4,
+      "180": 3,
+      "181": 2,
+      "182": 1,
+      "183": 1,
+      "184": 6,
+      "185": 5,
+      "186": 5,
+      "187": 4,
+      "188": 3,
+      "189": 2,
+      "190": 1,
+      "191": 1,
+      "info": 1,
+      "warning": 3,
+      "notice": 2,
+      "err": 4,
+      "crit": 5,
+      "alert": 5,
+      "emerg": 6,
+      "debug": 1
+     },
+     "default": 0
+    },
+    {
+     "to": "message",
+     "from": [
+      "vendor.msg",
+      "message"
+     ]
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "metadata.original_time",
+     "from": "vendor.syslog_timestamp"
+    },
+    {
+     "to": "metadata.log_provider",
+     "from": "vendor.syslog_program"
+    },
+    {
+     "to": "device.hostname",
+     "from": "vendor.syslog_host"
+    },
+    {
+     "to": "device.interface_name",
+     "from": "vendor.IN"
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": "vendor.SRC"
+    },
+    {
+     "to": "src_endpoint.port",
+     "from": "vendor.SPT",
+     "type": "integer"
+    },
+    {
+     "to": "dst_endpoint.ip",
+     "from": "vendor.DST"
+    },
+    {
+     "to": "dst_endpoint.port",
+     "from": "vendor.DPT",
+     "type": "integer"
+    }
+   ],
+   "unmapped": true,
+   "label": "linux_iptables",
+   "format": "netfilter_fallback",
+   "status": "active",
+   "origin": "mapping-agent:20261120T084355",
+   "rationale": "Fallback envelope mapping: Event Log Activity (1008) with activity Other, log_type Syslog (99); message, severity from syslog PRI%8 / vendor severity, device hostname/ip/uid, event time, metadata log name/provider/event_code, plus src/dst endpoints where the fallback extracts them. Unknown message types keep remaining vendor fields in unmapped.",
+   "metrics": {
+    "events": 20,
+    "valid_rate": 0.95,
+    "mapped_field_share": 0.423
+   },
+   "id": "m00071"
+  },
+  {
+   "parser_id": "p00081",
+   "class_uid": 1008,
+   "fields": [
+    {
+     "to": "activity_id",
+     "value": 99
+    },
+    {
+     "to": "log_type_id",
+     "value": 99
+    },
+    {
+     "to": "log_type",
+     "value": "Syslog"
+    },
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Netgate"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "pfSense"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    },
+    {
+     "to": "device.vendor_name",
+     "value": "Netgate"
+    },
+    {
+     "to": "severity_id",
+     "from": "vendor.syslog_pri",
+     "map": {
+      "0": 6,
+      "1": 5,
+      "2": 5,
+      "3": 4,
+      "4": 3,
+      "5": 2,
+      "6": 1,
+      "7": 1,
+      "8": 6,
+      "9": 5,
+      "10": 5,
+      "11": 4,
+      "12": 3,
+      "13": 2,
+      "14": 1,
+      "15": 1,
+      "16": 6,
+      "17": 5,
+      "18": 5,
+      "19": 4,
+      "20": 3,
+      "21": 2,
+      "22": 1,
+      "23": 1,
+      "24": 6,
+      "25": 5,
+      "26": 5,
+      "27": 4,
+      "28": 3,
+      "29": 2,
+      "30": 1,
+      "31": 1,
+      "32": 6,
+      "33": 5,
+      "34": 5,
+      "35": 4,
+      "36": 3,
+      "37": 2,
+      "38": 1,
+      "39": 1,
+      "40": 6,
+      "41": 5,
+      "42": 5,
+      "43": 4,
+      "44": 3,
+      "45": 2,
+      "46": 1,
+      "47": 1,
+      "48": 6,
+      "49": 5,
+      "50": 5,
+      "51": 4,
+      "52": 3,
+      "53": 2,
+      "54": 1,
+      "55": 1,
+      "56": 6,
+      "57": 5,
+      "58": 5,
+      "59": 4,
+      "60": 3,
+      "61": 2,
+      "62": 1,
+      "63": 1,
+      "64": 6,
+      "65": 5,
+      "66": 5,
+      "67": 4,
+      "68": 3,
+      "69": 2,
+      "70": 1,
+      "71": 1,
+      "72": 6,
+      "73": 5,
+      "74": 5,
+      "75": 4,
+      "76": 3,
+      "77": 2,
+      "78": 1,
+      "79": 1,
+      "80": 6,
+      "81": 5,
+      "82": 5,
+      "83": 4,
+      "84": 3,
+      "85": 2,
+      "86": 1,
+      "87": 1,
+      "88": 6,
+      "89": 5,
+      "90": 5,
+      "91": 4,
+      "92": 3,
+      "93": 2,
+      "94": 1,
+      "95": 1,
+      "96": 6,
+      "97": 5,
+      "98": 5,
+      "99": 4,
+      "100": 3,
+      "101": 2,
+      "102": 1,
+      "103": 1,
+      "104": 6,
+      "105": 5,
+      "106": 5,
+      "107": 4,
+      "108": 3,
+      "109": 2,
+      "110": 1,
+      "111": 1,
+      "112": 6,
+      "113": 5,
+      "114": 5,
+      "115": 4,
+      "116": 3,
+      "117": 2,
+      "118": 1,
+      "119": 1,
+      "120": 6,
+      "121": 5,
+      "122": 5,
+      "123": 4,
+      "124": 3,
+      "125": 2,
+      "126": 1,
+      "127": 1,
+      "128": 6,
+      "129": 5,
+      "130": 5,
+      "131": 4,
+      "132": 3,
+      "133": 2,
+      "134": 1,
+      "135": 1,
+      "136": 6,
+      "137": 5,
+      "138": 5,
+      "139": 4,
+      "140": 3,
+      "141": 2,
+      "142": 1,
+      "143": 1,
+      "144": 6,
+      "145": 5,
+      "146": 5,
+      "147": 4,
+      "148": 3,
+      "149": 2,
+      "150": 1,
+      "151": 1,
+      "152": 6,
+      "153": 5,
+      "154": 5,
+      "155": 4,
+      "156": 3,
+      "157": 2,
+      "158": 1,
+      "159": 1,
+      "160": 6,
+      "161": 5,
+      "162": 5,
+      "163": 4,
+      "164": 3,
+      "165": 2,
+      "166": 1,
+      "167": 1,
+      "168": 6,
+      "169": 5,
+      "170": 5,
+      "171": 4,
+      "172": 3,
+      "173": 2,
+      "174": 1,
+      "175": 1,
+      "176": 6,
+      "177": 5,
+      "178": 5,
+      "179": 4,
+      "180": 3,
+      "181": 2,
+      "182": 1,
+      "183": 1,
+      "184": 6,
+      "185": 5,
+      "186": 5,
+      "187": 4,
+      "188": 3,
+      "189": 2,
+      "190": 1,
+      "191": 1
+     },
+     "default": 0
+    },
+    {
+     "to": "message",
+     "from": [
+      "vendor.msg",
+      "message"
+     ]
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "metadata.original_time",
+     "from": "vendor.timestamp"
+    },
+    {
+     "to": "metadata.log_provider",
+     "from": "vendor.process"
+    },
+    {
+     "to": "device.hostname",
+     "from": "vendor.syslog_host"
+    }
+   ],
+   "unmapped": true,
+   "label": "netgate_pfsense",
+   "format": "pfsense_fallback",
+   "status": "active",
+   "origin": "mapping-agent:20261120T084355",
+   "rationale": "Fallback envelope mapping: Event Log Activity (1008) with activity Other, log_type Syslog (99); message, severity from syslog PRI%8 / vendor severity, device hostname/ip/uid, event time, metadata log name/provider/event_code, plus src/dst endpoints where the fallback extracts them. Unknown message types keep remaining vendor fields in unmapped.",
+   "metrics": {
+    "events": 55,
+    "valid_rate": 1.0,
+    "mapped_field_share": 0.817
+   },
+   "id": "m00072"
+  },
+  {
+   "parser_id": "p00075",
+   "class_uid": 1008,
+   "fields": [
+    {
+     "to": "activity_id",
+     "value": 99
+    },
+    {
+     "to": "log_type_id",
+     "value": 99
+    },
+    {
+     "to": "log_type",
+     "value": "Syslog"
+    },
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "OISF"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "Suricata"
+    },
+    {
+     "to": "device.type_id",
+     "value": 0
+    },
+    {
+     "to": "device.vendor_name",
+     "value": "OISF"
+    },
+    {
+     "to": "severity_id",
+     "from": "vendor.alert.severity",
+     "map": {
+      "1": 4,
+      "2": 3,
+      "3": 2,
+      "4": 1
+     },
+     "default": 1
+    },
+    {
+     "to": "message",
+     "from": [
+      "vendor.alert.signature",
+      "message"
+     ]
+    },
+    {
+     "to": "time",
+     "from": [
+      "vendor.timestamp",
+      "@timestamp"
+     ],
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "metadata.original_time",
+     "from": "vendor.timestamp"
+    },
+    {
+     "to": "metadata.log_name",
+     "from": "vendor.event_type"
+    },
+    {
+     "to": "metadata.correlation_uid",
+     "from": "vendor.flow_id",
+     "type": "string"
+    },
+    {
+     "to": "device.interface_name",
+     "from": "vendor.in_iface"
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": "vendor.src_ip"
+    },
+    {
+     "to": "src_endpoint.port",
+     "from": "vendor.src_port",
+     "type": "integer"
+    },
+    {
+     "to": "dst_endpoint.ip",
+     "from": "vendor.dest_ip"
+    },
+    {
+     "to": "dst_endpoint.port",
+     "from": "vendor.dest_port",
+     "type": "integer"
+    }
+   ],
+   "unmapped": true,
+   "label": "oisf_suricata",
+   "format": "eve_fallback",
+   "status": "active",
+   "origin": "mapping-agent:20261120T084355",
+   "rationale": "Fallback envelope mapping: Event Log Activity (1008) with activity Other, log_type Syslog (99); message, severity from syslog PRI%8 / vendor severity, device hostname/ip/uid, event time, metadata log name/provider/event_code, plus src/dst endpoints where the fallback extracts them. Unknown message types keep remaining vendor fields in unmapped.",
+   "metrics": {
+    "events": 32,
+    "valid_rate": 1.0,
+    "mapped_field_share": 0.381
+   },
+   "id": "m00073"
+  },
+  {
+   "parser_id": "p00082",
+   "class_uid": 1008,
+   "fields": [
+    {
+     "to": "activity_id",
+     "value": 99
+    },
+    {
+     "to": "log_type_id",
+     "value": 99
+    },
+    {
+     "to": "log_type",
+     "value": "Syslog"
+    },
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Palo Alto Networks"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "PAN-OS"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    },
+    {
+     "to": "device.vendor_name",
+     "value": "Palo Alto Networks"
+    },
+    {
+     "to": "severity_id",
+     "from": [
+      "vendor.severity",
+      "vendor.syslog_pri"
+     ],
+     "map": {
+      "0": 6,
+      "1": 5,
+      "2": 5,
+      "3": 4,
+      "4": 3,
+      "5": 2,
+      "6": 1,
+      "7": 1,
+      "8": 6,
+      "9": 5,
+      "10": 5,
+      "11": 4,
+      "12": 3,
+      "13": 2,
+      "14": 1,
+      "15": 1,
+      "16": 6,
+      "17": 5,
+      "18": 5,
+      "19": 4,
+      "20": 3,
+      "21": 2,
+      "22": 1,
+      "23": 1,
+      "24": 6,
+      "25": 5,
+      "26": 5,
+      "27": 4,
+      "28": 3,
+      "29": 2,
+      "30": 1,
+      "31": 1,
+      "32": 6,
+      "33": 5,
+      "34": 5,
+      "35": 4,
+      "36": 3,
+      "37": 2,
+      "38": 1,
+      "39": 1,
+      "40": 6,
+      "41": 5,
+      "42": 5,
+      "43": 4,
+      "44": 3,
+      "45": 2,
+      "46": 1,
+      "47": 1,
+      "48": 6,
+      "49": 5,
+      "50": 5,
+      "51": 4,
+      "52": 3,
+      "53": 2,
+      "54": 1,
+      "55": 1,
+      "56": 6,
+      "57": 5,
+      "58": 5,
+      "59": 4,
+      "60": 3,
+      "61": 2,
+      "62": 1,
+      "63": 1,
+      "64": 6,
+      "65": 5,
+      "66": 5,
+      "67": 4,
+      "68": 3,
+      "69": 2,
+      "70": 1,
+      "71": 1,
+      "72": 6,
+      "73": 5,
+      "74": 5,
+      "75": 4,
+      "76": 3,
+      "77": 2,
+      "78": 1,
+      "79": 1,
+      "80": 6,
+      "81": 5,
+      "82": 5,
+      "83": 4,
+      "84": 3,
+      "85": 2,
+      "86": 1,
+      "87": 1,
+      "88": 6,
+      "89": 5,
+      "90": 5,
+      "91": 4,
+      "92": 3,
+      "93": 2,
+      "94": 1,
+      "95": 1,
+      "96": 6,
+      "97": 5,
+      "98": 5,
+      "99": 4,
+      "100": 3,
+      "101": 2,
+      "102": 1,
+      "103": 1,
+      "104": 6,
+      "105": 5,
+      "106": 5,
+      "107": 4,
+      "108": 3,
+      "109": 2,
+      "110": 1,
+      "111": 1,
+      "112": 6,
+      "113": 5,
+      "114": 5,
+      "115": 4,
+      "116": 3,
+      "117": 2,
+      "118": 1,
+      "119": 1,
+      "120": 6,
+      "121": 5,
+      "122": 5,
+      "123": 4,
+      "124": 3,
+      "125": 2,
+      "126": 1,
+      "127": 1,
+      "128": 6,
+      "129": 5,
+      "130": 5,
+      "131": 4,
+      "132": 3,
+      "133": 2,
+      "134": 1,
+      "135": 1,
+      "136": 6,
+      "137": 5,
+      "138": 5,
+      "139": 4,
+      "140": 3,
+      "141": 2,
+      "142": 1,
+      "143": 1,
+      "144": 6,
+      "145": 5,
+      "146": 5,
+      "147": 4,
+      "148": 3,
+      "149": 2,
+      "150": 1,
+      "151": 1,
+      "152": 6,
+      "153": 5,
+      "154": 5,
+      "155": 4,
+      "156": 3,
+      "157": 2,
+      "158": 1,
+      "159": 1,
+      "160": 6,
+      "161": 5,
+      "162": 5,
+      "163": 4,
+      "164": 3,
+      "165": 2,
+      "166": 1,
+      "167": 1,
+      "168": 6,
+      "169": 5,
+      "170": 5,
+      "171": 4,
+      "172": 3,
+      "173": 2,
+      "174": 1,
+      "175": 1,
+      "176": 6,
+      "177": 5,
+      "178": 5,
+      "179": 4,
+      "180": 3,
+      "181": 2,
+      "182": 1,
+      "183": 1,
+      "184": 6,
+      "185": 5,
+      "186": 5,
+      "187": 4,
+      "188": 3,
+      "189": 2,
+      "190": 1,
+      "191": 1,
+      "informational": 1,
+      "low": 2,
+      "medium": 3,
+      "high": 4,
+      "critical": 5
+     },
+     "default": 0
+    },
+    {
+     "to": "message",
+     "from": [
+      "vendor.msg",
+      "message"
+     ]
+    },
+    {
+     "to": "time",
+     "from": [
+      "vendor.time_generated",
+      "@timestamp"
+     ],
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "metadata.original_time",
+     "from": "vendor.receive_time"
+    },
+    {
+     "to": "metadata.log_name",
+     "from": "vendor.type"
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "vendor.subtype"
+    },
+    {
+     "to": "metadata.log_version",
+     "from": "vendor.config_version"
+    },
+    {
+     "to": "device.hostname",
+     "from": [
+      "vendor.device_name",
+      "vendor.syslog_host"
+     ]
+    },
+    {
+     "to": "device.uid",
+     "from": "vendor.serial_number",
+     "type": "string"
+    }
+   ],
+   "unmapped": true,
+   "label": "paloalto_panos",
+   "format": "panos_fallback",
+   "status": "active",
+   "origin": "mapping-agent:20261120T084355",
+   "rationale": "Fallback envelope mapping: Event Log Activity (1008) with activity Other, log_type Syslog (99); message, severity from syslog PRI%8 / vendor severity, device hostname/ip/uid, event time, metadata log name/provider/event_code, plus src/dst endpoints where the fallback extracts them. Unknown message types keep remaining vendor fields in unmapped.",
+   "metrics": {
+    "events": 143,
+    "valid_rate": 1.0,
+    "mapped_field_share": 0.814
+   },
+   "id": "m00074"
+  },
+  {
+   "parser_id": "p00077",
+   "class_uid": 1008,
+   "fields": [
+    {
+     "to": "activity_id",
+     "value": 99
+    },
+    {
+     "to": "log_type_id",
+     "value": 99
+    },
+    {
+     "to": "log_type",
+     "value": "Syslog"
+    },
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "SonicWall"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "SonicOS"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    },
+    {
+     "to": "device.vendor_name",
+     "value": "SonicWall"
+    },
+    {
+     "to": "severity_id",
+     "from": [
+      "vendor.pri",
+      "vendor.syslog_pri"
+     ],
+     "map": {
+      "0": 6,
+      "1": 5,
+      "2": 5,
+      "3": 4,
+      "4": 3,
+      "5": 2,
+      "6": 1,
+      "7": 1,
+      "8": 6,
+      "9": 5,
+      "10": 5,
+      "11": 4,
+      "12": 3,
+      "13": 2,
+      "14": 1,
+      "15": 1,
+      "16": 6,
+      "17": 5,
+      "18": 5,
+      "19": 4,
+      "20": 3,
+      "21": 2,
+      "22": 1,
+      "23": 1,
+      "24": 6,
+      "25": 5,
+      "26": 5,
+      "27": 4,
+      "28": 3,
+      "29": 2,
+      "30": 1,
+      "31": 1,
+      "32": 6,
+      "33": 5,
+      "34": 5,
+      "35": 4,
+      "36": 3,
+      "37": 2,
+      "38": 1,
+      "39": 1,
+      "40": 6,
+      "41": 5,
+      "42": 5,
+      "43": 4,
+      "44": 3,
+      "45": 2,
+      "46": 1,
+      "47": 1,
+      "48": 6,
+      "49": 5,
+      "50": 5,
+      "51": 4,
+      "52": 3,
+      "53": 2,
+      "54": 1,
+      "55": 1,
+      "56": 6,
+      "57": 5,
+      "58": 5,
+      "59": 4,
+      "60": 3,
+      "61": 2,
+      "62": 1,
+      "63": 1,
+      "64": 6,
+      "65": 5,
+      "66": 5,
+      "67": 4,
+      "68": 3,
+      "69": 2,
+      "70": 1,
+      "71": 1,
+      "72": 6,
+      "73": 5,
+      "74": 5,
+      "75": 4,
+      "76": 3,
+      "77": 2,
+      "78": 1,
+      "79": 1,
+      "80": 6,
+      "81": 5,
+      "82": 5,
+      "83": 4,
+      "84": 3,
+      "85": 2,
+      "86": 1,
+      "87": 1,
+      "88": 6,
+      "89": 5,
+      "90": 5,
+      "91": 4,
+      "92": 3,
+      "93": 2,
+      "94": 1,
+      "95": 1,
+      "96": 6,
+      "97": 5,
+      "98": 5,
+      "99": 4,
+      "100": 3,
+      "101": 2,
+      "102": 1,
+      "103": 1,
+      "104": 6,
+      "105": 5,
+      "106": 5,
+      "107": 4,
+      "108": 3,
+      "109": 2,
+      "110": 1,
+      "111": 1,
+      "112": 6,
+      "113": 5,
+      "114": 5,
+      "115": 4,
+      "116": 3,
+      "117": 2,
+      "118": 1,
+      "119": 1,
+      "120": 6,
+      "121": 5,
+      "122": 5,
+      "123": 4,
+      "124": 3,
+      "125": 2,
+      "126": 1,
+      "127": 1,
+      "128": 6,
+      "129": 5,
+      "130": 5,
+      "131": 4,
+      "132": 3,
+      "133": 2,
+      "134": 1,
+      "135": 1,
+      "136": 6,
+      "137": 5,
+      "138": 5,
+      "139": 4,
+      "140": 3,
+      "141": 2,
+      "142": 1,
+      "143": 1,
+      "144": 6,
+      "145": 5,
+      "146": 5,
+      "147": 4,
+      "148": 3,
+      "149": 2,
+      "150": 1,
+      "151": 1,
+      "152": 6,
+      "153": 5,
+      "154": 5,
+      "155": 4,
+      "156": 3,
+      "157": 2,
+      "158": 1,
+      "159": 1,
+      "160": 6,
+      "161": 5,
+      "162": 5,
+      "163": 4,
+      "164": 3,
+      "165": 2,
+      "166": 1,
+      "167": 1,
+      "168": 6,
+      "169": 5,
+      "170": 5,
+      "171": 4,
+      "172": 3,
+      "173": 2,
+      "174": 1,
+      "175": 1,
+      "176": 6,
+      "177": 5,
+      "178": 5,
+      "179": 4,
+      "180": 3,
+      "181": 2,
+      "182": 1,
+      "183": 1,
+      "184": 6,
+      "185": 5,
+      "186": 5,
+      "187": 4,
+      "188": 3,
+      "189": 2,
+      "190": 1,
+      "191": 1
+     },
+     "default": 0
+    },
+    {
+     "to": "message",
+     "from": [
+      "vendor.msg[0]",
+      "vendor.msg",
+      "message"
+     ],
+     "type": "string"
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "metadata.original_time",
+     "from": "vendor.time"
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "vendor.m",
+     "type": "string"
+    },
+    {
+     "to": "metadata.log_name",
+     "from": "vendor.c",
+     "type": "string"
+    },
+    {
+     "to": "device.uid",
+     "from": "vendor.sn"
+    },
+    {
+     "to": "device.ip",
+     "from": "vendor.fw"
+    },
+    {
+     "to": "device.hostname",
+     "from": "vendor.syslog_host"
+    },
+    {
+     "to": "actor.user.name",
+     "from": "vendor.usr"
+    }
+   ],
+   "unmapped": true,
+   "label": "sonicwall_firewall",
+   "format": "sonicos_fallback",
+   "status": "active",
+   "origin": "mapping-agent:20261120T084355",
+   "rationale": "Fallback envelope mapping: Event Log Activity (1008) with activity Other, log_type Syslog (99); message, severity from syslog PRI%8 / vendor severity, device hostname/ip/uid, event time, metadata log name/provider/event_code, plus src/dst endpoints where the fallback extracts them. Unknown message types keep remaining vendor fields in unmapped.",
+   "metrics": {
+    "events": 99,
+    "valid_rate": 1.0,
+    "mapped_field_share": 0.384
+   },
+   "id": "m00075"
+  },
+  {
+   "parser_id": "p00083",
+   "class_uid": 1008,
+   "fields": [
+    {
+     "to": "activity_id",
+     "value": 99
+    },
+    {
+     "to": "log_type_id",
+     "value": 99
+    },
+    {
+     "to": "log_type",
+     "value": "Syslog"
+    },
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Sophos"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "Sophos UTM"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    },
+    {
+     "to": "device.vendor_name",
+     "value": "Sophos"
+    },
+    {
+     "to": "severity_id",
+     "from": [
+      "vendor.severity",
+      "vendor.syslog_pri"
+     ],
+     "map": {
+      "0": 6,
+      "1": 5,
+      "2": 5,
+      "3": 4,
+      "4": 3,
+      "5": 2,
+      "6": 1,
+      "7": 1,
+      "8": 6,
+      "9": 5,
+      "10": 5,
+      "11": 4,
+      "12": 3,
+      "13": 2,
+      "14": 1,
+      "15": 1,
+      "16": 6,
+      "17": 5,
+      "18": 5,
+      "19": 4,
+      "20": 3,
+      "21": 2,
+      "22": 1,
+      "23": 1,
+      "24": 6,
+      "25": 5,
+      "26": 5,
+      "27": 4,
+      "28": 3,
+      "29": 2,
+      "30": 1,
+      "31": 1,
+      "32": 6,
+      "33": 5,
+      "34": 5,
+      "35": 4,
+      "36": 3,
+      "37": 2,
+      "38": 1,
+      "39": 1,
+      "40": 6,
+      "41": 5,
+      "42": 5,
+      "43": 4,
+      "44": 3,
+      "45": 2,
+      "46": 1,
+      "47": 1,
+      "48": 6,
+      "49": 5,
+      "50": 5,
+      "51": 4,
+      "52": 3,
+      "53": 2,
+      "54": 1,
+      "55": 1,
+      "56": 6,
+      "57": 5,
+      "58": 5,
+      "59": 4,
+      "60": 3,
+      "61": 2,
+      "62": 1,
+      "63": 1,
+      "64": 6,
+      "65": 5,
+      "66": 5,
+      "67": 4,
+      "68": 3,
+      "69": 2,
+      "70": 1,
+      "71": 1,
+      "72": 6,
+      "73": 5,
+      "74": 5,
+      "75": 4,
+      "76": 3,
+      "77": 2,
+      "78": 1,
+      "79": 1,
+      "80": 6,
+      "81": 5,
+      "82": 5,
+      "83": 4,
+      "84": 3,
+      "85": 2,
+      "86": 1,
+      "87": 1,
+      "88": 6,
+      "89": 5,
+      "90": 5,
+      "91": 4,
+      "92": 3,
+      "93": 2,
+      "94": 1,
+      "95": 1,
+      "96": 6,
+      "97": 5,
+      "98": 5,
+      "99": 4,
+      "100": 3,
+      "101": 2,
+      "102": 1,
+      "103": 1,
+      "104": 6,
+      "105": 5,
+      "106": 5,
+      "107": 4,
+      "108": 3,
+      "109": 2,
+      "110": 1,
+      "111": 1,
+      "112": 6,
+      "113": 5,
+      "114": 5,
+      "115": 4,
+      "116": 3,
+      "117": 2,
+      "118": 1,
+      "119": 1,
+      "120": 6,
+      "121": 5,
+      "122": 5,
+      "123": 4,
+      "124": 3,
+      "125": 2,
+      "126": 1,
+      "127": 1,
+      "128": 6,
+      "129": 5,
+      "130": 5,
+      "131": 4,
+      "132": 3,
+      "133": 2,
+      "134": 1,
+      "135": 1,
+      "136": 6,
+      "137": 5,
+      "138": 5,
+      "139": 4,
+      "140": 3,
+      "141": 2,
+      "142": 1,
+      "143": 1,
+      "144": 6,
+      "145": 5,
+      "146": 5,
+      "147": 4,
+      "148": 3,
+      "149": 2,
+      "150": 1,
+      "151": 1,
+      "152": 6,
+      "153": 5,
+      "154": 5,
+      "155": 4,
+      "156": 3,
+      "157": 2,
+      "158": 1,
+      "159": 1,
+      "160": 6,
+      "161": 5,
+      "162": 5,
+      "163": 4,
+      "164": 3,
+      "165": 2,
+      "166": 1,
+      "167": 1,
+      "168": 6,
+      "169": 5,
+      "170": 5,
+      "171": 4,
+      "172": 3,
+      "173": 2,
+      "174": 1,
+      "175": 1,
+      "176": 6,
+      "177": 5,
+      "178": 5,
+      "179": 4,
+      "180": 3,
+      "181": 2,
+      "182": 1,
+      "183": 1,
+      "184": 6,
+      "185": 5,
+      "186": 5,
+      "187": 4,
+      "188": 3,
+      "189": 2,
+      "190": 1,
+      "191": 1,
+      "debug": 1,
+      "info": 1,
+      "notice": 2,
+      "warn": 3,
+      "warning": 3,
+      "err": 4,
+      "error": 4,
+      "crit": 5,
+      "critical": 5,
+      "alert": 5,
+      "emerg": 6
+     },
+     "default": 0
+    },
+    {
+     "to": "message",
+     "from": [
+      "vendor.name",
+      "vendor.msg",
+      "message"
+     ]
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "metadata.original_time",
+     "from": "vendor.log_timestamp"
+    },
+    {
+     "to": "metadata.log_provider",
+     "from": "vendor.process"
+    },
+    {
+     "to": "metadata.log_name",
+     "from": "vendor.sys"
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "vendor.id"
+    },
+    {
+     "to": "device.hostname",
+     "from": "vendor.syslog_host"
+    },
+    {
+     "to": "actor.user.name",
+     "from": "vendor.user"
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": "vendor.srcip"
+    },
+    {
+     "to": "src_endpoint.port",
+     "from": "vendor.srcport",
+     "type": "integer"
+    },
+    {
+     "to": "dst_endpoint.ip",
+     "from": "vendor.dstip"
+    },
+    {
+     "to": "dst_endpoint.port",
+     "from": "vendor.dstport",
+     "type": "integer"
+    }
+   ],
+   "unmapped": true,
+   "label": "sophos_utm",
+   "format": "utm_fallback",
+   "status": "active",
+   "origin": "mapping-agent:20261120T084355",
+   "rationale": "Fallback envelope mapping: Event Log Activity (1008) with activity Other, log_type Syslog (99); message, severity from syslog PRI%8 / vendor severity, device hostname/ip/uid, event time, metadata log name/provider/event_code, plus src/dst endpoints where the fallback extracts them. Unknown message types keep remaining vendor fields in unmapped.",
+   "metrics": {
+    "events": 12,
+    "valid_rate": 1.0,
+    "mapped_field_share": 0.529
+   },
+   "id": "m00076"
+  },
+  {
+   "parser_id": "p00079",
+   "class_uid": 1008,
+   "fields": [
+    {
+     "to": "activity_id",
+     "value": 99
+    },
+    {
+     "to": "log_type_id",
+     "value": 99
+    },
+    {
+     "to": "log_type",
+     "value": "Syslog"
+    },
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Sophos"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "Sophos Firewall"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    },
+    {
+     "to": "device.vendor_name",
+     "value": "Sophos"
+    },
+    {
+     "to": "severity_id",
+     "from": [
+      "vendor.priority",
+      "vendor.severity",
+      "vendor.syslog_pri"
+     ],
+     "map": {
+      "0": 6,
+      "1": 5,
+      "2": 5,
+      "3": 4,
+      "4": 3,
+      "5": 2,
+      "6": 1,
+      "7": 1,
+      "8": 6,
+      "9": 5,
+      "10": 5,
+      "11": 4,
+      "12": 3,
+      "13": 2,
+      "14": 1,
+      "15": 1,
+      "16": 6,
+      "17": 5,
+      "18": 5,
+      "19": 4,
+      "20": 3,
+      "21": 2,
+      "22": 1,
+      "23": 1,
+      "24": 6,
+      "25": 5,
+      "26": 5,
+      "27": 4,
+      "28": 3,
+      "29": 2,
+      "30": 1,
+      "31": 1,
+      "32": 6,
+      "33": 5,
+      "34": 5,
+      "35": 4,
+      "36": 3,
+      "37": 2,
+      "38": 1,
+      "39": 1,
+      "40": 6,
+      "41": 5,
+      "42": 5,
+      "43": 4,
+      "44": 3,
+      "45": 2,
+      "46": 1,
+      "47": 1,
+      "48": 6,
+      "49": 5,
+      "50": 5,
+      "51": 4,
+      "52": 3,
+      "53": 2,
+      "54": 1,
+      "55": 1,
+      "56": 6,
+      "57": 5,
+      "58": 5,
+      "59": 4,
+      "60": 3,
+      "61": 2,
+      "62": 1,
+      "63": 1,
+      "64": 6,
+      "65": 5,
+      "66": 5,
+      "67": 4,
+      "68": 3,
+      "69": 2,
+      "70": 1,
+      "71": 1,
+      "72": 6,
+      "73": 5,
+      "74": 5,
+      "75": 4,
+      "76": 3,
+      "77": 2,
+      "78": 1,
+      "79": 1,
+      "80": 6,
+      "81": 5,
+      "82": 5,
+      "83": 4,
+      "84": 3,
+      "85": 2,
+      "86": 1,
+      "87": 1,
+      "88": 6,
+      "89": 5,
+      "90": 5,
+      "91": 4,
+      "92": 3,
+      "93": 2,
+      "94": 1,
+      "95": 1,
+      "96": 6,
+      "97": 5,
+      "98": 5,
+      "99": 4,
+      "100": 3,
+      "101": 2,
+      "102": 1,
+      "103": 1,
+      "104": 6,
+      "105": 5,
+      "106": 5,
+      "107": 4,
+      "108": 3,
+      "109": 2,
+      "110": 1,
+      "111": 1,
+      "112": 6,
+      "113": 5,
+      "114": 5,
+      "115": 4,
+      "116": 3,
+      "117": 2,
+      "118": 1,
+      "119": 1,
+      "120": 6,
+      "121": 5,
+      "122": 5,
+      "123": 4,
+      "124": 3,
+      "125": 2,
+      "126": 1,
+      "127": 1,
+      "128": 6,
+      "129": 5,
+      "130": 5,
+      "131": 4,
+      "132": 3,
+      "133": 2,
+      "134": 1,
+      "135": 1,
+      "136": 6,
+      "137": 5,
+      "138": 5,
+      "139": 4,
+      "140": 3,
+      "141": 2,
+      "142": 1,
+      "143": 1,
+      "144": 6,
+      "145": 5,
+      "146": 5,
+      "147": 4,
+      "148": 3,
+      "149": 2,
+      "150": 1,
+      "151": 1,
+      "152": 6,
+      "153": 5,
+      "154": 5,
+      "155": 4,
+      "156": 3,
+      "157": 2,
+      "158": 1,
+      "159": 1,
+      "160": 6,
+      "161": 5,
+      "162": 5,
+      "163": 4,
+      "164": 3,
+      "165": 2,
+      "166": 1,
+      "167": 1,
+      "168": 6,
+      "169": 5,
+      "170": 5,
+      "171": 4,
+      "172": 3,
+      "173": 2,
+      "174": 1,
+      "175": 1,
+      "176": 6,
+      "177": 5,
+      "178": 5,
+      "179": 4,
+      "180": 3,
+      "181": 2,
+      "182": 1,
+      "183": 1,
+      "184": 6,
+      "185": 5,
+      "186": 5,
+      "187": 4,
+      "188": 3,
+      "189": 2,
+      "190": 1,
+      "191": 1,
+      "Emergency": 6,
+      "Alert": 5,
+      "Critical": 5,
+      "Error": 4,
+      "Warning": 3,
+      "Notice": 2,
+      "Information": 1,
+      "Informational": 1,
+      "Debug": 1
+     },
+     "default": 0
+    },
+    {
+     "to": "message",
+     "from": [
+      "vendor.message",
+      "vendor.msg",
+      "message"
+     ]
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "metadata.original_time",
+     "from": [
+      "vendor.timestamp",
+      "vendor.syslog_timestamp"
+     ]
+    },
+    {
+     "to": "metadata.log_name",
+     "from": "vendor.log_type"
+    },
+    {
+     "to": "metadata.log_provider",
+     "from": "vendor.log_component"
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "vendor.log_id"
+    },
+    {
+     "to": "metadata.log_version",
+     "from": "vendor.log_version"
+    },
+    {
+     "to": "device.hostname",
+     "from": [
+      "vendor.device_name",
+      "vendor.device",
+      "vendor.syslog_host"
+     ]
+    },
+    {
+     "to": "device.uid",
+     "from": [
+      "vendor.device_serial_id",
+      "vendor.device_id"
+     ]
+    },
+    {
+     "to": "device.model",
+     "from": "vendor.device_model"
+    },
+    {
+     "to": "actor.user.name",
+     "from": "vendor.user_name"
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": "vendor.src_ip"
+    },
+    {
+     "to": "src_endpoint.port",
+     "from": "vendor.src_port",
+     "type": "integer"
+    },
+    {
+     "to": "dst_endpoint.ip",
+     "from": "vendor.dst_ip"
+    },
+    {
+     "to": "dst_endpoint.port",
+     "from": "vendor.dst_port",
+     "type": "integer"
+    },
+    {
+     "to": "src_endpoint.mac",
+     "from": "vendor.src_mac"
+    },
+    {
+     "to": "src_endpoint.zone",
+     "from": "vendor.src_zone"
+    },
+    {
+     "to": "dst_endpoint.zone",
+     "from": "vendor.dst_zone"
+    },
+    {
+     "to": "src_endpoint.location.country",
+     "from": "vendor.src_country"
+    },
+    {
+     "to": "dst_endpoint.location.country",
+     "from": "vendor.dst_country"
+    }
+   ],
+   "unmapped": true,
+   "label": "sophos_xg",
+   "format": "xg_fallback",
+   "status": "active",
+   "origin": "mapping-agent:20261120T084355",
+   "rationale": "Fallback envelope mapping: Event Log Activity (1008) with activity Other, log_type Syslog (99); message, severity from syslog PRI%8 / vendor severity, device hostname/ip/uid, event time, metadata log name/provider/event_code, plus src/dst endpoints where the fallback extracts them. Unknown message types keep remaining vendor fields in unmapped.",
+   "metrics": {
+    "events": 146,
+    "valid_rate": 1.0,
+    "mapped_field_share": 0.384
+   },
+   "id": "m00077"
+  },
+  {
+   "parser_id": "p00084",
+   "class_uid": 1008,
+   "fields": [
+    {
+     "to": "activity_id",
+     "value": 99
+    },
+    {
+     "to": "log_type_id",
+     "value": 99
+    },
+    {
+     "to": "log_type",
+     "value": "Syslog"
+    },
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "WatchGuard"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "Firebox"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    },
+    {
+     "to": "device.vendor_name",
+     "value": "WatchGuard"
+    },
+    {
+     "to": "severity_id",
+     "from": "vendor.syslog_pri",
+     "map": {
+      "0": 6,
+      "1": 5,
+      "2": 5,
+      "3": 4,
+      "4": 3,
+      "5": 2,
+      "6": 1,
+      "7": 1,
+      "8": 6,
+      "9": 5,
+      "10": 5,
+      "11": 4,
+      "12": 3,
+      "13": 2,
+      "14": 1,
+      "15": 1,
+      "16": 6,
+      "17": 5,
+      "18": 5,
+      "19": 4,
+      "20": 3,
+      "21": 2,
+      "22": 1,
+      "23": 1,
+      "24": 6,
+      "25": 5,
+      "26": 5,
+      "27": 4,
+      "28": 3,
+      "29": 2,
+      "30": 1,
+      "31": 1,
+      "32": 6,
+      "33": 5,
+      "34": 5,
+      "35": 4,
+      "36": 3,
+      "37": 2,
+      "38": 1,
+      "39": 1,
+      "40": 6,
+      "41": 5,
+      "42": 5,
+      "43": 4,
+      "44": 3,
+      "45": 2,
+      "46": 1,
+      "47": 1,
+      "48": 6,
+      "49": 5,
+      "50": 5,
+      "51": 4,
+      "52": 3,
+      "53": 2,
+      "54": 1,
+      "55": 1,
+      "56": 6,
+      "57": 5,
+      "58": 5,
+      "59": 4,
+      "60": 3,
+      "61": 2,
+      "62": 1,
+      "63": 1,
+      "64": 6,
+      "65": 5,
+      "66": 5,
+      "67": 4,
+      "68": 3,
+      "69": 2,
+      "70": 1,
+      "71": 1,
+      "72": 6,
+      "73": 5,
+      "74": 5,
+      "75": 4,
+      "76": 3,
+      "77": 2,
+      "78": 1,
+      "79": 1,
+      "80": 6,
+      "81": 5,
+      "82": 5,
+      "83": 4,
+      "84": 3,
+      "85": 2,
+      "86": 1,
+      "87": 1,
+      "88": 6,
+      "89": 5,
+      "90": 5,
+      "91": 4,
+      "92": 3,
+      "93": 2,
+      "94": 1,
+      "95": 1,
+      "96": 6,
+      "97": 5,
+      "98": 5,
+      "99": 4,
+      "100": 3,
+      "101": 2,
+      "102": 1,
+      "103": 1,
+      "104": 6,
+      "105": 5,
+      "106": 5,
+      "107": 4,
+      "108": 3,
+      "109": 2,
+      "110": 1,
+      "111": 1,
+      "112": 6,
+      "113": 5,
+      "114": 5,
+      "115": 4,
+      "116": 3,
+      "117": 2,
+      "118": 1,
+      "119": 1,
+      "120": 6,
+      "121": 5,
+      "122": 5,
+      "123": 4,
+      "124": 3,
+      "125": 2,
+      "126": 1,
+      "127": 1,
+      "128": 6,
+      "129": 5,
+      "130": 5,
+      "131": 4,
+      "132": 3,
+      "133": 2,
+      "134": 1,
+      "135": 1,
+      "136": 6,
+      "137": 5,
+      "138": 5,
+      "139": 4,
+      "140": 3,
+      "141": 2,
+      "142": 1,
+      "143": 1,
+      "144": 6,
+      "145": 5,
+      "146": 5,
+      "147": 4,
+      "148": 3,
+      "149": 2,
+      "150": 1,
+      "151": 1,
+      "152": 6,
+      "153": 5,
+      "154": 5,
+      "155": 4,
+      "156": 3,
+      "157": 2,
+      "158": 1,
+      "159": 1,
+      "160": 6,
+      "161": 5,
+      "162": 5,
+      "163": 4,
+      "164": 3,
+      "165": 2,
+      "166": 1,
+      "167": 1,
+      "168": 6,
+      "169": 5,
+      "170": 5,
+      "171": 4,
+      "172": 3,
+      "173": 2,
+      "174": 1,
+      "175": 1,
+      "176": 6,
+      "177": 5,
+      "178": 5,
+      "179": 4,
+      "180": 3,
+      "181": 2,
+      "182": 1,
+      "183": 1,
+      "184": 6,
+      "185": 5,
+      "186": 5,
+      "187": 4,
+      "188": 3,
+      "189": 2,
+      "190": 1,
+      "191": 1
+     },
+     "default": 0
+    },
+    {
+     "to": "message",
+     "from": [
+      "vendor.msg",
+      "message"
+     ]
+    },
+    {
+     "to": "time",
+     "from": "@timestamp",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "metadata.original_time",
+     "from": [
+      "vendor.log_timestamp",
+      "vendor.syslog_timestamp"
+     ]
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "vendor.msg_id"
+    },
+    {
+     "to": "metadata.log_provider",
+     "from": "vendor.process"
+    },
+    {
+     "to": "device.hostname",
+     "from": "vendor.syslog_host"
+    },
+    {
+     "to": "device.uid",
+     "from": "vendor.serial_number"
+    }
+   ],
+   "unmapped": true,
+   "label": "watchguard_firebox",
+   "format": "firebox_fallback",
+   "status": "active",
+   "origin": "mapping-agent:20261120T084355",
+   "rationale": "Fallback envelope mapping: Event Log Activity (1008) with activity Other, log_type Syslog (99); message, severity from syslog PRI%8 / vendor severity, device hostname/ip/uid, event time, metadata log name/provider/event_code, plus src/dst endpoints where the fallback extracts them. Unknown message types keep remaining vendor fields in unmapped.",
+   "metrics": {
+    "events": 148,
+    "valid_rate": 1.0,
+    "mapped_field_share": 0.805
+   },
+   "id": "m00078"
   }
  ],
  "rejected": [
@@ -20783,5 +25996,5 @@
    "at": "2026-11-20T08:14:20+00:00"
   }
  ],
- "updated": "2026-11-20T08:39:03+00:00"
+ "updated": "2026-11-20T08:48:25+00:00"
 }
