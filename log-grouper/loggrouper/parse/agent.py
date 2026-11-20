@@ -44,7 +44,7 @@ def _cid(label, shp):
 
 class ParserTools(CodeTools):
     def __init__(self, store_path, groups_dir, labels=None, logstash_home=None, enable_code=False,
-                 workspace=None, sandbox_backend="unshare", max_submits=6, drafts_path=None):
+                 workspace=None, sandbox_backend="unshare", max_submits=12, drafts_path=None):
         self.store = ParserStore(store_path)
         self.samples = load_samples(groups_dir, labels)
         self.logstash_home = logstash_home
@@ -184,7 +184,7 @@ class ParserTools(CodeTools):
             m = metrics(spec, msgs)
         except Exception as e:  # noqa: BLE001 - surface spec errors (bad grok, bad op) to the agent
             return f"ERROR running spec: {type(e).__name__}: {e}"
-        m["verdict"] = verdict(m) or "ok"
+        m["verdict"] = verdict(m, spec) or "ok"
         m["outputs"] = [{"message": x[:300], "output": output_of(spec, x)} for x in msgs[:show]]
         return json.dumps(m, indent=1, default=str)[:12000]
 
@@ -197,7 +197,7 @@ class ParserTools(CodeTools):
             m = metrics(spec, claimed(ps, spec, self.samples[spec["label"]]))
         except Exception as e:  # noqa: BLE001
             return f"ERROR: {type(e).__name__}: {e}"
-        v = verdict(m)
+        v = verdict(m, spec)
         if v:
             return f"ERROR: not drafted - {v}. Fix it with try_parser first."
         spec.pop("id", None)
@@ -221,9 +221,52 @@ class ParserTools(CodeTools):
         self._persist()
         return f"drafted update of {parser_id}"
 
+    def logstash_check(self, spec_json: str, before: str = "", n: int = 40) -> str:
+        """Run a draft spec in REAL Logstash (with the label's active parsers) on up to n of the samples it
+        would claim, and compare with the Python executor field by field. Takes ~15 s; does not use a
+        submit. Use it before proposing parsers with kv/date/grok edge cases."""
+        if not self.logstash_home:
+            return "ERROR: no Logstash configured"
+        try:
+            spec = self._spec(spec_json)
+            ps = self._placed(spec, before)
+        except (ValueError, KeyError) as e:
+            return f"ERROR: {e}"
+        spec.setdefault("id", "draft")
+        msgs = claimed(ps, spec, self.samples[spec["label"]])[:max(1, min(n, 200))]
+        try:
+            r = conformance(ps, [(spec["label"], m) for m in msgs], self.logstash_home)
+        except Exception as e:  # noqa: BLE001
+            return f"ERROR: Logstash run failed: {str(e)[:800]}"
+        out = {"checked": r["checked"], "identical": r["identical"], "diffs": []}
+        for dd in r["diffs"][:5]:
+            fa, fb = flatten(dd["python"]), flatten(dd["logstash"])
+            keys = sorted(k for k in set(fa) | set(fb) if fa.get(k) != fb.get(k))
+            out["diffs"].append({"message": dd["message"][:300],
+                                 "fields": {k: {"python": fa.get(k), "logstash": fb.get(k)} for k in keys[:10]}})
+        return json.dumps(out, indent=1, default=str)[:12000]
+
+    def retire_parser(self, parser_id: str, reason: str) -> str:
+        """Retire an active parser (e.g. a wrong or experimental one). Its samples fall to the next matching
+        parser or become unparsed. Refused if it would break other parsers' golden examples."""
+        p = self.store.by_id(parser_id)
+        if not p or p.get("status", "active") != "active":
+            return f"ERROR: no active parser {parser_id}"
+        p["status"] = "retired"
+        broken = golden_regressions(self.store.ordered(p["label"]))
+        if broken:
+            p["status"] = "active"
+            return f"ERROR: retiring would break golden examples: {broken[:2]}"
+        p.setdefault("history", []).append({"retired": reason, "at": time.strftime("%Y-%m-%dT%H:%M:%S")})
+        self.store.save()
+        if self.enable_code:
+            self._write_workspace()
+        return f"retired {parser_id}"
+
     def submit(self) -> str:
         """Validate drafts in context (position, other parsers' golden examples), run accepted ones through
-        real Logstash and compare with the Python executor, then activate. Returns verdicts."""
+        real Logstash and compare with the Python executor, then activate. Returns verdicts. Each parser is
+        accepted or rejected on its own. Budget: max_submits per session (remaining count is reported)."""
         if self.submits >= self.max_submits:
             return "ERROR: submit limit reached; finish with your summary"
         self.submits += 1
@@ -242,7 +285,7 @@ class ParserTools(CodeTools):
             ps.sort(key=lambda p: (p.get("order", 1000), p["id"]))
             msgs = claimed(ps, spec, self.samples[label])
             m = metrics(spec, msgs)
-            reason = verdict(m)
+            reason = verdict(m, spec)
             if not reason:
                 spec["golden"] = pick_golden(spec, msgs)
                 if old:
@@ -310,7 +353,7 @@ class ParserTools(CodeTools):
         self._persist()
         if self.enable_code:
             self._write_workspace()
-        rep = {"accepted": done, "rejected": rejected,
+        rep = {"accepted": done, "rejected": rejected, "submits_left": self.max_submits - self.submits,
                "logstash_check": None if conf is None else {"checked": conf.get("checked"), "identical": conf.get("identical"),
                                                             "error": conf.get("error")}}
         self.reports.append(rep)
@@ -318,7 +361,8 @@ class ParserTools(CodeTools):
 
     def tool_functions(self):
         return self.code_tool_functions() + [self.overview, self.label_overview, self.get_samples, self.list_parsers,
-                                             self.try_parser, self.propose_parser, self.propose_parser_update, self.submit]
+                                             self.try_parser, self.logstash_check, self.propose_parser,
+                                             self.propose_parser_update, self.retire_parser, self.submit]
 
 
 def run_parser_agent(store_path, groups_dir, labels=None, logstash_home=None, enable_code=True, **kw):

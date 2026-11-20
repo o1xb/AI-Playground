@@ -156,8 +156,20 @@ def metrics(spec, messages, max_examples=3):
     }
 
 
-def verdict(m):
+def spec_problems(spec):
+    """Static checks for constructs whose Logstash behaviour the executor cannot mirror."""
+    for st in spec["steps"]:
+        (op, a), = st.items()
+        if op == "date" and any("E" in f.replace("'", "") and f not in ("ISO8601",) for f in a.get("formats", [])):
+            return ("date formats with weekday tokens (EEE) are not allowed: Logstash/Joda moves the date to the named "
+                    "weekday when they disagree. Strip the weekday with grok/gsub first.")
+    return None
+
+
+def verdict(m, spec=None):
     """-> None if acceptable, else the reason."""
+    if spec is not None and spec_problems(spec):
+        return spec_problems(spec)
     if m["samples"] == 0:
         return "claims no samples (check `when` and parser order)"
     if m["parse_rate"] < MIN_PARSE_RATE:
