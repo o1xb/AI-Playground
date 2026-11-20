@@ -101,5 +101,7 @@ Single format (SonicWall sonicos_kv, 121 held-out lines): mapping agent 89.2/81.
 tokens, ~2 min; maps more fields than the benchmark measures).
 
 Conclusion: M1 (whole compact schema as a cached system prompt, one call + validator repairs) matches the
-tool-using agent at ~1/4 of its cost and ~1/10 of its calls. Choosing the class first (M2/M3) loses recall
+tool-using agent's accuracy with ~1/10 of its calls, in seconds instead of minutes. In dollars the two are
+similar once prompt caching is priced in (~$0.04 vs ~$0.03 per format, see COSTS.md); the earlier "1/4 of
+the cost" compared raw token counts and overstated the saving. Choosing the class first (M2/M3) loses recall
 on mixed formats. Retrieval (RAG) was the weakest. Keep a tool-using agent only as the fallback.

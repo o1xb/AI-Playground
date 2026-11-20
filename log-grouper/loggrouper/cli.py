@@ -192,6 +192,16 @@ def cmd_map_learn(a):
     from .ocsf.agent import run_mapping_agent, run_review_agent
     labels = a.labels.split(",") if a.labels else None
     g = os.path.join(a.out, "groups")
+    if a.method in ("full", "slice", "cover"):
+        # default: one cached-schema call per format (+ validator repairs); see bench/RESULTS.md
+        from .ocsf.llm_mapper import map_store
+        out = map_store(a.parsers, g, labels=labels, method=a.method, remap=a.remap, logstash_home=a.logstash_home,
+                        model=a.model, effort=a.effort, fallback_agent=a.fallback_agent)
+        print(json.dumps(out))
+        if a.review:
+            rev = run_review_agent(a.parsers, g, labels=labels, model=a.model, effort=a.effort)
+            print("[review]", rev["summary"])
+        return
     for rnd in range(a.rounds):
         out = run_mapping_agent(a.parsers, g, labels=labels, logstash_home=a.logstash_home,
                                 enable_code=a.code_tools != "off", model=a.model, effort=a.effort)
@@ -359,6 +369,11 @@ def main(argv=None):
     mt = sp.add_parser("mtool"); mt.add_argument("name"); mt.add_argument("args", nargs="?")
     mt.add_argument("--reviewer", action="store_true")
     ml = sp.add_parser("map-learn"); ml.add_argument("--rounds", type=int, default=2)
+    ml.add_argument("--method", choices=["full", "slice", "cover", "agent"], default="full",
+                    help="full = whole OCSF schema as a cached system prompt, one call per format (default)")
+    ml.add_argument("--remap", action="store_true", help="remap formats that already have a mapping")
+    ml.add_argument("--review", action="store_true", help="run the independent reviewer afterwards")
+    ml.add_argument("--fallback-agent", action="store_true", help="tool-using agent for formats that still fail")
     for x in (mt, ml):
         x.add_argument("--labels", default="")
     ex = sp.add_parser("export"); ex.add_argument("dest")

@@ -142,3 +142,56 @@ def map_format(schema, parser, events, method="cover", model="claude-opus-5-5", 
             except Exception:  # noqa: BLE001
                 pass
     return spec, m, usage
+
+
+def map_store(store_path, groups_dir, labels=None, method="full", remap=False, logstash_home=None,
+              model="claude-opus-5-5", effort="medium", fallback_agent=False, log=print):
+    """Production entry point: map every active parser that has no mapping (or all, with remap) using the
+    chosen method; validate; check accepted mappings in real Logstash; store them. Formats that still fail
+    can go to the tool-using mapping agent (fallback_agent=True). Returns a usage/cost summary."""
+    from ..parse.logstash import ocsf_conformance
+    from .agent import MappingTools, run_mapping_agent
+    tools = MappingTools(store_path, groups_dir, labels=labels, logstash_home=logstash_home)
+    total = {"formats": 0, "accepted": 0, "failed": [], "calls": 0, "input_tokens": 0,
+             "cache_read_input_tokens": 0, "cache_creation_input_tokens": 0, "output_tokens": 0}
+    accepted = []
+    for p in tools.parsers.all_ordered():
+        evs = tools.parsed.get(p["id"])
+        if not evs or (tools.mappings.for_parser(p["id"]) and not remap):
+            continue
+        total["formats"] += 1
+        try:
+            spec, m, usage = map_format(tools.schema, p, evs, method=method, model=model, effort=effort)
+        except Exception as e:  # noqa: BLE001
+            spec, m, usage = None, None, {}
+            log(f"[{p['id']}] error: {e}")
+        for k in ("calls", "input_tokens", "cache_read_input_tokens", "cache_creation_input_tokens", "output_tokens"):
+            total[k] += usage.get(k, 0)
+        if spec is None:
+            total["failed"].append(p["id"])
+            continue
+        accepted.append((p, spec, m))
+    if accepted and logstash_home:                  # same conformance gate as every other change
+        parsers = tools.parsers.all_ordered()
+        maps = {p["id"]: dict(prepare(sp, tools.schema), id="draft-" + p["id"]) for p, sp, _ in accepted}
+        samples = [(p["label"], e["message"]) for p, _, _ in accepted for e in tools.parsed[p["id"]][:20]]
+        conf = ocsf_conformance(parsers, maps, samples, logstash_home)
+        bad = {d["parser_id"] for d in conf["diffs"]}
+        for p, sp, m in [x for x in accepted if x[0]["id"] in bad]:
+            total["failed"].append(p["id"])
+        accepted = [x for x in accepted if x[0]["id"] not in bad]
+    for p, spec, m in accepted:
+        old = tools.mappings.for_parser(p["id"])
+        rec = dict(spec, status="active", origin=f"llm-{method}", metrics={k: m[k] for k in ("events", "valid_rate", "mapped_field_share")})
+        if old:
+            rec["id"] = old["id"]; rec["history"] = old.get("history", []) + [{"previous": {k: old[k] for k in ("class_uid", "fields")}}]
+            tools.mappings.items[tools.mappings.items.index(old)] = rec
+        else:
+            rec["id"] = tools.mappings.next_id("m"); tools.mappings.items.append(rec)
+        total["accepted"] += 1
+    tools.mappings.save()
+    if fallback_agent and total["failed"]:
+        labels_f = sorted({tools.parsers.by_id(i)["label"] for i in total["failed"]})
+        log(f"fallback: mapping agent for {labels_f}")
+        run_mapping_agent(store_path, groups_dir, labels=labels_f, logstash_home=logstash_home, model=model, effort=effort)
+    return total
