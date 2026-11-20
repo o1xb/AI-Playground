@@ -1,124 +1,105 @@
-# NEXT: continue on a new machine (Linux)
+# NEXT: what is left, in order (for Claude Code on a new machine)
 
-Instructions for Claude Code. Read `JOURNEY.md` first (what exists and why), then do the steps below in
-order. Work on branch `claude/adoring-planck-wczlod`; commit and push after each step that changes code or
-results. Record every measurement in `bench/RESULTS.md`.
+Read `JOURNEY.md` first. Work on branch `claude/adoring-planck-wczlod`; commit and push after each step;
+record every measurement in `bench/RESULTS.md`. Generated data goes to `W=$HOME/lgwork` (not in git).
 
-Paths below assume the repo root is `AI-Playground/` and you work in `AI-Playground/log-grouper`.
-Use `W=$HOME/lgwork` for all generated data (it is not in git).
+## Already decided / done (do not redo)
+- Grouping (rules + learner agent), parsing (81 parsers, Logstash-identical), OCSF mapping are built and
+  benchmarked. Final numbers: parse 95.7%, OCSF 95.5% (98% valid), precision 89.1%, recall 72.6%.
+- OCSF mapper decision: **M1** (whole compact OCSF schema as a cached system prompt, one call per format +
+  validator repairs) is the default — `cli map-learn --method full`. It beat RAG, class-first and the
+  tool-using agent at equal accuracy. The tool-using mapping agent is the fallback (`--fallback-agent`).
+  RAG experiments are finished; ignore the RAG steps from earlier versions of this file.
+- All AI steps so far ran through Claude Code sub-agents standing in for the API. **Nothing has run on the
+  live Claude API yet** — that is step 1.
 
 ---
 
-## Step 0 — environment (one time)
+## Step 0 — environment
 
 ```bash
 cd AI-Playground/log-grouper
-python3 -m venv .venv && source .venv/bin/activate          # Python 3.11+ (developed on 3.13)
-pip install anthropic "sentence-transformers[image]" torch   # CUDA torch if there is an NVIDIA GPU
-huggingface-cli login                                        # only needed for gated models
+python3 -m venv .venv && source .venv/bin/activate
+pip install anthropic torch "sentence-transformers[image]" kafka-python
 W=$HOME/lgwork; mkdir -p $W
 curl -L -o $W/ls.tgz https://artifacts.elastic.co/downloads/logstash/logstash-8.19.3-linux-x86_64.tar.gz
 tar xzf $W/ls.tgz -C $W && export LOGSTASH_HOME=$W/logstash-8.19.3
-python3 -m unittest discover -s tests          # expect: OK (27 tests incl. 2 real-Logstash conformance tests)
-unshare -rn true && echo "unshare sandbox OK"  # else use --code-tools docker (see JOURNEY.md)
-python3 -c "import torch;print('cuda', torch.cuda.is_available())"
+python3 -m unittest discover -s tests            # expect OK, incl. the real-Logstash conformance tests
 ```
-Done when: all tests pass.
 
-## Step 1 — rebuild the benchmark and reproduce the baseline
-
+Rebuild the benchmark (needed by steps 1, 4):
 ```bash
 cd $W && git clone -q --depth 1 --filter=blob:none --no-checkout https://github.com/elastic/integrations.git ei
 cd ei && git sparse-checkout init --no-cone
 for p in panw fortinet_fortigate cisco_asa checkpoint juniper_srx sonicwall_firewall pfsense sophos \
          watchguard_firebox zscaler_zia suricata cisco_ios iptables cisco_meraki; do
   echo "/packages/$p/data_stream/*/_dev/test/pipeline/test-*"; done > .git/info/sparse-checkout
-git checkout -q HEAD
-cd - >/dev/null   # back to log-grouper
+git checkout -q HEAD; cd - >/dev/null
 python3 -I bench/build_parse_bench.py $W/ei/packages rules $W/pbench \
   panw,fortinet_fortigate,cisco_asa,checkpoint,juniper_srx,sonicwall_firewall,pfsense,sophos,watchguard_firebox,zscaler_zia,suricata,cisco_ios,iptables,cisco_meraki
-mkdir -p $W/store && cp parsers/parsers.json parsers/mappings.json $W/store/
-python3 -I bench/score_ocsf.py $W/pbench/test.jsonl $W/store
-python3 -I bench/e2e_logstash.py $W/pbench/test.jsonl $W/store $LOGSTASH_HOME
+mkdir -p $W/store && cp parsers/*.json $W/store/
+python3 -I bench/score_ocsf.py $W/pbench/test.jsonl $W/store     # expect ~ precision 0.891, recall 0.726
 ```
-Done when: numbers match `bench/RESULTS.md` (about parse 0.957, mapped 0.955, valid 0.985,
-precision 0.885, recall 0.722) and the Logstash run reports `identical_to_python` for all lines.
-If the Elastic test data changed upstream, numbers may differ slightly: note it and continue.
 
-## Step 2 — RAG mapper with EmbeddingGemma 2 (retrieval only, no LLM)
+## Step 1 — LIVE CLAUDE API RUN (most important)
+
+Needs `ANTHROPIC_API_KEY` (or `ant auth login`). Runs the real production code paths on a COPY of the stores
+(`$W/live/store`); never modifies the repo's stores. Start small, then widen:
 
 ```bash
-export LG_EMBED_CACHE=$W/embcache
-python3 bench/rag_bench.py prep $W/store $W/pbench/train/groups $W/rag_gemma2 google/embeddinggemma-2
-python3 -I bench/rag_class_eval.py $W/store $W/rag_gemma2
-python3 bench/rag_bench.py prep $W/store $W/pbench/train/groups $W/rag_bge BAAI/bge-small-en-v1.5
-python3 -I bench/rag_class_eval.py $W/store $W/rag_bge
+export ANTHROPIC_API_KEY=...            # or: ant auth login
+# 1a. OCSF mapper (M1) on 5 formats: real calls, real prompt caching, real token usage + $ per format
+python3 bench/live_api_check.py $W/live $W/pbench/train/groups --steps mapper --formats 5
+# 1b. widen to all formats, then score those live mappings on the held-out benchmark
+python3 bench/live_api_check.py $W/live $W/pbench/train/groups --steps mapper --formats 100
+python3 -I bench/score_ocsf.py $W/pbench/test.jsonl $W/live/store
+# 1c. independent reviewer session (tool-using) over the mappings
+python3 bench/live_api_check.py $W/live $W/pbench/train/groups --steps review
+# 1d. parser agent from scratch on one vendor (its parsers retired in the copy), real Logstash check
+python3 bench/live_api_check.py $W/live $W/pbench/train/groups --steps parser --label sonicwall_firewall --logstash-home $LOGSTASH_HOME
+# 1e. grouping learner on a residue (run `cli run` on a stream into $W/grp first, see JOURNEY.md)
+python3 bench/live_api_check.py $W/live $W/pbench/train/groups --steps grouper --grouping-state $W/grp
 ```
-Record: index build time (first run), retrieval seconds per format, prompt size, device (cuda/mps/cpu),
-and class top-1/top-3 agreement for both embedders.
+Check and record in `bench/RESULTS.md`:
+- `$W/live/live_report.json`: calls, tokens (input / cache read / cache write / output), seconds and $ per
+  step and per format. Confirm `cache_read_input_tokens` is large on the 2nd+ mapper call (schema cached);
+  if it stays 0, prompt caching is not working — fix before scaling.
+- Compare live accuracy with the sub-agent results (precision/recall/validity) and live cost with `COSTS.md`;
+  update `bench/cost_model.py` with the measured numbers and regenerate `COSTS.md`.
+- Watch for refusals (`stop_reason == "refusal"`): security log content can trigger safety classifiers; the
+  code sends `fallbacks: "default"`. Note any that happen.
 
-Also add an **attribute-retrieval check** (new script `bench/rag_attr_eval.py`, no LLM): for each existing
-agent mapping in `parsers/mappings.json`, take each `from` vendor field and its `to` OCSF path, and measure
-how often that path is in the field's top-5 retrieved candidates (restricted to the mapping's class). This
-is the retrieval quality that matters most. Compare both embedders.
+## Step 2 — Kafka end to end
+Local broker (Kafka 3.9 KRaft, single node). Produce a mixed stream into topic `security-logs`; run
+`cli --review-new-labels run --kafka localhost:9092 --topic security-logs --batch-size 20000 --learner agent`;
+export the bundle (`cli --parsers parsers export $W/bundle`) and run Logstash with a Kafka input per label (or
+one input + the `[loggrouper][label]` field) and the dead-letter output from
+`loggrouper-output.conf.example`; feed the dead letter to `cli parse-learn --failures ...`.
 
-## Step 3 — fix RAG recall (main open problem)
+## Step 3 — supervisor service (the generic "any stream" system)
+One long-running Python process (`loggrouper/supervisor.py`, new) that loops: consume batch → group (fast
+path) → if residue ≥ threshold run the grouping learner → if parse failures ≥ threshold run the parser agent
+→ for new parsers run M1 mapping (+ optional reviewer) → re-export the Logstash bundle and reload Logstash
+(pipeline reload) → record spend and counts. Fixed code orchestrates; LLM output is applied only through the
+validators. Add a small status report (new vendors, failure rates, spend per day).
 
-Partial result so far (47 formats, bge-small): RAG ≈ 9k tokens and 2.3 calls per format with precision
-85% and validity 99%, but **recall 42%** vs 69% for the mapping agent (the single call leaves many fields
-unmapped). Improve `loggrouper/ocsf/rag.py`:
+## Step 4 — Logstash throughput
+Exported bundle (81 parsers + 78 mappings) with `LS_JAVA_OPTS=-Xmx2g`: measure events/s per worker on the
+benchmark lines replayed at volume; tune workers/batch size.
 
-1. **Coverage pass**: after a mapping validates, list the vendor fields still in `unmapped` that have a
-   good retrieved candidate (score above a threshold) and ask one more call to add mappings for them
-   (return the full updated spec). Accept only if validation still passes and mapped share increases.
-2. **Prompt**: tell the model explicitly to map every vendor field that has a fitting candidate; show
-   per-field candidates for *all* fields (they are), and the typical OCSF homes for MACs, byte/packet
-   counts, URLs, DNS query, HTTP method/status, rule/policy names, users.
-3. **Retrieval**: use whichever embedder wins step 2; consider adding attribute docs that include the
-   vendor-agnostic synonyms (e.g. "src", "source", "client", "sip") to the OCSF attribute text.
-4. Wire the coverage pass into `map_with_claude` and into the `next/answer` protocol in `bench/rag_bench.py`.
+## Step 5 — remaining gaps
+- 5 formats with no event time: decide ingest-time fallback (`time` from Logstash @timestamp, flagged) vs.
+  leaving them unmapped.
+- Timezone abbreviations (IST, CEST, EDT) in parsers -> offsets.
+- XML and CEF formats (add `xml` / CEF handling to the parser executor + compiler + conformance).
+- 4 Python/Logstash differences on unseen lines (kv/grok edge cases; see `bench/RESULTS.md`).
 
-## Step 4 — measure RAG vs agent on all 81 formats
+## Step 6 — operations
+Review gates on by default for new vendors/parsers; Docker sandbox for code tools in production; packaging
+(container with Logstash + the supervisor); README operating guide.
 
-Either with a Claude API key (`ANTHROPIC_API_KEY`): call `loggrouper.ocsf.rag.map_with_claude` per parser
-(write a small `bench/rag_run_api.py` that loops over parsers, records calls/tokens from the API usage,
-writes the accepted specs to `$W/rag_api/store/mappings.json`), or without a key: drive
-`bench/rag_bench.py next/answer` with sub-agents that may only answer from the prompt (see JOURNEY.md).
-Then:
-```bash
-python3 bench/rag_bench.py apply $W/store $W/pbench/train/groups $W/rag_run     # (protocol route)
-python3 -I bench/score_ocsf.py $W/pbench/test.jsonl $W/rag_run/store
-python3 -I bench/e2e_logstash.py $W/pbench/test.jsonl $W/rag_run/store $LOGSTASH_HOME
-```
-Report side by side with the agent mappings: calls, tokens, validity, precision, recall, timestamp match,
-failures. Optionally run the reviewer (`cli mtool --reviewer`) on the RAG mappings.
-
-**Decision rule**: if RAG recall is within ~5 points of the agent and precision/validity are equal or
-better, make RAG the default mapper (`cli map-learn --rag`), keeping the mapping agent for formats where
-RAG fails validation after repairs.
-
-## Step 5 — finish the open review issues
-
-31 of the 41 reviewer "changes_requested" items were not addressed when the fix round was stopped
-(see `review` fields in `parsers/mappings.json`). Fix them with the chosen mapper (RAG repair prompt seeded
-with the review issues, or the mapping agent), re-score, commit.
-
-## Step 6 — production readiness
-
-1. Live Claude API run of each agent once (grouping learner, parser agent, RAG mapper) on a copy of the
-   stores; record real token usage from the API.
-2. Kafka end to end: local broker (KRaft), `cli run --kafka ...`, exported Logstash bundle consuming
-   per-label topics, dead-letter topic for parse failures -> `cli parse-learn --failures`.
-3. Logstash throughput test with the exported bundle (events/s per core).
-4. Gaps: timezone abbreviations (IST/CEST) in parsers, XML/CEF formats, Docker sandbox backend tested.
-5. Update `README.md` with the final architecture and operating guide.
-
----
-
-### Facts to keep in mind
-- Never put Elastic's expected output into prompts or agent context: it is only for scoring.
-- Known benchmark artefacts: Elastic test configs set device timezones not present in log lines, and
-  year-less syslog dates — reported separately as `timestamp_match_allowing_tz_year_artefacts`.
-- Every engine change that touches parsing/mapping semantics must keep the real-Logstash conformance tests
-  green (`LOGSTASH_HOME=... python3 -m unittest discover -s tests`).
-- Stores: `rules/` (grouping), `parsers/parsers.json` (81 parsers), `parsers/mappings.json` (OCSF).
+### Rules to keep
+- Elastic's expected output is for scoring only — never put it in prompts or agent context.
+- Engine changes must keep `LOGSTASH_HOME=... python3 -m unittest discover -s tests` green.
+- Agents never get unrestricted shell/git/network: LLM-written code runs only in the sandbox; deployment
+  is done by fixed code.
