@@ -62,3 +62,14 @@ class OcsfConformanceTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ArrayPathTest(unittest.TestCase):
+    def test_index_paths(self):
+        spec = prepare({"id": "m", "parser_id": "p", "class_uid": 2004, "fields": [
+            {"to": "evidences[0].src_endpoint.ip", "from": "vendor.src"},
+            {"to": "evidences[0].dst_endpoint.port", "from": "vendor.dport", "type": "integer"},
+            {"to": "finding_info.title", "value": "t"}, {"to": "finding_info.uid", "value": "u"},
+            {"to": "metadata.product.vendor_name", "value": "V"}, {"to": "metadata.product.name", "value": "P"}]})
+        o = apply_mapping(spec, {"vendor": {"src": "10.0.0.1", "dport": "80"}, "@timestamp": "2020-01-01T00:00:00Z"})
+        self.assertEqual(o["evidences"], [{"src_endpoint": {"ip": "10.0.0.1"}, "dst_endpoint": {"port": 80}}])

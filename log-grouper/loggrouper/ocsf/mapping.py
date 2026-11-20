@@ -32,23 +32,50 @@ NUM = re.compile(r"^[-+]?\d+(\.\d+)?([eE][-+]?\d+)?$")
 INT = re.compile(r"^[-+]?\d+$")
 
 
+_IDX = re.compile(r"^(.+)\[(\d+)\]$")
+
+
 def _get(ev, path):
+    """Dotted path; a segment may carry an array index: evidences[0].src_endpoint.ip"""
     cur = ev
     for k in path.split("."):
+        m = _IDX.match(k)
+        if m:
+            k, i = m.group(1), int(m.group(2))
         if not isinstance(cur, dict) or k not in cur:
             return None
         cur = cur[k]
+        if m:
+            if not isinstance(cur, list) or i >= len(cur):
+                return None
+            cur = cur[i]
     return cur
 
 
 def _set(ev, path, v):
     ks = path.split(".")
     cur = ev
-    for k in ks[:-1]:
-        if not isinstance(cur.get(k), dict):
-            cur[k] = {}
-        cur = cur[k]
-    cur[ks[-1]] = v
+    for n, k in enumerate(ks):
+        last = n == len(ks) - 1
+        m = _IDX.match(k)
+        if m:
+            k, i = m.group(1), int(m.group(2))
+            if not isinstance(cur.get(k), list):
+                cur[k] = []
+            while len(cur[k]) <= i:
+                cur[k].append({})
+            if last:
+                cur[k][i] = v
+            else:
+                if not isinstance(cur[k][i], dict):
+                    cur[k][i] = {}
+                cur = cur[k][i]
+        elif last:
+            cur[k] = v
+        else:
+            if not isinstance(cur.get(k), dict):
+                cur[k] = {}
+            cur = cur[k]
 
 
 def _key(v):
@@ -209,7 +236,7 @@ def prepare(spec, schema=None):
     sib = []
     targets = {f["to"] for f in spec["fields"]} | {"activity_id", "severity_id"}
     for t in sorted(targets):
-        parts = t.split(".")
+        parts = [_IDX.sub(r"\1", x) for x in t.split(".")]
         attrs = cls["attributes"]
         a = None
         for i, p in enumerate(parts):
@@ -223,7 +250,7 @@ def prepare(spec, schema=None):
                     break
                 attrs = obj["attributes"]
         if a and a.get("enum") and a.get("sibling"):
-            sib.append([t, ".".join(parts[:-1] + [a["sibling"]]), a["enum"]])
+            sib.append([t, ".".join(t.split(".")[:-1] + [a["sibling"]]), a["enum"]])
     out = dict(spec)
     out["_class"] = {"uid": cls["uid"], "name": name, "caption": cls["caption"], "category_uid": cls["category_uid"],
                      "category_caption": cls["category_caption"]}

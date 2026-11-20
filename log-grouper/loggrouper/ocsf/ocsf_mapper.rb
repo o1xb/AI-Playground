@@ -13,11 +13,21 @@ def register(params)
   @spec = JSON.parse(Base64.decode64(params["spec"]))
 end
 
+IDX_RX = /\A(.+)\[(\d+)\]\z/
+
+# dotted path; a segment may carry an array index: evidences[0].src_endpoint.ip
 def lg_get(h, path)
   cur = h
   path.split(".").each do |k|
+    m = IDX_RX.match(k)
+    k = m[1] if m
     return nil unless cur.is_a?(Hash) && cur.key?(k)
     cur = cur[k]
+    if m
+      i = m[2].to_i
+      return nil unless cur.is_a?(Array) && i < cur.length
+      cur = cur[i]
+    end
   end
   cur
 end
@@ -25,11 +35,27 @@ end
 def lg_set(h, path, v)
   ks = path.split(".")
   cur = h
-  ks[0..-2].each do |k|
-    cur[k] = {} unless cur[k].is_a?(Hash)
-    cur = cur[k]
+  ks.each_with_index do |k, n|
+    last = n == ks.length - 1
+    m = IDX_RX.match(k)
+    if m
+      k = m[1]
+      i = m[2].to_i
+      cur[k] = [] unless cur[k].is_a?(Array)
+      cur[k] << {} while cur[k].length <= i
+      if last
+        cur[k][i] = v
+      else
+        cur[k][i] = {} unless cur[k][i].is_a?(Hash)
+        cur = cur[k][i]
+      end
+    elsif last
+      cur[k] = v
+    else
+      cur[k] = {} unless cur[k].is_a?(Hash)
+      cur = cur[k]
+    end
   end
-  cur[ks[-1]] = v
 end
 
 def lg_key(v)

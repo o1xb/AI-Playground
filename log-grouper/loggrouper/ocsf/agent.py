@@ -39,6 +39,12 @@ class _Common:
                 if FAILURE_TAGS & set(ev.get("tags", [])):
                     continue
                 self.parsed.setdefault(p["id"], []).append(ev)
+            # fallback parsers only get unseen message types, so map them on what they produce for the
+            # whole label when run on their own
+            for p in ps:
+                if p.get("fallback"):
+                    evs = [run_parser(p, m) for m in msgs]
+                    self.parsed[p["id"]] = [e for e in evs if not (FAILURE_TAGS & set(e.get("tags", [])))]
 
     def ocsf_search(self, query: str) -> str:
         """Search OCSF 1.4 classes and objects by keywords (e.g. "firewall traffic", "authentication")."""
@@ -236,8 +242,15 @@ class MappingTools(_Common, CodeTools):
                 maps[s["parser_id"]] = prep
             samples = []
             for i in ids:
-                lbl = self.parsers.by_id(i)["label"]
-                samples += [(lbl, e["message"]) for e in self.parsed.get(i, [])[:30]]
+                p = self.parsers.by_id(i)
+                lbl = p["label"]
+                if p.get("fallback"):               # check the fallback on its own (standalone copy)
+                    alone = dict(p, id=p["id"] + "_alone", label="__fallback__" + lbl)
+                    parsers.append(alone)
+                    maps[alone["id"]] = maps[i]
+                    samples += [(alone["label"], e["message"]) for e in self.parsed.get(i, [])[:30]]
+                else:
+                    samples += [(lbl, e["message"]) for e in self.parsed.get(i, [])[:30]]
             try:
                 conf = ocsf_conformance(parsers, maps, samples, self.logstash_home)
             except Exception as e:  # noqa: BLE001
@@ -247,7 +260,7 @@ class MappingTools(_Common, CodeTools):
             if conf.get("error"):
                 bad = {s["parser_id"] for _, s, _, _ in ok}
             for dd in conf.get("diffs", []):
-                bad.add(dd.get("parser_id"))
+                bad.add(str(dd.get("parser_id")).removesuffix("_alone"))
         done = []
         for d, spec, prep, m in ok:
             if spec["parser_id"] in bad:

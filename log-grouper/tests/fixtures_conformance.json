@@ -567,6 +567,18 @@
     {
      "to": "metadata.product.name",
      "value": "Suricata"
+    },
+    {
+     "to": "observables[0].value",
+     "from": "vendor.src_ip"
+    },
+    {
+     "to": "observables[0].type_id",
+     "value": 2
+    },
+    {
+     "to": "observables[0].name",
+     "value": "src_endpoint.ip"
     }
    ]
   }
