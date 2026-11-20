@@ -87,32 +87,21 @@ def ts_seconds(v):
         return None
 
 
-def main():
-    test, store_dir = sys.argv[1], sys.argv[2]
-    parsers, maps, schema = ParserStore(store_dir), MappingStore(store_dir), Schema()
-    prepared = {m["parser_id"]: prepare(m, schema) for m in maps.active()}
+def score(rows, ocsf_events, parsed_flags, schema):
+    """rows: test rows; ocsf_events: OCSF dict or None per row; parsed_flags: bool per row."""
     per = collections.defaultdict(lambda: {"lines": 0, "parsed": 0, "mapped": 0, "valid": 0,
                                            "fields": collections.Counter(), "match": collections.Counter(),
                                            "wrong": collections.Counter(), "examples_wrong": []})
     classes = collections.defaultdict(collections.Counter)
-    for line in open(test):
-        r = json.loads(line)
+    for r, o, parsed in zip(rows, ocsf_events, parsed_flags):
         lab = r["label"]
         s = per[lab]
         s["lines"] += 1
-        p = select_parser(parsers.ordered(lab), r["message"])
-        if p is None:
+        s["parsed"] += bool(parsed)
+        if o is None:
             continue
-        ev = run_parser(p, r["message"])
-        if FAILURE_TAGS & set(ev.get("tags", [])):
-            continue
-        s["parsed"] += 1
-        m = prepared.get(p["id"])
-        if m is None:
-            continue
-        o = apply_mapping(m, ev)
         s["mapped"] += 1
-        classes[lab][o["class_uid"]] += 1
+        classes[lab][o.get("class_uid")] += 1
         s["valid"] += not schema.validate(o)[0]
         exp = r["expected"]
         for ecs, cands in PAIRS.items():
@@ -136,33 +125,59 @@ def main():
                 if len(s["examples_wrong"]) < 3:
                     s["examples_wrong"].append({"field": ecs, "expected": ev_v, "got": got[:2]})
     tot = collections.Counter()
-    rows = []
+    out = []
     for lab, s in sorted(per.items(), key=lambda kv: -kv[1]["lines"]):
         f, mt, wr = sum(s["fields"].values()), sum(s["match"].values()), sum(s["wrong"].values())
         tot.update({"lines": s["lines"], "parsed": s["parsed"], "mapped": s["mapped"], "valid": s["valid"],
                     "fields": f, "match": mt, "wrong": wr})
-        rows.append({"label": lab, "lines": s["lines"], "parse_rate": round(s["parsed"] / s["lines"], 3),
-                     "mapped_rate": round(s["mapped"] / s["lines"], 3),
-                     "ocsf_valid_rate": round(s["valid"] / max(1, s["mapped"]), 3),
-                     "field_recall": round(mt / f, 3) if f else None,
-                     "field_precision": round(mt / (mt + wr), 3) if mt + wr else None,
-                     "classes": dict(classes[lab]),
-                     "per_field": {k: f"{s['match'][k]}/{v} (wrong {s['wrong'][k]})" for k, v in s["fields"].items()},
-                     "examples_wrong": s["examples_wrong"]})
+        out.append({"label": lab, "lines": s["lines"], "parse_rate": round(s["parsed"] / s["lines"], 3),
+                    "mapped_rate": round(s["mapped"] / s["lines"], 3),
+                    "ocsf_valid_rate": round(s["valid"] / max(1, s["mapped"]), 3),
+                    "field_recall": round(mt / f, 3) if f else None,
+                    "field_precision": round(mt / (mt + wr), 3) if mt + wr else None,
+                    "classes": dict(classes[lab]),
+                    "per_field": {k: f"{s['match'][k]}/{v} (wrong {s['wrong'][k]})" for k, v in s["fields"].items()},
+                    "examples_wrong": s["examples_wrong"]})
     summary = {"lines": tot["lines"], "parse_rate": round(tot["parsed"] / max(1, tot["lines"]), 3),
                "mapped_rate": round(tot["mapped"] / max(1, tot["lines"]), 3),
                "ocsf_valid_rate": round(tot["valid"] / max(1, tot["mapped"]), 3),
                "field_recall": round(tot["match"] / max(1, tot["fields"]), 3),
                "field_precision": round(tot["match"] / max(1, tot["match"] + tot["wrong"]), 3),
                "ecs_fields_compared": tot["fields"]}
-    report = {"summary": summary, "labels": rows}
-    if len(sys.argv) > 3:
-        with open(sys.argv[3], "w") as f:
-            json.dump(report, f, indent=1, default=str)
-    print(json.dumps(summary))
+    return {"summary": summary, "labels": out}
+
+
+def python_pipeline(rows, store_dir, schema):
+    parsers, maps = ParserStore(store_dir), MappingStore(store_dir)
+    prepared = {m["parser_id"]: prepare(m, schema) for m in maps.active()}
+    events, flags = [], []
     for r in rows:
+        p = select_parser(parsers.ordered(r["label"]), r["message"])
+        ev = run_parser(p, r["message"]) if p else None
+        ok = ev is not None and not (FAILURE_TAGS & set(ev.get("tags", [])))
+        flags.append(ok)
+        m = prepared.get(p["id"]) if ok else None
+        events.append(apply_mapping(m, ev) if m else None)
+    return events, flags
+
+
+def print_report(rep):
+    print(json.dumps(rep["summary"]))
+    for r in rep["labels"]:
         print(f"{r['label']:24s} lines={r['lines']:4d} parse={r['parse_rate']:.2f} mapped={r['mapped_rate']:.2f} "
               f"valid={r['ocsf_valid_rate']:.2f} recall={r['field_recall']} precision={r['field_precision']} classes={r['classes']}")
+
+
+def main():
+    test, store_dir = sys.argv[1], sys.argv[2]
+    schema = Schema()
+    rows = [json.loads(l) for l in open(test)]
+    events, flags = python_pipeline(rows, store_dir, schema)
+    rep = score(rows, events, flags, schema)
+    if len(sys.argv) > 3:
+        with open(sys.argv[3], "w") as f:
+            json.dump(rep, f, indent=1, default=str)
+    print_report(rep)
 
 
 if __name__ == "__main__":
