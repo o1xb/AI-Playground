@@ -1,5 +1,7 @@
 # log-grouper: what we built, why, and where it stands
 
+> Continuing on a new machine? Read this file, then follow **`NEXT.md`** step by step.
+
 A generic system that takes a **mixed security log stream** (file or Kafka), works out which
 vendor/product/format each message came from, **parses** it into fields, and **maps** those fields to
 **OCSF 1.4**, with AI writing the rules once and compiled rules (Logstash) doing the per-event work.
