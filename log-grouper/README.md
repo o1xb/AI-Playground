@@ -62,8 +62,53 @@ python3 -m loggrouper.cli run --input stream.log --learner api --learn-threshold
 python3 -m loggrouper.cli profile        # -> out/profile.json
 ```
 
+## The learner agent (production)
+
+`loggrouper/agent.py` is a tool-using agent on the Claude API (SDK tool runner). It gets the residue
+and conflicts through tools, and can only *propose*; the validator decides.
+
+| Tool | Purpose |
+|---|---|
+| `overview` | residue clusters, conflicts, known labels |
+| `get_cluster`, `get_conflict` | full examples (and all JSON keys) for one cluster / conflict |
+| `list_rules`, `get_label_examples`, `route` | inspect the rule library and what claims a given line |
+| `test_pattern` | dry-run a regex on residue + stored examples (collisions, speed), in a sandboxed process |
+| `propose_rule`, `propose_update`, `mark_unidentifiable` | draft changes |
+| `submit` | run the validator, merge accepted changes, return verdicts so the agent can fix rejections |
+
+Model `claude-opus-5-5`, adaptive thinking, effort `high`, prompt caching on the system prompt,
+server-side refusal fallback on (security log content can trip safety classifiers).
+
+```bash
+export ANTHROPIC_API_KEY=...
+# one learning session over the current residue
+python3 -m loggrouper.cli learn --agent
+# continuous: classify batches; when the residue reaches the threshold, run the agent
+python3 -m loggrouper.cli --review-new-labels run --kafka kafka:9092 --topic security-logs \
+    --batch-size 20000 --learner agent --learn-threshold 500
+# rules for never-seen labels wait here when --review-new-labels is on
+python3 -m loggrouper.cli review
+python3 -m loggrouper.cli review --approve r00231 --discard r00232
+```
+
+Drive the same tools by hand (or from another agent): `python3 -m loggrouper.cli tool overview`,
+`... tool test_pattern '{"pattern": "ACME\\[\\d+\\]"}'`, `... tool submit`.
+
+### Deploying
+- `Dockerfile` runs the Kafka loop; mount `/data` (rule store, outputs, state) on persistent storage
+  and back up `rules/` (it is the learned knowledge). Commit it to git if you want review history.
+- Safety rails: model regexes run in a separate process with a timeout; every change passes the
+  validator (own examples, collisions, over-matching, regression on stored examples, speed);
+  `--review-new-labels` holds new vendors for a human.
+- Cost control: the agent only runs when the residue passes `--learn-threshold`; each session is
+  capped by `max_iterations` (80) and at most 4 submits. The run prints token usage per session.
+- Learning runs between batches, so consumption pauses while the agent works (minutes). For a
+  high-volume topic, run classification and learning as separate processes sharing the store.
+
 ## Status
 
 - Tested: file source, fast path, residue packets, sub-agent learning loop, validation, profile.
-- Not exercised yet: the Kafka source (no broker was available in the test environment) and the
-  Claude API learner (no API key there).
+- Agent loop tested end-to-end against a local mock of the Messages API (real SDK, tool runner,
+  tools and validator; scripted model). Not yet run against the live API (no key in the test
+  environment).
+- Not exercised yet: the Kafka source (no broker was available in the test environment).

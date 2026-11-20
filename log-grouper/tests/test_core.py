@@ -34,6 +34,15 @@ class UnwrapTest(unittest.TestCase):
         self.assertEqual(strip_header("<190>10.1.1.1 1,2023/01/01"), "1,2023/01/01")
 
 
+class SandboxTest(unittest.TestCase):
+    def test_timeout_and_errors(self):
+        from loggrouper.regex_sandbox import safe_match
+        self.assertEqual(safe_match("ab+", "", ["abbb", "x"]), ([True, False], None))
+        hits, err = safe_match(r"(a+)+$", "", ["a" * 40 + "b"], timeout=1.0)   # catastrophic backtracking
+        self.assertIsNone(hits); self.assertIn("timed out", err)
+        self.assertIn("unterminated", safe_match("(", "", ["x"])[1])
+
+
 class FramingTest(unittest.TestCase):
     def test_first_line_pattern(self):
         f = io.BytesIO(b"[**] a\nb\nc\n[**] d\n")

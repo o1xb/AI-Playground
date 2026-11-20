@@ -3,7 +3,9 @@
   run       classify a file / Kafka topic in batches (fast path), buffer the residue
   packet    write the residue packet a learner (sub-agent or Claude API) works from
   apply     validate + merge a learner's candidate rules, then drain the residue
-  learn     packet -> Claude API -> apply, in one step
+  learn     packet -> Claude API -> apply, in one step (--agent: tool-using learner agent)
+  tool      call one learner-agent tool from the shell (testing / driving the agent by hand)
+  review    list rules held for human review; --approve / --discard ids
   audit     list message shapes that landed in more than one group (over-reaching rules)
   profile   per-group format inventory: the hand-off for writing grok/dissect parsers + OCSF maps
   seed      import rules from an ad-hoc classifier script (ordered r()/rp() regex calls)
@@ -40,6 +42,8 @@ def cmd_run(a):
         res = len(eng.load_residual())
         if a.learner == "api" and res >= a.learn_threshold:
             _learn_api(store, eng, a)
+        elif a.learner == "agent" and res >= a.learn_threshold:
+            _learn_agent(store, eng, a)
     eng.close()
     m, r = total["matched"], total["residual"]
     print(json.dumps({"total_lines": m + r, "fast_path": m, "residual_new": r,
@@ -91,9 +95,51 @@ def _learn_api(store, eng, a):
     _apply(store, eng, packet, cand, "claude-api")
 
 
+def _learn_agent(store, eng, a):
+    from .agent import run_learner_agent
+    out = run_learner_agent(store, eng, model=a.model, effort=a.effort,
+                            review_new_labels=a.review_new_labels)
+    eng.close()
+    print(json.dumps({k: v for k, v in out.items() if k != "summary"}))
+    print(out.get("summary", ""))
+
+
 def cmd_learn(a):
     store, eng = _engine(a)
-    _learn_api(store, eng, a)
+    if a.agent:
+        _learn_agent(store, eng, a)
+    else:
+        _learn_api(store, eng, a)
+
+
+def cmd_tool(a):
+    """Shell bridge to the agent's tools (same code the API agent calls). Drafts persist in --state."""
+    from .agent import LearnerTools
+    store, eng = _engine(a)
+    t = LearnerTools(store, eng, drafts_path=os.path.join(a.state, "agent_drafts.json"),
+                     review_new_labels=a.review_new_labels)
+    fn = {f.__name__: f for f in t.tool_functions()}.get(a.name)
+    if fn is None:
+        sys.exit(f"unknown tool {a.name}; tools: {[f.__name__ for f in t.tool_functions()]}")
+    print(fn(**json.loads(a.args or "{}")))
+    eng.close()
+
+
+def cmd_review(a):
+    store = RuleStore(a.store)
+    if a.approve or a.discard:
+        for rid in (a.approve or []) + (a.discard or []):
+            r = store.by_id(rid)
+            if r is None or r.get("status") != "candidate":
+                print(f"{rid}: not a candidate rule"); continue
+            r["status"] = "active" if rid in (a.approve or []) else "discarded"
+            print(f"{rid}: {r['status']}")
+        store.save()
+        return
+    for r in store.rules["rules"]:
+        if r.get("status") == "candidate":
+            print(f"{r['id']} {r['label']} pattern={r['pattern']!r}\n    why: {r.get('rationale', '')}\n"
+                  f"    e.g. {(r.get('examples') or [''])[0][:200]!r}")
 
 
 def cmd_audit(a):
@@ -167,20 +213,28 @@ def main(argv=None):
     r.add_argument("--topic", default="security-logs"); r.add_argument("--group", default="loggrouper")
     r.add_argument("--batch-size", type=int, default=20000)
     r.add_argument("--first-line-pattern", help="multiline framing for file input: regex that starts a record"); r.add_argument("--resume", action="store_true")
-    r.add_argument("--learner", choices=["none", "api"], default="none")
+    r.add_argument("--learner", choices=["none", "api", "agent"], default="none")
     r.add_argument("--learn-threshold", type=int, default=200); r.add_argument("--max-clusters", type=int, default=80)
     k = sp.add_parser("packet"); k.add_argument("--output", required=True); k.add_argument("--max-clusters", type=int, default=80)
     ap = sp.add_parser("apply"); ap.add_argument("--packet", required=True); ap.add_argument("--candidates", required=True)
     ap.add_argument("--origin", default="subagent")
     ln = sp.add_parser("learn"); ln.add_argument("--max-clusters", type=int, default=80)
+    ln.add_argument("--agent", action="store_true", help="tool-using agent (default: single structured call)")
+    tl = sp.add_parser("tool"); tl.add_argument("name"); tl.add_argument("args", nargs="?")
+    rv = sp.add_parser("review"); rv.add_argument("--approve", nargs="*"); rv.add_argument("--discard", nargs="*")
     sp.add_parser("audit")
     pf = sp.add_parser("profile"); pf.add_argument("--top", type=int, default=15)
     sd = sp.add_parser("seed"); sd.add_argument("script"); sd.add_argument("--origin", default="seed")
+    p.add_argument("--model", default="claude-opus-5-5")
+    p.add_argument("--effort", default="high", choices=["low", "medium", "high", "xhigh", "max"])
+    p.add_argument("--review-new-labels", action="store_true",
+                   help="hold rules for labels never seen before as candidates until approved")
     a = p.parse_args(argv)
     if a.cmd == "run" and not (a.input or a.kafka):
         p.error("run needs --input FILE or --kafka HOST:PORT")
     {"run": cmd_run, "packet": cmd_packet, "apply": cmd_apply, "learn": cmd_learn,
-     "profile": cmd_profile, "seed": cmd_seed, "audit": cmd_audit}[a.cmd](a)
+     "profile": cmd_profile, "seed": cmd_seed, "audit": cmd_audit,
+     "tool": cmd_tool, "review": cmd_review}[a.cmd](a)
 
 
 if __name__ == "__main__":
