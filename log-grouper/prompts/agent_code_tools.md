@@ -12,3 +12,6 @@ for lines that do not belong.
 - Keep output small (print counts and a few samples, not whole files): output is cut at 20k chars.
 - Files you write in the workspace persist for the session; the data files are refreshed after
   `submit` and `mark_unidentifiable`.
+- With code tools you may test candidate regexes in bulk inside the sandbox instead of calling
+  `test_pattern` before every proposal; `submit` runs the full validator regardless. Use
+  `test_pattern` when you want the collision report against stored examples for one pattern.

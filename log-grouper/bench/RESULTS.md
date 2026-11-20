@@ -19,6 +19,13 @@ Answer keys were never shown to any agent.
 | E + agent round 2 | 15 suspects | same (~4 min, ~140k tokens): 3 fixes placed above greedy rules, 12 dismissed | — | — |
 | F | fresh re-run of E's stream, rules after round 2 | none | 98.7% known / 99.4% new | 99.8% / **100%** |
 | F' | fresh re-run of run D's stream (regression check) | none | 99.2% | 95.7% (was 95.5%) |
+| G | same start as E (369 residue lines, 15 suspects), agent WITH sandboxed run_python/run_bash | 1 session (~15 min, ~220k tokens, 41 bridge calls of which 20 run_python): 44 rules, 0 rejected, all suspects settled | 98.8% known / 99.2% new | 99.8% / **100%** |
+| G' | fresh re-run of run D's stream with G's rules (regression check) | none | 99.2% | 95.7% |
+
+E vs G: same end accuracy; with code tools the agent did in one session what took two without
+(~220k vs ~330k tokens), found the Vectra/CrowdStrike and Jamf/eslogger cases by scripting over
+whole lines, and batch-tested all candidate regexes against residue, stored examples, per-label
+samples and the stream sample before proposing (0 rejections).
 
 Rounds E were driven by a Claude Code sub-agent playing the production agent, restricted to the
 same `LearnerTools` methods the Claude API agent calls (via `cli tool`), with no file access.
