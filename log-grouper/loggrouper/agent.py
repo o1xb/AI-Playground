@@ -12,10 +12,22 @@ validator as the CLI and returns its verdicts so the model can fix rejected prop
 """
 import json
 import os
+import shutil
+import tempfile
 import time
 
 from .learn import apply_candidates
 from .regex_sandbox import safe_match
+
+WORKSPACE_README = """Analysis workspace (read freely, write scratch files; nothing here changes the rule store)
+residue.jsonl        unclassified lines: {"offset","raw","payload" (unwrapped),"shape"}
+packet.json          clusters (cluster_id, shape, member_shapes, count, examples), conflicts, suspects
+rules.json           active rules in match order (first match wins): id, label, pattern, flags, priority
+label_examples.json  {label: {"confirmed": [...], "observed": [...]}}
+groups_sample/       up to 200 classified records per label: {"offset","label","rule","raw","layers"}
+stream_sample.txt    recent raw records from the stream, one per line (newlines escaped)
+lib/loggrouper       the pipeline library: from loggrouper.unwrap import Unwrapper; from loggrouper.templates import shape
+"""
 
 PROMPTS = os.path.join(os.path.dirname(__file__), "..", "prompts")
 DEFAULT_MODEL = "claude-opus-5-5"
@@ -25,8 +37,19 @@ class LearnerTools:
     """Tool implementations. Plain methods returning strings, so they can be driven by the Claude
     API tool runner, a test, or a CLI bridge alike."""
 
-    def __init__(self, store, engine, max_clusters=150, review_new_labels=False, max_submits=4, drafts_path=None):
+    def __init__(self, store, engine, max_clusters=150, review_new_labels=False, max_submits=4, drafts_path=None,
+                 enable_code=False, workspace=None, sandbox_backend="unshare", stream_sample=None):
         self.store, self.engine = store, engine
+        self.enable_code = enable_code
+        self.sandbox = None
+        if enable_code:
+            from .code_sandbox import Sandbox
+            self.workspace = workspace or tempfile.mkdtemp(prefix="lg-agent-ws-")
+            os.makedirs(self.workspace, exist_ok=True)
+            hide = [store.path, engine.out_dir, engine.state_dir, os.path.expanduser("~"),
+                    "/tmp", "/var/tmp", "/root", "/home"]
+            self.sandbox = Sandbox(self.workspace, backend=sandbox_backend, hide=hide)
+            self.stream_sample = stream_sample
         self.review_new_labels = review_new_labels
         self.max_clusters = max_clusters
         self.max_submits, self.submits = max_submits, 0
@@ -39,6 +62,45 @@ class LearnerTools:
             self.draft_rules, self.draft_updates, self.submits = d["rules"], d["updates"], d["submits"]
         self._refresh()
 
+    def _write_workspace(self):
+        """Snapshot for the code tools. Data files are rewritten on every refresh; anything the agent
+        creates itself (scratch files, scripts) is kept."""
+        ws = self.workspace
+        def dump(name, obj, lines=False):
+            with open(os.path.join(ws, name), "w") as f:
+                if lines:
+                    f.writelines(json.dumps(o) + "\n" for o in obj)
+                else:
+                    json.dump(obj, f, indent=1, default=list)
+        dump("residue.jsonl", self.residual, lines=True)
+        dump("packet.json", {k: self.packet[k] for k in ("residual_lines", "clusters", "conflicts", "suspects",
+                                                        "existing_labels")})
+        dump("rules.json", [r for _, r in self.store.compiled])
+        conf = self.store.label_examples(confirmed_only=True)
+        dump("label_examples.json", {l: {"confirmed": conf.get(l, []), "observed": [e for e in exs if e not in conf.get(l, [])]}
+                                     for l, exs in self.store.label_examples().items()})
+        gdir = os.path.join(self.engine.out_dir, "groups")
+        os.makedirs(os.path.join(ws, "groups_sample"), exist_ok=True)
+        sample = list(self.stream_sample or [])
+        for fn in sorted(os.listdir(gdir)) if os.path.isdir(gdir) else []:
+            with open(os.path.join(gdir, fn)) as f, open(os.path.join(ws, "groups_sample", fn), "w") as o:
+                for n, line in enumerate(f):
+                    if n >= 200:
+                        break
+                    o.write(line)
+                    if not self.stream_sample:
+                        sample.append(json.loads(line)["raw"])
+        if not self.stream_sample:
+            sample += [i["raw"] for i in self.residual]
+        with open(os.path.join(ws, "stream_sample.txt"), "w") as f:
+            f.writelines(l.replace("\n", "\\n") + "\n" for l in sample)
+        lib = os.path.join(ws, "lib", "loggrouper")
+        if not os.path.isdir(lib):
+            shutil.copytree(os.path.dirname(os.path.abspath(__file__)), lib,
+                            ignore=shutil.ignore_patterns("__pycache__"))
+        with open(os.path.join(ws, "README.txt"), "w") as f:
+            f.write(WORKSPACE_README)
+
     def _refresh(self):
         self.packet = self.engine.build_packet(max_clusters=self.max_clusters, examples=8, json_chars=3000)
         self.clusters = {c["cluster_id"]: c for c in self.packet["clusters"]}
@@ -46,6 +108,8 @@ class LearnerTools:
         self.suspects = {g["suspect_id"]: g for g in self.packet["suspects"]}
         self.residual = self.engine.load_residual()
         self.shape_to_cid = {s: cid for cid, c in self.clusters.items() for s in c.get("member_shapes", [c["shape"]])}
+        if self.enable_code:
+            self._write_workspace()
 
     def _persist(self):
         if self.drafts_path:
@@ -296,27 +360,51 @@ class LearnerTools:
                            "residue_drained": moved, "residue_left": left,
                            "note": "ids are stable; resolved clusters/suspects/conflicts drop out of overview"}, indent=1)
 
+    # -- sandboxed code (optional) -------------------------------------------
+    def run_python(self, code: str, timeout: int = 60) -> str:
+        """Run a Python 3 script in the sandboxed analysis workspace (cwd; see README.txt there) and return
+        exit code + output. No network; only the workspace is visible; files you write there persist for
+        this session. `import loggrouper` works (unwrap, templates.shape, rules). Use it to analyse the
+        residue/samples at scale (field statistics, format diffs, custom clustering, checking a regex over
+        everything). It cannot change the rule store: propose and submit with the other tools."""
+        d = os.path.join(self.workspace, "_scripts")
+        os.makedirs(d, exist_ok=True)
+        n = len(os.listdir(d))
+        with open(os.path.join(d, f"s{n:03d}.py"), "w") as f:
+            f.write(code)
+        rc, out = self.sandbox.run(["python3", "-s", "-B", f"_scripts/s{n:03d}.py"], timeout=min(max(timeout, 1), 300))
+        return f"exit={rc}\n{out}"
+
+    def run_bash(self, command: str, timeout: int = 60) -> str:
+        """Run a bash command in the same sandboxed workspace (grep, awk, jq-style one-liners, sort | uniq -c,
+        head). Same isolation as run_python."""
+        rc, out = self.sandbox.run(["/bin/bash", "-c", command], timeout=min(max(timeout, 1), 300))
+        return f"exit={rc}\n{out}"
+
     def tool_functions(self):
-        return [self.overview, self.get_cluster, self.get_conflict, self.list_rules, self.get_label_examples,
+        code = [self.run_python, self.run_bash] if self.enable_code else []
+        return code + [self.overview, self.get_cluster, self.get_conflict, self.list_rules, self.get_label_examples,
                 self.route, self.test_pattern, self.propose_rule, self.propose_update,
                 self.mark_unidentifiable, self.dismiss, self.submit]
 
 
-def system_prompt():
-    with open(os.path.join(PROMPTS, "learner.md")) as f:
-        rules = f.read()
-    with open(os.path.join(PROMPTS, "agent_workflow.md")) as f:
-        workflow = f.read()
-    return workflow + "\n\n" + rules
+def system_prompt(enable_code=False):
+    parts = []
+    for name in ["agent_workflow.md"] + (["agent_code_tools.md"] if enable_code else []) + ["learner.md"]:
+        with open(os.path.join(PROMPTS, name)) as f:
+            parts.append(f.read())
+    return "\n\n".join(parts)
 
 
 def run_learner_agent(store, engine, model=DEFAULT_MODEL, effort="high", max_iterations=80,
-                      review_new_labels=False, client=None, log=print):
+                      review_new_labels=False, client=None, log=print, enable_code=False,
+                      sandbox_backend="unshare", stream_sample=None):
     """Run one learning session over the current residue. Returns a summary dict."""
     import anthropic
     from anthropic import beta_tool
 
-    tools = LearnerTools(store, engine, review_new_labels=review_new_labels)
+    tools = LearnerTools(store, engine, review_new_labels=review_new_labels, enable_code=enable_code,
+                         sandbox_backend=sandbox_backend, stream_sample=stream_sample)
     if not (tools.packet["clusters"] or tools.packet["conflicts"] or tools.packet["suspects"]):
         return {"skipped": "no residue, conflicts or suspects"}
     client = client or anthropic.Anthropic()
@@ -329,7 +417,7 @@ def run_learner_agent(store, engine, model=DEFAULT_MODEL, effort="high", max_ite
         thinking={"type": "adaptive"},
         output_config={"effort": effort},
         cache_control={"type": "ephemeral"},
-        system=system_prompt(),
+        system=system_prompt(enable_code),
         tools=[beta_tool(f) for f in tools.tool_functions()],
         messages=[{"role": "user", "content":
                    "A new residue batch is ready. Call `overview`, then classify what you can, settle "

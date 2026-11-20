@@ -76,6 +76,13 @@ and conflicts through tools, and can only *propose*; the validator decides.
 | `propose_rule`, `propose_update`, `mark_unidentifiable` | draft changes |
 | `submit` | run the validator, merge accepted changes, return verdicts so the agent can fix rejections |
 
+Optional code tools (`--code-tools unshare|docker`): `run_python` and `run_bash` in a sandboxed
+analysis workspace (residue, packet, rules, stored examples, per-label samples, a recent stream
+sample, and the `loggrouper` library). No network, host rule store/outputs/home/env hidden,
+CPU/memory/file-size/time limits; analysis only - changes still go through propose/submit and the
+validator. `unshare` uses Linux user/mount/net/pid namespaces (no root, no daemon); `docker` runs
+each command in `--network none --read-only` containers and is the recommended production backend.
+
 Model `claude-opus-5-5`, adaptive thinking, effort `high`, prompt caching on the system prompt,
 server-side refusal fallback on (security log content can trip safety classifiers).
 
@@ -111,4 +118,6 @@ Drive the same tools by hand (or from another agent): `python3 -m loggrouper.cli
 - Agent loop tested end-to-end against a local mock of the Messages API (real SDK, tool runner,
   tools and validator; scripted model). Not yet run against the live API (no key in the test
   environment).
+- Code tools: `unshare` backend tested (isolation, timeouts, workspace); `docker` backend not
+  tested (no Docker daemon in the test environment).
 - Not exercised yet: the Kafka source (no broker was available in the test environment).

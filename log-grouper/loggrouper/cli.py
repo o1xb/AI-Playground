@@ -98,7 +98,9 @@ def _learn_api(store, eng, a):
 def _learn_agent(store, eng, a):
     from .agent import run_learner_agent
     out = run_learner_agent(store, eng, model=a.model, effort=a.effort,
-                            review_new_labels=a.review_new_labels)
+                            review_new_labels=a.review_new_labels, enable_code=a.code_tools != "off",
+                            sandbox_backend=a.code_tools if a.code_tools != "off" else "unshare",
+                            stream_sample=list(eng.recent) or None)
     eng.close()
     print(json.dumps({k: v for k, v in out.items() if k != "summary"}))
     print(out.get("summary", ""))
@@ -117,7 +119,9 @@ def cmd_tool(a):
     from .agent import LearnerTools
     store, eng = _engine(a)
     t = LearnerTools(store, eng, drafts_path=os.path.join(a.state, "agent_drafts.json"),
-                     review_new_labels=a.review_new_labels)
+                     review_new_labels=a.review_new_labels, enable_code=a.code_tools != "off",
+                     sandbox_backend=a.code_tools if a.code_tools != "off" else "unshare",
+                     workspace=os.path.join(a.state, "agent_workspace"))
     fn = {f.__name__: f for f in t.tool_functions()}.get(a.name)
     if fn is None:
         sys.exit(f"unknown tool {a.name}; tools: {[f.__name__ for f in t.tool_functions()]}")
@@ -228,6 +232,8 @@ def main(argv=None):
     sd = sp.add_parser("seed"); sd.add_argument("script"); sd.add_argument("--origin", default="seed")
     p.add_argument("--model", default="claude-opus-5-5")
     p.add_argument("--effort", default="high", choices=["low", "medium", "high", "xhigh", "max"])
+    p.add_argument("--code-tools", choices=["off", "unshare", "docker"], default="off",
+                   help="give the learner agent sandboxed run_python/run_bash (unshare: Linux namespaces; docker)")
     p.add_argument("--review-new-labels", action="store_true",
                    help="hold rules for labels never seen before as candidates until approved")
     a = p.parse_args(argv)

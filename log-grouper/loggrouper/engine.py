@@ -27,6 +27,7 @@ class Engine:
         self.residual_path = os.path.join(state_dir, "residual.jsonl")
         self.ckpt_path = os.path.join(state_dir, "checkpoint.json")
         self._fh = {}
+        self.recent = collections.deque(maxlen=5000)   # recent raw records, for the agent's code workspace
 
     # -- outputs (file sink; in production swap for a producer to topic logs.<label>) --------------
     def _emit(self, label, rec):
@@ -66,6 +67,7 @@ class Engine:
         t0 = time.time()
         stats = collections.Counter()
         with open(self.residual_path, "a") as res:
+            self.recent.extend(lines[-5000:])
             for i, raw in enumerate(lines):
                 off = base_offset + i
                 r, payload, rec = self.classify(off, raw)
