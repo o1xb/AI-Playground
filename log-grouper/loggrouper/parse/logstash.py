@@ -36,7 +36,7 @@ def python_outputs(parsers, samples):
         if p is None:
             out.append({"tags": ["_noparser"]}); continue
         ev = run_parser(p, msg)
-        ev.setdefault("loggrouper", {})["parser"] = p["id"]
+        ev.setdefault("loggrouper", {})["parser"] = p["id"]          # (fallback test copies carry id + "_alone")
         out.append(_norm(ev, any("date" in s for s in p["steps"])))
     return out
 

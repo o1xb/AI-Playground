@@ -109,7 +109,11 @@ class ParserTools(CodeTools):
         ps += [d["spec"] for d in self.drafts if d["spec"]["label"] == spec["label"] and d["spec"] is not spec
                and d["spec"].get("id") != spec.get("id")]
         ps.sort(key=lambda p: p.get("order", 1000))
-        if before:
+        if spec.get("fallback"):
+            if spec.get("when"):
+                raise ValueError("a fallback parser must not have `when` (it catches whatever no other parser takes)")
+            spec["order"] = 99999
+        elif before:
             b = next((p for p in ps if p["id"] == before), None)
             if b is None:
                 raise ValueError(f"unknown parser id {before}")
@@ -182,9 +186,11 @@ class ParserTools(CodeTools):
         msgs = claimed(ps, spec, self.samples[spec["label"]])
         try:
             m = metrics(spec, msgs)
+            if spec.get("fallback"):
+                m["fallback_standalone"] = metrics(spec, self.samples[spec["label"]])
         except Exception as e:  # noqa: BLE001 - surface spec errors (bad grok, bad op) to the agent
             return f"ERROR running spec: {type(e).__name__}: {e}"
-        m["verdict"] = verdict(m, spec) or "ok"
+        m["verdict"] = verdict(m["fallback_standalone"] if spec.get("fallback") else m, spec) or "ok"
         m["outputs"] = [{"message": x[:300], "output": output_of(spec, x)} for x in msgs[:show]]
         return json.dumps(m, indent=1, default=str)[:12000]
 
@@ -195,6 +201,8 @@ class ParserTools(CodeTools):
             spec = self._spec(spec_json)
             ps = self._placed(spec, before)
             m = metrics(spec, claimed(ps, spec, self.samples[spec["label"]]))
+            if spec.get("fallback"):
+                m = metrics(spec, self.samples[spec["label"]])
         except Exception as e:  # noqa: BLE001
             return f"ERROR: {type(e).__name__}: {e}"
         v = verdict(m, spec)
@@ -285,9 +293,14 @@ class ParserTools(CodeTools):
             ps.sort(key=lambda p: (p.get("order", 1000), p["id"]))
             msgs = claimed(ps, spec, self.samples[label])
             m = metrics(spec, msgs)
+            if spec.get("fallback"):            # judged standalone on every sample of the label
+                m = metrics(spec, self.samples[label])
+                msgs_for_check = self.samples[label]
+            else:
+                msgs_for_check = msgs
             reason = verdict(m, spec)
             if not reason:
-                spec["golden"] = pick_golden(spec, msgs)
+                spec["golden"] = pick_golden(spec, msgs)     # fallback: only lines it really receives
                 if old:
                     # updated parser: its old golden samples must keep working (fields may be added)
                     for g in old.get("golden", []):
@@ -310,9 +323,13 @@ class ParserTools(CodeTools):
             samples = []
             for _, spec, _, msgs, _ in accepted:
                 samples += [(spec["label"], x) for x in msgs[:40]] + [(spec["label"], g["message"]) for g in spec["golden"]]
+                if spec.get("fallback"):        # run the fallback alone too, so Logstash sees it parse
+                    samples += [("__fallback__" + spec["label"], x) for x in self.samples[spec["label"]][:30]]
             pset = {p["id"]: p for p in self.store.active() if p["label"] in {s["label"] for _, s, _, _, _ in accepted}}
             for _, spec, _, _, _ in accepted:
                 pset[spec["id"]] = spec
+                if spec.get("fallback"):
+                    pset[spec["id"] + "_alone"] = dict(spec, id=spec["id"] + "_alone", label="__fallback__" + spec["label"])
             try:
                 conf = conformance(sorted(pset.values(), key=lambda p: (p["label"], p.get("order", 1000), p["id"])),
                                    samples, self.logstash_home)
@@ -323,6 +340,7 @@ class ParserTools(CodeTools):
             for dd in conf["diffs"]:
                 pid = dd["python"].get("loggrouper", {}).get("parser")
                 bad_ids.add(pid)
+                bad_ids.add(str(pid).removesuffix("_alone"))
         if conf and conf.get("error"):
             bad_ids = {s["id"] for _, s, _, _, _ in accepted}
         done = []
