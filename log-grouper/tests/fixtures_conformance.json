@@ -1,0 +1,377 @@
+{
+ "specs": [
+  {
+   "id": "t_panos_traffic",
+   "label": "paloalto_panos",
+   "when": ",TRAFFIC,",
+   "steps": [
+    {
+     "grok": {
+      "patterns": [
+       "^(?:%{SYSLOGTIMESTAMP:vendor.syslog_ts} %{NOTSPACE:vendor.device} )?%{GREEDYDATA:vendor._csv}$"
+      ]
+     }
+    },
+    {
+     "csv": {
+      "field": "vendor._csv",
+      "target": "vendor",
+      "columns": [
+       "future1",
+       "receive_time",
+       "serial",
+       "type",
+       "subtype",
+       "future2",
+       "generated_time",
+       "src_ip",
+       "dst_ip",
+       "nat_src_ip",
+       "nat_dst_ip",
+       "rule",
+       "src_user",
+       "dst_user",
+       "app",
+       "vsys",
+       "src_zone",
+       "dst_zone",
+       "in_if",
+       "out_if",
+       "log_profile",
+       "future3",
+       "session_id",
+       "repeat_count",
+       "src_port",
+       "dst_port",
+       "nat_src_port",
+       "nat_dst_port",
+       "flags",
+       "proto",
+       "action",
+       "bytes",
+       "bytes_sent",
+       "bytes_recv",
+       "packets"
+      ]
+     }
+    },
+    {
+     "remove": [
+      "vendor._csv"
+     ]
+    },
+    {
+     "convert": {
+      "vendor.src_port": "integer",
+      "vendor.dst_port": "integer",
+      "vendor.bytes": "integer"
+     }
+    },
+    {
+     "date": {
+      "field": "vendor.generated_time",
+      "formats": [
+       "yyyy/MM/dd HH:mm:ss"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "t_fortigate",
+   "label": "fortinet_fortigate",
+   "steps": [
+    {
+     "grok": {
+      "patterns": [
+       "^(?:<%{NONNEGINT:vendor.pri}>)?%{GREEDYDATA:vendor._kv}$"
+      ]
+     }
+    },
+    {
+     "kv": {
+      "field": "vendor._kv",
+      "target": "vendor"
+     }
+    },
+    {
+     "remove": [
+      "vendor._kv"
+     ]
+    },
+    {
+     "date": {
+      "field": "vendor.eventtime",
+      "formats": [
+       "UNIX"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "t_suricata",
+   "label": "oisf_suricata",
+   "steps": [
+    {
+     "json": {
+      "target": "vendor"
+     }
+    },
+    {
+     "date": {
+      "field": "vendor.timestamp",
+      "formats": [
+       "ISO8601",
+       "yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "t_checkpoint",
+   "label": "checkpoint_firewall",
+   "when": "CheckPoint \\d+ - \\[",
+   "steps": [
+    {
+     "grok": {
+      "patterns": [
+       "^<%{NONNEGINT:vendor.pri}>%{INT:vendor.ver} %{TIMESTAMP_ISO8601:vendor.ts} %{NOTSPACE:vendor.host} CheckPoint %{INT:vendor.pid} - \\[%{GREEDYDATA:vendor._kv}\\]$"
+      ]
+     }
+    },
+    {
+     "kv": {
+      "field": "vendor._kv",
+      "target": "vendor.cp",
+      "field_split_pattern": "; ",
+      "value_split": ":"
+     }
+    },
+    {
+     "remove": [
+      "vendor._kv"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "t_asa_dissect",
+   "label": "cisco_asa",
+   "steps": [
+    {
+     "dissect": {
+      "mapping": "%{?pre}%ASA-%{vendor.sev}-%{vendor.msgid}: %{vendor.word->} %{vendor.text}"
+     }
+    },
+    {
+     "rename": {
+      "vendor.text": "vendor.message"
+     }
+    },
+    {
+     "lowercase": [
+      "vendor.word"
+     ]
+    },
+    {
+     "gsub": [
+      [
+       "vendor.message",
+       "\\s+",
+       " "
+      ]
+     ]
+    },
+    {
+     "convert": {
+      "vendor.sev": "float",
+      "vendor.seq": "integer"
+     }
+    },
+    {
+     "add": {
+      "vendor.parsed_by": "dissect"
+     }
+    }
+   ],
+   "when": "%ASA-"
+  },
+  {
+   "id": "t_iptables",
+   "label": "linux_iptables",
+   "steps": [
+    {
+     "kv": {
+      "target": "vendor.f",
+      "include_brackets": false
+     }
+    },
+    {
+     "convert": {
+      "vendor.f.TTL": "integer",
+      "vendor.f.DF": "boolean"
+     }
+    },
+    {
+     "remove": [
+      "vendor.f.IN"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "t_asa",
+   "label": "cisco_asa",
+   "steps": [
+    {
+     "grok": {
+      "patterns": [
+       "%ASA-%{INT:vendor.severity:int}-%{INT:vendor.message_id}: %{GREEDYDATA:vendor.text}"
+      ]
+     }
+    },
+    {
+     "grok": {
+      "field": "vendor.text",
+      "patterns": [
+       "^%{WORD:vendor.action} %{WORD:vendor.direction} %{WORD:vendor.proto} connection %{INT:vendor.conn_id} for %{DATA:vendor.src_if}:%{IP:vendor.src_ip}/%{INT:vendor.src_port:int}",
+       "^%{GREEDYDATA:vendor.detail}"
+      ]
+     }
+    }
+   ]
+  }
+ ],
+ "samples": [
+  [
+   "paloalto_panos",
+   "Nov 30 16:44:47 PA-220 1,2018/11/30 16:44:46,012801096514,THREAT,url,2049,2018/11/30 16:44:46,192.168.15.224,175.16.199.1,192.168.1.63,175.16.199.1,new_outbound_from_trust,,,ssl,vsys1,trust,untrust,ethernet1/2,ethernet1/1,send_to_mac,2018/11/30 16:44:46,28306,1,53023,443,55738,443,0x403000,tcp,block-url,\"consent.cmp.oath.com/\",(9999),business-and-economy,informational,client-to-server,7763,0x2000000000000000,192.168.0.0-192.168.255.255,United States,0,,0,,,0,,,,,,,,0,0,0,0,0,,PA-220,,,,,0,,0,,N/A,unknown,AppThreat-0-0,0x0,0,4294967295,"
+  ],
+  [
+   "paloalto_panos",
+   "Nov 30 16:44:46 PA-220 1,2018/11/30 16:44:46,012801096514,THREAT,url,2049,2018/11/30 16:44:46,192.168.15.224,175.16.199.1,192.168.1.63,175.16.199.1,new_outbound_from_trust,,,ssl,vsys1,trust,untrust,ethernet1/2,ethernet1/1,send_to_mac,2018/11/30 16:44:46,28260,1,53008,443,13462,443,0x403000,tcp,block-url,\"consent.cmp.oath.com/\",(9999),business-and-economy,informational,client-to-server,7750,0x2000000000000000,192.168.0.0-192.168.255.255,United States,0,,0,,,0,,,,,,,,0,0,0,0,0,,PA-220,,,,,0,,0,,N/A,unknown,AppThreat-0-0,0x0,0,4294967295,"
+  ],
+  [
+   "paloalto_panos",
+   "1,2021/10/25 20:25:19,,CONFIG,0,2561,2021/10/25 20:25:19,81.2.69.193,,set,admin,Web,Succeeded, config shared log-settings globalprotect match-list  globalProtect,,\"globalprotect { match-list { globalProtect  { send-syslog [ SYSLOG-1 ]; filter \"\"All Logs\"\"; } } } \",1234567890,0x0,0,0,0,0,,PA-VM,0,"
+  ],
+  [
+   "paloalto_panos",
+   "Oct 30 09:46:12 1,2012/10/30 09:46:12,01606001116,TRAFFIC,end,1,2012/04/10 04:39:58,192.168.0.2,175.16.199.1,0.0.0.0,0.0.0.0,rule1,crusher,,web-browsing,vsys1,trust,untrust,ethernet1/2,ethernet1/1,forwardAll,2012/04/10 04:39:58,25118,1,59207,80,0,0,0x200000,tcp,allow,1355,549,806,"
+  ],
+  [
+   "paloalto_panos",
+   "1,2021/10/26 15:17:43,,TRAFFIC,end,2561,2021/10/26 15:17:43,81.2.69.144,81.2.69.145,,,intrazone-default,,,syslog,vsys1,LAN,LAN,ethernet1/2,ethernet1/2,LFPpan,2021/10/26 15:17:43,15896,1,46213,30514,0,0,0x10005e,udp,allow,1261,671,590,2,2021/10/26 15:17:07,0,any,,7022390495259151802,0x0,United States,United States,,1,1,aged-out,0,0,0,0,,PA-VM,from-policy,\" \", , , , , , , , , , , , , , , , , , , ,,,,2021-10-26T15:17:43.288-07:00"
+  ],
+  [
+   "paloalto_panos",
+   "Nov 30 16:09:45 PA-220 1,2018/11/30 16:09:45,012801096514,TRAFFIC,end,2049,2018/11/30 16:09:45,192.168.15.224,175.16.199.1,192.168.1.63,175.16.199.1,new_outbound_from_trust,,,ssl,vsys1,trust,untrust,ethernet1/2,ethernet1/1,send_to_mac,2018/11/30 16:09:45,24164,1,52482,443,38822,443,0x400053,tcp,allow,14732,3596,11136,31,2018/11/30 16:09:19,8,computer-and-internet-info,0,32091155,0x0,192.168.0.0-192.168.255.255,United States,0,15,16,tcp-fin,0,0,0,0,,PA-220,from-policy,,,0,,0,,N/A,0,0,0,0"
+  ],
+  [
+   "paloalto_panos",
+   "Sep 14 16:56:08 PA-220 1,2026/09/14 16:56:08,013101001305,TRAFFIC,end,3073,2026/09/14 16:56:08,81.2.69.144,175.16.199.1,0.0.0.0,0.0.0.0,rule1,,,web-browsing,vsys1,trust,untrust,ethernet1/2,ethernet1/1,log-profile,,12345,1,51000,443,0,0,0x400053,tcp,allow,1000,500,500,10,2026/09/14 16:55:00,60,computer-and-internet-info,0,7022390503849066602,0x0,192.168.0.0-192.168.255.255,United States,,5,5,tcp-fin,0,0,0,0,,PA-220,from-policy,,,0,,0,,N/A,0,0,0,0,798de89c-0538-4771-bf49-f0144fc6834e,0,2,policy-id,{link name, link tag, link type, ethernet1/1, 2026/09/14 16:55:00,100,100,, N/A},,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,2026-09-14T16:56:08.989-04:00,,,networking,general-internet,browser-based,4,\"used-by-malware,able-to-transfer-file\",,no,no,no,0,NonProxyTraffic,cn-cluster-1,yes,no,k8s-cluster-1,0,0,0,0,0,0,0,0,src-adv-dev-1,dst-adv-dev-1"
+  ],
+  [
+   "paloalto_panos",
+   "Oct 30 09:46:22 1,2012/10/30 09:46:22,01606001116,TRAFFIC,start,1,2012/04/10 04:39:53,192.168.0.2,175.16.199.1,0.0.0.0,0.0.0.0,rule1,crusher,,web-browsing,vsys1,trust,untrust,ethernet1/2,ethernet1/1,forwardAll,2012/04/10 04:39:54,25713,1,59300,80,0,0,0x200000,tcp,allow,78,78,0,1,2012/04/10 04:39:54,0,any,0,0,0x0,192.168.0.0-192.168.255.255,United States,0,1,0"
+  ],
+  [
+   "paloalto_panos",
+   "Oct 30 09:46:42 1,2012/10/30 09:46:42,01606001116,TRAFFIC,start,1,2012/04/10 04:39:47,192.168.0.2,175.16.199.1,0.0.0.0,0.0.0.0,rule1,crusher,,web-browsing,vsys1,trust,untrust,ethernet1/2,ethernet1/1,forwardAll,2012/04/10 04:39:48,25945,1,59277,80,0,0,0x200000,tcp,allow,78,78,0,1,2012/04/10 04:39:47,0,any,0,0,0x0,192.168.0.0-192.168.255.255,United States,0,1,0"
+  ],
+  [
+   "fortinet_fortigate",
+   "date=2019-05-15 time=15:05:49 logid=\"1501054802\" type=\"utm\" subtype=\"dns\" eventtype=\"dns-response\" level=\"notice\" vd=\"vdom1\" eventtime=1557957949740931155 policyid=1 sessionid=6887 srcip=10.1.100.22 srcport=50002 srcintf=\"port12\" srcintfrole=\"undefined\" dstip=172.16.100.100 dstport=53 dstintf=\"port11\" dstintfrole=\"undefined\" proto=17 profile=\"dnsfilter_fgd\" srcmac=\"a2:e9:00:ec:40:41\" xid=57945 qname=\"changelogs.ubuntu.com\" qtype=\"AAAA\" qtypeval=28 qclass=\"IN\" ipaddr=\"2a02:cf40::\" msg=\"Domain is monitored\" action=\"pass\" cat=52 catdesc=\"Information Technology\""
+  ],
+  [
+   "fortinet_fortigate",
+   "<190>devname=\"firewall\" devid=\"FG201EEF34CD12AB\" vd=\"root\" date=2021-05-07 time=08:31:14 eventtime=1620372674880744919 tz=\"+0100\" logid=\"0112053203\" type=\"event\" subtype=\"connector\" level=\"information\" logdesc=\"Dynamic address updated\" fctemssn=\"FCTEMS0000011111\" addr=\"FCTEMS0000011111_Connected-to-EMS\" msg=\"Updated tag FCTEMS0000011111_Connected-to-EMS.\""
+  ],
+  [
+   "fortinet_fortigate",
+   "<190>devname=\"firewall\" devid=\"FG201EEF34CD12AB\" vd=\"root\" date=2021-05-07 time=08:31:14 eventtime=1620372674880370858 tz=\"+0100\" logid=\"0112053203\" type=\"event\" subtype=\"connector\" level=\"information\" logdesc=\"Dynamic address updated\" fctemssn=\"FCTEMS0000011111\" addr=\"FCTEMS0000011111_AV-Running\" msg=\"Updated tag FCTEMS0000011111_AV-Running.\""
+  ],
+  [
+   "fortinet_fortigate",
+   "date=2019-02-20 time=10:02:26 logid=\"0111046409\" type=\"event\" subtype=\"fortiextender\" level=\"information\" vd=\"root\" eventtime=1550685746 logdesc=\"Remote FortiExtender info activity\" sn=\"FX04DN4N16002352\" ip=81.2.69.144 action=\"Cellular Connected\" imei=\"359376060442770\" imsi=\"302720502331361\" iccid=\"89302720403038146410\" phonenumber=\"+16045067526\" carrier=\"Rogers"
+  ],
+  [
+   "fortinet_fortigate",
+   "date=2019-03-28 time=11:09:14 logid=\"1701062003\" type=\"utm\" subtype=\"ssl\" eventtype=\"ssl-exempt\" level=\"notice\" vd=\"vdom1\" eventtime=1553796553 policyid=1 sessionid=12079 service=\"HTTPS\" srcip=10.1.100.66 srcport=49102 dstip=172.16.200.99 dstport=443 srcintf=\"port2\" srcintfrole=\"undefined\" dstintf=\"port3\" dstintfrole=\"undefined\" proto=6 action=\"exempt\" msg=\"SSL connection exempted\" reason=\"exempt-addr\""
+  ],
+  [
+   "fortinet_fortigate",
+   "date=2019-05-15 time=17:45:34 logid=\"0000000013\" type=\"traffic\" subtype=\"forward\" level=\"notice\" vd=\"root\" eventtime=1557967534 srcip=10.1.100.22 srcport=50354 srcintf=\"port10\" srcintfrole=\"lan\" dstip=81.2.69.142 dstport=443 dstintf=\"port9\" dstintfrole=\"wan\" poluuid=\"d8ce7a90-7763-51e9-e2be-741294c96f31\" sessionid=3423 proto=6 action=\"server-rst\" policyid=1 policytype=\"policy\" service=\"HTTPS\" dstcountry=\"United States\" srccountry=\"Reserved\" trandisp=\"snat\" transip=172.16.200.10 transport=50354 duration=5 sentbyte=2314 rcvdbyte=5266 sentpkt=33 rcvdpkt=12 appcat=\"unscanned\" wanin=43936 wanout=710 lanin=753 lanout=753 utmaction=\"block\" countdlp=1 crscore=5 craction=262144 crlevel=\"low\" devtype=\"Unknown\" devcategory=\"None\" mastersrcmac=\"00:0c:29:51:38:5e\" srcmac=\"00:0c:29:51:38:5e\" srcserver=0 utmref=0-152"
+  ],
+  [
+   "cisco_asa",
+   "Apr 30 2013 09:23:43: %ASA-5-106100: access-list acl_in est-allowed tcp inside/10.0.0.16(2013) -> outside/192.168.0.89(2000) hit-cnt 1 first hit [0x71a87d94, 0x0]"
+  ],
+  [
+   "cisco_asa",
+   "Oct 10 2018 12:34:56 localhost CiscoASA[999]: %ASA-6-302015: Built outbound UDP connection 11822 for outside:192.168.3.39/53 (192.168.3.39/53) to inside:172.31.98.44/56132 (172.31.98.44/56132)"
+  ],
+  [
+   "cisco_asa",
+   "Oct 10 2018 12:34:56 localhost CiscoASA[999]: %ASA-4-106023: Deny tcp src outside:192.168.124.24/80 dst inside:172.31.98.44/8309 by access-group \"inbound\" [0x0, 0x0]"
+  ],
+  [
+   "cisco_asa",
+   "Aug 15 2012 23:30:09 : %ASA-6-302016 Teardown UDP connection 40 for outside:10.44.4.4/500 to inside:10.44.2.2/500 duration 0:02:02 bytes 1416"
+  ],
+  [
+   "oisf_suricata",
+   "{\"timestamp\":\"2018-10-03T17:02:38.900976+0000\",\"flow_id\":1205867738178946,\"in_iface\":\"enp0s3\",\"event_type\":\"alert\",\"src_ip\":\"192.168.1.146\",\"src_port\":32892,\"dest_ip\":\"89.160.20.112\",\"dest_port\":80,\"proto\":\"TCP\",\"tx_id\":0,\"alert\":{\"action\":\"allowed\",\"gid\":1,\"signature_id\":2013028,\"rev\":4,\"signature\":\"ET POLICY curl User-Agent Outbound\",\"category\":\"Attempted Information Leak\",\"severity\":2},\"http\":{\"hostname\":\"example.org\",\"url\":\"\\/\",\"http_user_agent\":\"curl\\/7.58.0\",\"http_content_type\":\"text\\/html\",\"http_method\":\"GET\",\"protocol\":\"HTTP\\/1.1\",\"status\":200,\"length\":1126},\"app_proto\":\"http\",\"flow\":{\"pkts_toserver\":4,\"pkts_toclient\":3,\"bytes_toserver\":347,\"bytes_toclient\":1654,\"start\":\"2018-10-03T17:02:38.599426+0000\"}}"
+  ],
+  [
+   "oisf_suricata",
+   "{\"ISP_name\":\"Cato Networks Inc.\",\"account_id\":\"12345\",\"account_name\":\"Demo-Mode\",\"action\":\"Prompt\",\"ad_name\":\"John Doe\",\"app_stack\":\"TCP, TLS, HTTP(S)\",\"socket_version\":\"25.0.22040\",\"application_id\":\"http\",\"application_name\":\"HTTP(S)\",\"application_risk\":\"2\",\"application_type\":\"System\",\"categories\":\"Anonymizers\",\"cato_app\":\"http\",\"client_class\":\"unclassified tls\",\"client_ip\":\"1.128.0.0\",\"client_version\":\"5.21.5.8548\",\"configured_host_name\":\"WORKSTATION-01\",\"congestion_algorithm\":\"BBR\",\"connection_origin\":\"Cato Client\",\"dest_country\":\"Sweden\",\"dest_country_code\":\"SE\",\"dest_ip\":\"175.16.199.0\",\"dest_port\":\"443\",\"dns_query\":\"dns-query.example.com\",\"dns_record_type\":\"A\",\"device_categories\":\"PC\",\"device_id\":\"000000000000000000000001\",\"device_name\":\"WORKSTATION-01\",\"device_os_type\":\"Windows Workstation\",\"device_posture_profile\":\"Windows managed\",\"device_type\":\"Workstation\",\"domain_name\":\"anonymizer.example.com\",\"egress_pop_name\":\"Bucharest\",\"event_count\":\"1\",\"event_message\": \"ApiKey login successfully\",\"event_id\":\"8826c06d1d9cdc\",\"event_sub_type\":\"Internet Firewall\",\"event_type\":\"Security\",\"flow_id\":\"6427317971344338944\",\"full_path_url\":\"https://anonymizer.example.com/\",\"host_ip\":\"1.128.0.0\",\"host_mac\":\"00:00:5e:00:53:01\",\"http_request_method\":\"GET\",\"internalId\":\"8826c06d1d9cdc\",\"internal_id\":\"8826c06d1d9cdc\",\"ip_protocol\":\"TCP\",\"network_rule\":\"Akira Impossible Travel\",\"os_type\":\"OS_WINDOWS\",\"os_version\":\"11\",\"pop_name\":\"Miami\",\"prompt_action\":\"\",\"public_ip\":\"216.160.83.56\",\"qos_priority\":\"10\",\"request_size\":\"0\",\"rule_id\":\"8512269566766760473\",\"rule_name\":\"Prompt for Risky Categories\",\"server_ip\":\"175.16.199.0\",\"src_country\":\"United States\",\"src_country_code\":\"US\",\"src_ip\":\"1.128.0.0\",\"src_is_site_or_vpn\":\"SDP User\",\"src_isp_ip\":\"81.2.69.192\",\"src_port\":\"60593\",\"src_site_id\":\"1000033\",\"src_site_name\":\"John Doe\",\"static_host\":\"false\",\"tcp_acceleration\":\"true\",\"time\":\"1772098156792\",\"time_str\":\"2026-02-26T09:29:16Z\",\"tls_inspection\":\"true\",\"traffic_direction\":\"OUTBOUND\",\"url\":\"https://anonymizer.example.com/\",\"user_agent\":\"Python-urllib/3.10\",\"user_id\":\"1000033\",\"user_name\":\"John Doe\",\"user_reference_id\":\"2905856774\",\"visible_device_id\":\"00-00-5e-00-53-01\",\"vpn_user_email\":\"john.doe@example.com\"}"
+  ],
+  [
+   "oisf_suricata",
+   "{\"timestamp\":\"2019-08-23T02:03:36.626559+0000\",\"flow_id\":928596784370390,\"in_iface\":\"enp0s3\",\"event_type\":\"dns\",\"src_ip\":\"10.0.2.3\",\"src_port\":53,\"dest_ip\":\"10.0.2.15\",\"dest_port\":59203,\"proto\":\"UDP\",\"dns\":{\"version\":2,\"type\":\"answer\",\"id\":12859,\"flags\":\"8180\",\"qr\":true,\"rd\":true,\"ra\":true,\"rcode\":\"NOERROR\",\"rrname\":\"www.elastic.co\",\"rrtype\":\"AAAA\",\"answers\":[{\"rrname\":\"www.elastic.co\",\"rrtype\":\"CNAME\",\"ttl\":269,\"rdata\":\"dualstack.r2.shared.global.fastly.net\"},{\"rrname\":\"dualstack.r2.shared.global.fastly.net\",\"rrtype\":\"AAAA\",\"ttl\":29,\"rdata\":\"2a02:cf40:add:4002:91f2:a9b2:e09a:6fc6\"},{\"rrname\":\"dualstack.r2.shared.global.fastly.net\",\"rrtype\":\"AAAA\",\"ttl\":29,\"rdata\":\"2a02:cf40:0200:0000:0000:0000:0000:0729\"},{\"rrname\":\"dualstack.r2.shared.global.fastly.net\",\"rrtype\":\"AAAA\",\"ttl\":29,\"rdata\":\"2a02:cf40:0400:0000:0000:0000:0000:0729\"},{\"rrname\":\"dualstack.r2.shared.global.fastly.net\",\"rrtype\":\"AAAA\",\"ttl\":29,\"rdata\":\"2a02:cf40:add:4002:91f2:a9b2:e09a:6fc6\"}]}}"
+  ],
+  [
+   "oisf_suricata",
+   "{\"timestamp\":\"2018-10-04T09:34:59.953886+0000\",\"flow_id\":112424506237238,\"in_iface\":\"enp0s3\",\"event_type\":\"alert\",\"src_ip\":\"192.168.1.146\",\"src_port\":52340,\"dest_ip\":\"89.160.20.112\",\"dest_port\":80,\"proto\":\"TCP\",\"tx_id\":3,\"alert\":{\"action\":\"allowed\",\"gid\":1,\"signature_id\":2013504,\"rev\":5,\"signature\":\"ET POLICY GNU\\/Linux APT User-Agent Outbound likely related to package management\",\"category\":\"Not Suspicious Traffic\",\"severity\":3},\"http\":{\"hostname\":\"archive.ubuntu.com\",\"url\":\"\\/ubuntu\\/dists\\/bionic-updates\\/main\\/source\\/by-hash\\/SHA256\\/65f2e3a4e9d89d9d4b5e3d42e586bc96f48a24466b0ad0b4a707255e44a26b03\",\"http_user_agent\":\"Debian APT-HTTP\\/1.3 (1.6.3ubuntu0.1)\",\"http_method\":\"GET\",\"protocol\":\"HTTP\\/1.1\",\"status\":200,\"length\":2687},\"app_proto\":\"http\",\"flow\":{\"pkts_toserver\":91,\"pkts_toclien"
+  ],
+  [
+   "oisf_suricata",
+   "{\"timestamp\":\"2018-07-05T15:01:09.820360-0400\",\"flow_id\":298824096901438,\"in_iface\":\"en0\",\"event_type\":\"ssh\",\"src_ip\":\"192.168.86.85\",\"src_port\":55406,\"dest_ip\":\"192.168.253.112\",\"dest_port\":22,\"p"
+  ],
+  [
+   "checkpoint_firewall",
+   "<134>1 2024-01-01T01:01:48Z THENEWAUDITTEST CheckPoint 14706 - [action:\"Accept\"; flags:\"163872\"; ifdir:\"outbound\"; loguid:\"{0x65920efe,0x0,0x1f67238a,0x1cc7b972}\"; origin:\"172.16.1.190\"; originsicname:\"cn=cp_mgmt,o=auditTest..aw4c8s\"; sequencenum:\"1\"; time:\"1704070908\"; version:\"5\"; administrator:\"Scheduled system update\"; client_ip:\"172.16.1.190\"; domain_name:\"auditTest_domain\"; fieldschanges:\"Application Control & URL Filtering Update version was updated from 141202312141035 to 141202312261218\"; operation:\"Application Control & URL Filtering Update\"; product:\"Scheduled system update\"; sendtotrackerasadvancedauditlog:\"0\"; session_description:\"APPI Update\"; session_name:\"APPI Update\"; session_uid:\"3f68858c-8028-4d0c-9813-c12f9061cacf\"; subject:\"Application Control & URL Filtering Update\"]"
+  ],
+  [
+   "checkpoint_firewall",
+   "<134>1 2023-03-01T02:16:55Z gw-0b8ccd CheckPoint 16700 - [flags:\"131104\"; ifdir:\"inbound\"; loguid:\"{0x63ff0952,0x43,0x28b2a8c0,0x20a1413c}\"; origin:\"192.168.178.40\"; sequencenum:\"1\"; time:\"1677637015\"; version:\"5\"; administrator:\"admin\"; fieldschanges:\"NTP version of server ntp.checkpoint.com is set to 4 \"; machine:\"gw-0b8ccd\"; objectname:\"NTP\"; operation:\"Set Object\"; product:\"Web-UI\"; subject:\"Object Manipulation\"]"
+  ],
+  [
+   "checkpoint_firewall",
+   "<134>1 2024-01-02T00:21:21Z THENEWAUDITTEST CheckPoint 25603 - [action:\"Forgot Passcode\"; flags:\"49184\"; ifdir:\"outbound\"; loguid:\"{0xc8fcfded,0xb6eb29b0,0xcca171be,0xdaa091e6}\"; origin:\"172.16.1.190\"; originsicname:\"cn=cp_mgmt,o=CASCC1DMBNTB1002..7f4rte\"; sequencenum:\"1\"; time:\"1704154881\"; version:\"5\"; administrator:\"test_admin\"; audit_status:\"Success\"; client_ip:\"172.16.1.190\"; machine:\"172.16.1.190\"; operation:\"Run One Time Script\"; operation_result_description:\"Cluster Mode: Virtual System Load Sharing (Primary Up)\"; operation_results:\" Cluster Mode:   Virtual System Load Sharing (Primary Up) Down! - ClusterXL Inactive or Virtual System is Down \"; product:\"Management Blade\"; script_value_for_one_time_scripts:\"cphaprob stat\"; subject:\"Management CDM Object Manipulation\"; task:\"cphaprob stat\"; task_percent:\"100%\"; task_progress:\"Completed\"; taskid:\"ed37f94c-4302-4fc1-a57c-ee4ee8aa469d\"; tasktargetid:\"e62ce0ce-d7ec-45c7-6bd6-0cdfa6687f3b\"]"
+  ],
+  [
+   "checkpoint_firewall",
+   "<134>1 2020-03-30T07:20:33Z gw-da58d3 CheckPoint 8363 - [action:\"Accept\"; flags:\"411908\"; ifdir:\"inbound\"; ifname:\"eth0\"; logid:\"0\"; loguid:\"{0x5e819dc1,0x0,0x353707c7,0xee78a1dc}\"; origin:\"192.168.1.100\"; originsicname:\"cn=cp_mgmt,o=gw-da58d3..tmn8s8\"; sequencenum:\"1\"; version:\"5\"; __policy_id_tag:\"product=VPN-1 & FireWall-1[db_tag={880771B0-FD92-2C4F-82FC-B96FC3DE5A07};mgmt=gw-da58d3;date=1585502566;policy_name=Standard\\]\"; dst:\"192.168.1.100\"; inzone:\""
+  ],
+  [
+   "checkpoint_firewall",
+   "<134>1 2024-01-02T14:18:04Z THENEWAUDITTEST CheckPoint 13885 - [action:\"Accept\"; flags:\"163872\"; ifdir:\"outbound\"; loguid:\"{0x65941b1e,0x3,0x1f67238a,0x1b3f363d}\"; origin:\"172.16.1.190\"; originsicname:\"cn=cp_mgmt,o=auditTest..aw4c8s\"; sequencenum:\"4\"; time:\"1704205084\"; version:\"5\"; administrator:\"System\"; client_ip:\"172.16.1.190\"; fieldschanges:\"2 Objects were changed\"; operation:\"Publish\"; product:\"SmartConsole\"; sendtotrackerasadvancedauditlog:\"0\"; session_description:\"Global Domain Assignment\"; session_name:\"Global Domain Assignment\"; session_uid:\"d5c7cc4f-01ea-4ac7-8de1-72ae05d28bc6\"; subject:\"Revision Control\"]\t"
+  ],
+  [
+   "linux_iptables",
+   "Jun 28 04:30:32 Abc-A1 [SOMETHING-1234-A] IN=abc.123 OUT=abc.123 MAC=0a:ea:10:00:f0:06:10:e1:21:31:61:20:01:00:41:00:00:01 SRC=10.251.1.1 DST=10.251.1.1 LEN=84 TOS=00 PREC=0x00 TTL=63 ID=6789 PROTO=ICMP TYPE=8 CODE=0 ID=98765 SEQ=30123 MARK=0"
+  ],
+  [
+   "linux_iptables",
+   "<4>Jun 27 23:29:32 router kernel: [wan-local-default-D]IN=eth0 OUT= MAC=04:18:d6:f1:2c:20:00:00:5e:00:01:6a:08:00 SRC=10.251.1.1 DST=10.251.1.1 LEN=76 TOS=0x00 PREC=0x00 TTL=243 ID=37763 DF PROTO=1"
+  ],
+  [
+   "linux_iptables",
+   "Jan  5 20:17:01 firewall kernel: [4276041.728154] IN=eno1 OUT= MAC=0c:c4:7a:0f:51:0c:d4:66:24:80:d8:da:08:00 SRC=192.168.110.116 DST=192.168.2.25 LEN=120 TOS=0x00 PREC=0x00 TTL=55 ID=0 DF PROTO=ESP SPI=0xcb886522"
+  ]
+ ]
+}
