@@ -230,31 +230,50 @@ def captions_for(spec, id_path):
     return {}
 
 
+_INFER = {"integer_t": "integer", "long_t": "integer", "float_t": "float", "boolean_t": "boolean",
+          "string_t": "string"}
+
+
 def prepare(spec, schema=None):
     """Attach the schema-derived parts both executors need (class info, sibling name tables)."""
     schema = schema or Schema()
     name, cls = schema.cls(spec["class_uid"])
     if cls is None:
         raise ValueError(f"unknown class_uid {spec['class_uid']}")
-    sib = []
-    targets = {f["to"] for f in spec["fields"]} | {"activity_id", "severity_id"}
-    for t in sorted(targets):
+    def resolve(t):
         parts = [_IDX.sub(r"\1", x) for x in t.split(".")]
         attrs = cls["attributes"]
         a = None
         for i, p in enumerate(parts):
             a = attrs.get(p)
             if a is None:
-                break
+                return None
             if i < len(parts) - 1:
                 obj = schema.s["objects"].get(a["type"])
                 if not obj:
-                    a = None
-                    break
+                    return None
                 attrs = obj["attributes"]
+        return a
+
+    sib = []
+    targets = {f["to"] for f in spec["fields"]} | {"activity_id", "severity_id"}
+    for t in sorted(targets):
+        a = resolve(t)
         if a and a.get("enum") and a.get("sibling"):
             sib.append([t, ".".join(t.split(".")[:-1] + [a["sibling"]]), a["enum"]])
-    out = dict(spec)
+    # fields without an explicit `type` get the cast the target OCSF attribute needs (both executors read the
+    # prepared spec, so Python and Logstash stay identical)
+    fields = []
+    for f in spec["fields"]:
+        if "type" not in f:
+            a = resolve(f["to"])
+            cast_t = _INFER.get(schema.base_type(a["type"])) if a and a["type"] not in schema.s["objects"] else None
+            if a and a["type"] == "timestamp_t":
+                cast_t = "timestamp_ms"
+            if cast_t and not (cast_t == "string" and "value" in f and isinstance(f["value"], str)):
+                f = dict(f, type=cast_t)
+        fields.append(f)
+    out = dict(spec, fields=fields)
     out["_class"] = {"uid": cls["uid"], "name": name, "caption": cls["caption"], "category_uid": cls["category_uid"],
                      "category_caption": cls["category_caption"]}
     out["_version"] = schema.version

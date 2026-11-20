@@ -86,14 +86,12 @@ def lg_ts_ms(v)
     x = Float(s)
     return x < 1e11 ? (x * 1000).to_i : x.to_i
   end
+  # only ISO-8601-like strings, exactly what Python's datetime.fromisoformat accepts in the executor
+  return nil unless s =~ /\A\d{4}-\d\d-\d\d([T ]\d\d:\d\d(:\d\d(\.\d+)?)?)?(Z|[+-]\d\d:?\d\d)?\z/
   begin
-    t = Time.iso8601(s)
+    t = Time.iso8601(s.sub(" ", "T") + (s =~ /(Z|[+-]\d\d:?\d\d)\z/ || s.length == 10 ? "" : "Z"))
   rescue ArgumentError
-    begin
-      t = Time.parse(s + (s =~ /(Z|[+-]\d\d:?\d\d)\z/ ? "" : "Z"))
-    rescue ArgumentError
-      return nil
-    end
+    return nil
   end
   t.to_i * 1000 + t.usec / 1000
 end

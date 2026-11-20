@@ -105,3 +105,24 @@ tool-using agent's accuracy with ~1/10 of its calls, in seconds instead of minut
 similar once prompt caching is priced in (~$0.04 vs ~$0.03 per format, see COSTS.md); the earlier "1/4 of
 the cost" compared raw token counts and overstated the saving. Choosing the class first (M2/M3) loses recall
 on mixed formats. Retrieval (RAG) was the weakest. Keep a tool-using agent only as the fallback.
+
+## Final: M1 on all 81 formats (production stores in `parsers/`)
+
+M1 mapped 76 of 81 formats (1.3 calls/format, ~1.6k prompt + ~0.8k answer tokens + 63k cached schema);
+the 5 failures are formats whose logs carry no event time (Cisco IOS uptime/no-timestamp, a malformed Check
+Point timestamp, two fallbacks) — the mapper refuses to invent `time`. Production store = M1 mappings +
+the agent's mapping for 2 of those (fallback).
+
+| Full held-out benchmark (1,294 lines, 15 vendors) | Mapping agent | **M1 + fallback (production)** |
+|---|---|---|
+| Parsed | 95.7% | 95.7% |
+| Mapped to OCSF | 95.5% | 95.5% |
+| OCSF schema-valid | 98.5% | 98.0% |
+| Field precision | 88.5% | **89.1%** |
+| Field recall | 72.2% | **72.6%** |
+| Timestamps (allowing for tz/year artefacts) | 87.8% | **91.5%** |
+| Real Logstash vs Python, held-out lines | 1294/1294 | 1290/1294 (4 kv/grok edge cases on unseen lines) |
+
+Engine changes in this round: target-type inference in `prepare()` (casts follow the OCSF attribute type),
+Ruby CSV strictness mirrored in the executor, ISO-only timestamp casting in the Ruby mapper, Logstash heap
+configurable (`LG_LS_HEAP`, default 2g; the full 81-parser + 78-mapping pipeline needs more than 768m).

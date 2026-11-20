@@ -51,7 +51,7 @@ def logstash_outputs(parsers, samples, logstash_home, workdir=None, timeout=600,
         f.write('output { stdout { codec => json_lines } }\n')
     data = "".join(json.dumps({"message": m, "loggrouper": {"label": l}, "seq": i}) + "\n"
                    for i, (l, m) in enumerate(samples))
-    env = dict(os.environ, LS_JAVA_OPTS="-Xms256m -Xmx768m")
+    env = dict(os.environ, LS_JAVA_OPTS=f"-Xms256m -Xmx{os.environ.get('LG_LS_HEAP', '2g')}")
     env.pop("JAVA_TOOL_OPTIONS", None)
     p = subprocess.run([os.path.join(logstash_home, "bin", "logstash"), "-f", conf, "--path.data",
                         os.path.join(workdir, "data"), "-l", os.path.join(workdir, "logs"), "--log.level", "error",

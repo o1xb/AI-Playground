@@ -93,6 +93,14 @@ Key lessons recorded along the way:
 - Onboarding a new vendor with the current agents: ~280k tokens (~$1.5–2); mapping is the largest share,
   which the RAG mapper targets.
 
+## 5a. OCSF mapping decision (final)
+
+Compared on the same benchmark: tool-using mapping agent, RAG one-shot, M1 (whole compact OCSF schema in a
+cached system prompt, one call + validator repairs), M2 (class first + class slice), M3 (M2 + coverage call),
+and a Bash+Python agent with the schema as files. **M1 won**: on all 81 formats it matches or beats the agent
+(precision 89.1%, recall 72.6%, timestamps 91.5%) with 1.3 calls per format, in seconds. It is now the
+default (`cli map-learn --method full`); the tool-using agent is the fallback. Costs: `COSTS.md`.
+
 ## 5. RAG mapper: first measurement (partial, 47 formats)
 
 ~2.3x cheaper than the mapping agent (~9k tokens and 2.3 calls per format) with similar precision (85% vs

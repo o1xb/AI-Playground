@@ -277,6 +277,43 @@ def kv(s, field_split=" ", value_split="=", field_split_pattern=None, value_spli
     return out
 
 
+# ---------------------------------------------------------------- csv (Ruby CSV strictness)
+def _ruby_csv_row(s, sep, q):
+    """Parse one CSV row with Ruby CSV's rules, as Logstash's csv filter does: a quote inside an unquoted
+    field ("Illegal quoting") or an unclosed quoted field is an error (-> None)."""
+    s = s.rstrip("\r\n")
+    out, i, n = [], 0, len(s)
+    while True:
+        if i < n and s[i] == q:                       # quoted field
+            i += 1
+            buf = []
+            while True:
+                j = s.find(q, i)
+                if j < 0:
+                    return None                         # unclosed quoted field
+                buf.append(s[i:j])
+                if j + 1 < n and s[j + 1] == q:         # escaped quote ""
+                    buf.append(q); i = j + 2; continue
+                i = j + 1
+                break
+            if i < n and s[i] != sep:
+                return None                             # text after closing quote
+            out.append("".join(buf))
+        else:
+            j = s.find(sep, i)
+            field = s[i:] if j < 0 else s[i:j]
+            if q in field:
+                return None                             # illegal quoting in unquoted field
+            out.append(field)
+            i = n if j < 0 else j
+        if i >= n:
+            return out
+        i += len(sep)
+        if i == n:
+            out.append("")
+            return out
+
+
 # ---------------------------------------------------------------- date (Joda subset)
 _JODA = [("yyyy", r"(?P<Y>\d{4})"), ("yy", r"(?P<y>\d{2})"), ("MMMM", r"(?P<B>[A-Za-z]+)"),
          ("MMM", r"(?P<b>[A-Za-z]{3})"), ("MM", r"(?P<m>\d{2})"), ("M", r"(?P<m>\d{1,2})"),
@@ -420,10 +457,8 @@ def run_step(ev, op, a):
             ev.update(r)
     elif op == "csv":
         s = get(ev, a.get("field", "message"))
-        try:
-            row = next(_csv.reader(io.StringIO(s), delimiter=a.get("separator", ","),
-                                   quotechar=a.get("quote_char", '"')))
-        except (StopIteration, _csv.Error, TypeError):
+        row = _ruby_csv_row(s, a.get("separator", ","), a.get("quote_char", '"')) if isinstance(s, str) else None
+        if row is None:
             _tag(ev, "_csvparsefailure"); return
         cols = a.get("columns", [])
         tgt = a.get("target")
