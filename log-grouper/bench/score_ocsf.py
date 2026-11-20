@@ -114,6 +114,14 @@ def score(rows, ocsf_events, parsed_flags, schema):
             if ecs == "@timestamp":
                 e_s = ts_seconds(ev_v)
                 ok = any(ts_seconds(g) is not None and e_s is not None and abs(ts_seconds(g) - e_s) <= 1 for g in got)
+                if not ok and got and e_s is not None and ts_seconds(got[0]) is not None:
+                    d = abs(ts_seconds(got[0]) - e_s)
+                    # benchmark artefacts: Elastic's test configs set a device timezone the log line does not
+                    # carry, and year-less syslog dates were resolved in a different year when the expected
+                    # output was generated. Counted separately as @timestamp~tz/year.
+                    if (d % 1800 == 0 and d <= 14 * 3600) or any(abs(d - y * 365 * 86400) <= 2 * 86400 for y in (1, 2, 3)):
+                        s["fields"]["@timestamp~tz/year"] += 1
+                        s["match"]["@timestamp~tz/year"] += 1
             else:
                 e_n = norm(ecs, ev_v)
                 e_set = set(e_n) if isinstance(e_n, list) else {e_n}
@@ -127,7 +135,12 @@ def score(rows, ocsf_events, parsed_flags, schema):
     tot = collections.Counter()
     out = []
     for lab, s in sorted(per.items(), key=lambda kv: -kv[1]["lines"]):
-        f, mt, wr = sum(s["fields"].values()), sum(s["match"].values()), sum(s["wrong"].values())
+        strict = [k for k in s["fields"] if "~" not in k]          # headline numbers stay strict
+        f = sum(s["fields"][k] for k in strict)
+        mt = sum(s["match"][k] for k in strict)
+        wr = sum(s["wrong"][k] for k in strict)
+        tot["ts_adjusted"] += s["match"]["@timestamp"] + s["match"]["@timestamp~tz/year"]
+        tot["ts_total"] += s["fields"]["@timestamp"]
         tot.update({"lines": s["lines"], "parsed": s["parsed"], "mapped": s["mapped"], "valid": s["valid"],
                     "fields": f, "match": mt, "wrong": wr})
         out.append({"label": lab, "lines": s["lines"], "parse_rate": round(s["parsed"] / s["lines"], 3),
@@ -143,7 +156,8 @@ def score(rows, ocsf_events, parsed_flags, schema):
                "ocsf_valid_rate": round(tot["valid"] / max(1, tot["mapped"]), 3),
                "field_recall": round(tot["match"] / max(1, tot["fields"]), 3),
                "field_precision": round(tot["match"] / max(1, tot["match"] + tot["wrong"]), 3),
-               "ecs_fields_compared": tot["fields"]}
+               "ecs_fields_compared": tot["fields"],
+               "timestamp_match_allowing_tz_year_artefacts": round(tot["ts_adjusted"] / max(1, tot["ts_total"]), 3)}
     return {"summary": summary, "labels": out}
 
 
