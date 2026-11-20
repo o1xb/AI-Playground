@@ -85,7 +85,7 @@ class _Common:
 
 class MappingTools(_Common, CodeTools):
     def __init__(self, store_path, groups_dir, labels=None, logstash_home=None, enable_code=False,
-                 workspace=None, sandbox_backend="unshare", max_submits=6, drafts_path=None):
+                 workspace=None, sandbox_backend="unshare", max_submits=20, drafts_path=None):
         self._load_common(store_path, groups_dir, labels)
         self.logstash_home = logstash_home
         self.max_submits, self.submits = max_submits, 0

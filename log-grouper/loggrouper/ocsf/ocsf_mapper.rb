@@ -110,6 +110,21 @@ def lg_remove(h, parts)
   end
 end
 
+def lg_plain(x)
+  # deep copy with Logstash Timestamp objects rendered as ISO-8601 strings (the Python executor's form)
+  if x.is_a?(Hash)
+    h = {}
+    x.each { |k, v| h[k] = lg_plain(v) }
+    h
+  elsif x.is_a?(Array)
+    x.map { |v| lg_plain(v) }
+  elsif !x.is_a?(String) && x.respond_to?(:time)
+    x.to_s
+  else
+    x
+  end
+end
+
 def lg_empty?(x)
   x.nil? || x == "" || x == [] || x == {}
 end
@@ -117,7 +132,7 @@ end
 def filter(event)
   # @timestamp counts only when the parser set it from the log (date step succeeded), as in the Python executor
   ts = event.get("[@metadata][lg_ts]") ? event.get("[@timestamp]") : nil
-  ev = { "vendor" => event.get("[vendor]"), "message" => event.get("[message]"), "@timestamp" => ts }
+  ev = { "vendor" => lg_plain(event.get("[vendor]")), "message" => event.get("[message]"), "@timestamp" => ts }
   out = {}
   used = []
   @spec["fields"].each do |f|
@@ -184,7 +199,7 @@ def filter(event)
     out["raw_data"] = ev["message"]
   end
   if @spec["unmapped"] && ev["vendor"].is_a?(Hash)
-    rest = Marshal.load(Marshal.dump(ev["vendor"].to_hash))
+    rest = lg_plain(ev["vendor"])
     used.each { |s| lg_remove(rest, s.split(".")[1..-1]) if s.start_with?("vendor.") }
     out["unmapped"] = rest unless rest.empty?
   end

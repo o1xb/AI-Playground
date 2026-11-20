@@ -11,6 +11,40 @@ import tempfile
 DEFAULT_MODEL = "claude-opus-5-5"
 
 
+def _sync_library(workspace):
+    """Copy the current loggrouper package into the workspace, atomically and only when it changed, so
+    concurrent tool calls never see a half-copied library."""
+    import hashlib
+    src = os.path.dirname(os.path.abspath(__file__))
+    h = hashlib.sha1()
+    for root, dirs, files in sorted(os.walk(src)):
+        dirs[:] = sorted(d for d in dirs if d != "__pycache__")
+        for fn in sorted(files):
+            if not fn.endswith(".pyc"):
+                with open(os.path.join(root, fn), "rb") as f:
+                    h.update(fn.encode() + f.read())
+    stamp = h.hexdigest()
+    lib_dir = os.path.join(workspace, "lib")
+    lib = os.path.join(lib_dir, "loggrouper")
+    stamp_file = os.path.join(lib_dir, ".stamp")
+    os.makedirs(lib_dir, exist_ok=True)
+    if os.path.exists(stamp_file) and open(stamp_file).read() == stamp and os.path.isdir(lib):
+        return
+    tmp = tempfile.mkdtemp(dir=lib_dir, prefix=".new-")
+    shutil.copytree(src, os.path.join(tmp, "loggrouper"), ignore=shutil.ignore_patterns("__pycache__"))
+    old = None
+    if os.path.isdir(lib):
+        old = tempfile.mkdtemp(dir=lib_dir, prefix=".old-")
+        os.rename(lib, os.path.join(old, "loggrouper"))
+    os.rename(os.path.join(tmp, "loggrouper"), lib)
+    with open(stamp_file + ".tmp", "w") as f:
+        f.write(stamp)
+    os.replace(stamp_file + ".tmp", stamp_file)
+    shutil.rmtree(tmp, ignore_errors=True)
+    if old:
+        shutil.rmtree(old, ignore_errors=True)
+
+
 class CodeTools:
     """Mixin: sandboxed run_python / run_bash over a workspace the subclass fills (`_write_workspace`)."""
 
@@ -23,10 +57,7 @@ class CodeTools:
             os.makedirs(self.workspace, exist_ok=True)
             self.sandbox = Sandbox(self.workspace, backend=sandbox_backend,
                                    hide=list(hide) + [os.path.expanduser("~"), "/tmp", "/var/tmp", "/root", "/home"])
-            lib = os.path.join(self.workspace, "lib", "loggrouper")
-            shutil.rmtree(lib, ignore_errors=True)       # always the current library (no stale semantics)
-            shutil.copytree(os.path.dirname(os.path.abspath(__file__)), lib,
-                            ignore=shutil.ignore_patterns("__pycache__"))
+            _sync_library(self.workspace)
 
     def run_python(self, code: str, timeout: int = 60) -> str:
         """Run a Python 3 script in the sandboxed analysis workspace (cwd; see README.txt). No network; only

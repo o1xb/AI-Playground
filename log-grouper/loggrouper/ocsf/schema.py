@@ -196,7 +196,9 @@ class Schema:
         if isinstance(act, int) and ev.get("type_uid") != cls["uid"] * 100 + act:
             errs.append(f"type_uid must be class_uid*100+activity_id = {cls['uid'] * 100 + act}")
         self._check_obj(ev, attrs, "", errs, warns, top=True, profiles=set(profiles))
-        for c in ((cls.get("constraints") or {}).get("at_least_one") or []):
+        alo = (cls.get("constraints") or {}).get("at_least_one") or []
+        groups = [alo] if alo and all(isinstance(x, str) for x in alo) else alo   # flat list = one constraint
+        for c in groups:
             if not any(ev.get(k) not in (None, "", [], {}) for k in c):
                 errs.append(f"at least one of {c} is required")
         return errs, warns
