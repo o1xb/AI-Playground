@@ -127,6 +127,23 @@ python3 -m unittest discover -s tests                        # all tests incl. L
   python3 bench/score_ocsf.py      <bench>/test.jsonl /tmp/rag/store
   ```
 
+### Or on Linux (recommended: everything native, incl. the unshare sandbox)
+
+```bash
+git clone <repo> && cd AI-Playground && git checkout claude/adoring-planck-wczlod && cd log-grouper
+python3 -m venv .venv && source .venv/bin/activate
+pip install anthropic "sentence-transformers[image]" torch     # CUDA build if you have an NVIDIA GPU
+huggingface-cli login
+curl -O https://artifacts.elastic.co/downloads/logstash/logstash-8.19.3-linux-x86_64.tar.gz   # or -linux-aarch64
+tar xzf logstash-8.19.3-linux-x86_64.tar.gz && export LOGSTASH_HOME=$PWD/logstash-8.19.3
+python3 -m unittest discover -s tests
+unshare -rn true && echo "unshare sandbox OK"
+```
+- Embeddings use CUDA automatically when available; CPU works but EmbeddingGemma 2 (744M) is slow there
+  (index build >10 min on 4 cores; cached afterwards).
+- `--code-tools unshare` needs unprivileged user namespaces. Ubuntu 23.10+ restricts them via AppArmor:
+  `sudo sysctl kernel.apparmor_restrict_unprivileged_userns=0`, or use `--code-tools docker`.
+
 ## 7. Next steps
 
 1. Finish the RAG mapper evaluation (EmbeddingGemma 2 vs bge-small; accuracy, calls, tokens vs the
