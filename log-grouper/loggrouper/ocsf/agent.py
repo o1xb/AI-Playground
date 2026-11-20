@@ -177,10 +177,16 @@ class MappingTools(_Common, CodeTools):
             return f"ERROR running mapping: {type(e).__name__}: {e}"
         m["verdict"] = mapping_verdict(m) or "ok"
         evs = self.parsed.get(spec["parser_id"], [])
-        m["outputs"] = [apply_mapping(prep, e) for e in evs[:show]]
+        m["outputs"] = [apply_mapping(prep, e) for e in evs[:max(0, min(show, 3))]]
         for o in m["outputs"]:
             o.pop("raw_data", None)
-        return json.dumps(m, indent=1, default=str)[:12000]
+            if "unmapped" in o:
+                o["unmapped"] = f"<{len(flatten(o['unmapped']))} vendor fields left unmapped>"
+        out = json.dumps(m, indent=1, default=str)
+        while len(out) > 12000 and m["outputs"]:          # keep valid JSON: drop sample outputs, never cut
+            m["outputs"].pop()
+            out = json.dumps(m, indent=1, default=str)
+        return out
 
     def propose_mapping(self, spec_json: str, rationale: str) -> str:
         """Draft a mapping for a parser (replaces its current mapping on submit). Must pass validation."""
@@ -224,7 +230,10 @@ class MappingTools(_Common, CodeTools):
             ids = {s["parser_id"] for _, s, _, _ in ok}
             labels = {self.parsers.by_id(i)["label"] for i in ids}
             parsers = [p for p in self.parsers.all_ordered() if p["label"] in labels]
-            maps = {s["parser_id"]: prep for _, s, prep, _ in ok}
+            maps = {}
+            for _, s, prep, _ in ok:
+                prep["id"] = s.get("id") or "draft-" + s["parser_id"]     # real id is assigned on accept
+                maps[s["parser_id"]] = prep
             samples = []
             for i in ids:
                 lbl = self.parsers.by_id(i)["label"]
