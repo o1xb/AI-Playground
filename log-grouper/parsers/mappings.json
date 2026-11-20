@@ -1,5 +1,5 @@
 {
- "version": 1,
+ "version": 3,
  "mappings": [
   {
    "parser_id": "p00001",
@@ -1117,11 +1117,46 @@
   },
   {
    "parser_id": "p00007",
-   "class_uid": 4001,
+   "class_uid": 4002,
    "fields": [
+    {
+     "to": "activity_id",
+     "from": "vendor.request_method",
+     "map": {
+      "CONNECT": 1,
+      "DELETE": 2,
+      "GET": 3,
+      "HEAD": 4,
+      "OPTIONS": 5,
+      "POST": 6,
+      "PUT": 7,
+      "TRACE": 8,
+      "UNKNOWN": 0
+     },
+     "default": 99
+    },
     {
      "to": "severity_id",
      "value": 1
+    },
+    {
+     "to": "http_request.http_method",
+     "from": "vendor.request_method",
+     "map": {
+      "CONNECT": "CONNECT",
+      "DELETE": "DELETE",
+      "GET": "GET",
+      "HEAD": "HEAD",
+      "OPTIONS": "OPTIONS",
+      "POST": "POST",
+      "PUT": "PUT",
+      "TRACE": "TRACE",
+      "PATCH": "PATCH"
+     }
+    },
+    {
+     "to": "http_request.url.url_string",
+     "from": "vendor.url"
     },
     {
      "to": "device.type_id",
@@ -1174,14 +1209,6 @@
      "type": "integer"
     },
     {
-     "to": "activity_id",
-     "value": 6
-    },
-    {
-     "to": "url.url_string",
-     "from": "vendor.url"
-    },
-    {
      "to": "connection_info.direction_id",
      "value": 0
     },
@@ -1195,17 +1222,102 @@
     }
    ],
    "unmapped": true,
-   "id": "m00007",
    "label": "cisco_meraki",
    "format": "urls",
    "status": "active",
-   "origin": "mapping-agent:20261120T081841",
-   "rationale": "Meraki urls log -> Network Activity with url (HTTP Activity 4002 rejected by validator at_least_one bug); method UNKNOWN left unmapped.",
+   "origin": "mapping-agent:20261120T083640",
+   "rationale": "Remap: Meraki urls log is an HTTP request record -> HTTP Activity (was forced to Network Activity by the old at_least_one bug); request method drives activity_id (UNKNOWN -> Unknown) and http_request.http_method; URL -> http_request.url.",
    "metrics": {
     "events": 1,
     "valid_rate": 1.0,
-    "mapped_field_share": 0.818
-   }
+    "mapped_field_share": 0.909
+   },
+   "id": "m00007",
+   "history": [
+    {
+     "origin": "mapping-agent:20261120T083640",
+     "previous": {
+      "class_uid": 4001,
+      "fields": [
+       {
+        "to": "severity_id",
+        "value": 1
+       },
+       {
+        "to": "device.type_id",
+        "value": 9
+       },
+       {
+        "to": "metadata.product.vendor_name",
+        "value": "Cisco"
+       },
+       {
+        "to": "metadata.product.name",
+        "value": "Meraki"
+       },
+       {
+        "to": "time",
+        "from": [
+         "vendor.epoch_time",
+         "@timestamp"
+        ],
+        "type": "timestamp_ms"
+       },
+       {
+        "to": "device.hostname",
+        "from": "vendor.device_name"
+       },
+       {
+        "to": "metadata.log_name",
+        "from": "vendor.category"
+       },
+       {
+        "to": "src_endpoint.ip",
+        "from": "vendor.src_ip"
+       },
+       {
+        "to": "src_endpoint.port",
+        "from": "vendor.src_port",
+        "type": "integer"
+       },
+       {
+        "to": "src_endpoint.mac",
+        "from": "vendor.mac"
+       },
+       {
+        "to": "dst_endpoint.ip",
+        "from": "vendor.dst_ip"
+       },
+       {
+        "to": "dst_endpoint.port",
+        "from": "vendor.dst_port",
+        "type": "integer"
+       },
+       {
+        "to": "activity_id",
+        "value": 6
+       },
+       {
+        "to": "url.url_string",
+        "from": "vendor.url"
+       },
+       {
+        "to": "connection_info.direction_id",
+        "value": 0
+       },
+       {
+        "to": "connection_info.protocol_name",
+        "value": "tcp"
+       },
+       {
+        "to": "connection_info.protocol_num",
+        "value": 6
+       }
+      ]
+     },
+     "previous_review": null
+    }
+   ]
   },
   {
    "parser_id": "p00008",
@@ -4919,16 +5031,18 @@
    }
   },
   {
-   "id": "m00025",
    "parser_id": "p00036",
-   "label": "netgate_pfsense",
-   "format": "openvpn",
-   "class_uid": 4001,
+   "class_uid": 4014,
+   "unmapped": true,
    "fields": [
     {
      "to": "time",
      "from": "@timestamp",
      "type": "timestamp_ms"
+    },
+    {
+     "to": "metadata.original_time",
+     "from": "vendor.timestamp"
     },
     {
      "to": "metadata.product.vendor_name",
@@ -4937,6 +5051,14 @@
     {
      "to": "metadata.product.name",
      "value": "pfSense"
+    },
+    {
+     "to": "metadata.product.feature.name",
+     "value": "OpenVPN"
+    },
+    {
+     "to": "metadata.log_provider",
+     "from": "vendor.process"
     },
     {
      "to": "device.type_id",
@@ -4949,6 +5071,13 @@
       "Peer Connection Initiated": 1
      },
      "default": 99
+    },
+    {
+     "to": "status_id",
+     "from": "vendor.event",
+     "map": {
+      "Peer Connection Initiated": 1
+     }
     },
     {
      "to": "severity_id",
@@ -5150,12 +5279,12 @@
      "default": 1
     },
     {
-     "to": "metadata.log_name",
-     "from": "vendor.process"
-    },
-    {
      "to": "message",
      "from": "vendor.event"
+    },
+    {
+     "to": "protocol_name",
+     "value": "OpenVPN"
     },
     {
      "to": "src_endpoint.ip",
@@ -5181,15 +5310,11 @@
      }
     },
     {
-     "to": "metadata.original_time",
-     "from": "vendor.timestamp"
-    },
-    {
      "to": "connection_info.direction_id",
      "value": 1
     },
     {
-     "to": "actor.user.name",
+     "to": "user.name",
      "from": "vendor.user"
     },
     {
@@ -5197,15 +5322,299 @@
      "from": "vendor.process"
     }
    ],
-   "unmapped": true,
+   "label": "netgate_pfsense",
+   "format": "openvpn",
    "status": "active",
-   "origin": "mapping-agent:20261120T081525",
-   "rationale": "OpenVPN peer handshake. Tunnel Activity (4014) cannot validate here (validator at_least_one bug), so Network Activity: 'Peer Connection Initiated' = Open, peer-info lines = Other; peer = src_endpoint (inbound), VPN user = actor.user.",
+   "origin": "mapping-agent:20261120T083647",
+   "rationale": "pfSense OpenVPN server peer handshake -> Tunnel Activity (4014) now that the validator bug is fixed (was Network Activity). 'Peer Connection Initiated' = Open/Success; IV_* peer-info lines = Other (key/value kept in unmapped). Remote VPN client = src_endpoint (inbound to the server), authenticated VPN user = user, protocol_name OpenVPN, severity from syslog PRI.",
    "metrics": {
     "events": 4,
     "valid_rate": 1.0,
     "mapped_field_share": 0.651
-   }
+   },
+   "id": "m00025",
+   "history": [
+    {
+     "origin": "mapping-agent:20261120T083647",
+     "previous": {
+      "class_uid": 4001,
+      "fields": [
+       {
+        "to": "time",
+        "from": "@timestamp",
+        "type": "timestamp_ms"
+       },
+       {
+        "to": "metadata.product.vendor_name",
+        "value": "Netgate"
+       },
+       {
+        "to": "metadata.product.name",
+        "value": "pfSense"
+       },
+       {
+        "to": "device.type_id",
+        "value": 9
+       },
+       {
+        "to": "activity_id",
+        "from": "vendor.event",
+        "map": {
+         "Peer Connection Initiated": 1
+        },
+        "default": 99
+       },
+       {
+        "to": "severity_id",
+        "from": "vendor.syslog_pri",
+        "map": {
+         "0": 6,
+         "1": 5,
+         "2": 5,
+         "3": 4,
+         "4": 3,
+         "5": 2,
+         "6": 1,
+         "7": 1,
+         "8": 6,
+         "9": 5,
+         "10": 5,
+         "11": 4,
+         "12": 3,
+         "13": 2,
+         "14": 1,
+         "15": 1,
+         "16": 6,
+         "17": 5,
+         "18": 5,
+         "19": 4,
+         "20": 3,
+         "21": 2,
+         "22": 1,
+         "23": 1,
+         "24": 6,
+         "25": 5,
+         "26": 5,
+         "27": 4,
+         "28": 3,
+         "29": 2,
+         "30": 1,
+         "31": 1,
+         "32": 6,
+         "33": 5,
+         "34": 5,
+         "35": 4,
+         "36": 3,
+         "37": 2,
+         "38": 1,
+         "39": 1,
+         "40": 6,
+         "41": 5,
+         "42": 5,
+         "43": 4,
+         "44": 3,
+         "45": 2,
+         "46": 1,
+         "47": 1,
+         "48": 6,
+         "49": 5,
+         "50": 5,
+         "51": 4,
+         "52": 3,
+         "53": 2,
+         "54": 1,
+         "55": 1,
+         "56": 6,
+         "57": 5,
+         "58": 5,
+         "59": 4,
+         "60": 3,
+         "61": 2,
+         "62": 1,
+         "63": 1,
+         "64": 6,
+         "65": 5,
+         "66": 5,
+         "67": 4,
+         "68": 3,
+         "69": 2,
+         "70": 1,
+         "71": 1,
+         "72": 6,
+         "73": 5,
+         "74": 5,
+         "75": 4,
+         "76": 3,
+         "77": 2,
+         "78": 1,
+         "79": 1,
+         "80": 6,
+         "81": 5,
+         "82": 5,
+         "83": 4,
+         "84": 3,
+         "85": 2,
+         "86": 1,
+         "87": 1,
+         "88": 6,
+         "89": 5,
+         "90": 5,
+         "91": 4,
+         "92": 3,
+         "93": 2,
+         "94": 1,
+         "95": 1,
+         "96": 6,
+         "97": 5,
+         "98": 5,
+         "99": 4,
+         "100": 3,
+         "101": 2,
+         "102": 1,
+         "103": 1,
+         "104": 6,
+         "105": 5,
+         "106": 5,
+         "107": 4,
+         "108": 3,
+         "109": 2,
+         "110": 1,
+         "111": 1,
+         "112": 6,
+         "113": 5,
+         "114": 5,
+         "115": 4,
+         "116": 3,
+         "117": 2,
+         "118": 1,
+         "119": 1,
+         "120": 6,
+         "121": 5,
+         "122": 5,
+         "123": 4,
+         "124": 3,
+         "125": 2,
+         "126": 1,
+         "127": 1,
+         "128": 6,
+         "129": 5,
+         "130": 5,
+         "131": 4,
+         "132": 3,
+         "133": 2,
+         "134": 1,
+         "135": 1,
+         "136": 6,
+         "137": 5,
+         "138": 5,
+         "139": 4,
+         "140": 3,
+         "141": 2,
+         "142": 1,
+         "143": 1,
+         "144": 6,
+         "145": 5,
+         "146": 5,
+         "147": 4,
+         "148": 3,
+         "149": 2,
+         "150": 1,
+         "151": 1,
+         "152": 6,
+         "153": 5,
+         "154": 5,
+         "155": 4,
+         "156": 3,
+         "157": 2,
+         "158": 1,
+         "159": 1,
+         "160": 6,
+         "161": 5,
+         "162": 5,
+         "163": 4,
+         "164": 3,
+         "165": 2,
+         "166": 1,
+         "167": 1,
+         "168": 6,
+         "169": 5,
+         "170": 5,
+         "171": 4,
+         "172": 3,
+         "173": 2,
+         "174": 1,
+         "175": 1,
+         "176": 6,
+         "177": 5,
+         "178": 5,
+         "179": 4,
+         "180": 3,
+         "181": 2,
+         "182": 1,
+         "183": 1,
+         "184": 6,
+         "185": 5,
+         "186": 5,
+         "187": 4,
+         "188": 3,
+         "189": 2,
+         "190": 1,
+         "191": 1
+        },
+        "default": 1
+       },
+       {
+        "to": "metadata.log_name",
+        "from": "vendor.process"
+       },
+       {
+        "to": "message",
+        "from": "vendor.event"
+       },
+       {
+        "to": "src_endpoint.ip",
+        "from": [
+         "vendor.src_ip",
+         "vendor.peer_ip"
+        ]
+       },
+       {
+        "to": "src_endpoint.port",
+        "from": [
+         "vendor.src_port",
+         "vendor.peer_port"
+        ],
+        "type": "integer"
+       },
+       {
+        "to": "connection_info.protocol_ver_id",
+        "from": "vendor.address_family",
+        "map": {
+         "AF_INET": 4,
+         "AF_INET6": 6
+        }
+       },
+       {
+        "to": "metadata.original_time",
+        "from": "vendor.timestamp"
+       },
+       {
+        "to": "connection_info.direction_id",
+        "value": 1
+       },
+       {
+        "to": "actor.user.name",
+        "from": "vendor.user"
+       },
+       {
+        "to": "app_name",
+        "from": "vendor.process"
+       }
+      ]
+     },
+     "previous_review": null
+    }
+   ]
   },
   {
    "id": "m00026",
@@ -6139,16 +6548,18 @@
    }
   },
   {
-   "id": "m00030",
    "parser_id": "p00037",
-   "label": "netgate_pfsense",
-   "format": "webconfigurator_auth",
-   "class_uid": 6004,
+   "class_uid": 3002,
+   "unmapped": true,
    "fields": [
     {
      "to": "time",
      "from": "@timestamp",
      "type": "timestamp_ms"
+    },
+    {
+     "to": "metadata.original_time",
+     "from": "vendor.timestamp"
     },
     {
      "to": "metadata.product.vendor_name",
@@ -6159,8 +6570,20 @@
      "value": "pfSense"
     },
     {
+     "to": "metadata.product.feature.name",
+     "value": "webConfigurator"
+    },
+    {
+     "to": "metadata.log_provider",
+     "from": "vendor.process"
+    },
+    {
      "to": "device.type_id",
      "value": 9
+    },
+    {
+     "to": "activity_id",
+     "value": 1
     },
     {
      "to": "status_id",
@@ -6181,79 +6604,168 @@
      "default": 0
     },
     {
-     "to": "disposition_id",
+     "to": "severity_id",
      "from": "vendor.event",
      "map": {
       "Successful login": 1,
-      "webConfigurator authentication error": 26
+      "webConfigurator authentication error": 2
      },
-     "default": 0
-    },
-    {
-     "to": "metadata.log_name",
-     "from": "vendor.process"
+     "default": 1
     },
     {
      "to": "message",
      "from": "vendor.event"
     },
     {
+     "to": "user.name",
+     "from": "vendor.user"
+    },
+    {
      "to": "src_endpoint.ip",
      "from": "vendor.src_ip"
+    },
+    {
+     "to": "is_remote",
+     "value": true
+    },
+    {
+     "to": "service.name",
+     "value": "webConfigurator"
     },
     {
      "to": "http_request.url.path",
      "from": "vendor.script"
     },
     {
-     "to": "metadata.original_time",
-     "from": "vendor.timestamp"
-    },
-    {
-     "to": "severity_id",
-     "from": "vendor.event",
-     "map": {
-      "Successful login": 1,
-      "webConfigurator authentication error": 3
-     },
-     "default": 1
-    },
-    {
-     "to": "activity_id",
-     "from": "vendor.event",
-     "map": {
-      "Successful login": 1,
-      "webConfigurator authentication error": 2
-     },
-     "default": 0
-    },
-    {
-     "to": "actor.user.name",
-     "from": "vendor.user"
-    },
-    {
-     "to": "web_resources",
-     "value": [
-      {
-       "name": "webConfigurator",
-       "type": "Web GUI"
-      }
-     ]
+     "to": "logon_process.name",
+     "from": "vendor.process"
     },
     {
      "to": "status_detail",
      "from": "vendor.auth_source"
     }
    ],
-   "unmapped": true,
+   "label": "netgate_pfsense",
+   "format": "webconfigurator_auth",
    "status": "active",
-   "origin": "mapping-agent:20261120T082034",
-   "rationale": "webConfigurator GUI login. Authentication (3002) cannot validate here (validator at_least_one bug), so Web Resource Access Activity: success = Access Grant, auth error = Access Deny; status/action/disposition from event, user = actor.user, auth source = status_detail.",
+   "origin": "mapping-agent:20261120T083647",
+   "rationale": "pfSense webConfigurator GUI login -> Authentication (3002) now that the validator at_least_one bug is fixed (was Web Resource Access 6004). Every line is a logon attempt (Logon); 'Successful login' = Success/Allowed/Informational, 'authentication error' = Failure/Denied/Low. Login name = user (the subject being authenticated), client IP = src_endpoint, is_remote (GUI over network), service = webConfigurator, script path = http_request.url.path, auth backend (e.g. Local Database Fallback) = status_detail.",
    "metrics": {
     "events": 2,
     "valid_rate": 1.0,
     "mapped_field_share": 0.764
-   }
+   },
+   "id": "m00030",
+   "history": [
+    {
+     "origin": "mapping-agent:20261120T083647",
+     "previous": {
+      "class_uid": 6004,
+      "fields": [
+       {
+        "to": "time",
+        "from": "@timestamp",
+        "type": "timestamp_ms"
+       },
+       {
+        "to": "metadata.product.vendor_name",
+        "value": "Netgate"
+       },
+       {
+        "to": "metadata.product.name",
+        "value": "pfSense"
+       },
+       {
+        "to": "device.type_id",
+        "value": 9
+       },
+       {
+        "to": "status_id",
+        "from": "vendor.event",
+        "map": {
+         "Successful login": 1,
+         "webConfigurator authentication error": 2
+        },
+        "default": 0
+       },
+       {
+        "to": "action_id",
+        "from": "vendor.event",
+        "map": {
+         "Successful login": 1,
+         "webConfigurator authentication error": 2
+        },
+        "default": 0
+       },
+       {
+        "to": "disposition_id",
+        "from": "vendor.event",
+        "map": {
+         "Successful login": 1,
+         "webConfigurator authentication error": 26
+        },
+        "default": 0
+       },
+       {
+        "to": "metadata.log_name",
+        "from": "vendor.process"
+       },
+       {
+        "to": "message",
+        "from": "vendor.event"
+       },
+       {
+        "to": "src_endpoint.ip",
+        "from": "vendor.src_ip"
+       },
+       {
+        "to": "http_request.url.path",
+        "from": "vendor.script"
+       },
+       {
+        "to": "metadata.original_time",
+        "from": "vendor.timestamp"
+       },
+       {
+        "to": "severity_id",
+        "from": "vendor.event",
+        "map": {
+         "Successful login": 1,
+         "webConfigurator authentication error": 3
+        },
+        "default": 1
+       },
+       {
+        "to": "activity_id",
+        "from": "vendor.event",
+        "map": {
+         "Successful login": 1,
+         "webConfigurator authentication error": 2
+        },
+        "default": 0
+       },
+       {
+        "to": "actor.user.name",
+        "from": "vendor.user"
+       },
+       {
+        "to": "web_resources",
+        "value": [
+         {
+          "name": "webConfigurator",
+          "type": "Web GUI"
+         }
+        ]
+       },
+       {
+        "to": "status_detail",
+        "from": "vendor.auth_source"
+       }
+      ]
+     },
+     "previous_review": null
+    }
+   ]
   },
   {
    "id": "m00031",
@@ -7422,11 +7934,8 @@
    }
   },
   {
-   "id": "m00036",
    "parser_id": "p00047",
-   "label": "sophos_xg",
-   "format": "waf_kv",
-   "class_uid": 4001,
+   "class_uid": 4002,
    "unmapped": true,
    "fields": [
     {
@@ -7462,11 +7971,6 @@
     {
      "to": "metadata.log_provider",
      "from": "vendor.log_component"
-    },
-    {
-     "to": "metadata.log_version",
-     "from": "vendor.log_version",
-     "type": "string"
     },
     {
      "to": "metadata.log_level",
@@ -7507,10 +8011,6 @@
      "type": "string"
     },
     {
-     "to": "device.model",
-     "from": "vendor.device_model"
-    },
-    {
      "to": "device.hostname",
      "from": "vendor.syslog_host"
     },
@@ -7520,7 +8020,18 @@
     },
     {
      "to": "activity_id",
-     "value": 6
+     "from": "vendor.method",
+     "map": {
+      "CONNECT": 1,
+      "DELETE": 2,
+      "GET": 3,
+      "HEAD": 4,
+      "OPTIONS": 5,
+      "POST": 6,
+      "PUT": 7,
+      "TRACE": 8
+     },
+     "default": 99
     },
     {
      "to": "action_id",
@@ -7557,41 +8068,42 @@
      "from": "vendor.user_name"
     },
     {
-     "to": "url.path",
+     "to": "http_request.url.path",
      "from": "vendor.url"
     },
     {
-     "to": "url.query_string",
+     "to": "http_request.url.query_string",
      "from": "vendor.querystring"
     },
     {
-     "to": "proxy_http_request.http_method",
+     "to": "http_request.http_method",
      "from": "vendor.method"
     },
     {
-     "to": "proxy_http_request.version",
+     "to": "http_request.version",
      "from": "vendor.ws_protocol"
     },
     {
-     "to": "proxy_http_request.user_agent",
+     "to": "http_request.user_agent",
      "from": "vendor.useragent"
     },
     {
-     "to": "proxy_http_request.referrer",
+     "to": "http_request.referrer",
      "from": "vendor.referer"
     },
     {
-     "to": "proxy_http_response.code",
+     "to": "http_response.code",
      "from": "vendor.httpstatus",
      "type": "integer"
     },
     {
-     "to": "proxy_http_response.content_type",
+     "to": "http_response.content_type",
      "from": "vendor.contenttype"
     },
     {
-     "to": "status_code",
-     "from": "vendor.httpstatus"
+     "to": "http_status",
+     "from": "vendor.httpstatus",
+     "type": "integer"
     },
     {
      "to": "status_detail",
@@ -7621,14 +8133,219 @@
      "value": 1
     }
    ],
+   "label": "sophos_xg",
+   "format": "waf_kv",
    "status": "active",
-   "origin": "mapping-agent:20261120T082234",
-   "rationale": "XG WAF -> Network Activity (HTTP Activity unusable: validator bug); client sourceip=src, WAF localip=dst, server=dst name; httpstatus 403 = blocked; reason/extra -> status_detail/message; bytessent (to client)=bytes_in, bytesrcv=bytes_out.",
+   "origin": "mapping-agent:20261120T083647",
+   "rationale": "Sophos XG WAF (reverse proxy) -> HTTP Activity (4002) now that the validator bug is fixed (was Network Activity). activity from HTTP method; httpstatus 403 = WAF block (Denied/Blocked). Client sourceip = src, protected server (localip, server name) = dst, inbound. url path/query, method, protocol version, UA, referer -> http_request; status and content type -> http_response/http_status; WAF reason -> status_detail, rule detail (extra) -> message; bytessent (to client) = bytes_in, bytesrcv = bytes_out.",
    "metrics": {
     "events": 2,
     "valid_rate": 1.0,
     "mapped_field_share": 0.767
-   }
+   },
+   "id": "m00036",
+   "history": [
+    {
+     "origin": "mapping-agent:20261120T083647",
+     "previous": {
+      "class_uid": 4001,
+      "fields": [
+       {
+        "to": "time",
+        "from": "@timestamp",
+        "type": "timestamp_ms"
+       },
+       {
+        "to": "metadata.original_time",
+        "from": "vendor.timestamp"
+       },
+       {
+        "to": "metadata.product.vendor_name",
+        "value": "Sophos"
+       },
+       {
+        "to": "metadata.product.name",
+        "value": "Sophos Firewall"
+       },
+       {
+        "to": "metadata.product.uid",
+        "from": "vendor.device"
+       },
+       {
+        "to": "metadata.event_code",
+        "from": "vendor.log_id",
+        "type": "string"
+       },
+       {
+        "to": "metadata.log_name",
+        "from": "vendor.log_type"
+       },
+       {
+        "to": "metadata.log_provider",
+        "from": "vendor.log_component"
+       },
+       {
+        "to": "metadata.log_version",
+        "from": "vendor.log_version",
+        "type": "string"
+       },
+       {
+        "to": "metadata.log_level",
+        "from": [
+         "vendor.severity",
+         "vendor.priority"
+        ]
+       },
+       {
+        "to": "severity_id",
+        "from": [
+         "vendor.severity",
+         "vendor.priority"
+        ],
+        "map": {
+         "Emergency": 6,
+         "Alert": 5,
+         "Critical": 5,
+         "Error": 4,
+         "Warning": 3,
+         "Notice": 2,
+         "Information": 1,
+         "Informational": 1,
+         "Debug": 1
+        },
+        "default": 0
+       },
+       {
+        "to": "device.name",
+        "from": "vendor.device_name"
+       },
+       {
+        "to": "device.uid",
+        "from": [
+         "vendor.device_serial_id",
+         "vendor.device_id"
+        ],
+        "type": "string"
+       },
+       {
+        "to": "device.model",
+        "from": "vendor.device_model"
+       },
+       {
+        "to": "device.hostname",
+        "from": "vendor.syslog_host"
+       },
+       {
+        "to": "device.type_id",
+        "value": 9
+       },
+       {
+        "to": "activity_id",
+        "value": 6
+       },
+       {
+        "to": "action_id",
+        "from": "vendor.httpstatus",
+        "map": {
+         "403": 2,
+         "200": 1
+        },
+        "default": 0
+       },
+       {
+        "to": "disposition_id",
+        "from": "vendor.httpstatus",
+        "map": {
+         "403": 2,
+         "200": 1
+        },
+        "default": 0
+       },
+       {
+        "to": "src_endpoint.ip",
+        "from": "vendor.sourceip"
+       },
+       {
+        "to": "dst_endpoint.ip",
+        "from": "vendor.localip"
+       },
+       {
+        "to": "dst_endpoint.name",
+        "from": "vendor.server"
+       },
+       {
+        "to": "actor.user.name",
+        "from": "vendor.user_name"
+       },
+       {
+        "to": "url.path",
+        "from": "vendor.url"
+       },
+       {
+        "to": "url.query_string",
+        "from": "vendor.querystring"
+       },
+       {
+        "to": "proxy_http_request.http_method",
+        "from": "vendor.method"
+       },
+       {
+        "to": "proxy_http_request.version",
+        "from": "vendor.ws_protocol"
+       },
+       {
+        "to": "proxy_http_request.user_agent",
+        "from": "vendor.useragent"
+       },
+       {
+        "to": "proxy_http_request.referrer",
+        "from": "vendor.referer"
+       },
+       {
+        "to": "proxy_http_response.code",
+        "from": "vendor.httpstatus",
+        "type": "integer"
+       },
+       {
+        "to": "proxy_http_response.content_type",
+        "from": "vendor.contenttype"
+       },
+       {
+        "to": "status_code",
+        "from": "vendor.httpstatus"
+       },
+       {
+        "to": "status_detail",
+        "from": "vendor.reason"
+       },
+       {
+        "to": "message",
+        "from": "vendor.extra"
+       },
+       {
+        "to": "traffic.bytes_in",
+        "from": "vendor.bytessent",
+        "type": "integer"
+       },
+       {
+        "to": "traffic.bytes_out",
+        "from": "vendor.bytesrcv",
+        "type": "integer"
+       },
+       {
+        "to": "firewall_rule.uid",
+        "from": "vendor.fw_rule_id",
+        "type": "string"
+       },
+       {
+        "to": "connection_info.direction_id",
+        "value": 1
+       }
+      ]
+     },
+     "previous_review": null
+    }
+   ]
   },
   {
    "id": "m00037",
@@ -9444,17 +10161,18 @@
    }
   },
   {
-   "id": "m00047",
    "parser_id": "p00058",
-   "label": "zscaler_zia",
-   "format": "nss_web_json",
-   "class_uid": 4001,
+   "class_uid": 4002,
    "unmapped": true,
    "fields": [
     {
      "to": "time",
      "from": "@timestamp",
      "type": "timestamp_ms"
+    },
+    {
+     "to": "metadata.original_time",
+     "from": "vendor.event.time"
     },
     {
      "to": "metadata.product.vendor_name",
@@ -9473,6 +10191,15 @@
      "from": "vendor.version"
     },
     {
+     "to": "metadata.uid",
+     "from": "vendor.event.recordid",
+     "type": "string"
+    },
+    {
+     "to": "metadata.tenant_uid",
+     "from": "vendor.event.company"
+    },
+    {
      "to": "device.type_id",
      "value": 0
     },
@@ -9483,6 +10210,11 @@
     {
      "to": "device.name",
      "from": "vendor.event.devicename"
+    },
+    {
+     "to": "device.uid",
+     "from": "vendor.event.external_devid",
+     "type": "string"
     },
     {
      "to": "device.model",
@@ -9517,16 +10249,19 @@
      "from": "vendor.event.deviceowner"
     },
     {
-     "to": "metadata.uid",
-     "from": "vendor.event.recordid"
-    },
-    {
-     "to": "metadata.tenant_uid",
-     "from": "vendor.event.company"
-    },
-    {
      "to": "activity_id",
-     "value": 6
+     "from": "vendor.event.reqmethod",
+     "map": {
+      "CONNECT": 1,
+      "DELETE": 2,
+      "GET": 3,
+      "HEAD": 4,
+      "OPTIONS": 5,
+      "POST": 6,
+      "PUT": 7,
+      "TRACE": 8
+     },
+     "default": 99
     },
     {
      "to": "action_id",
@@ -9559,6 +10294,11 @@
       "Critical (90\u2013100)": 5
      },
      "default": 1
+    },
+    {
+     "to": "risk_score",
+     "from": "vendor.event.riskscore",
+     "type": "integer"
     },
     {
      "to": "src_endpoint.ip",
@@ -9595,36 +10335,51 @@
      "value": 2
     },
     {
-     "to": "url.hostname",
+     "to": "http_request.url.hostname",
      "from": "vendor.event.host"
     },
     {
-     "to": "proxy_http_request.http_method",
+     "to": "http_request.http_method",
      "from": "vendor.event.reqmethod"
     },
     {
-     "to": "proxy_http_request.user_agent",
+     "to": "http_request.user_agent",
      "from": "vendor.event.useragent"
     },
     {
-     "to": "proxy_http_request.version",
+     "to": "http_request.version",
      "from": "vendor.event.reqversion"
     },
     {
-     "to": "proxy_http_response.code",
+     "to": "http_request.length",
+     "from": "vendor.event.reqsize",
+     "type": "integer"
+    },
+    {
+     "to": "http_response.code",
      "from": "vendor.event.respcode",
      "type": "integer"
     },
     {
-     "to": "proxy_http_response.content_type",
+     "to": "http_response.content_type",
      "from": "vendor.event.contenttype"
     },
     {
-     "to": "status_code",
-     "from": "vendor.event.respcode"
+     "to": "http_response.length",
+     "from": "vendor.event.respsize",
+     "type": "integer"
+    },
+    {
+     "to": "http_status",
+     "from": "vendor.event.respcode",
+     "type": "integer"
     },
     {
      "to": "status_detail",
+     "from": "vendor.event.reason"
+    },
+    {
+     "to": "message",
      "from": "vendor.event.reason"
     },
     {
@@ -9644,6 +10399,14 @@
     {
      "to": "tls.cipher",
      "from": "vendor.event.cltsslcipher"
+    },
+    {
+     "to": "proxy_tls.version",
+     "from": "vendor.event.srvtlsversion"
+    },
+    {
+     "to": "proxy_tls.cipher",
+     "from": "vendor.event.srvsslcipher"
     },
     {
      "to": "app_name",
@@ -9666,14 +10429,242 @@
      "from": "vendor.event.dept"
     }
    ],
+   "label": "zscaler_zia",
+   "format": "nss_web_json",
    "status": "active",
-   "origin": "mapping-agent:20261120T082558",
-   "rationale": "ZIA web proxy NSS -> Network Activity with proxy_http_* (HTTP Activity unusable: validator at_least_one bug); Allowed/Blocked/Cautioned -> action+disposition (Caution = Challenge); threatseverity -> severity; client = src, serverip/host = dst; reqsize=out, respsize=in; client TLS.",
+   "origin": "mapping-agent:20261120T083647",
+   "rationale": "ZIA NSS web (proxy) logs -> HTTP Activity (4002) now that the validator bug is fixed (was Network Activity). activity from reqmethod (GET/POST/PUT...); action Allowed/Blocked/Cautioned/Isolated -> action+disposition (Caution=Challenge, Isolate=Isolated); threatseverity bands -> severity; riskscore -> risk_score. Client (cltip/port) = src, origin server (serverip/host) = dst, outbound. Method, UA, version, sizes, code, content type in http_request/http_response; client-side TLS = tls, server-side TLS = proxy_tls. Client Connector device -> device; login/dept -> actor.user. Uploaded file names left unmapped (file.type_id not derivable per event).",
    "metrics": {
     "events": 3,
     "valid_rate": 1.0,
-    "mapped_field_share": 0.352
-   }
+    "mapped_field_share": 0.409
+   },
+   "id": "m00047",
+   "history": [
+    {
+     "origin": "mapping-agent:20261120T083647",
+     "previous": {
+      "class_uid": 4001,
+      "fields": [
+       {
+        "to": "time",
+        "from": "@timestamp",
+        "type": "timestamp_ms"
+       },
+       {
+        "to": "metadata.product.vendor_name",
+        "value": "Zscaler"
+       },
+       {
+        "to": "metadata.product.name",
+        "value": "Zscaler Internet Access"
+       },
+       {
+        "to": "metadata.log_name",
+        "from": "vendor.sourcetype"
+       },
+       {
+        "to": "metadata.log_version",
+        "from": "vendor.version"
+       },
+       {
+        "to": "device.type_id",
+        "value": 0
+       },
+       {
+        "to": "device.hostname",
+        "from": "vendor.event.devicehostname"
+       },
+       {
+        "to": "device.name",
+        "from": "vendor.event.devicename"
+       },
+       {
+        "to": "device.model",
+        "from": "vendor.event.devicemodel"
+       },
+       {
+        "to": "device.os.name",
+        "from": "vendor.event.deviceostype"
+       },
+       {
+        "to": "device.os.type_id",
+        "from": "vendor.event.deviceostype",
+        "map": {
+         "iOS": 301,
+         "iPadOS": 302,
+         "Windows": 100,
+         "Windows OS": 100,
+         "Linux": 200,
+         "Android": 201,
+         "macOS": 300,
+         "Mac OS": 300,
+         "MacOS": 300,
+         "Mac": 300
+        }
+       },
+       {
+        "to": "device.os.version",
+        "from": "vendor.event.deviceosversion"
+       },
+       {
+        "to": "device.owner.name",
+        "from": "vendor.event.deviceowner"
+       },
+       {
+        "to": "metadata.uid",
+        "from": "vendor.event.recordid"
+       },
+       {
+        "to": "metadata.tenant_uid",
+        "from": "vendor.event.company"
+       },
+       {
+        "to": "activity_id",
+        "value": 6
+       },
+       {
+        "to": "action_id",
+        "from": "vendor.event.action",
+        "map": {
+         "Allowed": 1,
+         "Blocked": 2,
+         "Cautioned": 2,
+         "Isolated": 2
+        }
+       },
+       {
+        "to": "disposition_id",
+        "from": "vendor.event.action",
+        "map": {
+         "Allowed": 1,
+         "Blocked": 2,
+         "Cautioned": 23,
+         "Isolated": 4
+        }
+       },
+       {
+        "to": "severity_id",
+        "from": "vendor.event.threatseverity",
+        "map": {
+         "None (0)": 1,
+         "Low (1\u201339)": 2,
+         "Medium (40\u201369)": 3,
+         "High (70\u201389)": 4,
+         "Critical (90\u2013100)": 5
+        },
+        "default": 1
+       },
+       {
+        "to": "src_endpoint.ip",
+        "from": "vendor.event.cltip"
+       },
+       {
+        "to": "src_endpoint.port",
+        "from": "vendor.event.cltsourceport",
+        "type": "integer"
+       },
+       {
+        "to": "src_endpoint.location.country",
+        "from": "vendor.event.srcip_country"
+       },
+       {
+        "to": "dst_endpoint.ip",
+        "from": "vendor.event.serverip"
+       },
+       {
+        "to": "dst_endpoint.hostname",
+        "from": "vendor.event.host"
+       },
+       {
+        "to": "dst_endpoint.location.country",
+        "from": "vendor.event.dstip_country"
+       },
+       {
+        "to": "connection_info.protocol_name",
+        "from": "vendor.event.proto",
+        "type": "lower"
+       },
+       {
+        "to": "connection_info.direction_id",
+        "value": 2
+       },
+       {
+        "to": "url.hostname",
+        "from": "vendor.event.host"
+       },
+       {
+        "to": "proxy_http_request.http_method",
+        "from": "vendor.event.reqmethod"
+       },
+       {
+        "to": "proxy_http_request.user_agent",
+        "from": "vendor.event.useragent"
+       },
+       {
+        "to": "proxy_http_request.version",
+        "from": "vendor.event.reqversion"
+       },
+       {
+        "to": "proxy_http_response.code",
+        "from": "vendor.event.respcode",
+        "type": "integer"
+       },
+       {
+        "to": "proxy_http_response.content_type",
+        "from": "vendor.event.contenttype"
+       },
+       {
+        "to": "status_code",
+        "from": "vendor.event.respcode"
+       },
+       {
+        "to": "status_detail",
+        "from": "vendor.event.reason"
+       },
+       {
+        "to": "traffic.bytes_out",
+        "from": "vendor.event.reqsize",
+        "type": "integer"
+       },
+       {
+        "to": "traffic.bytes_in",
+        "from": "vendor.event.respsize",
+        "type": "integer"
+       },
+       {
+        "to": "tls.version",
+        "from": "vendor.event.clttlsversion"
+       },
+       {
+        "to": "tls.cipher",
+        "from": "vendor.event.cltsslcipher"
+       },
+       {
+        "to": "app_name",
+        "from": "vendor.event.appname"
+       },
+       {
+        "to": "firewall_rule.name",
+        "from": "vendor.event.urlfilterrulelabel"
+       },
+       {
+        "to": "policy.name",
+        "from": "vendor.event.rulelabel"
+       },
+       {
+        "to": "actor.user.name",
+        "from": "vendor.event.login"
+       },
+       {
+        "to": "actor.user.org.ou_name",
+        "from": "vendor.event.dept"
+       }
+      ]
+     },
+     "previous_review": null
+    }
+   ]
   },
   {
    "id": "m00048",
@@ -9840,11 +10831,8 @@
    }
   },
   {
-   "id": "m00049",
    "parser_id": "p00060",
-   "label": "zscaler_zia",
-   "format": "nss_tunnel_json",
-   "class_uid": 4001,
+   "class_uid": 4014,
    "unmapped": true,
    "fields": [
     {
@@ -9870,17 +10858,29 @@
     },
     {
      "to": "metadata.uid",
-     "from": "vendor.event.recordid"
+     "from": "vendor.event.recordid",
+     "type": "string"
+    },
+    {
+     "to": "metadata.original_time",
+     "from": "vendor.event.datetime"
     },
     {
      "to": "activity_id",
-     "from": "vendor.event.Recordtype",
+     "from": [
+      "vendor.event.event",
+      "vendor.event.Recordtype"
+     ],
      "map": {
-      "Tunnel Samples": 6,
+      "IPsec tunnel is up": 1,
+      "IPsec tunnel is down": 2,
+      "GRE tunnel is up": 1,
+      "GRE tunnel is down": 2,
       "IPSec Phase1": 1,
       "IPSec Phase2": 1,
       "WL_TUNNEL_IPSECPHASE1": 1,
-      "WL_TUNNEL_IPSECPHASE2": 1
+      "WL_TUNNEL_IPSECPHASE2": 1,
+      "Tunnel Samples": 99
      },
      "default": 99
     },
@@ -9896,8 +10896,16 @@
      ]
     },
     {
+     "to": "metadata.event_code",
+     "from": "vendor.event.Recordtype"
+    },
+    {
      "to": "status_detail",
      "from": "vendor.event.eventreason"
+    },
+    {
+     "to": "protocol_name",
+     "from": "vendor.event.tunneltype"
     },
     {
      "to": "src_endpoint.ip",
@@ -9909,6 +10917,10 @@
      "type": "integer"
     },
     {
+     "to": "src_endpoint.name",
+     "from": "vendor.event.locationname"
+    },
+    {
      "to": "dst_endpoint.ip",
      "from": "vendor.event.destinationip"
     },
@@ -9916,14 +10928,6 @@
      "to": "dst_endpoint.port",
      "from": "vendor.event.destinationport",
      "type": "integer"
-    },
-    {
-     "to": "connection_info.protocol_name",
-     "from": "vendor.event.tunneltype"
-    },
-    {
-     "to": "connection_info.direction_id",
-     "value": 0
     },
     {
      "to": "traffic.bytes_out",
@@ -9946,22 +10950,138 @@
      "type": "integer"
     },
     {
-     "to": "actor.user.name",
+     "to": "user.name",
      "from": "vendor.event.user"
-    },
-    {
-     "to": "src_endpoint.name",
-     "from": "vendor.event.locationname"
     }
    ],
+   "label": "zscaler_zia",
+   "format": "nss_tunnel_json",
    "status": "active",
-   "origin": "mapping-agent:20261120T082558",
-   "rationale": "ZIA tunnel NSS. Tunnel Activity unusable (validator at_least_one bug) -> Network Activity; IPSec phase records = Open, samples = Traffic, events = Other; customer endpoint = src, ZEN = dst; rx (from src) = bytes_out, tx = bytes_in.",
+   "origin": "mapping-agent:20261120T083647",
+   "rationale": "ZIA NSS tunnel logs -> Tunnel Activity (4014) now that the validator bug is fixed (was Network Activity). IPSec Phase1/Phase2 records and 'tunnel is up' events = Open ('down' = Close), periodic Tunnel Samples = Other. Customer edge (sourceip/port, location) = src_endpoint, Zscaler ZEN = dst_endpoint; tunnel type (GRE / IPSec IKEv1/2) = protocol_name; rx bytes (received from customer) = bytes_out, tx = bytes_in; tunnel user = user. IKE crypto params left unmapped (no IPsec object in OCSF).",
    "metrics": {
     "events": 6,
     "valid_rate": 1.0,
-    "mapped_field_share": 0.396
-   }
+    "mapped_field_share": 0.432
+   },
+   "id": "m00049",
+   "history": [
+    {
+     "origin": "mapping-agent:20261120T083647",
+     "previous": {
+      "class_uid": 4001,
+      "fields": [
+       {
+        "to": "time",
+        "from": "@timestamp",
+        "type": "timestamp_ms"
+       },
+       {
+        "to": "metadata.product.vendor_name",
+        "value": "Zscaler"
+       },
+       {
+        "to": "metadata.product.name",
+        "value": "Zscaler Internet Access"
+       },
+       {
+        "to": "metadata.log_name",
+        "from": "vendor.sourcetype"
+       },
+       {
+        "to": "metadata.log_version",
+        "from": "vendor.version"
+       },
+       {
+        "to": "metadata.uid",
+        "from": "vendor.event.recordid"
+       },
+       {
+        "to": "activity_id",
+        "from": "vendor.event.Recordtype",
+        "map": {
+         "Tunnel Samples": 6,
+         "IPSec Phase1": 1,
+         "IPSec Phase2": 1,
+         "WL_TUNNEL_IPSECPHASE1": 1,
+         "WL_TUNNEL_IPSECPHASE2": 1
+        },
+        "default": 99
+       },
+       {
+        "to": "severity_id",
+        "value": 1
+       },
+       {
+        "to": "message",
+        "from": [
+         "vendor.event.event",
+         "vendor.event.Recordtype"
+        ]
+       },
+       {
+        "to": "status_detail",
+        "from": "vendor.event.eventreason"
+       },
+       {
+        "to": "src_endpoint.ip",
+        "from": "vendor.event.sourceip"
+       },
+       {
+        "to": "src_endpoint.port",
+        "from": "vendor.event.sourceport",
+        "type": "integer"
+       },
+       {
+        "to": "dst_endpoint.ip",
+        "from": "vendor.event.destinationip"
+       },
+       {
+        "to": "dst_endpoint.port",
+        "from": "vendor.event.destinationport",
+        "type": "integer"
+       },
+       {
+        "to": "connection_info.protocol_name",
+        "from": "vendor.event.tunneltype"
+       },
+       {
+        "to": "connection_info.direction_id",
+        "value": 0
+       },
+       {
+        "to": "traffic.bytes_out",
+        "from": "vendor.event.rxbytes",
+        "type": "integer"
+       },
+       {
+        "to": "traffic.bytes_in",
+        "from": "vendor.event.txbytes",
+        "type": "integer"
+       },
+       {
+        "to": "traffic.packets_out",
+        "from": "vendor.event.rxpackets",
+        "type": "integer"
+       },
+       {
+        "to": "traffic.packets_in",
+        "from": "vendor.event.txpackets",
+        "type": "integer"
+       },
+       {
+        "to": "actor.user.name",
+        "from": "vendor.event.user"
+       },
+       {
+        "to": "src_endpoint.name",
+        "from": "vendor.event.locationname"
+       }
+      ]
+     },
+     "previous_review": null
+    }
+   ]
   },
   {
    "id": "m00050",
@@ -10835,6 +11955,1873 @@
     "valid_rate": 1.0,
     "mapped_field_share": 0.357
    }
+  },
+  {
+   "parser_id": "p00014",
+   "class_uid": 4001,
+   "fields": [
+    {
+     "to": "activity_id",
+     "from": "vendor.subtype",
+     "map": {
+      "start": 1,
+      "end": 2,
+      "drop": 5,
+      "deny": 5
+     },
+     "default": 99
+    },
+    {
+     "to": "action_id",
+     "from": "vendor.action",
+     "map": {
+      "allow": 1,
+      "deny": 2,
+      "drop": 2,
+      "drop-icmp": 2,
+      "drop-all": 2,
+      "reset-client": 2,
+      "reset-server": 2,
+      "reset-both": 2,
+      "block-url": 2,
+      "drop-packet": 2,
+      "sinkhole": 2,
+      "block-continue": 2,
+      "block-override": 2,
+      "alert": 1,
+      "continue": 1,
+      "override": 1
+     },
+     "default": 0
+    },
+    {
+     "to": "disposition_id",
+     "from": "vendor.action",
+     "map": {
+      "allow": 1,
+      "deny": 2,
+      "drop": 6,
+      "drop-icmp": 6,
+      "drop-all": 6,
+      "drop-packet": 6,
+      "reset-client": 21,
+      "reset-server": 21,
+      "reset-both": 21,
+      "block-url": 2,
+      "sinkhole": 2,
+      "block-continue": 2,
+      "block-override": 2,
+      "alert": 19,
+      "continue": 1,
+      "override": 1
+     },
+     "default": 0
+    },
+    {
+     "to": "severity_id",
+     "value": 1
+    },
+    {
+     "to": "status_detail",
+     "from": "vendor.session_end_reason"
+    },
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Palo Alto Networks"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "PAN-OS"
+    },
+    {
+     "to": "time",
+     "from": [
+      "vendor.time_generated",
+      "@timestamp"
+     ],
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "metadata.logged_time",
+     "from": "vendor.receive_time",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "metadata.uid",
+     "from": "vendor.sequence_number",
+     "type": "string"
+    },
+    {
+     "to": "metadata.log_name",
+     "from": "vendor.type"
+    },
+    {
+     "to": "metadata.log_version",
+     "from": "vendor.config_version",
+     "type": "string"
+    },
+    {
+     "to": "device.hostname",
+     "from": [
+      "vendor.device_name",
+      "vendor.syslog_host"
+     ]
+    },
+    {
+     "to": "device.uid",
+     "from": "vendor.serial_number",
+     "type": "string"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": "vendor.src_ip"
+    },
+    {
+     "to": "src_endpoint.port",
+     "from": "vendor.src_port",
+     "type": "integer"
+    },
+    {
+     "to": "dst_endpoint.ip",
+     "from": "vendor.dst_ip"
+    },
+    {
+     "to": "dst_endpoint.port",
+     "from": "vendor.dst_port",
+     "type": "integer"
+    },
+    {
+     "to": "src_endpoint.zone",
+     "from": "vendor.src_zone"
+    },
+    {
+     "to": "dst_endpoint.zone",
+     "from": "vendor.dst_zone"
+    },
+    {
+     "to": "src_endpoint.interface_name",
+     "from": "vendor.inbound_interface"
+    },
+    {
+     "to": "dst_endpoint.interface_name",
+     "from": "vendor.outbound_interface"
+    },
+    {
+     "to": "connection_info.uid",
+     "from": "vendor.session_id",
+     "type": "string"
+    },
+    {
+     "to": "connection_info.direction_id",
+     "value": 0
+    },
+    {
+     "to": "connection_info.protocol_name",
+     "from": "vendor.protocol",
+     "type": "lower"
+    },
+    {
+     "to": "connection_info.protocol_num",
+     "from": "vendor.protocol",
+     "map": {
+      "tcp": 6,
+      "udp": 17,
+      "icmp": 1,
+      "sctp": 132,
+      "ipv6-icmp": 58
+     }
+    },
+    {
+     "to": "firewall_rule.name",
+     "from": "vendor.rule"
+    },
+    {
+     "to": "firewall_rule.uid",
+     "from": "vendor.rule_uuid",
+     "type": "string"
+    },
+    {
+     "to": "app_name",
+     "from": "vendor.app"
+    },
+    {
+     "to": "count",
+     "from": "vendor.repeat_count",
+     "type": "integer"
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "vendor.subtype"
+    },
+    {
+     "to": "actor.user.name",
+     "from": "vendor.src_user"
+    },
+    {
+     "to": "traffic.bytes",
+     "from": "vendor.bytes",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.bytes_out",
+     "from": "vendor.bytes_sent",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.bytes_in",
+     "from": "vendor.bytes_received",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.packets",
+     "from": "vendor.packets",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.packets_out",
+     "from": "vendor.packets_sent",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.packets_in",
+     "from": "vendor.packets_received",
+     "type": "integer"
+    }
+   ],
+   "unmapped": true,
+   "label": "paloalto_panos",
+   "format": "traffic_csv_hrts",
+   "status": "active",
+   "origin": "mapping-agent:20261120T083640",
+   "rationale": "PAN-OS TRAFFIC (high-res ts variant) -> Network Activity; subtype start/end/drop -> Open/Close/Refuse; action -> action/disposition; NAT, geo and PAN internals left in unmapped.",
+   "metrics": {
+    "events": 26,
+    "valid_rate": 1.0,
+    "mapped_field_share": 0.538
+   },
+   "id": "m00056"
+  },
+  {
+   "parser_id": "p00015",
+   "class_uid": 4001,
+   "fields": [
+    {
+     "to": "activity_id",
+     "from": "vendor.subtype",
+     "map": {
+      "start": 1,
+      "end": 2,
+      "drop": 5,
+      "deny": 5
+     },
+     "default": 99
+    },
+    {
+     "to": "action_id",
+     "from": "vendor.action",
+     "map": {
+      "allow": 1,
+      "deny": 2,
+      "drop": 2,
+      "drop-icmp": 2,
+      "drop-all": 2,
+      "reset-client": 2,
+      "reset-server": 2,
+      "reset-both": 2,
+      "block-url": 2,
+      "drop-packet": 2,
+      "sinkhole": 2,
+      "block-continue": 2,
+      "block-override": 2,
+      "alert": 1,
+      "continue": 1,
+      "override": 1
+     },
+     "default": 0
+    },
+    {
+     "to": "disposition_id",
+     "from": "vendor.action",
+     "map": {
+      "allow": 1,
+      "deny": 2,
+      "drop": 6,
+      "drop-icmp": 6,
+      "drop-all": 6,
+      "drop-packet": 6,
+      "reset-client": 21,
+      "reset-server": 21,
+      "reset-both": 21,
+      "block-url": 2,
+      "sinkhole": 2,
+      "block-continue": 2,
+      "block-override": 2,
+      "alert": 19,
+      "continue": 1,
+      "override": 1
+     },
+     "default": 0
+    },
+    {
+     "to": "severity_id",
+     "value": 1
+    },
+    {
+     "to": "status_detail",
+     "from": "vendor.session_end_reason"
+    },
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Palo Alto Networks"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "PAN-OS"
+    },
+    {
+     "to": "time",
+     "from": [
+      "vendor.time_generated",
+      "@timestamp"
+     ],
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "metadata.logged_time",
+     "from": "vendor.receive_time",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "metadata.uid",
+     "from": "vendor.sequence_number",
+     "type": "string"
+    },
+    {
+     "to": "metadata.log_name",
+     "from": "vendor.type"
+    },
+    {
+     "to": "metadata.log_version",
+     "from": "vendor.config_version",
+     "type": "string"
+    },
+    {
+     "to": "device.hostname",
+     "from": [
+      "vendor.device_name",
+      "vendor.syslog_host"
+     ]
+    },
+    {
+     "to": "device.uid",
+     "from": "vendor.serial_number",
+     "type": "string"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": "vendor.src_ip"
+    },
+    {
+     "to": "src_endpoint.port",
+     "from": "vendor.src_port",
+     "type": "integer"
+    },
+    {
+     "to": "dst_endpoint.ip",
+     "from": "vendor.dst_ip"
+    },
+    {
+     "to": "dst_endpoint.port",
+     "from": "vendor.dst_port",
+     "type": "integer"
+    },
+    {
+     "to": "src_endpoint.zone",
+     "from": "vendor.src_zone"
+    },
+    {
+     "to": "dst_endpoint.zone",
+     "from": "vendor.dst_zone"
+    },
+    {
+     "to": "src_endpoint.interface_name",
+     "from": "vendor.inbound_interface"
+    },
+    {
+     "to": "dst_endpoint.interface_name",
+     "from": "vendor.outbound_interface"
+    },
+    {
+     "to": "connection_info.uid",
+     "from": "vendor.session_id",
+     "type": "string"
+    },
+    {
+     "to": "connection_info.direction_id",
+     "value": 0
+    },
+    {
+     "to": "connection_info.protocol_name",
+     "from": "vendor.protocol",
+     "type": "lower"
+    },
+    {
+     "to": "connection_info.protocol_num",
+     "from": "vendor.protocol",
+     "map": {
+      "tcp": 6,
+      "udp": 17,
+      "icmp": 1,
+      "sctp": 132,
+      "ipv6-icmp": 58
+     }
+    },
+    {
+     "to": "firewall_rule.name",
+     "from": "vendor.rule"
+    },
+    {
+     "to": "firewall_rule.uid",
+     "from": "vendor.rule_uuid",
+     "type": "string"
+    },
+    {
+     "to": "app_name",
+     "from": "vendor.app"
+    },
+    {
+     "to": "count",
+     "from": "vendor.repeat_count",
+     "type": "integer"
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "vendor.subtype"
+    },
+    {
+     "to": "actor.user.name",
+     "from": "vendor.src_user"
+    },
+    {
+     "to": "traffic.bytes",
+     "from": "vendor.bytes",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.bytes_out",
+     "from": "vendor.bytes_sent",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.bytes_in",
+     "from": "vendor.bytes_received",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.packets",
+     "from": "vendor.packets",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.packets_out",
+     "from": "vendor.packets_sent",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.packets_in",
+     "from": "vendor.packets_received",
+     "type": "integer"
+    }
+   ],
+   "unmapped": true,
+   "label": "paloalto_panos",
+   "format": "traffic_csv",
+   "status": "active",
+   "origin": "mapping-agent:20261120T083640",
+   "rationale": "PAN-OS TRAFFIC -> Network Activity; subtype start/end/drop -> Open/Close/Refuse; action -> action/disposition; NAT, geo and PAN internals left in unmapped.",
+   "metrics": {
+    "events": 43,
+    "valid_rate": 1.0,
+    "mapped_field_share": 0.533
+   },
+   "id": "m00057"
+  },
+  {
+   "parser_id": "p00016",
+   "class_uid": 2004,
+   "fields": [
+    {
+     "to": "activity_id",
+     "value": 1
+    },
+    {
+     "to": "severity_id",
+     "from": "vendor.severity",
+     "map": {
+      "informational": 1,
+      "low": 2,
+      "medium": 3,
+      "high": 4,
+      "critical": 5
+     },
+     "default": 0
+    },
+    {
+     "to": "action_id",
+     "from": "vendor.action",
+     "map": {
+      "allow": 1,
+      "deny": 2,
+      "drop": 2,
+      "drop-icmp": 2,
+      "drop-all": 2,
+      "reset-client": 2,
+      "reset-server": 2,
+      "reset-both": 2,
+      "block-url": 2,
+      "drop-packet": 2,
+      "sinkhole": 2,
+      "block-continue": 2,
+      "block-override": 2,
+      "alert": 1,
+      "continue": 1,
+      "override": 1
+     },
+     "default": 0
+    },
+    {
+     "to": "disposition_id",
+     "from": "vendor.action",
+     "map": {
+      "allow": 1,
+      "deny": 2,
+      "drop": 6,
+      "drop-icmp": 6,
+      "drop-all": 6,
+      "drop-packet": 6,
+      "reset-client": 21,
+      "reset-server": 21,
+      "reset-both": 21,
+      "block-url": 2,
+      "sinkhole": 2,
+      "block-continue": 2,
+      "block-override": 2,
+      "alert": 19,
+      "continue": 1,
+      "override": 1
+     },
+     "default": 0
+    },
+    {
+     "to": "is_alert",
+     "from": "vendor.subtype",
+     "map": {
+      "virus": true,
+      "wildfire-virus": true,
+      "wildfire": true,
+      "spyware": true,
+      "vulnerability": true,
+      "flood": true,
+      "scan": true,
+      "packet": true,
+      "url": false,
+      "file": false,
+      "data": false
+     },
+     "type": "boolean"
+    },
+    {
+     "to": "finding_info.uid",
+     "from": "vendor.sequence_number",
+     "type": "string"
+    },
+    {
+     "to": "finding_info.title",
+     "from": "vendor.threat_id"
+    },
+    {
+     "to": "finding_info.analytic.name",
+     "from": "vendor.threat_id"
+    },
+    {
+     "to": "finding_info.analytic.type_id",
+     "value": 1
+    },
+    {
+     "to": "finding_info.analytic.category",
+     "from": "vendor.threat_category"
+    },
+    {
+     "to": "firewall_rule.name",
+     "from": "vendor.rule"
+    },
+    {
+     "to": "firewall_rule.uid",
+     "from": "vendor.rule_uuid",
+     "type": "string"
+    },
+    {
+     "to": "count",
+     "from": "vendor.repeat_count",
+     "type": "integer"
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "vendor.subtype"
+    },
+    {
+     "to": "actor.user.name",
+     "from": "vendor.src_user"
+    },
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Palo Alto Networks"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "PAN-OS"
+    },
+    {
+     "to": "time",
+     "from": [
+      "vendor.time_generated",
+      "@timestamp"
+     ],
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "metadata.logged_time",
+     "from": "vendor.receive_time",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "metadata.uid",
+     "from": "vendor.sequence_number",
+     "type": "string"
+    },
+    {
+     "to": "metadata.log_name",
+     "from": "vendor.type"
+    },
+    {
+     "to": "metadata.log_version",
+     "from": "vendor.config_version",
+     "type": "string"
+    },
+    {
+     "to": "device.hostname",
+     "from": [
+      "vendor.device_name",
+      "vendor.syslog_host"
+     ]
+    },
+    {
+     "to": "device.uid",
+     "from": "vendor.serial_number",
+     "type": "string"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    }
+   ],
+   "unmapped": true,
+   "label": "paloalto_panos",
+   "format": "threat_csv",
+   "status": "active",
+   "origin": "mapping-agent:20261120T083640",
+   "rationale": "PAN-OS THREAT -> Detection Finding (create); PAN severity -> severity_id, action -> action/disposition (alert=Alert, reset=Reset, drop=Dropped); threat_id as title/analytic; finding uid = log sequence number. Endpoints stay in unmapped (evidences[] is an array, not expressible in the spec).",
+   "metrics": {
+    "events": 58,
+    "valid_rate": 1.0,
+    "mapped_field_share": 0.205
+   },
+   "id": "m00058"
+  },
+  {
+   "parser_id": "p00018",
+   "class_uid": 5019,
+   "fields": [
+    {
+     "to": "activity_id",
+     "value": 1
+    },
+    {
+     "to": "severity_id",
+     "value": 1
+    },
+    {
+     "to": "status_id",
+     "from": "vendor.result",
+     "map": {
+      "succeeded": 1,
+      "failed": 2
+     },
+     "default": 99
+    },
+    {
+     "to": "status_detail",
+     "from": "vendor.result"
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "vendor.command"
+    },
+    {
+     "to": "actor.user.name",
+     "from": "vendor.admin"
+    },
+    {
+     "to": "actor.app_name",
+     "from": "vendor.client"
+    },
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Palo Alto Networks"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "PAN-OS"
+    },
+    {
+     "to": "time",
+     "from": [
+      "vendor.time_generated",
+      "@timestamp"
+     ],
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "metadata.logged_time",
+     "from": "vendor.receive_time",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "metadata.uid",
+     "from": "vendor.sequence_number",
+     "type": "string"
+    },
+    {
+     "to": "metadata.log_name",
+     "from": "vendor.type"
+    },
+    {
+     "to": "metadata.log_version",
+     "from": "vendor.config_version",
+     "type": "string"
+    },
+    {
+     "to": "device.hostname",
+     "from": [
+      "vendor.device_name",
+      "vendor.syslog_host"
+     ]
+    },
+    {
+     "to": "device.uid",
+     "from": "vendor.serial_number",
+     "type": "string"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    }
+   ],
+   "unmapped": true,
+   "label": "paloalto_panos",
+   "format": "config_csv_legacy",
+   "status": "active",
+   "origin": "mapping-agent:20261120T083640",
+   "rationale": "PAN-OS CONFIG (legacy) -> Device Config State Change, like the existing SYSTEM mapping; admin -> actor.user, client (Web/CLI) -> actor.app_name, command -> event_code, result -> status.",
+   "metrics": {
+    "events": 1,
+    "valid_rate": 1.0,
+    "mapped_field_share": 0.625
+   },
+   "id": "m00059"
+  },
+  {
+   "parser_id": "p00019",
+   "class_uid": 5019,
+   "fields": [
+    {
+     "to": "activity_id",
+     "value": 1
+    },
+    {
+     "to": "severity_id",
+     "value": 1
+    },
+    {
+     "to": "status_id",
+     "from": "vendor.result",
+     "map": {
+      "succeeded": 1,
+      "failed": 2
+     },
+     "default": 99
+    },
+    {
+     "to": "status_detail",
+     "from": "vendor.result"
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "vendor.command"
+    },
+    {
+     "to": "actor.user.name",
+     "from": "vendor.admin"
+    },
+    {
+     "to": "actor.app_name",
+     "from": "vendor.client"
+    },
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Palo Alto Networks"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "PAN-OS"
+    },
+    {
+     "to": "time",
+     "from": [
+      "vendor.time_generated",
+      "@timestamp"
+     ],
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "metadata.logged_time",
+     "from": "vendor.receive_time",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "metadata.uid",
+     "from": "vendor.sequence_number",
+     "type": "string"
+    },
+    {
+     "to": "metadata.log_name",
+     "from": "vendor.type"
+    },
+    {
+     "to": "metadata.log_version",
+     "from": "vendor.config_version",
+     "type": "string"
+    },
+    {
+     "to": "device.hostname",
+     "from": [
+      "vendor.device_name",
+      "vendor.syslog_host"
+     ]
+    },
+    {
+     "to": "device.uid",
+     "from": "vendor.serial_number",
+     "type": "string"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    }
+   ],
+   "unmapped": true,
+   "label": "paloalto_panos",
+   "format": "config_csv",
+   "status": "active",
+   "origin": "mapping-agent:20261120T083640",
+   "rationale": "PAN-OS CONFIG -> Device Config State Change, like the existing SYSTEM mapping; admin -> actor.user, client (Web/CLI) -> actor.app_name, command -> event_code, result -> status.",
+   "metrics": {
+    "events": 1,
+    "valid_rate": 1.0,
+    "mapped_field_share": 0.44
+   },
+   "id": "m00060"
+  },
+  {
+   "parser_id": "p00020",
+   "class_uid": 3002,
+   "fields": [
+    {
+     "to": "activity_id",
+     "from": "vendor.subtype",
+     "map": {
+      "login": 1,
+      "logout": 2
+     },
+     "default": 99
+    },
+    {
+     "to": "severity_id",
+     "value": 1
+    },
+    {
+     "to": "user.name",
+     "from": "vendor.src_user"
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": "vendor.src_ip"
+    },
+    {
+     "to": "service.name",
+     "from": "vendor.data_source"
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "vendor.subtype"
+    },
+    {
+     "to": "count",
+     "from": "vendor.repeat_count",
+     "type": "integer"
+    },
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Palo Alto Networks"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "PAN-OS"
+    },
+    {
+     "to": "time",
+     "from": [
+      "vendor.time_generated",
+      "@timestamp"
+     ],
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "metadata.logged_time",
+     "from": "vendor.receive_time",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "metadata.uid",
+     "from": "vendor.sequence_number",
+     "type": "string"
+    },
+    {
+     "to": "metadata.log_name",
+     "from": "vendor.type"
+    },
+    {
+     "to": "metadata.log_version",
+     "from": "vendor.config_version",
+     "type": "string"
+    },
+    {
+     "to": "device.hostname",
+     "from": [
+      "vendor.device_name",
+      "vendor.syslog_host"
+     ]
+    },
+    {
+     "to": "device.uid",
+     "from": "vendor.serial_number",
+     "type": "string"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    }
+   ],
+   "unmapped": true,
+   "label": "paloalto_panos",
+   "format": "userid_csv",
+   "status": "active",
+   "origin": "mapping-agent:20261120T083640",
+   "rationale": "PAN-OS USERID login/logout -> Authentication (Logon/Logoff); src_user -> user, src_ip -> src_endpoint, data_source (active-directory, vpn-client...) -> service.name.",
+   "metrics": {
+    "events": 3,
+    "valid_rate": 1.0,
+    "mapped_field_share": 0.433
+   },
+   "id": "m00061"
+  },
+  {
+   "parser_id": "p00021",
+   "class_uid": 4014,
+   "fields": [
+    {
+     "to": "activity_id",
+     "from": "vendor.event_id",
+     "map": {
+      "gateway-connected": 1,
+      "gateway-setup-ipsec": 1,
+      "gateway-setup-ssl": 1,
+      "gateway-switch-to-ssl": 3,
+      "gateway-logout": 2,
+      "gateway-disconnected": 2,
+      "portal-logout": 2
+     },
+     "default": 99
+    },
+    {
+     "to": "severity_id",
+     "value": 1
+    },
+    {
+     "to": "status_id",
+     "from": "vendor.status",
+     "map": {
+      "success": 1,
+      "failure": 2
+     },
+     "default": 0
+    },
+    {
+     "to": "status_detail",
+     "from": [
+      "vendor.error",
+      "vendor.reason"
+     ]
+    },
+    {
+     "to": "status_code",
+     "from": "vendor.error_code",
+     "type": "string"
+    },
+    {
+     "to": "message",
+     "from": "vendor.description"
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "vendor.event_id"
+    },
+    {
+     "to": "user.name",
+     "from": "vendor.src_user"
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": "vendor.public_ip"
+    },
+    {
+     "to": "src_endpoint.hostname",
+     "from": "vendor.machine_name"
+    },
+    {
+     "to": "src_endpoint.uid",
+     "from": "vendor.host_id"
+    },
+    {
+     "to": "tunnel_interface.ip",
+     "from": "vendor.private_ip"
+    },
+    {
+     "to": "tunnel_interface.type_id",
+     "value": 4
+    },
+    {
+     "to": "protocol_name",
+     "from": "vendor.tunnel_type"
+    },
+    {
+     "to": "count",
+     "from": "vendor.repeat_count",
+     "type": "integer"
+    },
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Palo Alto Networks"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "PAN-OS"
+    },
+    {
+     "to": "time",
+     "from": [
+      "vendor.time_generated",
+      "@timestamp"
+     ],
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "metadata.logged_time",
+     "from": "vendor.receive_time",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "metadata.uid",
+     "from": "vendor.sequence_number",
+     "type": "string"
+    },
+    {
+     "to": "metadata.log_name",
+     "from": "vendor.type"
+    },
+    {
+     "to": "metadata.log_version",
+     "from": "vendor.config_version",
+     "type": "string"
+    },
+    {
+     "to": "device.hostname",
+     "from": [
+      "vendor.device_name",
+      "vendor.syslog_host"
+     ]
+    },
+    {
+     "to": "device.uid",
+     "from": "vendor.serial_number",
+     "type": "string"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    }
+   ],
+   "unmapped": true,
+   "label": "paloalto_panos",
+   "format": "globalprotect_csv",
+   "status": "active",
+   "origin": "mapping-agent:20261120T083640",
+   "rationale": "PAN-OS GLOBALPROTECT -> Tunnel Activity; event_id drives activity (gateway connect/setup=Open, logout/disconnect=Close, switch-to-ssl=Renew, portal/config/auth stages=Other); status -> status_id; client public IP/host -> src_endpoint, assigned private IP -> tunnel_interface.",
+   "metrics": {
+    "events": 2,
+    "valid_rate": 1.0,
+    "mapped_field_share": 0.381
+   },
+   "id": "m00062"
+  },
+  {
+   "parser_id": "p00022",
+   "class_uid": 4001,
+   "fields": [
+    {
+     "to": "activity_id",
+     "value": 6
+    },
+    {
+     "to": "severity_id",
+     "value": 1
+    },
+    {
+     "to": "action_id",
+     "from": "vendor.action",
+     "map": {
+      "allow": 1,
+      "deny": 2,
+      "drop": 2,
+      "drop-icmp": 2,
+      "drop-all": 2,
+      "reset-client": 2,
+      "reset-server": 2,
+      "reset-both": 2,
+      "block-url": 2,
+      "drop-packet": 2,
+      "sinkhole": 2,
+      "block-continue": 2,
+      "block-override": 2,
+      "alert": 1,
+      "continue": 1,
+      "override": 1
+     },
+     "default": 0
+    },
+    {
+     "to": "disposition_id",
+     "from": "vendor.action",
+     "map": {
+      "allow": 1,
+      "deny": 2,
+      "drop": 6,
+      "drop-icmp": 6,
+      "drop-all": 6,
+      "drop-packet": 6,
+      "reset-client": 21,
+      "reset-server": 21,
+      "reset-both": 21,
+      "block-url": 2,
+      "sinkhole": 2,
+      "block-continue": 2,
+      "block-override": 2,
+      "alert": 19,
+      "continue": 1,
+      "override": 1
+     },
+     "default": 0
+    },
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Palo Alto Networks"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "PAN-OS"
+    },
+    {
+     "to": "time",
+     "from": [
+      "vendor.time_generated",
+      "@timestamp"
+     ],
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "metadata.logged_time",
+     "from": "vendor.receive_time",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "metadata.uid",
+     "from": "vendor.sequence_number",
+     "type": "string"
+    },
+    {
+     "to": "metadata.log_name",
+     "from": "vendor.type"
+    },
+    {
+     "to": "metadata.log_version",
+     "from": "vendor.config_version",
+     "type": "string"
+    },
+    {
+     "to": "device.hostname",
+     "from": [
+      "vendor.device_name",
+      "vendor.syslog_host"
+     ]
+    },
+    {
+     "to": "device.uid",
+     "from": "vendor.serial_number",
+     "type": "string"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": "vendor.src_ip"
+    },
+    {
+     "to": "src_endpoint.port",
+     "from": "vendor.src_port",
+     "type": "integer"
+    },
+    {
+     "to": "dst_endpoint.ip",
+     "from": "vendor.dst_ip"
+    },
+    {
+     "to": "dst_endpoint.port",
+     "from": "vendor.dst_port",
+     "type": "integer"
+    },
+    {
+     "to": "src_endpoint.zone",
+     "from": "vendor.src_zone"
+    },
+    {
+     "to": "dst_endpoint.zone",
+     "from": "vendor.dst_zone"
+    },
+    {
+     "to": "src_endpoint.interface_name",
+     "from": "vendor.inbound_interface"
+    },
+    {
+     "to": "dst_endpoint.interface_name",
+     "from": "vendor.outbound_interface"
+    },
+    {
+     "to": "connection_info.uid",
+     "from": "vendor.session_id",
+     "type": "string"
+    },
+    {
+     "to": "connection_info.direction_id",
+     "value": 0
+    },
+    {
+     "to": "connection_info.protocol_name",
+     "from": "vendor.protocol",
+     "type": "lower"
+    },
+    {
+     "to": "connection_info.protocol_num",
+     "from": "vendor.protocol",
+     "map": {
+      "tcp": 6,
+      "udp": 17,
+      "icmp": 1,
+      "sctp": 132,
+      "ipv6-icmp": 58
+     }
+    },
+    {
+     "to": "firewall_rule.name",
+     "from": "vendor.rule"
+    },
+    {
+     "to": "firewall_rule.uid",
+     "from": "vendor.rule_uuid",
+     "type": "string"
+    },
+    {
+     "to": "app_name",
+     "from": "vendor.app"
+    },
+    {
+     "to": "count",
+     "from": "vendor.repeat_count",
+     "type": "integer"
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "vendor.subtype"
+    },
+    {
+     "to": "actor.user.name",
+     "from": "vendor.src_user"
+    },
+    {
+     "to": "traffic.bytes",
+     "from": "vendor.bytes",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.bytes_out",
+     "from": "vendor.bytes_sent",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.bytes_in",
+     "from": "vendor.bytes_received",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.packets",
+     "from": "vendor.packets",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.packets_out",
+     "from": "vendor.packets_sent",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.packets_in",
+     "from": "vendor.packets_received",
+     "type": "integer"
+    }
+   ],
+   "unmapped": true,
+   "label": "paloalto_panos",
+   "format": "sctp_csv",
+   "status": "active",
+   "origin": "mapping-agent:20261120T083640",
+   "rationale": "PAN-OS SCTP -> Network Activity (Traffic); SCTP/diameter specifics left in unmapped.",
+   "metrics": {
+    "events": 1,
+    "valid_rate": 1.0,
+    "mapped_field_share": 0.472
+   },
+   "id": "m00063"
+  },
+  {
+   "parser_id": "p00023",
+   "class_uid": 4001,
+   "fields": [
+    {
+     "to": "activity_id",
+     "value": 6
+    },
+    {
+     "to": "severity_id",
+     "value": 1
+    },
+    {
+     "to": "action_id",
+     "from": "vendor.action",
+     "map": {
+      "allow": 1,
+      "deny": 2,
+      "drop": 2,
+      "drop-icmp": 2,
+      "drop-all": 2,
+      "reset-client": 2,
+      "reset-server": 2,
+      "reset-both": 2,
+      "block-url": 2,
+      "drop-packet": 2,
+      "sinkhole": 2,
+      "block-continue": 2,
+      "block-override": 2,
+      "alert": 1,
+      "continue": 1,
+      "override": 1
+     },
+     "default": 0
+    },
+    {
+     "to": "disposition_id",
+     "from": "vendor.action",
+     "map": {
+      "allow": 1,
+      "deny": 2,
+      "drop": 6,
+      "drop-icmp": 6,
+      "drop-all": 6,
+      "drop-packet": 6,
+      "reset-client": 21,
+      "reset-server": 21,
+      "reset-both": 21,
+      "block-url": 2,
+      "sinkhole": 2,
+      "block-continue": 2,
+      "block-override": 2,
+      "alert": 19,
+      "continue": 1,
+      "override": 1
+     },
+     "default": 0
+    },
+    {
+     "to": "tls.version",
+     "from": "vendor.tls_version"
+    },
+    {
+     "to": "tls.sni",
+     "from": "vendor.server_name_indication"
+    },
+    {
+     "to": "tls.certificate.serial_number",
+     "from": "vendor.cert_serial_number"
+    },
+    {
+     "to": "tls.certificate.subject",
+     "from": "vendor.subject_cn"
+    },
+    {
+     "to": "tls.certificate.issuer",
+     "from": "vendor.issuer_subject_cn"
+    },
+    {
+     "to": "status_detail",
+     "from": "vendor.error"
+    },
+    {
+     "to": "policy.name",
+     "from": "vendor.policy_name"
+    },
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Palo Alto Networks"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "PAN-OS"
+    },
+    {
+     "to": "time",
+     "from": [
+      "vendor.time_generated",
+      "@timestamp"
+     ],
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "metadata.logged_time",
+     "from": "vendor.receive_time",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "metadata.uid",
+     "from": "vendor.sequence_number",
+     "type": "string"
+    },
+    {
+     "to": "metadata.log_name",
+     "from": "vendor.type"
+    },
+    {
+     "to": "metadata.log_version",
+     "from": "vendor.config_version",
+     "type": "string"
+    },
+    {
+     "to": "device.hostname",
+     "from": [
+      "vendor.device_name",
+      "vendor.syslog_host"
+     ]
+    },
+    {
+     "to": "device.uid",
+     "from": "vendor.serial_number",
+     "type": "string"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": "vendor.src_ip"
+    },
+    {
+     "to": "src_endpoint.port",
+     "from": "vendor.src_port",
+     "type": "integer"
+    },
+    {
+     "to": "dst_endpoint.ip",
+     "from": "vendor.dst_ip"
+    },
+    {
+     "to": "dst_endpoint.port",
+     "from": "vendor.dst_port",
+     "type": "integer"
+    },
+    {
+     "to": "src_endpoint.zone",
+     "from": "vendor.src_zone"
+    },
+    {
+     "to": "dst_endpoint.zone",
+     "from": "vendor.dst_zone"
+    },
+    {
+     "to": "src_endpoint.interface_name",
+     "from": "vendor.inbound_interface"
+    },
+    {
+     "to": "dst_endpoint.interface_name",
+     "from": "vendor.outbound_interface"
+    },
+    {
+     "to": "connection_info.uid",
+     "from": "vendor.session_id",
+     "type": "string"
+    },
+    {
+     "to": "connection_info.direction_id",
+     "value": 0
+    },
+    {
+     "to": "connection_info.protocol_name",
+     "from": "vendor.protocol",
+     "type": "lower"
+    },
+    {
+     "to": "connection_info.protocol_num",
+     "from": "vendor.protocol",
+     "map": {
+      "tcp": 6,
+      "udp": 17,
+      "icmp": 1,
+      "sctp": 132,
+      "ipv6-icmp": 58
+     }
+    },
+    {
+     "to": "firewall_rule.name",
+     "from": "vendor.rule"
+    },
+    {
+     "to": "firewall_rule.uid",
+     "from": "vendor.rule_uuid",
+     "type": "string"
+    },
+    {
+     "to": "app_name",
+     "from": "vendor.app"
+    },
+    {
+     "to": "count",
+     "from": "vendor.repeat_count",
+     "type": "integer"
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "vendor.subtype"
+    },
+    {
+     "to": "actor.user.name",
+     "from": "vendor.src_user"
+    }
+   ],
+   "unmapped": true,
+   "label": "paloalto_panos",
+   "format": "decryption_csv",
+   "status": "active",
+   "origin": "mapping-agent:20261120T083640",
+   "rationale": "PAN-OS DECRYPTION -> Network Activity with tls object (version, SNI, cert) and decryption error as status_detail.",
+   "metrics": {
+    "events": 1,
+    "valid_rate": 1.0,
+    "mapped_field_share": 0.252
+   },
+   "id": "m00064"
+  },
+  {
+   "parser_id": "p00024",
+   "class_uid": 4001,
+   "fields": [
+    {
+     "to": "activity_id",
+     "from": "vendor.subtype",
+     "map": {
+      "start": 1,
+      "end": 2
+     },
+     "default": 99
+    },
+    {
+     "to": "severity_id",
+     "value": 1
+    },
+    {
+     "to": "action_id",
+     "from": "vendor.action",
+     "map": {
+      "allow": 1,
+      "deny": 2,
+      "drop": 2,
+      "drop-icmp": 2,
+      "drop-all": 2,
+      "reset-client": 2,
+      "reset-server": 2,
+      "reset-both": 2,
+      "block-url": 2,
+      "drop-packet": 2,
+      "sinkhole": 2,
+      "block-continue": 2,
+      "block-override": 2,
+      "alert": 1,
+      "continue": 1,
+      "override": 1
+     },
+     "default": 0
+    },
+    {
+     "to": "disposition_id",
+     "from": "vendor.action",
+     "map": {
+      "allow": 1,
+      "deny": 2,
+      "drop": 6,
+      "drop-icmp": 6,
+      "drop-all": 6,
+      "drop-packet": 6,
+      "reset-client": 21,
+      "reset-server": 21,
+      "reset-both": 21,
+      "block-url": 2,
+      "sinkhole": 2,
+      "block-continue": 2,
+      "block-override": 2,
+      "alert": 19,
+      "continue": 1,
+      "override": 1
+     },
+     "default": 0
+    },
+    {
+     "to": "status_detail",
+     "from": "vendor.session_end_reason"
+    },
+    {
+     "to": "metadata.product.vendor_name",
+     "value": "Palo Alto Networks"
+    },
+    {
+     "to": "metadata.product.name",
+     "value": "PAN-OS"
+    },
+    {
+     "to": "time",
+     "from": [
+      "vendor.time_generated",
+      "@timestamp"
+     ],
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "metadata.logged_time",
+     "from": "vendor.receive_time",
+     "type": "timestamp_ms"
+    },
+    {
+     "to": "metadata.uid",
+     "from": "vendor.sequence_number",
+     "type": "string"
+    },
+    {
+     "to": "metadata.log_name",
+     "from": "vendor.type"
+    },
+    {
+     "to": "metadata.log_version",
+     "from": "vendor.config_version",
+     "type": "string"
+    },
+    {
+     "to": "device.hostname",
+     "from": [
+      "vendor.device_name",
+      "vendor.syslog_host"
+     ]
+    },
+    {
+     "to": "device.uid",
+     "from": "vendor.serial_number",
+     "type": "string"
+    },
+    {
+     "to": "device.type_id",
+     "value": 9
+    },
+    {
+     "to": "src_endpoint.ip",
+     "from": "vendor.src_ip"
+    },
+    {
+     "to": "src_endpoint.port",
+     "from": "vendor.src_port",
+     "type": "integer"
+    },
+    {
+     "to": "dst_endpoint.ip",
+     "from": "vendor.dst_ip"
+    },
+    {
+     "to": "dst_endpoint.port",
+     "from": "vendor.dst_port",
+     "type": "integer"
+    },
+    {
+     "to": "src_endpoint.zone",
+     "from": "vendor.src_zone"
+    },
+    {
+     "to": "dst_endpoint.zone",
+     "from": "vendor.dst_zone"
+    },
+    {
+     "to": "src_endpoint.interface_name",
+     "from": "vendor.inbound_interface"
+    },
+    {
+     "to": "dst_endpoint.interface_name",
+     "from": "vendor.outbound_interface"
+    },
+    {
+     "to": "connection_info.uid",
+     "from": "vendor.session_id",
+     "type": "string"
+    },
+    {
+     "to": "connection_info.direction_id",
+     "value": 0
+    },
+    {
+     "to": "connection_info.protocol_name",
+     "from": "vendor.protocol",
+     "type": "lower"
+    },
+    {
+     "to": "connection_info.protocol_num",
+     "from": "vendor.protocol",
+     "map": {
+      "tcp": 6,
+      "udp": 17,
+      "icmp": 1,
+      "sctp": 132,
+      "ipv6-icmp": 58
+     }
+    },
+    {
+     "to": "firewall_rule.name",
+     "from": "vendor.rule"
+    },
+    {
+     "to": "firewall_rule.uid",
+     "from": "vendor.rule_uuid",
+     "type": "string"
+    },
+    {
+     "to": "app_name",
+     "from": "vendor.app"
+    },
+    {
+     "to": "count",
+     "from": "vendor.repeat_count",
+     "type": "integer"
+    },
+    {
+     "to": "metadata.event_code",
+     "from": "vendor.subtype"
+    },
+    {
+     "to": "actor.user.name",
+     "from": "vendor.src_user"
+    },
+    {
+     "to": "traffic.bytes",
+     "from": "vendor.bytes",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.bytes_out",
+     "from": "vendor.bytes_sent",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.bytes_in",
+     "from": "vendor.bytes_received",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.packets",
+     "from": "vendor.packets",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.packets_out",
+     "from": "vendor.packets_sent",
+     "type": "integer"
+    },
+    {
+     "to": "traffic.packets_in",
+     "from": "vendor.packets_received",
+     "type": "integer"
+    }
+   ],
+   "unmapped": true,
+   "label": "paloalto_panos",
+   "format": "tunnel_csv",
+   "status": "active",
+   "origin": "mapping-agent:20261120T083640",
+   "rationale": "PAN-OS tunnel inspection log -> Network Activity (inspected session start/end); tunnel inspection counters left in unmapped.",
+   "metrics": {
+    "events": 1,
+    "valid_rate": 1.0,
+    "mapped_field_share": 0.366
+   },
+   "id": "m00065"
   }
  ],
  "rejected": [
@@ -17796,5 +20783,5 @@
    "at": "2026-11-20T08:14:20+00:00"
   }
  ],
- "updated": "2026-11-20T08:27:00+00:00"
+ "updated": "2026-11-20T08:39:03+00:00"
 }
