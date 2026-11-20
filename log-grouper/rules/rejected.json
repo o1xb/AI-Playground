@@ -1,0 +1,20 @@
+{
+ "rejected": [
+  {
+   "label": "mimecast_email_security",
+   "pattern": "\"_partition\"\\s*:\\s*\\d+\\s*,\\s*\"accountId\"\\s*:\\s*\"[A-Z]+\\d*[A-Z0-9]*\"\\s*,\\s*(\"action\"\\s*:\\s*\"\\w+\"\\s*,\\s*)?\"aggregateId\"\\s*:",
+   "flags": "",
+   "reason": "collides with known label ivanti_connect_secure",
+   "origin": "subagent:packet-1",
+   "at": "2026-11-20T04:30:09+00:00"
+  },
+  {
+   "label": "symantec_endpoint_security",
+   "pattern": "\"product_name\"\\s*:\\s*\"Symantec Endpoint Security\"|\"feature_uid\"\\s*:\\s*\"[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}\"",
+   "flags": "",
+   "reason": "matches none of its claimed cluster examples",
+   "origin": "agent:20261120T051450",
+   "at": "2026-11-20T05:14:51+00:00"
+  }
+ ]
+}

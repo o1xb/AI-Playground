@@ -1,0 +1,58 @@
+{
+ "r00007": [
+  "JSON{agentDetectionInfo,alertInfo,containerInfo,kubernetesInfo,ruleInfo,sourceParentProcessInfo,sourceProcessInfo,targetProcessInfo}",
+  "JSON{agentDetectionInfo,agentRealtimeInfo,containerInfo,id,indicators,kubernetesInfo,mitigationStatus,threatInfo,whiteningOptions}",
+  "JSON{agentDetectionInfo,agentRealtimeInfo,alertInfo,containerInfo,kubernetesInfo,ruleInfo,sourceParentProcessInfo,sourceProcessInfo,targetProcessInfo}",
+  "JSON{agentDetectionInfo,agentRealtimeInfo,id,indicators,mitigationStatus,threatInfo,timeline,whiteningOptions}",
+  "JSON{agentDetectionInfo,agentRealtimeInfo,containerInfo,ecsInfo,id,indicators,kubernetesInfo,mitigationStatus,threatInfo,whiteningOptions}"
+ ],
+ "r00022": [
+  "JSON{transaction}"
+ ],
+ "r00162": [
+  "JSON{appliance_hosts,appliance_ids,appliance_sites,capture_device,capture_devices,created_at,custom_fields,deleted_at,fields,id,ip,is_ai_enriched,is_arc_enriched,is_sp_enriched}",
+  "JSON{appliance_hosts,appliance_id,appliance_site,asset_id,capture_device,capture_devices,created_at,custom_fields,deleted_at,fields,first_activity_time,id,ip,is_broadcast}",
+  "JSON{_asset_kb_id,activity_times,appliance_hosts,capture_device,created_at,custom_fields,device_id,end_of_sale_date,end_of_sale_date:info,end_of_support_date,end_of_support_date:info,firmware_version,firmware_version:info,has_remediations}",
+  "JSON{_asset_kb_id,_is_licensed,_private_status,appliance_host,asset_id,bpf_filter,capture_device,created_at,custom_fields,device_id,device_modules,end_of_sale_date,end_of_sale_date:info,end_of_support_date}"
+ ],
+ "r00004": [
+  "JSON{BytesRxInterface,BytesTxInterface,CPUUtilization,Connector,ConnectorGroup,ConnectorStartTime,CountryCode,Customer,DefRouteGW,DiscardsRxInterface,DiscardsTxInterface,ErrorsRxInterface,ErrorsTxInterface,HostStartTime}",
+  "JSON{AppGroup,AppLearnTime,Application,CAProcessingTime,ClientCountryCode,ClientLatitude,ClientLongitude,ClientPrivateIP,ClientPublicIP,ClientToClient,ClientZEN,ConnectionID,ConnectionSetupTime,ConnectionStatus}",
+  "JSON{CertificateCN,ClientType,CountryCode,Customer,FQDNRegistered,FQDNRegisteredError,Hostname,Idp,Latitude,LogTimestamp,Longitude,Platform,PosturesHit,PosturesMiss}",
+  "JSON{AppGroup,Application,ClientCountryCode,ClientLatitude,ClientLongitude,ClientPrivateIP,ClientPublicIP,ClientToClient,ClientZEN,ConnectionID,ConnectionStatus,Connector,ConnectorIP,ConnectorPort}"
+ ],
+ "r00229": [
+  "JSON{activeProducts,deployedComponents,deviceType,displayName,enrollmentStatus,etag,functionalityProblemCount,functionalityStatus,hardwareProfiles,isMaster,isMobile,isMuted,lastSyncTime,managementDomain}",
+  "JSON{availablePatchUuids,deviceGroupUuid,deviceUuid,packageVulnerability}",
+  "JSON{availablePatchUuids,deviceGroupUuid,deviceUuid,osVulnerability}",
+  "JSON{applicationVulnerability,availablePatchUuids,deviceGroupUuid,deviceUuid}",
+  "JSON{activeProducts,deployedComponents,description,deviceType,displayName,enrollmentStatus,etag,functionalityProblemCount,functionalityStatus,hardwareProfiles,isMaster,isMobile,isMuted,lastSyncTime}"
+ ],
+ "r00015": [
+  "JSON{event}"
+ ],
+ "r00156": [
+  "JSON{activity_id,actor,attacks,category_id,composite,content_ver,count,customer_uid,cybox,detection_uid,device_domain,device_end_time,device_group,device_ip}"
+ ],
+ "r00223": [
+  "JSON{act,application,clientIp,companyName,customerId,detectionType,deviceGUID,dpt,dst,duration,endpointGuid,endpointHostName,eventName,eventSubName}"
+ ],
+ "r00228": [
+  "JSON{action_taken,circumstances,engine_version,event_type,group_name,hash,hostname,ipv4,need_restart,object_type,object_uri,occurred,os_name,processname}",
+  "CSV:\u00ff\u00fe{\"<S>\":\"<S>\"|cols~15",
+  "CSV:\u00ef\u00bb\u00bf{\"<S>\":\"<S>\"|cols~20",
+  "JSON{action_error,action_taken,circumstances,engine_version,event_type,firstseen,group_description,group_name,hash,hostname,ipv4,ipv6,need_restart,object_type}"
+ ],
+ "r00222": [
+  "JSON{authId,endpointGuid,endpointHostName,endpointIp,endpointMacAddress,eventHashId,eventId,eventSourceType,eventSubId,eventTime,filterRiskLevel,firstSeen,integrityLevel,lastSeen}",
+  "JSON{attachment,attachmentFileHashes,attachmentFileHashs,attachmentFileName,attachmentFileSizes,attachmentFileTlshes,attachmentFileTlshs,dataType,description,duser,eventId,eventName,eventSourceType,eventTime}",
+  "JSON~{authId,endpointGuid,endpointHostName,endpointIp,endpointMacAddress,eventHashId,eventId,eventSourceType,eventSubId,eventTime}",
+  "JSON{authId,endpointGuid,endpointHostName,endpointIp,endpointMacAddress,eventHashId,eventId,eventSourceType,eventSubId,eventTime,filterRiskLevel,firstSeen,groupId,integrityLevel}"
+ ],
+ "r00013": [
+  "JSON{assigned_to,categories,category_count,close_time,closing_reason_id,closing_user,credibility,description,destination_networks,device_count,domain_id,event_count,first_persisted_time,flow_count}"
+ ],
+ "r00166": [
+  "JSON{active_checks,bit_value,changes_count,first_activity_time,flow_anomalies,flow_anomaly_in_progress,flow_hiccups_percent,flow_stats.avg,flow_stats.var,flow_status,history_status,host,host_label,id}"
+ ]
+}

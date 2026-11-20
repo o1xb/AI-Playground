@@ -1,0 +1,106 @@
+{
+ "<TS> INFO [org.jboss.as] (Controller Boot Thread) WFLYSRV<N>:": {
+  "reason": "No vendor/product evidence: generic WildFly/Infinispan/JGroups/Quarkus framework startup lines (application hosted on them not identifiable), STIX indicator, generic syslog test/lorem lines, truncated Cisco-style timestamp line, thermald, unbranded JSON fragments (items/progressRate, Tags, eventId/eventLabel entity schema).",
+  "at": "2026-11-20T05:14:49"
+ },
+ "ISPN<N>: Channel `ISPN` local address is `<N>a<N>c<N>f<N>-<N>`,": {
+  "reason": "No vendor/product evidence: generic WildFly/Infinispan/JGroups/Quarkus framework startup lines (application hosted on them not identifiable), STIX indicator, generic syslog test/lorem lines, truncated Cisco-style timestamp line, thermald, unbranded JSON fragments (items/progressRate, Tags, eventId/eventLabel entity schema).",
+  "at": "2026-11-20T05:14:49"
+ },
+ "JSON{endTime,endpointEntity,eventId,eventLabel,eventSeverity,eventType,operatingSystemInfo,startTime,timestamp,userEntity}": {
+  "reason": "No vendor/product evidence: generic WildFly/Infinispan/JGroups/Quarkus framework startup lines (application hosted on them not identifiable), STIX indicator, generic syslog test/lorem lines, truncated Cisco-style timestamp line, thermald, unbranded JSON fragments (items/progressRate, Tags, eventId/eventLabel entity schema).",
+  "at": "2026-11-20T05:14:49"
+ },
+ "JSON{endTime,entity,eventId,eventLabel,eventSeverity,eventType,startTime,timestamp}": {
+  "reason": "No vendor/product evidence: generic WildFly/Infinispan/JGroups/Quarkus framework startup lines (application hosted on them not identifiable), STIX indicator, generic syslog test/lorem lines, truncated Cisco-style timestamp line, thermald, unbranded JSON fragments (items/progressRate, Tags, eventId/eventLabel entity schema).",
+  "at": "2026-11-20T05:14:49"
+ },
+ "<<N>><TS> <IP> <N> <TS> AEST: last mess": {
+  "reason": "No vendor/product evidence: generic WildFly/Infinispan/JGroups/Quarkus framework startup lines (application hosted on them not identifiable), STIX indicator, generic syslog test/lorem lines, truncated Cisco-style timestamp line, thermald, unbranded JSON fragments (items/progressRate, Tags, eventId/eventLabel entity schema).",
+  "at": "2026-11-20T05:14:49"
+ },
+ "ISPN<N>: Received new cluster view for channel": {
+  "reason": "No vendor/product evidence: generic WildFly/Infinispan/JGroups/Quarkus framework startup lines (application hosted on them not identifiable), STIX indicator, generic syslog test/lorem lines, truncated Cisco-style timestamp line, thermald, unbranded JSON fragments (items/progressRate, Tags, eventId/eventLabel entity schema).",
+  "at": "2026-11-20T05:14:49"
+ },
+ "JSON{created,id,labels,modified,pattern,type,valid_from}": {
+  "reason": "No vendor/product evidence: generic WildFly/Infinispan/JGroups/Quarkus framework startup lines (application hosted on them not identifiable), STIX indicator, generic syslog test/lorem lines, truncated Cisco-style timestamp line, thermald, unbranded JSON fragments (items/progressRate, Tags, eventId/eventLabel entity schema).",
+  "at": "2026-11-20T05:14:49"
+ },
+ "<TS> INFO [org.wildfly.extension.undertow] (ServerService Thread Pool --": {
+  "reason": "No vendor/product evidence: generic WildFly/Infinispan/JGroups/Quarkus framework startup lines (application hosted on them not identifiable), STIX indicator, generic syslog test/lorem lines, truncated Cisco-style timestamp line, thermald, unbranded JSON fragments (items/progressRate, Tags, eventId/eventLabel entity schema).",
+  "at": "2026-11-20T05:14:49"
+ },
+ "July <N> <IP<N>> uto: Test: Test syslog": {
+  "reason": "No vendor/product evidence: generic WildFly/Infinispan/JGroups/Quarkus framework startup lines (application hosted on them not identifiable), STIX indicator, generic syslog test/lorem lines, truncated Cisco-style timestamp line, thermald, unbranded JSON fragments (items/progressRate, Tags, eventId/eventLabel entity schema).",
+  "at": "2026-11-20T05:14:49"
+ },
+ "server listening on *:<N>": {
+  "reason": "No vendor/product evidence: generic WildFly/Infinispan/JGroups/Quarkus framework startup lines (application hosted on them not identifiable), STIX indicator, generic syslog test/lorem lines, truncated Cisco-style timestamp line, thermald, unbranded JSON fragments (items/progressRate, Tags, eventId/eventLabel entity schema).",
+  "at": "2026-11-20T05:14:49"
+ },
+ "<TS> rmbkmonitor<N> thermald: constraint_<N>_power_limit_uw exceeded.": {
+  "reason": "No vendor/product evidence: generic WildFly/Infinispan/JGroups/Quarkus framework startup lines (application hosted on them not identifiable), STIX indicator, generic syslog test/lorem lines, truncated Cisco-style timestamp line, thermald, unbranded JSON fragments (items/progressRate, Tags, eventId/eventLabel entity schema).",
+  "at": "2026-11-20T05:14:49"
+ },
+ "<TS> ERROR [com.example.BaseUserProvider] (default task-<N>) Error getting": {
+  "reason": "No vendor/product evidence: generic WildFly/Infinispan/JGroups/Quarkus framework startup lines (application hosted on them not identifiable), STIX indicator, generic syslog test/lorem lines, truncated Cisco-style timestamp line, thermald, unbranded JSON fragments (items/progressRate, Tags, eventId/eventLabel entity schema).",
+  "at": "2026-11-20T05:14:49"
+ },
+ "<TS> localhost foo[<N>]: Single-line message.": {
+  "reason": "No vendor/product evidence: generic WildFly/Infinispan/JGroups/Quarkus framework startup lines (application hosted on them not identifiable), STIX indicator, generic syslog test/lorem lines, truncated Cisco-style timestamp line, thermald, unbranded JSON fragments (items/progressRate, Tags, eventId/eventLabel entity schema).",
+  "at": "2026-11-20T05:14:49"
+ },
+ "ISPN<N>: Starting JGroups channel `ISPN` with stack": {
+  "reason": "No vendor/product evidence: generic WildFly/Infinispan/JGroups/Quarkus framework startup lines (application hosted on them not identifiable), STIX indicator, generic syslog test/lorem lines, truncated Cisco-style timestamp line, thermald, unbranded JSON fragments (items/progressRate, Tags, eventId/eventLabel entity schema).",
+  "at": "2026-11-20T05:14:49"
+ },
+ "<TS> seq olorema<N>.www.localdomain: fug<N>.www.domain IFP trace> node:": {
+  "reason": "No vendor/product evidence: generic WildFly/Infinispan/JGroups/Quarkus framework startup lines (application hosted on them not identifiable), STIX indicator, generic syslog test/lorem lines, truncated Cisco-style timestamp line, thermald, unbranded JSON fragments (items/progressRate, Tags, eventId/eventLabel entity schema).",
+  "at": "2026-11-20T05:14:49"
+ },
+ "<TS> INFO [org.jboss.as.server] (Controller Boot Thread) WFLYSRV<N>:": {
+  "reason": "No vendor/product evidence: generic WildFly/Infinispan/JGroups/Quarkus framework startup lines (application hosted on them not identifiable), STIX indicator, generic syslog test/lorem lines, truncated Cisco-style timestamp line, thermald, unbranded JSON fragments (items/progressRate, Tags, eventId/eventLabel entity schema).",
+  "at": "2026-11-20T05:14:49"
+ },
+ "Profile prod activated.": {
+  "reason": "No vendor/product evidence: generic WildFly/Infinispan/JGroups/Quarkus framework startup lines (application hosted on them not identifiable), STIX indicator, generic syslog test/lorem lines, truncated Cisco-style timestamp line, thermald, unbranded JSON fragments (items/progressRate, Tags, eventId/eventLabel entity schema).",
+  "at": "2026-11-20T05:14:49"
+ },
+ "<TS> undeo ficiade<N>.mail.domain: norum.exe[<N>]: LIBS": {
+  "reason": "No vendor/product evidence: generic WildFly/Infinispan/JGroups/Quarkus framework startup lines (application hosted on them not identifiable), STIX indicator, generic syslog test/lorem lines, truncated Cisco-style timestamp line, thermald, unbranded JSON fragments (items/progressRate, Tags, eventId/eventLabel entity schema).",
+  "at": "2026-11-20T05:14:49"
+ },
+ "Starting Infinispan embedded cache manager": {
+  "reason": "No vendor/product evidence: generic WildFly/Infinispan/JGroups/Quarkus framework startup lines (application hosted on them not identifiable), STIX indicator, generic syslog test/lorem lines, truncated Cisco-style timestamp line, thermald, unbranded JSON fragments (items/progressRate, Tags, eventId/eventLabel entity schema).",
+  "at": "2026-11-20T05:14:49"
+ },
+ "ISPN<N>: Starting user marshaller 'org.infinispan.commons.marshall.ImmutableProtoStreamMarshaller'": {
+  "reason": "No vendor/product evidence: generic WildFly/Infinispan/JGroups/Quarkus framework startup lines (application hosted on them not identifiable), STIX indicator, generic syslog test/lorem lines, truncated Cisco-style timestamp line, thermald, unbranded JSON fragments (items/progressRate, Tags, eventId/eventLabel entity schema).",
+  "at": "2026-11-20T05:14:49"
+ },
+ "Node name: <N>a<N>c<N>f<N>-<N>, Site name: null": {
+  "reason": "No vendor/product evidence: generic WildFly/Infinispan/JGroups/Quarkus framework startup lines (application hosted on them not identifiable), STIX indicator, generic syslog test/lorem lines, truncated Cisco-style timestamp line, thermald, unbranded JSON fragments (items/progressRate, Tags, eventId/eventLabel entity schema).",
+  "at": "2026-11-20T05:14:49"
+ },
+ "local_addr: <UUID>, name: <N>a<N>c<N>f<N>-<N>": {
+  "reason": "No vendor/product evidence: generic WildFly/Infinispan/JGroups/Quarkus framework startup lines (application hosted on them not identifiable), STIX indicator, generic syslog test/lorem lines, truncated Cisco-style timestamp line, thermald, unbranded JSON fragments (items/progressRate, Tags, eventId/eventLabel entity schema).",
+  "at": "2026-11-20T05:14:49"
+ },
+ "JSON{items,progressRate}": {
+  "reason": "No vendor/product evidence: generic WildFly/Infinispan/JGroups/Quarkus framework startup lines (application hosted on them not identifiable), STIX indicator, generic syslog test/lorem lines, truncated Cisco-style timestamp line, thermald, unbranded JSON fragments (items/progressRate, Tags, eventId/eventLabel entity schema).",
+  "at": "2026-11-20T05:14:49"
+ },
+ "<N>a<N>c<N>f<N>-<N>: no members discovered after <N> ms:": {
+  "reason": "No vendor/product evidence: generic WildFly/Infinispan/JGroups/Quarkus framework startup lines (application hosted on them not identifiable), STIX indicator, generic syslog test/lorem lines, truncated Cisco-style timestamp line, thermald, unbranded JSON fragments (items/progressRate, Tags, eventId/eventLabel entity schema).",
+  "at": "2026-11-20T05:14:49"
+ },
+ "Virtual threads support enabled": {
+  "reason": "No vendor/product evidence: generic WildFly/Infinispan/JGroups/Quarkus framework startup lines (application hosted on them not identifiable), STIX indicator, generic syslog test/lorem lines, truncated Cisco-style timestamp line, thermald, unbranded JSON fragments (items/progressRate, Tags, eventId/eventLabel entity schema).",
+  "at": "2026-11-20T05:14:49"
+ },
+ "JSON{Tags}": {
+  "reason": "No vendor/product evidence: generic WildFly/Infinispan/JGroups/Quarkus framework startup lines (application hosted on them not identifiable), STIX indicator, generic syslog test/lorem lines, truncated Cisco-style timestamp line, thermald, unbranded JSON fragments (items/progressRate, Tags, eventId/eventLabel entity schema).",
+  "at": "2026-11-20T05:14:49"
+ }
+}
