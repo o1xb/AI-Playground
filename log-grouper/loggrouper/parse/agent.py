@@ -18,15 +18,35 @@ from .validate import (FAILURE_TAGS, claimed, flatten, golden_regressions, metri
 MAX_SAMPLES_PER_LABEL = 2000
 
 
-def load_samples(groups_dir, labels=None):
-    """groups/<label>.jsonl records (grouper output) -> {label: [unwrapped payloads]} (deduplicated)."""
-    u = Unwrapper()
+def load_failures(path, labels=None):
+    """Parse-failure dead letter written by the exported Logstash pipeline (JSON lines with `message` and
+    `[loggrouper][label]`) -> {label: [messages]}. These are what the parser agent should learn from."""
     out = {}
+    if not path or not os.path.exists(path):
+        return out
+    with open(path) as f:
+        for line in f:
+            try:
+                ev = json.loads(line)
+            except ValueError:
+                continue
+            label = (ev.get("loggrouper") or {}).get("label")
+            msg = ev.get("message")
+            if label and isinstance(msg, str) and (not labels or label in labels):
+                out.setdefault(label, {}).setdefault(msg, None)
+    return {k: list(v) for k, v in out.items()}
+
+
+def load_samples(groups_dir, labels=None, failures=None):
+    """groups/<label>.jsonl records (grouper output) -> {label: [unwrapped payloads]} (deduplicated),
+    plus messages from a parse-failure dead letter (`failures`), which come first."""
+    u = Unwrapper()
+    out = {k: v[:MAX_SAMPLES_PER_LABEL] for k, v in load_failures(failures, labels).items()}
     for fn in sorted(os.listdir(groups_dir)):
         label = fn[:-6]
         if labels and label not in labels:
             continue
-        seen = {}
+        seen = dict.fromkeys(out.get(label, []))
         with open(os.path.join(groups_dir, fn)) as f:
             for line in f:
                 rec = json.loads(line)
@@ -44,9 +64,11 @@ def _cid(label, shp):
 
 class ParserTools(CodeTools):
     def __init__(self, store_path, groups_dir, labels=None, logstash_home=None, enable_code=False,
-                 workspace=None, sandbox_backend="unshare", max_submits=12, drafts_path=None):
+                 workspace=None, sandbox_backend="unshare", max_submits=12, drafts_path=None,
+                 failures=None, review_new_parsers=False):
         self.store = ParserStore(store_path)
-        self.samples = load_samples(groups_dir, labels)
+        self.samples = load_samples(groups_dir, labels, failures)
+        self.review_new_parsers = review_new_parsers
         self.logstash_home = logstash_home
         self.max_submits, self.submits = max_submits, 0
         self.drafts = []
@@ -357,7 +379,9 @@ class ParserTools(CodeTools):
                 self.store.reject(spec, why, origin)
                 rejected.append({"label": spec["label"], "format": spec.get("format"), "reason": why})
                 continue
-            spec.update(status="active", origin=origin, rationale=d["rationale"],
+            # review gate: a new parser for a label waits as `candidate` until `cli preview --approve`
+            gated = self.review_new_parsers and not old
+            spec.update(status="candidate" if gated else "active", origin=origin, rationale=d["rationale"],
                         metrics={k: m[k] for k in ("samples", "parse_rate", "coverage_mean", "distinct_fields", "date_rate")})
             if old:
                 spec["history"] = old.get("history", []) + [{"origin": origin, "previous_steps": old["steps"]}]
@@ -383,8 +407,10 @@ class ParserTools(CodeTools):
                                              self.propose_parser_update, self.retire_parser, self.submit]
 
 
-def run_parser_agent(store_path, groups_dir, labels=None, logstash_home=None, enable_code=True, **kw):
-    tools = ParserTools(store_path, groups_dir, labels=labels, logstash_home=logstash_home, enable_code=enable_code)
+def run_parser_agent(store_path, groups_dir, labels=None, logstash_home=None, enable_code=True, failures=None,
+                     review_new_parsers=False, **kw):
+    tools = ParserTools(store_path, groups_dir, labels=labels, logstash_home=logstash_home, enable_code=enable_code,
+                        failures=failures, review_new_parsers=review_new_parsers)
     out = run_tool_agent(tools, load_prompts("parser_agent.md", *(["parser_code_tools.md"] if enable_code else [])),
                          "Write parsers for the labels in `overview` until each label's samples parse cleanly. "
                          "Finish with a short summary.", **kw)

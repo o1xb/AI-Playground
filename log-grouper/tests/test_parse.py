@@ -58,3 +58,19 @@ class ConformanceTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class FailureLoopTest(unittest.TestCase):
+    def test_dead_letter_feeds_samples(self):
+        import tempfile
+        from loggrouper.parse.agent import load_samples
+        d = tempfile.mkdtemp()
+        os.makedirs(os.path.join(d, "groups"))
+        with open(os.path.join(d, "groups", "acme_fw.jsonl"), "w") as f:
+            f.write(json.dumps({"raw": "ACME known line", "label": "acme_fw"}) + "\n")
+        with open(os.path.join(d, "failures.jsonl"), "w") as f:
+            f.write(json.dumps({"message": "ACME new message type", "loggrouper": {"label": "acme_fw"},
+                                "tags": ["_noparser"]}) + "\n")
+            f.write("not json\n")
+        s = load_samples(os.path.join(d, "groups"), failures=os.path.join(d, "failures.jsonl"))
+        self.assertEqual(s["acme_fw"], ["ACME new message type", "ACME known line"])
