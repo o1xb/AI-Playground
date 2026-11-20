@@ -102,5 +102,117 @@
  "JSON{Tags}": {
   "reason": "No vendor/product evidence: generic WildFly/Infinispan/JGroups/Quarkus framework startup lines (application hosted on them not identifiable), STIX indicator, generic syslog test/lorem lines, truncated Cisco-style timestamp line, thermald, unbranded JSON fragments (items/progressRate, Tags, eventId/eventLabel entity schema).",
   "at": "2026-11-20T05:14:49"
+ },
+ "JSON~{Description,Hostname,Name,ParentProcessId,ProcessEndTime,ProcessId,ProcessStartTime,Severity,SeverityName,UserName}": {
+  "reason": "No vendor-specific token: generic/test syslog, truncated lines, or generic JSON/STIX/ECS shapes without product evidence.",
+  "at": "2026-11-20T12:11:10"
+ },
+ "JSON~{severity,time}": {
+  "reason": "No vendor-specific token: generic/test syslog, truncated lines, or generic JSON/STIX/ECS shapes without product evidence.",
+  "at": "2026-11-20T12:11:10"
+ },
+ "<TS> rmbkm": {
+  "reason": "No vendor-specific token: generic/test syslog, truncated lines, or generic JSON/STIX/ECS shapes without product evidence.",
+  "at": "2026-11-20T12:11:10"
+ },
+ "JSON{_deviceId,_eventId,_eventType,_parentEventId,_serverId,_time,_ver,accessType,action,arguments,authorName,certs,cmdLine,commands}": {
+  "reason": "No vendor-specific token: generic/test syslog, truncated lines, or generic JSON/STIX/ECS shapes without product evidence.",
+  "at": "2026-11-20T12:11:10"
+ },
+ "<<N>><TS> <IP> -- MARK --": {
+  "reason": "No vendor-specific token: generic/test syslog, truncated lines, or generic JSON/STIX/ECS shapes without product evidence.",
+  "at": "2026-11-20T12:11:10"
+ },
+ "<TS> Lor: Test: Test syslog message": {
+  "reason": "No vendor-specific token: generic/test syslog, truncated lines, or generic JSON/STIX/ECS shapes without product evidence.",
+  "at": "2026-11-20T12:11:10"
+ },
+ "August <N> <IP<N>> nsecte: BGP: ipv<N> instability": {
+  "reason": "No vendor-specific token: generic/test syslog, truncated lines, or generic JSON/STIX/ECS shapes without product evidence.",
+  "at": "2026-11-20T12:11:10"
+ },
+ "JSON{managed_asset,op_attr,output_type,software_inventory,vulnerability}": {
+  "reason": "No vendor-specific token: generic/test syslog, truncated lines, or generic JSON/STIX/ECS shapes without product evidence.",
+  "at": "2026-11-20T12:11:10"
+ },
+ "JSON~{created,id,labels,modified}": {
+  "reason": "No vendor-specific token: generic/test syslog, truncated lines, or generic JSON/STIX/ECS shapes without product evidence.",
+  "at": "2026-11-20T12:11:10"
+ },
+ "This is just a test message that": {
+  "reason": "No vendor-specific token: generic/test syslog, truncated lines, or generic JSON/STIX/ECS shapes without product evidence.",
+  "at": "2026-11-20T12:11:10"
+ },
+ "<TS> <IP> <N>: Jul <N> <N> <IP<N>>": {
+  "reason": "No vendor-specific token: generic/test syslog, truncated lines, or generic JSON/STIX/ECS shapes without product evidence.",
+  "at": "2026-11-20T12:11:10"
+ },
+ "<TS> fdeFin.exe[<N>]: SNMP_TRAP_TRACE_ROUT": {
+  "reason": "No vendor-specific token: generic/test syslog, truncated lines, or generic JSON/STIX/ECS shapes without product evidence.",
+  "at": "2026-11-20T12:11:10"
+ },
+ "<<N>>Jun <N> <N> <IP<N>>:": {
+  "reason": "No vendor-specific token: generic/test syslog, truncated lines, or generic JSON/STIX/ECS shapes without product evidence.",
+  "at": "2026-11-20T12:11:10"
+ },
+ "<TS> sw<N> <N>: Jul <N>": {
+  "reason": "No vendor-specific token: generic/test syslog, truncated lines, or generic JSON/STIX/ECS shapes without product evidence.",
+  "at": "2026-11-20T12:11:10"
+ },
+ "KV{proto,service,status,src,dst}": {
+  "reason": "No vendor-specific token: generic/test syslog, truncated lines, or generic JSON/STIX/ECS shapes without product evidence.",
+  "at": "2026-11-20T12:11:10"
+ },
+ "JSON{@timestamp,destination,event,host,source,user,user_agent}": {
+  "reason": "No vendor-specific token: generic/test syslog, truncated lines, or generic JSON/STIX/ECS shapes without product evidence.",
+  "at": "2026-11-20T12:11:10"
+ },
+ "April <N> <IP<N>> Sedutp: Test: Test syslog": {
+  "reason": "No vendor-specific token: generic/test syslog, truncated lines, or generic JSON/STIX/ECS shapes without product evidence.",
+  "at": "2026-11-20T12:11:10"
+ },
+ "<TS> seq olorema<N>.www.localdomain: fug<N>.www.domain IFP trace": {
+  "reason": "No vendor-specific token: generic/test syslog, truncated lines, or generic JSON/STIX/ECS shapes without product evidence.",
+  "at": "2026-11-20T12:11:10"
+ },
+ "KV{time,tz,bid,dvid,itime,euid,epid,dsteuid,dstepid,log_id}": {
+  "reason": "No vendor-specific token: generic/test syslog, truncated lines, or generic JSON/STIX/ECS shapes without product evidence.",
+  "at": "2026-11-20T12:11:10"
+ },
+ "JSON~{createTime,emailAddr}": {
+  "reason": "No vendor-specific token: generic/test syslog, truncated lines, or generic JSON/STIX/ECS shapes without product evidence.",
+  "at": "2026-11-20T12:11:10"
+ },
+ "JSON{id,objects,spec_version,type}": {
+  "reason": "No vendor-specific token: generic/test syslog, truncated lines, or generic JSON/STIX/ECS shapes without product evidence.",
+  "at": "2026-11-20T12:11:10"
+ },
+ "JSON~{bytes_received,bytes_received_per_s,bytes_sent,bytes_sent_per_s,cputime_ms_per_s,event,hw_model,metrics,system_performance,tasks}": {
+  "reason": "No vendor-specific token: generic/test syslog, truncated lines, or generic JSON/STIX/ECS shapes without product evidence.",
+  "at": "2026-11-20T12:11:10"
+ },
+ "<N>-<N>-<N> <IP<N>>,<N> | Administrator | UserAdmin,Admin,CryptoAdmin,ExpressionAdmin |": {
+  "reason": "No vendor-specific token: generic/test syslog, truncated lines, or generic JSON/STIX/ECS shapes without product evidence.",
+  "at": "2026-11-20T12:11:10"
+ },
+ "<TS> rmbkmonitor<N> shutdown[<N>]: shutting down for system": {
+  "reason": "No vendor-specific token: generic/test syslog, truncated lines, or generic JSON/STIX/ECS shapes without product evidence.",
+  "at": "2026-11-20T12:11:10"
+ },
+ "<TS> localhost foo[<N>]: This message spans multiple": {
+  "reason": "No vendor-specific token: generic/test syslog, truncated lines, or generic JSON/STIX/ECS shapes without product evidence.",
+  "at": "2026-11-20T12:11:10"
+ },
+ "<<N>><N> <TS> test.lab.com kernel - - -": {
+  "reason": "No vendor-specific token: generic/test syslog, truncated lines, or generic JSON/STIX/ECS shapes without product evidence.",
+  "at": "2026-11-20T12:11:10"
+ },
+ "<TS> localhost pam: user nobody logged out.": {
+  "reason": "No vendor-specific token: generic/test syslog, truncated lines, or generic JSON/STIX/ECS shapes without product evidence.",
+  "at": "2026-11-20T12:11:10"
+ },
+ "JSON{domain,security_assessment}": {
+  "reason": "No vendor-specific token: generic/test syslog, truncated lines, or generic JSON/STIX/ECS shapes without product evidence.",
+  "at": "2026-11-20T12:11:10"
  }
 }

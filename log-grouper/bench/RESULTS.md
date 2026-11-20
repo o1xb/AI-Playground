@@ -139,3 +139,25 @@ configurable (`LG_LS_HEAP`, default 2g; the full 81-parser + 78-mapping pipeline
 
 Sonnet is within ~1 point of Opus (user-name recall 77% vs 85% is the main gap) at half the list price.
 States: `bench/llm_mapper_runs/state_full_sonnet.json`.
+
+## Grouping on a large stream: Sonnet 5.5 vs Opus 5.5 learner
+
+Stream: 10,052 lines, 102 vendors (all benchmark packages + 10 products the rule store had never seen: Okta,
+Cloudflare Logpush, GitLab, LastPass, PingFederate, ForgeRock, Tanium, Trellix EDR, SentinelOne Cloud Funnel,
+Authentik), 30% Filebeat envelopes, 25% relay headers, 5% truncated. Fast path: 10k lines in <3 s.
+Each learner (sub-agent on that model, code tools on) handled the same residue (583 lines) from the same store;
+then a fresh 10,052-line stream (different sample + wrappers) was routed with each learned store, no LLM.
+
+| Fresh stream | Before learning | Sonnet 5.5 | Opus 5.5 |
+|---|---|---|---|
+| New vendors routed by rules | 13% | 99.2% | 97.3% |
+| New vendors correct | — | 97.0% | 96.9% |
+| Known vendors correct (regression check) | 95.3% | 95.5% | 95.4% |
+| Whole stream handled by rules | 93.9% | 99.3% | 99.2% |
+| Rules added | — | 19 | 50 (finer, per data type) |
+| Learner effort | — | 32 tool calls, ~164k tokens, ~11.5 min | 46 tool calls, ~226k tokens, ~19 min |
+
+Both fixed the ModSecurity rule swallowing Okta events; Opus also fixed FortiAnalyzer->FortiGate (by widening
+the FortiManager rule). Engine gap seen by both: a new rule cannot claim a *conflict* id, only clusters/suspects.
+Main remaining new-vendor error: SentinelOne Cloud Funnel routed to the existing SentinelOne Singularity label.
+`rules/` now holds the Sonnet-learned store (covers the 10 new vendors).
